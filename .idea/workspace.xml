@@ -2,8 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1fdc08d0-af6c-437b-85ec-7249d8cd86e2" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manage.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,28 +45,36 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="settings.editor.selected.configurable" value="settings.github" />
+    <property name="settings.editor.selected.configurable" value="Errors" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="O:\Python\Flask-WC" />
     </key>
   </component>
-  <component name="RunManager" selected="Flask server.Flask (app.py)">
-    <configuration name="Flask (app.py)" type="Python.FlaskServer" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Python.test">
+    <configuration name="test" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Flask-WC" />
-      <option name="target" value="$PROJECT_DIR$/app.py" />
-      <option name="targetType" value="PATH" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="launchJavascriptDebuger" value="false" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
     <configuration name="Flask (main.py)" type="Python.FlaskServer" temporary="true" nameIsGenerated="true">
@@ -95,9 +107,31 @@
       <option name="launchJavascriptDebuger" value="false" />
       <method v="2" />
     </configuration>
+    <configuration name="Flask" type="Python.FlaskServer" temporary="true" nameIsGenerated="true">
+      <module name="Flask-WC" />
+      <option name="target" value="$PROJECT_DIR$/app.py" />
+      <option name="targetType" value="PATH" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="D:\Program Files\Python37\python.exe" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Flask server.Flask-WC" />
+      <item itemvalue="Flask server.Flask" />
+      <item itemvalue="Flask server.Flask (main.py)" />
+      <item itemvalue="Python.test" />
+    </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Flask server.Flask (app.py)" />
+        <item itemvalue="Python.test" />
+        <item itemvalue="Flask server.Flask" />
         <item itemvalue="Flask server.Flask (main.py)" />
       </list>
     </recent_temporary>
@@ -134,7 +168,11 @@
       <workItem from="1578630410040" duration="61000" />
       <workItem from="1578631216009" duration="15000" />
       <workItem from="1578631446634" duration="946000" />
-      <workItem from="1578632403395" duration="740000" />
+      <workItem from="1578632403395" duration="6170000" />
+      <workItem from="1578723731631" duration="2262000" />
+      <workItem from="1578805603206" duration="1824000" />
+      <workItem from="1578902715177" duration="47000" />
+      <workItem from="1578902772407" duration="3939000" />
     </task>
     <task id="LOCAL-00001" summary="初始化仓库">
       <created>1578632264764</created>
@@ -154,21 +192,43 @@
     <option name="LAST_COMMIT_MESSAGE" value="初始化仓库" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="223" y="61" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1578903416486">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="223" y="61" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824@0.0.1536.824" timestamp="1578903416486" />
     <state x="303" y="0" key="CommitChangelistDialog2" timestamp="1578632256419">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="303" y="0" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1578632256419" />
-    <state x="154" y="0" key="SettingsEditor" timestamp="1578632556915">
+    <state width="1483" height="512" key="GridCell.Tab.0.bottom" timestamp="1578907157965">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="154" y="0" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1578632556915" />
-    <state x="261" y="81" key="Vcs.Push.Dialog.v2" timestamp="1578632901706">
+    <state width="1483" height="512" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1578907157965" />
+    <state width="1483" height="512" key="GridCell.Tab.0.center" timestamp="1578907157965">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="261" y="81" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1578632901706" />
+    <state width="1483" height="512" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1578907157965" />
+    <state width="1483" height="512" key="GridCell.Tab.0.left" timestamp="1578907157965">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1483" height="512" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1578907157965" />
+    <state width="1483" height="512" key="GridCell.Tab.0.right" timestamp="1578907157965">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1483" height="512" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1578907157965" />
+    <state x="154" y="0" key="SettingsEditor" timestamp="1578646818931">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="154" y="0" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1578646818931" />
+    <state x="261" y="81" key="Vcs.Push.Dialog.v2" timestamp="1578907306670">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="261" y="81" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1578907306670" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/Flask_WC$Flask__app_py_.coverage" NAME="Flask (app.py) Coverage Results" MODIFIED="1578631448685" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/Flask_WC$Flask.coverage" NAME="Flask Coverage Results" MODIFIED="1578904947923" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/Flask_WC$Flask__app_py_.coverage" NAME="Flask (app.py) Coverage Results" MODIFIED="1578646864622" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/Flask_WC$Flask__main_py_.coverage" NAME="Flask (main.py) Coverage Results" MODIFIED="1578568681717" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/Flask_WC$test.coverage" NAME="test Coverage Results" MODIFIED="1578906119617" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

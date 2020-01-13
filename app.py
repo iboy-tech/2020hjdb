@@ -1,15 +1,18 @@
 # -*- coding:utf-8 -*-
+import json
+import time
 
 from flask import Flask
 from flask import request
 import  requests
 import  ast
+import xmltodict
+
 
 
 import hashlib
+from config import  *
 
-APPID='wx18d48283a9869675'
-APPSECRET='7d8ff3809716bba9b05aa489bb931ef6'
 
 app = Flask(__name__)
 app.debug = True
@@ -74,6 +77,7 @@ def send_message(OPENID,):
     return  resp.text
 send_message('oIBxm00mUNv4mkVAgjBpwvyJqbb0')
 
+#第一次接入服务器的验证
 @app.route('/wx_flask',methods=['GET','POST'])
 def wechat():
     if request.method == 'GET':
@@ -97,7 +101,98 @@ def wechat():
             return echostr
         else:
             return "非微信官方请求"
+    #回复用户消息
+    elif request.method == "POST":
+        # 表示微信服务器转发消息过来
+        xml_str = request.data
+        if not xml_str:
+            return ""
+        # 对xml字符串进行解析
+        xml_dict = xmltodict.parse(xml_str)
+        xml_dict = xml_dict.get("xml")
+
+        # 提取消息类型
+        msg_type = xml_dict.get("MsgType")
+        if msg_type == "text":
+            # 表示发送的是文本消息
+            # 构造返回值，经由微信服务器回复给用户的消息内容
+            resp_dict = {
+                "xml": {
+                    "ToUserName": xml_dict.get("FromUserName"),
+                    "FromUserName": xml_dict.get("ToUserName"),
+                    "CreateTime": int(time.time()),
+                    "MsgType": "text",
+                    "Content": "you say:" + xml_dict.get("Content")
+                }
+            }
+
+            # 将字典转换为xml字符串
+            resp_xml_str = xmltodict.unparse(resp_dict)
+            # 返回消息数据给微信服务器
+            return resp_xml_str
+        #收到图片消息
+        if msg_type == "image":
+            # 表示发送的是文本消息
+            # 构造返回值，经由微信服务器回复给用户的消息内容
+            resp_dict = {
+                "xml": {
+                    "ToUserName": xml_dict.get("FromUserName"),
+                    "FromUserName": xml_dict.get("ToUserName"),
+                    "CreateTime": int(time.time()),
+                    "MsgType": "text",
+                    "PicUrl": xml_dict.get("PicUrl"),
+                    "MediaId": xml_dict.get("MediaId"),
+                    # "MsgId" : xml_dict.get("MsgId")
+                    "MsgId" : "1234567890123456"
+                }
+            }
+
+            # 将字典转换为xml字符串
+            resp_xml_str = xmltodict.unparse(resp_dict)
+            # 返回消息数据给微信服务器
+            return resp_xml_str
+        else:
+            resp_dict = {
+                "xml": {
+                    "ToUserName": xml_dict.get("FromUserName"),
+                    "FromUserName": xml_dict.get("ToUserName"),
+                    "CreateTime": int(time.time()),
+                    "MsgType": "text",
+                    "Content": "欢迎关注CTGU小助手！"
+                }
+            }
+            resp_xml_str = xmltodict.unparse(resp_dict)
+            # 返回消息数据给微信服务器
+            return resp_xml_str
+
+
+class Menu(object):
+    def create(self, postData):
+        p = json.dumps(postData, ensure_ascii=False)
+        postUrl = 'https://api.weixin.qq.com/cgi-bin/menu/create?access_token=%s' % AccessToken.get_access_token()
+        req = requests.post(postUrl, p.encode('utf-8'))
+        print(req.text)
+
+
+def getMenu():
+    postJson = {
+        "button": [
+            {
+                "name": "公共查询",
+                "sub_button": [
+                    {
+                        "type": "click",
+                        "name": "天气查询",
+                        "key": "tianQi"
+                    }]
+            }]
+    }
+
+    return postJson
 
 
 if __name__ == '__main__':
-    app.run()
+    pData = getMenu()
+    m = Menu()
+    m.create(pData)
+    app.run(debug=True,host='0.0.0.0',port='5000')
