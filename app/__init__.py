@@ -1,8 +1,8 @@
 # -*- coding:UTF-8 -*-
 #!/usr/bin/python
 """
-@File    : manage.py
-@Time    : 2020/1/10 16:58
+@File    : __init__.py
+@Time    : 2020/1/13 17:34
 @Author  : iBoy
 @Email   : iboy@iboy.tech
 @Software: PyCharm

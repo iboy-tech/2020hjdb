@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="Content-Language" content="zh-CN">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="referrer" content="always"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+    <title>系统主页</title>
+    <link rel="stylesheet" type="text/css" href="./css/semantic.min.css"/>
+    <link type="text/css" rel="stylesheet" href="./css/space.4cb6e48f.css">
+    <script src="./js/jquery.js"></script>
+    <script src="./js/vue.js"></script>
+    <style>
+        .up-img {
+            border: 1px solid #dddddd;
+            height: 110px !important;
+            /*background: url("./images/plus.png") no-repeat center center;*/
+        }
+
+        .up-img input {
+            display: none;
+            width: auto;
+            border: 0;
+            vertical-align: middle;
+            cursor: pointer;
+        }
+
+        .tweet-item {
+            border-bottom: 1px solid #dddddd;
+        }
+
+        #mainScreen {
+            padding-top: 10px;
+        }
+
+        @media only screen and (max-width: 767px) {
+            .article-list .image {
+                display: inline-block !important;
+            }
+        }
+
+        .text-over {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            word-break: break-all;
+            display: inline-block;
+            margin-top: 1.5em;
+        }
+    </style>
+
+</head>
+<body>
+
+
+<div class="pusher" id="app">
+
+
+    <div id="mainScreen">
+        <div class="ui container">
+            <div class="ui grid space-home">
+                <div class="row">
+                    <div class="five wide computer five wide tablet sixteen wide mobile column">
+                        <!--用户信息-->
+                        <div class="space-sidebar">
+                            <div class="ui basic center aligned segment sidebar-section user-info">
+                                <div class="avatar-wrap">
+                                    <a class="ui small circular image avatar">
+                                        <div class="osc-avatar large-portrait _120x120">
+                                            <img v-if="user.icon" :src="imgPrefix+user.icon" :alt="user.realName"/>
+                                            <div v-else style="height: 120px; width: 120px; font-size: 80px;
+                                                text-align: center; line-height: 80px; padding: 20px 0px;
+                                             color: #fff;background-color: #3879d9; cursor: pointer;"
+                                                 :title="user.realName">
+                                                {{user.realName[0]}}
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <div class="gender ui large teal circular label">
+                                        <i class=" icon" :class="{venus: user.gender==0, mars:user.gender != 0}"></i>
+                                    </div>
+                                </div>
+                                <div class="ui header">
+                                    <h3>{{user.realName}}</h3>
+                                    <div class="sub header user-signature">{{user.schoolName}}</div>
+                                </div>
+
+                            </div>
+
+                            <div class="item action clearfix">
+                                <a class="ui button follow-btn green" @click="logout">
+                                    </i><span class="text">退出</span>
+                                </a>
+                                <div class="ui basic dropdown more dropdown-more">
+                                    <div @click="showMenu=!showMenu" class="ui icon green basic button menu-btn"><i
+                                            class="bars icon"></i></div>
+                                    <div class="menu transition " tabindex="-1"
+                                         :style="{display: showMenu?'block':'none'}">
+                                        <a class="item" @click="setIcon">
+                                            <i class="user circle icon"></i>修改头像
+                                        </a>
+                                        <a class="item" @click="setPhone">
+                                            <i class="mobile alternate icon"></i>修改手机
+                                        </a>
+                                        <a class="item" @click="setPassword">
+                                            <i class="lock alternate icon"></i>修改密码
+                                        </a>
+                                        <a class="item" @click="showFeedback">
+                                            <i class="envelope icon"></i>反馈
+                                        </a>
+                                        <a class="item" @click="showAbout">
+                                            <i class="info circle icon"></i>关于
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="ui basic segment sidebar-section">
+                                <h3 class="header">个人信息</h3>
+                                <div class="ui list">
+                                    <div class="item">学生号码：{{user.studentNum}}</div>
+                                    <div class="item">邮箱地址：{{user.email}}</div>
+                                    <div class="item">手机号码：{{user.phoneNumber}}</div>
+                                    <div class="item">加入时间：{{user.createTime}}</div>
+                                    <div class="item">最近登录：{{user.lastLogin}}</div>
+                                </div>
+                            </div>
+                            <!--通知-->
+                            <div class="ui basic segment software-works sidebar-section">
+                                <h3 class="header">通知公告</h3>
+                                <div class="ui divided items">
+                                    <div class="item" v-if="notice.length >0 && !noticeAll" @click="seeNotice(0)">
+                                        <div class="content">
+                                            <a class="ui small header ">{{notice[0].title}}</a>
+                                            <div class="extra">{{notice[0].time}}</div>
+                                        </div>
+                                        <div v-if="notice[0].fixTop==1" class="ui basic label software-collect-btn"
+                                             style="border:0">
+                                            <!--<span class="number red">置顶</span>-->
+                                            <i class="thumbtack icon red"></i>
+                                        </div>
+                                    </div>
+                                    <div class="item" v-else-if="notice.length >0" v-for="(item,index) in notice"
+                                         :key="item.id"
+                                         @click="seeNotice(index)">
+                                        <div class="content">
+                                            <a class="ui small header ">{{item.title}}</a>
+                                            <div class="extra">{{item.time}}</div>
+                                        </div>
+                                        <div v-if="item.fixTop==1" class="ui basic label software-collect-btn"
+                                             style="border:0">
+                                            <!--<span class="number">置顶</span>-->
+                                            <i class="thumbtack icon red"></i>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div v-if="!noticeAll" @click="showAllNotice(true)"
+                                     class="ui fluid button mini view-all-button">显示全部 {{notice.length}} 个通知
+                                </div>
+                                <div v-else @click="showAllNotice(false)" class="ui fluid button mini view-all-button">
+                                    收起全部通知
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="eleven wide computer eleven wide tablet sixteen wide mobile column">
+                        <div class="ui inverted dimmer space-index-container-loader">
+                            <div class="ui text loader">加载中</div>
+                        </div>
+                        <div class="space-index-container">
+
+                            <div class="hidden-scroll global-mb ">
+                                <div class="ui green pointing secondary big menu space-tab">
+                                    <input type="hidden" name="currentTab" value="newest">
+                                    <span href="#" class="item" :class="{active: tabIndex == 0}"
+                                          @click="changeTab(0)">所有</span>
+                                    <span href="#" class="item" :class="{active: tabIndex == 1}"
+                                          @click="changeTab(1)">搜索</span>
+                                    <span href="#" class="item" :class="{active: tabIndex == 2}"
+                                          @click="changeTab(2)">我的</span>
+                                    <span href="#" class="item" :class="{active: tabIndex == 3}"
+                                          @click="changeTab(3)">消息
+                                        <!--<div class="floating ui red label">22</div>-->
+                                    </span>
+                                    <span href="#" class="item" :class="{active: tabIndex == 4}"
+                                          @click="changeTab(4)">发布</span>
+                                </div>
+
+                            </div>
+
+                            <div class="ui basic segment article-list" id="newestBlogList">
+
+
+                                <div class="ui relaxed divided items list-container space-list-container">
+                                    <!--所有-->
+                                    <block v-if="tabIndex==0">
+                                        <div class="field">
+                                            <label><b>启事类型：</b></label>
+                                            <div class="ui horizontal list">
+                                                <div class="item">
+                                                    <a :class="{green: tab[0].search.kind == -1}"
+                                                       @click="changeTab0Kind(-1)"
+                                                       class="ui horizontal label">全部</a>
+                                                </div>
+                                                <div class="item">
+                                                    <a :class="{green: tab[0].search.kind == 0}"
+                                                       @click="changeTab0Kind(0)"
+                                                       class="ui horizontal label">寻物</a>
+                                                </div>
+                                                <div class="item">
+                                                    <a :class="{green: tab[0].search.kind == 1}"
+                                                       @click="changeTab0Kind(1)"
+                                                       class="ui horizontal label">认领</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="field">
+                                            <label><b>物品分类：</b></label>
+                                            <div class="ui horizontal list">
+                                                <div class="item ">
+                                                    <a @click="changeTab0Category(-1)" class="ui horizontal label"
+                                                       :class="{green: tab[0].search.category == ''}">全部</a>
+                                                </div>
+                                                <div v-for="(item, index) in category" class="item" :key="item.name">
+                                                    <a @click="changeTab0Category(index)"
+                                                       class="ui horizontal label"
+                                                       :class="{green: tab[0].search.category == item.name}">{{item.name}}&nbsp;{{item.count}}</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <block v-if="tab[0].list.length > 0">
+                                            <div v-for="item in tab[0].list" class="ui feed tweet-item item blog-item"
+                                                 :key="item.id">
+                                                <div class="event">
+                                                    <div class="content">
+                                                        <div class="ui items tweet-user-info">
+                                                            <div class="item">
+                                                                <a @click="jumpDetail(item.id)">
+                                                                    <div class="osc-avatar small-portrait _35x35 avatar"
+                                                                         :title="item.username">
+                                                                        <img :src="item.icon?imgPrefix+item.icon:userIcon"
+                                                                             alt="头像"
+                                                                             :title="item.username">
+                                                                    </div>
+                                                                </a>
+                                                                <div class="content">
+                                                                    <a class="user __user" @click="jumpDetail(item.id)">
+                                                                        <div v-if="item.kind==0"
+                                                                             class="ui red label horizontal"
+                                                                             data-tooltip="正在寻找">
+                                                                            寻物
+                                                                        </div>
+                                                                        <div v-else class="ui blue label horizontal"
+                                                                             data-tooltip="等待认领">
+                                                                            认领
+                                                                        </div>
+                                                                        {{item.realName}}&nbsp;{{item.username}}
+                                                                    </a>
+
+                                                                    <div class="extra">
+                                                                        <div class="date">{{item.time}}&nbsp;&nbsp;
+                                                                            <i v-if="item.location"
+                                                                               class="map marker alternate icon"></i>
+                                                                            <!--<span class="text-over">{{item.location}}</span>-->
+                                                                            <span>{{item.location}}</span>
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="extra text">
+                                                            {{item.title}}
+                                                        </div>
+                                                        <div v-if="item.images && item.images.length > 0"
+                                                             class="extra multi-image">
+                                                            <div class="multimgs">
+                                                                <div class="multimgs">
+                                                                    <div class="wrapper single-wrapper"
+                                                                         v-for="src in item.images">
+                                                                        <a>
+                                                                            <img @click="jumpDetail(item.id)"
+                                                                                 :src="imgPrefix + src" :key="src"
+                                                                                 style="max-width: 160px; height: auto;">
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="ui horizontal list">
+                                                            <div class="item">
+                                                                <span class="ui horizontal label"
+                                                                      href="#">{{item.category}}</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="meta">
+                                                            <a class="like" @click="jumpDetail(item.id)">
+                                                                <i class="eye icon"></i>
+                                                                <span data-tweet-like-count=""
+                                                                      data-tweet-id="19932613">{{item.lookCount}}</span>
+                                                            </a>
+                                                            <a class="reply" @click="jumpDetail(item.id)">
+                                                                <i class="comment outline icon"></i> <span>{{item.commentCount}}</span>
+                                                            </a>
+                                                            <span class="share">
+                                                                <i class="external icon"></i> <span
+                                                                    data-tweet-ref-count=""
+                                                                    data-tweet-id="19932613">转发</span>
+                                                            </span>
+                                                            <a class="view" @click="jumpDetail(item.id)">查看详情</a>
+                                                            <!--<div class="right">-->
+                                                            <!--<a class="ban" ban-report="" data-id="19932613"-->
+                                                            <!--data-obj-type="100"-->
+                                                            <!--data-url="https://my.oschina.net/liwenhoho/tweet/19932613">-->
+                                                            <!--<i class="ban icon"></i> 举报-->
+                                                            <!--</a>-->
+                                                            <!--</div>-->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </block>
+                                        <div v-else class="ui basic segment article-list">
+                                            <div class="ui center aligned basic segment">
+                                                <img src="./images/empty.png">
+                                                <h4 class="ui sub header grey">无内容</h4>
+                                            </div>
+                                        </div>
+                                    </block>
+                                    <!--搜索-->
+                                    <block v-else-if="tabIndex==1">
+                                        <div class="ui form">
+                                            <div class="inline  fields">
+                                                <div class="eight wide field">
+                                                    <input v-model="tab[1].search.keyword" type="text"
+                                                           placeholder="输入关键字">
+                                                    <button @click="search" class="ui button green">GO</button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <block v-if="tab[1].list.length > 0">
+                                            <div v-for="item in tab[1].list" class="ui feed tweet-item item blog-item"
+                                                 :key="item.id">
+                                                <div class="event">
+                                                    <div class="content">
+                                                        <div class="ui items tweet-user-info">
+                                                            <div class="item">
+                                                                <a @click="jumpDetail(item.id)">
+                                                                    <div class="osc-avatar small-portrait _35x35 avatar"
+                                                                         :title="item.username">
+                                                                        <img :src="item.icon?imgPrefix+item.icon:userIcon"
+                                                                             alt="头像"
+                                                                             :title="item.username">
+                                                                    </div>
+                                                                </a>
+                                                                <div class="content">
+                                                                    <a class="user __user" @click="jumpDetail(item.id)">
+                                                                        <div v-if="item.kind==0"
+                                                                             class="ui red label horizontal"
+                                                                             data-tooltip="正在寻找">
+                                                                            寻物
+                                                                        </div>
+                                                                        <div v-else class="ui blue label horizontal"
+                                                                             data-tooltip="等待认领">
+                                                                            认领
+                                                                        </div>
+                                                                        {{item.realName}}&nbsp;{{item.username}}
+                                                                    </a>
+
+                                                                    <div class="extra">
+                                                                        <div class="date">{{item.time}}&nbsp;&nbsp;
+                                                                            <i v-if="item.location"
+                                                                               class="map marker alternate icon"></i>
+                                                                            <!--<span class="text-over">{{item.location}}</span>-->
+                                                                            <span>{{item.location}}</span>
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="extra text">
+                                                            {{item.title}}
+                                                        </div>
+                                                        <div v-if="item.images && item.images.length > 0"
+                                                             class="extra multi-image">
+                                                            <div class="multimgs">
+                                                                <div class="multimgs">
+                                                                    <div class="wrapper single-wrapper"
+                                                                         v-for="src in item.images">
+                                                                        <a>
+                                                                            <img @click="jumpDetail(item.id)"
+                                                                                 :src="imgPrefix + src" :key="src"
+                                                                                 style="max-width: 160px; height: auto;">
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="ui horizontal list">
+                                                            <div class="item">
+                                                                <span class="ui horizontal label"
+                                                                      href="#">{{item.category}}</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="meta">
+                                                            <a class="like" @click="jumpDetail(item.id)">
+                                                                <i class="eye icon"></i>
+                                                                <span data-tweet-like-count=""
+                                                                      data-tweet-id="19932613">{{item.lookCount}}</span>
+                                                            </a>
+                                                            <a class="reply" @click="jumpDetail(item.id)">
+                                                                <i class="comment outline icon"></i> <span>{{item.commentCount}}</span>
+                                                            </a>
+                                                            <span class="share">
+                                                                <i class="external icon"></i> <span
+                                                                    data-tweet-ref-count=""
+                                                                    data-tweet-id="19932613">转发</span>
+                                                            </span>
+                                                            <a class="view" @click="jumpDetail(item.id)">查看详情</a>
+                                                            <!--<div class="right">-->
+                                                            <!--<a class="ban" ban-report="" data-id="19932613"-->
+                                                            <!--data-obj-type="100"-->
+                                                            <!--data-url="https://my.oschina.net/liwenhoho/tweet/19932613">-->
+                                                            <!--<i class="ban icon"></i> 举报-->
+                                                            <!--</a>-->
+                                                            <!--</div>-->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </block>
+                                        <div v-else class="ui basic segment article-list">
+                                            <div class="ui center aligned basic segment">
+                                                <img src="./images/empty.png">
+                                                <h4 class="ui sub header grey">无内容</h4>
+                                            </div>
+                                        </div>
+                                    </block>
+                                    <!--我的-->
+                                    <block v-else-if="tabIndex==2">
+                                        <block v-if="tab[2].list.length > 0">
+                                            <div v-for="item in tab[2].list" class="ui feed tweet-item item blog-item"
+                                                 :key="item.id">
+                                                <div class="event">
+                                                    <div class="content">
+                                                        <div class="ui items tweet-user-info">
+                                                            <div class="item">
+                                                                <a @click="jumpDetail(item.id)">
+                                                                    <div class="osc-avatar small-portrait _35x35 avatar"
+                                                                         :title="item.username">
+                                                                        <img :src="item.icon?imgPrefix+item.icon:userIcon"
+                                                                             alt="头像"
+                                                                             :title="item.username">
+                                                                    </div>
+                                                                </a>
+                                                                <div class="content">
+                                                                    <a class="user __user" @click="jumpDetail(item.id)">
+                                                                        <div v-if="item.kind==0"
+                                                                             class="ui red label horizontal"
+                                                                             data-tooltip="正在寻找">
+                                                                            寻物
+                                                                        </div>
+                                                                        <div v-else class="ui blue label horizontal"
+                                                                             data-tooltip="等待认领">
+                                                                            认领
+                                                                        </div>
+                                                                        {{item.realName}}&nbsp;{{item.username}}
+                                                                    </a>
+
+                                                                    <div class="extra">
+                                                                        <div class="date">{{item.time}}&nbsp;&nbsp;
+                                                                            <i v-if="item.location"
+                                                                               class="map marker alternate icon"></i>
+                                                                            <!--<span class="text-over">{{item.location}}</span>-->
+                                                                            <span>{{item.location}}</span>
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="extra text">
+                                                            {{item.title}}
+                                                        </div>
+                                                        <div v-if="item.images && item.images.length > 0"
+                                                             class="extra multi-image">
+                                                            <div class="multimgs">
+                                                                <div class="wrapper single-wrapper"
+                                                                     v-for="src in item.images">
+                                                                    <a>
+                                                                        <img @click="jumpDetail(item.id)"
+                                                                             :src="imgPrefix + src" :key="src"
+                                                                             style="max-width: 160px; height: auto;">
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="ui horizontal list">
+                                                            <div class="item">
+                                                                <span class="ui horizontal label">{{item.category}}</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="meta">
+                                                            <a class="like" @click="jumpDetail(item.id)">
+                                                                <i class="eye icon"></i>
+                                                                <span>{{item.lookCount}}</span>
+                                                            </a>
+                                                            <a class="reply" @click="jumpDetail(item.id)">
+                                                                <i class="comment outline icon"></i> <span>{{item.commentCount}}</span>
+                                                            </a>
+                                                            <span class="share">
+                                                                <i class="external icon"></i>
+                                                                <span>转发</span>
+                                                            </span>
+                                                            <a class="like" @click="deletePub(item.id)">
+                                                                <i class="trash alternate outline icon"></i>删除
+                                                            </a>
+                                                            <!--<a class="view" @click="jumpDetail(item.id)">查看详情</a>-->
+                                                            <!--<div class="right">-->
+                                                            <!--<a class="ban" ban-report="" data-id="19932613"-->
+                                                            <!--data-obj-type="100"-->
+                                                            <!--data-url="https://my.oschina.net/liwenhoho/tweet/19932613">-->
+                                                            <!--<i class="ban icon"></i> 举报-->
+                                                            <!--</a>-->
+                                                            <!--</div>-->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </block>
+                                        <div v-else class="ui basic segment article-list">
+                                            <div class="ui center aligned basic segment">
+                                                <img src="./images/empty.png">
+                                                <h4 class="ui sub header grey">无内容</h4>
+                                            </div>
+                                        </div>
+                                    </block>
+                                    <!--消息-->
+                                    <div v-else-if="tabIndex==3" class="ui basic segment article-list">
+                                        <div class="ui divided items space-list-container activity-container">
+                                            <div v-for="item in tab3" :key="item.id" class="item activity-item">
+                                                <div class="ui avatar image">
+                                                    <a>
+                                                        <div class="osc-avatar small-portrait _35x35">
+                                                            <img :src="item.icon?imgPrefix+item.icon:userIcon">
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                                <div class="content">
+                                                    <div class="description">
+                                                        <a class="user __user">{{item.username}}</a>&nbsp;&nbsp;{{item.time}}
+
+                                                    </div>
+                                                    <div class="description summary" data-emoji-render="">
+                                                        评论了：<a class="user" :href="'detail.html?id='+item.lostFoundId">{{item.title}}</a>
+                                                    </div>
+                                                    <div class="extra referer">
+                                                        <div class="referer-wrapper">
+                                                            <div class="extra text" data-emoji-render="">
+                                                                {{item.content}}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="extra">
+                                                        <div class="ui horizontal small list">
+                                                            <a class="item" @click="removeComment(item.id)">
+                                                                <i class="trash alternate outline icon"></i>删除
+                                                            </a>
+                                                            <!-- <a class="item">
+                                                                 <i class="external link alternate icon"></i> 查看原文
+                                                             </a>-->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div v-if="tab3 && tab3.length == 0" class="ui basic segment article-list">
+                                                <div class="ui center aligned basic segment">
+                                                    <img src="./images/empty.png">
+                                                    <h4 class="ui sub header grey">无内容</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="page-load-status">
+                                            <!--<p class="infinite-scroll-request">-->
+                                            <!--<i class="ui active small inline loader"></i>-->
+                                            <!--</p>-->
+                                            <p class="infinite-scroll-last">没有更多内容</p>
+                                        </div>
+                                    </div>
+
+                                    <!--发布-->
+                                    <div v-else class="item activity-item">
+                                        <div class="ui form" style="width: 100%;">
+                                            <div class="field">
+                                                <label><b>类型：</b></label>
+                                                <div class="field inline" @click="changeTab4EventKind(0)">
+                                                    <div class="ui radio checkbox">
+                                                        <input type="radio" name="fruit" :checked="tab4.applyKind==0">
+                                                        <label>寻物启事</label>
+                                                    </div>
+                                                </div>
+                                                <div class="field inline" @click="changeTab4EventKind(1)">
+                                                    <div class="ui radio checkbox">
+                                                        <input type="radio" name="fruit" :checked="tab4.applyKind==1">
+                                                        <label>认领启事</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="field">
+                                                <label><b>类别：</b></label>
+                                                <div class="ui horizontal list">
+                                                    <div v-for="(item, index) in category" class="item"
+                                                         :key="item.name">
+                                                        <a @click="changeTab4CategoryIndex(index)"
+                                                           class="ui horizontal label"
+                                                           :class="{green: tab4.categoryIndex == index}">{{item.name}}</a>
+                                                    </div>
+                                                    <!--<div class="item ">-->
+                                                    <!--<a class="ui horizontal label green">安卓</a>-->
+                                                    <!--</div>-->
+                                                </div>
+                                            </div>
+
+                                            <div class="field">
+                                                <label>标题：</label>
+                                                <input type="text" v-model="tab4.title" placeholder="简述">
+                                            </div>
+                                            <div class="field">
+                                                <label>图片：</label>
+                                                <div v-for="(item, index) in tab4.images" class="ui image up-img"
+                                                     style="display: inline-block !important;" :key="index">
+                                                    <div class="ui fluid image up-img">
+                                                        <a class="ui right corner label" @click="removeImg(index)">
+                                                            <i class="close icon"></i>
+                                                        </a>
+                                                        <img :src="item">
+                                                    </div>
+                                                </div>
+
+                                                <div v-if="tab4.images.length < imgTotal" @click="changeImg(0)"
+                                                     class="ui image up-img"
+                                                     style="display: inline-block !important;">
+                                                    <!--<input id="in1" type="file" accept="image/*"-->
+                                                    <!--onchange="changeImg(this)">-->
+                                                    <!--<img id="img1" src="./images/plus.png">-->
+                                                    <div class="ui fluid image up-img">
+                                                        <input id="imgInput" type="file" accept="image/*"
+                                                               onchange="changeInput(this)">
+                                                        <img src="./images/plus.png">
+                                                    </div>
+                                                </div>
+                                                <!--<div class="ui image up-img" style="display: inline-block !important;">-->
+                                                <!--</div>-->
+                                                <!--<div class="ui image up-img" style="display: inline-block !important;">-->
+                                                <!--<img src="./images/plus.png">-->
+                                                <!--</div>-->
+                                            </div>
+
+                                            <div class=" field">
+                                                <label class="inline">详情：</label>
+                                                <!--<div class="inline twelve wide field">-->
+                                                <textarea class="field" v-model="tab4.about" rows="5"
+                                                          placeholder="详细说明"></textarea>
+                                                <!--</div>-->
+                                            </div>
+                                            <div class="field">
+                                                <label>地点：</label>
+                                                <input type="text" v-model="tab4.location" placeholder="选填">
+                                            </div>
+                                            <div class="field" style="text-align: center;">
+                                                <button @click="submitPub" class="ui button green" type="submit">提交
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+
+                                </div>
+                                <!--  <div class="page-load-status">
+                                      <p class="infinite-scroll-request">
+                                          <i class="ui active small inline loader"></i>
+                                      </p>
+                                      <p class="infinite-scroll-last">没有更多内容</p>
+                                      <p class="infinite-scroll-error">加载失败，请刷新页面</p>
+                                  </div>-->
+                                <a v-if="tab[0].search.pageNum+1 < tab[0].totalPage && tabIndex == 0"
+                                   @click="nextPage(0)"
+                                   class="ui fluid button load-more-button" style="display: block;">加载更多</a>
+                                <div v-else class="page-load-status" :style="{display: tabIndex==0?'block':'none'}">
+                                    <p class="infinite-scroll-last">没有更多内容</p>
+                                </div>
+                                <!-- <p class="pagination">
+                                     <a class="pagination__next" style="display: none"
+                                        href="">下一页</a>
+                                 </p>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <div id="copyright">
+        <div class="ui container">
+            <div class="ui clearing basic segment" style="text-align: center;">
+                <div class="ui   horizontal link list">
+                    <div class="item">&copy; 2019 校园失物招领网站系统 | <a href="http://www.ecit.edu.cn/"
+                                                                  target="_blank">ECUT</a></div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--反馈弹窗-->
+    <div class="editor-wrapper" style="display: none; padding: 10px;" id="editorDiv">
+        <div class="ui form" style="width: 100%; height: 100%;">
+            <div class="field">
+                <input v-model="feedback.subject" placeholder="主题" maxlength="256"
+                       class="tweet-textarea disabled-resize" autofocus/>
+            </div>
+            <div class="field">
+                <textarea v-model="feedback.content" rows="5" placeholder="详情" maxlength="1024"
+                          class="tweet-textarea disabled-resize"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <!--修改密码-->
+    <div class="editor-wrapper" style="display: none; padding: 10px;" id="pwdDiv">
+        <div class="ui form" style="width: 100%; height: 100%;">
+            <div class="field">
+                <input v-model="password.oldPassword" placeholder="旧密码" maxlength="256" type="password"
+                       class="tweet-textarea disabled-resize" autofocus/>
+            </div>
+            <div class="field">
+                <input v-model="password.newPassword" placeholder="新密码" maxlength="256" type="password"
+                       class="tweet-textarea disabled-resize"/>
+            </div>
+            <div class="field">
+                <input v-model="password.confirmPassword" placeholder="确认新密码" maxlength="256" type="password"
+                       class="tweet-textarea disabled-resize"/>
+            </div>
+        </div>
+    </div>
+
+    <!--修改头像-->
+    <div class="ui fluid image up-img" style="display: none; width: 24vw; height: 24vw !important; padding: 2vw;"
+         id="iconDiv">
+        <input id="iconInput" type="file" accept="image/*"
+               onchange="changeIcon(this)">
+        <img :src="icon" style="width: 20vw; height: 20vw;">
+    </div>
+
+</div>
+
+<script src="./js/layer.js"></script>
+<script src="js/mine/common.js"></script>
+<script src="./js/semantic.min.js"></script>
+<script src="./js/mine/home.js"></script>
+</body>
+</html>

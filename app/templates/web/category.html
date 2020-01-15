@@ -1,0 +1,220 @@
+<!--
+Author: W3layouts
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+-->
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>物品分类</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="keywords" content="Novus Admin Panel Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template,
+SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design"/>
+    <script type="application/x-javascript"> addEventListener("load", function () {
+        setTimeout(hideURLbar, 0);
+    }, false);
+
+    function hideURLbar() {
+        window.scrollTo(0, 1);
+    } </script>
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.css" rel='stylesheet' type='text/css'/>
+    <!-- Custom CSS -->
+    <link href="css/style.css" rel='stylesheet' type='text/css'/>
+    <!-- font CSS -->
+    <!-- font-awesome icons -->
+    <link href="css/font-awesome.css" rel="stylesheet">
+    <!-- //font-awesome icons -->
+    <!-- js-->
+    <script src="js/jquery-1.11.1.min.js"></script>
+    <script src="js/modernizr.custom.js"></script>
+    <!--webfonts-->
+    <!-- <link href='//fonts.googleapis.com/css?family=Roboto+Condensed:400,300,300italic,400italic,700,700italic' rel='stylesheet' type='text/css'> -->
+    <!--//webfonts-->
+    <!--animate-->
+    <link href="css/animate.css" rel="stylesheet" type="text/css" media="all">
+    <script src="js/wow.min.js"></script>
+    <script>
+        new WOW().init();
+    </script>
+    <!--//end-animate-->
+    <!-- Metis Menu -->
+    <script src="js/metisMenu.min.js"></script>
+    <script src="js/custom.js"></script>
+    <link href="css/custom.css" rel="stylesheet">
+    <!--//Metis Menu -->
+    <style>
+        .compose-left span {
+            background-color: inherit;
+            clear: both;
+        }
+    </style>
+</head>
+<body class="cbp-spmenu-push">
+<div class="main-content" id="app">
+    <!--left-fixed -navigation-->
+    <div class=" sidebar" role="navigation">
+        <div class="navbar-collapse">
+            <nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-left" id="cbp-spmenu-s1">
+                <ul class="nav" id="side-menu">
+                    <li>
+                        <a href="index.html"><i class="fa fa-bar-chart nav_icon"></i>数据统计</a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-list-ul nav_icon"></i>招领管理<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level collapse">
+                            <li>
+                                <a href="found.html">招领启事</a>
+                            </li>
+                            <li>
+                                <a href="category.html">类别管理
+                                    <!--<span class="nav-badge-btm">8</span>-->
+                                </a>
+                            </li>
+                        </ul>
+                        <!-- /nav-second-level -->
+                    </li>
+                    <li>
+                        <a href="users.html"><i class="fa fa-users nav_icon"></i>用户管理</a>
+                    </li>
+                    <!--<li>-->
+                        <!--<a href="campus.html"><i class="fa fa-university nav_icon"></i>校区管理</a>-->
+                    <!--</li>-->
+                    <li>
+                        <a href="notice.html"><i class="fa fa-rss nav_icon"></i>&nbsp;公告管理</a>
+                    </li>
+                    <li>
+                        <a href="feedback.html">
+                            <i class="fa fa-envelope nav_icon"></i>反馈管理
+                            <!--<span class="nav-badge-btm">08</span>-->
+                        </a>
+                        <!-- //nav-second-level -->
+                    </li>
+
+                </ul>
+                <!-- //sidebar-collapse -->
+            </nav>
+        </div>
+    </div>
+    <!--left-fixed -navigation-->
+    <!-- header-starts -->
+    <div class="sticky-header header-section ">
+        <div class="header-left">
+            <!--toggle button start-->
+            <button id="showLeftPush"><i class="fa fa-bars"></i></button>
+            <!--toggle button end-->
+            <!--logo -->
+            <div class="logo">
+                <a href="index.html">
+                    <h1>校园失物招领系统</h1>
+                    <span>管理控制台</span>
+                </a>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <div class="header-right">
+            <!--notification menu end -->
+            <div class="profile_details">
+                <ul>
+                    <li class="dropdown profile_details_drop">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                            <div class="profile_img">
+									<span class="prfil-img">
+										<img :src="user.icon?imgPrefix+user.icon:schoolIcon"
+                                             style="max-width: 50px; max-height: 50px;">
+									</span>
+                                <div class="user-name">
+                                    <p>{{user.schoolName}}</p>
+                                    <span>{{user.email}}</span>
+                                </div>
+                                <i class="fa fa-angle-down lnr"></i>
+                                <i class="fa fa-angle-up lnr"></i>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                        <ul class="dropdown-menu drp-mnu">
+                            <!--<li><a ><i class="fa fa-cog"></i> Settings</a></li>-->
+                            <!--<li><a ><i class="fa fa-user"></i> Profile</a></li>-->
+                            <li><a @click="logout"><i class="fa fa-sign-out"></i>退出</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <!-- //header-ends -->
+    <!-- main content start-->
+    <div id="page-wrapper">
+        <div class="main-page compose">
+            <div class="col-md-4 compose-left">
+                <div class="folder widget-shadow" style="max-height: 420px; overflow: hidden; overflow-y: scroll;">
+                    <ul>
+                        <li class="head">所有类别（{{categoryList.length}}）：</li>
+                        <block v-for="(item, index) in categoryList">
+                            <li>
+                                <a @click="showAbout(index)">
+                                    {{item.name}}
+                                    <span v-if="item.count > 0" style="background-color: rgba(233, 78, 2, 0.73);">{{item.count}}</span>
+                                    <span v-else @click.stop="deleteCategory(item.name)" style="background-color: #d9534f;"
+                                          class="glyphicon glyphicon-remove"></span>
+                                </a>
+                            </li>
+                        </block>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-8 compose-right widget-shadow">
+                <div class="panel-default">
+                    <div class="panel-heading">
+                        新增类别：
+                    </div>
+                    <div class="panel-body">
+                        <!--<div class="alert alert-info">-->
+                        <!--Please fill details to send a new message-->
+                        <!--</div>-->
+                        <div class="com-mail">
+                            <input v-model="category.name" type="text" class="form-control1 control3"
+                                   maxlength="128" placeholder="名称">
+                            <!--<input type="text" class="form-control1 control3" placeholder="Subject :">-->
+                            <textarea v-model="category.about" rows="6" class="form-control1 control2"
+                                      placeholder="说明" maxlength="256"></textarea>
+                            <!--<div class="form-group">-->
+                            <!--<div class="btn btn-default btn-file">-->
+                            <!--<i class="fa fa-paperclip"></i> Attachment-->
+                            <!--<input type="file" name="attachment">-->
+                            <!--</div>-->
+                            <!--<p class="help-block">Max. 32MB</p>-->
+                            <!--</div>-->
+                            <input :disabled="category.name.length==0" type="submit" @click="submit" value="确定">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+    <!--footer-->
+    <div class="footer">
+        <p>&copy; 2019 校园失物招领网站系统 | <a href="http://www.ecit.edu.cn/" target="_blank">ECUT</a></p>
+    </div>
+    <!--//footer-->
+</div>
+<!-- Classie -->
+<script src="js/classie.js"></script>
+
+<!--scrolling js-->
+<script src="js/jquery.nicescroll.js"></script>
+<script src="js/scripts.js"></script>
+<!--//scrolling js-->
+<!-- Bootstrap Core JavaScript -->
+<script src="js/bootstrap.js"></script>
+<script src="js/vue.js"></script>
+<script src="./js/layer.js"></script>
+<script src="js/mine/common.js"></script>
+<script src="js/mine/category.js"></script>
+</body>
+</html>

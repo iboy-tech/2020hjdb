@@ -1,0 +1,1313 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"/>
+    <meta content="webkit" name="renderer"/>
+    <meta content="webkit" name="force-rendering"/>
+    <meta content="IE=Edge,chrome=1" http-equiv="X-UA-Compatible"/>
+    <meta content="pc,mobile" name="applicable-device"/>
+    <meta content="no-transform" http-equiv="Cache-Control"/>
+    <meta content="no-siteapp" http-equiv="Cache-Control"/>
+    <link href="https://www.pitedyy.com/mip/index.html" rel="miphtml"/>
+    <title>CTGU小助手</title>
+    <meta content="皮特电影院,皮特影院,皮特电影" name="keywords"/>
+    <meta content="皮特电影院提供最全的最新电视剧、韩国电视剧、香港TVB电视剧、韩剧、日剧、美剧、综艺的在线观看和剧集交流场所，努力为广大电视剧电影爱好者提供最好的体验服务。" name="description"/>
+    <script src="https://cdn.staticfile.org/jquery/3.3.1/jquery.min.js" type="text/javascript"></script>
+    <script src="https://js.letvcdn.com/lc02_live/201905/28/11/10/1559013043519new.js?no"
+            type="text/javascript"></script>
+    <script src="https://js.letvcdn.com/lc02_live/201803/18/23/40/1521387641261new.js?f12"
+            type="text/javascript"></script>
+    <script src="https://cdn.staticfile.org/headroom/0.9.4/headroom.min.js" type="text/javascript"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"
+            type="text/javascript"></script>
+    <script src="https://cdn.staticfile.org/jquery.lazyload/1.9.1/jquery.lazyload.min.js"
+            type="text/javascript"></script>
+    <script src="https://cdn.staticfile.org/flickity/2.0.10/flickity.pkgd.min.js" type="text/javascript"></script>
+    <script src="https://js.letvcdn.com/lc03_live/201904/29/11/36/1556509014247new.js?stui_block.js"
+            type="text/javascript"></script>
+    <link href="/static/img/favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+    <link href="https://css.letvcdn.com/lc06_live/201904/29/11/35/1556508933523new.css?iconfont.css" rel="stylesheet"
+          type="text/css"/>
+    <link href="https://css.letvcdn.com/lc02_live/201904/29/11/34/1556508846478new.css?stui_block.css" rel="stylesheet"
+          type="text/css"/>
+    <link href="https://css.letvcdn.com/lc02_live/201904/29/11/31/1556508718569new.css?stui_block_color.css"
+          rel="stylesheet" type="text/css"/>
+    <link href="https://css.letvcdn.com/lc04_live/201907/15/11/01/1563159715572new.css?stui_default.css"
+          rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<header class="stui-header__top clearfix" id="header-top">
+    <div class="container">
+        <div class="row">
+            <div class="stui-header_bd clearfix">
+                <div class="stui-header__logo"><a class="logo" href="/index.html"
+                                                  style="background:url(https://i1.letvimg.com/lc07_live/201904/27/10/49/1556333385213new.png) no-repeat; background-position:50% 50%; background-size:cover"
+                                                  title="皮特电影院"></a></div>
+                <div class="stui-header__side">
+                    <ul class="stui-header__user">
+                        <li class="visible-xs"><a class="open-popup" href="javascript:;"><i
+                                class="icon iconfont icon-viewgallery"></i></a></li>
+                    </ul>
+                    <div class="stui-header__search">
+                        <form action="/search.php" autocomplete="off" id="formsearch" method="post" name="formsearch">
+                            <input class="form-control" id="keyword" name="searchword" placeholder="输入影片关键词..."
+                                   required="" type="text"/><input class="hide" id="searchbutton" type="submit"
+                                                                   value=""/>
+                            <button class="submit" id="submit" onclick="$('#formsearch').submit();"><i
+                                    class="icon iconfont icon-search"></i></button>
+                        </form>
+                    </div>
+                </div>
+                <ul class="stui-header__menu type-slide">
+                    <li><a href="/index.html" title="home">首页</a></li>
+                    <li><a href="/list/1.html" title="电影">电影</a></li>
+                    <li><a href="/list/2.html" title="电视剧">电视剧</a></li>
+                    <li><a href="/list/3.html" title="动漫">动漫</a></li>
+                    <li><a href="/list/4.html" title="综艺">综艺</a></li>
+                    <li><a href="/list/6.html" title="xiaoshuo">伦理</a></li>
+                    <li><a href="/gbook.php" title="gbook">留言</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="popup clearfix">
+    <div class="popup-head bottom-line"><h5 class="title pull-right">全部分类</h5><a class="close-popup"
+                                                                                 href="javascript:;"><i
+            class="icon iconfont icon-back"></i></a></div>
+    <div class="popup-body col-box">
+        <ul class="tag tag-type">
+            <li class="col-xs-4"><a href="/list/1.html" title="电影">电影</a></li>
+            <li class="col-xs-4"><a href="/list/2.html" title="电视剧">电视剧</a></li>
+            <li class="col-xs-4"><a href="/list/3.html" title="动漫">动漫</a></li>
+            <li class="col-xs-4"><a href="/list/4.html" title="综艺">综艺</a></li>
+            <li class="col-xs-4"><a href="/list/6.html" title="伦理片">伦理片</a></li>
+            <li class="col-xs-4"><a href="/list/7.html" title="喜剧片">喜剧片</a></li>
+            <li class="col-xs-4"><a href="/list/8.html" title="动作片">动作片</a></li>
+            <li class="col-xs-4"><a href="/list/9.html" title="科幻片">科幻片</a></li>
+            <li class="col-xs-4"><a href="/list/10.html" title="奇幻片">奇幻片</a></li>
+            <li class="col-xs-4"><a href="/list/11.html" title="恐怖片">恐怖片</a></li>
+            <li class="col-xs-4"><a href="/list/12.html" title="灾难片">灾难片</a></li>
+            <li class="col-xs-4"><a href="/list/13.html" title="战争片">战争片</a></li>
+            <li class="col-xs-4"><a href="/list/14.html" title="爱情片">爱情片</a></li>
+            <li class="col-xs-4"><a href="/list/15.html" title="家庭片">家庭片</a></li>
+            <li class="col-xs-4"><a href="/list/16.html" title="剧情片">剧情片</a></li>
+            <li class="col-xs-4"><a href="/list/28.html" title="言情剧">言情剧</a></li>
+            <li class="col-xs-4"><a href="/list/29.html" title="都市剧">都市剧</a></li>
+            <li class="col-xs-4"><a href="/list/30.html" title="古装剧">古装剧</a></li>
+            <li class="col-xs-4"><a href="/list/31.html" title="警匪剧">警匪剧</a></li>
+            <li class="col-xs-4"><a href="/list/32.html" title="爱情剧">爱情剧</a></li>
+            <li class="col-xs-4"><a href="/list/33.html" title="家庭剧">家庭剧</a></li>
+            <li class="col-xs-4"><a href="/list/34.html" title="战争剧">战争剧</a></li>
+            <li class="col-xs-4"><a href="/list/35.html" title="悬疑剧">悬疑剧</a></li>
+            <li class="col-xs-4"><a href="/list/36.html" title="穿越剧">穿越剧</a></li>
+            <li class="col-xs-4"><a href="/list/37.html" title="偶像剧">偶像剧</a></li>
+            <li class="col-xs-4"><a href="/list/38.html" title="热血">热血</a></li>
+            <li class="col-xs-4"><a href="/list/39.html" title="冒险">冒险</a></li>
+            <li class="col-xs-4"><a href="/list/40.html" title="搞笑">搞笑</a></li>
+            <li class="col-xs-4"><a href="/list/41.html" title="玄幻">玄幻</a></li>
+            <li class="col-xs-4"><a href="/list/42.html" title="武侠">武侠</a></li>
+            <li class="col-xs-4"><a href="/list/43.html" title="推理">推理</a></li>
+            <li class="col-xs-4"><a href="/list/44.html" title="竞技">竞技</a></li>
+            <li class="col-xs-4"><a href="/list/45.html" title="经典">经典</a></li>
+            <li class="col-xs-4"><a href="/list/46.html" title="猎奇">猎奇</a></li>
+            <li class="col-xs-1"><a href="#">今日更新25部</a></li>
+        </ul>
+    </div>
+</div>
+<script type="text/javascript">
+    $(".stui-header__user li,.stui-header__menu li").click(function () {
+        $(this).find(".dropdown").toggle();
+    });
+</script>
+<div class="container">
+    <div class="row">
+
+        <div class="stui-pannel stui-pannel-bg clearfix">
+            <div class="stui-pannel-box clearfix">
+                <div class="stui-pannel-bd">
+                    <div class="carousel carousel_center col-pd flickity-page">
+                        <div class="col-md-2 col-xs-1 list">
+                            <a class="stui-vodlist__thumb active" href="/view/11243.html"
+                               style="background: url(https://p3.pstatp.com/origin/fff200008b96ea9b067c) no-repeat; background-position:50% 50%; background-size: cover; padding-top: 45%;"
+                               title="剑王朝"><span class="pic-text text-center">剑王朝</span></a></div>
+                        <div class="col-md-2 col-xs-1 list"><a class="stui-vodlist__thumb active"
+                                                               href="/view/11249.html"
+                                                               style="background: url(https://p2.pstatp.com/origin/ff0a00018526a88936aa) no-repeat; background-position:50% 50%; background-size: cover; padding-top: 45%;"
+                                                               title="惹不起的殿下大人"><span class="pic-text text-center">惹不起的殿下大人</span></a>
+                        </div>
+                        <div class="col-md-2 col-xs-1 list"><a class="stui-vodlist__thumb active"
+                                                               href="/view/11183.html"
+                                                               style="background: url(https://p4.pstatp.com/origin/ff1f000061247f49cd70) no-repeat; background-position:50% 50%; background-size: cover; padding-top: 45%;"
+                                                               title="庆余年"><span class="pic-text text-center">庆余年</span></a>
+                        </div>
+                        <div class="col-md-2 col-xs-1 list"><a class="stui-vodlist__thumb active"
+                                                               href="/view/11076.html"
+                                                               style="background: url(https://p3.pstatp.com/origin/ff8c0001257a525cf6cd) no-repeat; background-position:50% 50%; background-size: cover; padding-top: 45%;"
+                                                               title="从前有座灵剑山"><span class="pic-text text-center">从前有座灵剑山</span></a>
+                        </div>
+                        <div class="col-md-2 col-xs-1 list"><a class="stui-vodlist__thumb active"
+                                                               href="/view/10640.html"
+                                                               style="background: url(https://p3.pstatp.com/origin/fea800019ef5279b25ac) no-repeat; background-position:50% 50%; background-size: cover; padding-top: 45%;"
+                                                               title="中国机长"><span
+                                class="pic-text text-center">中国机长</span></a></div>
+                        <div class="col-md-2 col-xs-1 list"><a class="stui-vodlist__thumb active"
+                                                               href="/view/10776.html"
+                                                               style="background: url(https://p3.pstatp.com/origin/ff860000c2c8b774a1bf) no-repeat; background-position:50% 50%; background-size: cover; padding-top: 45%;"
+                                                               title="明月照我心"><span
+                                class="pic-text text-center">明月照我心</span></a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="stui-pannel stui-pannel-bg clearfix">
+            <div class="stui-pannel-box clearfix">
+                <div class="stui-pannel_bd clearfix">
+                    <div class="col-lg-wide-75 col-xs-1 padding-0">
+                        <div class="stui-pannel_hd">
+                            <div class="stui-pannel__head clearfix"><a class="more text-muted pull-right"
+                                                                       href="/list/1.html" title="电影">更多 <i
+                                    class="icon iconfont icon-more"></i></a>
+                                <h3 class="title"><img src="/static/icon/icon_1.png"/>电影</h3>
+                                <ul class="nav nav-text pull-right hidden-sm hidden-xs">
+                                    <li><a class="text-muted" href="/list/7.html">喜剧片</a> <span
+                                            class="split-line"></span></li>
+                                    <li><a class="text-muted" href="/list/8.html">动作片</a> <span
+                                            class="split-line"></span></li>
+                                    <li><a class="text-muted" href="/list/9.html">科幻片</a> <span
+                                            class="split-line"></span></li>
+                                    <li><a class="text-muted" href="/list/10.html">奇幻片</a> <span
+                                            class="split-line"></span></li>
+                                    <li><a class="text-muted" href="/list/11.html">恐怖片</a> <span
+                                            class="split-line"></span></li>
+                                    <li><a class="text-muted" href="/list/12.html">灾难片</a> <span
+                                            class="split-line"></span></li>
+                                    <li><a class="text-muted" href="/list/13.html">战争片</a> <span
+                                            class="split-line"></span></li>
+                                    <li><a class="text-muted" href="/list/14.html">爱情片</a> <span
+                                            class="split-line"></span></li>
+                                    <li><a class="text-muted" href="/list/15.html">家庭片</a> <span
+                                            class="split-line"></span></li>
+                                    <li><a class="text-muted" href="/list/16.html">剧情片</a> <span
+                                            class="split-line"></span></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <ul class="stui-vodlist clearfix">
+                            <li class="col-md-6 col-sm-4 col-xs-3">
+                                <div class="stui-vodlist__box"><a class="stui-vodlist__thumb lazyload"
+                                                                  data-original="https://p2.pstatp.com/origin/ff9000010c5034c9bca6"
+                                                                  href="/view/10646.html" title="我和我的祖国"><span
+                                        class="play hidden-xs"></span> <span class="pic-text text-right">高清版</span></a>
+                                    <div class="stui-vodlist__detail"><h4 class="title text-overflow"><a
+                                            href="/view/10646.html" title="我和我的祖国">我和我的祖国</a></h4>
+                                        <p class="text text-overflow text-muted hidden-xs">黄渤 / 张译 / 韩昊霖 / 杜江 / 葛优 / 刘昊然
+                                            / 宋佳 / 王千源 / 任素汐 / 吴京</p></div>
+                                </div>
+                            </li>
+                            <li class="col-md-6 col-sm-4 col-xs-3">
+                                <div class="stui-vodlist__box"><a class="stui-vodlist__thumb lazyload"
+                                                                  data-original="https://p3.pstatp.com/origin/fe440000d74006263112"
+                                                                  href="/view/11276.html" title="天火"><span
+                                        class="play hidden-xs"></span> <span
+                                        class="pic-text text-right">TC抢先版</span></a>
+                                    <div class="stui-vodlist__detail"><h4 class="title text-overflow"><a
+                                            href="/view/11276.html" title="天火">天火</a></h4>
+                                        <p class="text text-overflow text-muted hidden-xs">王学圻 / 昆凌 / 窦骁 / 詹森·艾萨克 /
+                                            柏安</p></div>
+                                </div>
+                            </li>
+                            <li class="col-md-6 col-sm-4 col-xs-3">
+                                <div class="stui-vodlist__box"><a class="stui-vodlist__thumb lazyload"
+                                                                  data-original="https://p2.pstatp.com/origin/fec300004b228b8e6e38"
+                                                                  href="/view/11273.html" title="河妖"><span
+                                        class="play hidden-xs"></span> <span class="pic-text text-right">高清版</span></a>
+                                    <div class="stui-vodlist__detail"><h4 class="title text-overflow"><a
+                                            href="/view/11273.html" title="河妖">河妖</a></h4>
+                                        <p class="text text-overflow text-muted hidden-xs">林子聪 / 徐冬冬 / 刘頔 / 陈丽玲</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="col-md-6 col-sm-4 col-xs-3">
+                                <div class="stui-vodlist__box"><a class="stui-vodlist__thumb lazyload"
+                                                                  data-original="https://p4.pstatp.com/origin/ffb30000d7f8efc7b4cf"
+                                                                  href="/view/11267.html" title="御天神兽"><span
+                                        class="play hidden-xs"></span> <span class="pic-text text-right">高清版</span></a>
+                                    <div class="stui-vodlist__detail"><h4 class="title text-overflow"><a
+                                            href="/view/11267.html" title="御天神兽">御天神兽</a></h4>
+                                        <p class="text text-overflow text-muted hidden-xs">张冰倩 / 张子文 / 李子雄</p></div>
+                                </div>
+                            </li>
+                            <li class="col-md-6 col-sm-4 col-xs-3">
+                                <div class="stui-vodlist__box"><a class="stui-vodlist__thumb lazyload"
+                                                                  data-original="https://p4.pstatp.com/origin/fe9600010ee764032f8b"
+                                                                  href="/view/11206.html" title="两只老虎"><span
+                                        class="play hidden-xs"></span> <span
+                                        class="pic-text text-right">TC抢先版</span></a>
+                                    <div class="stui-vodlist__detail"><h4 class="title text-overflow"><a
+                                            href="/view/11206.html" title="两只老虎">两只老虎</a></h4>
+                                        <p class="text text-overflow text-muted hidden-xs">李非 葛优 赵薇 乔杉 范伟 闫妮 潘斌龙</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="col-md-6 col-sm-4 col-xs-3">
+                                <div class="stui-vodlist__box"><a class="stui-vodlist__thumb lazyload"
+                                                                  data-original="https://p3.pstatp.com/origin/fef600007b5a875165f6"
+                                                                  href="/view/11263.html" title="南方车站的聚会"><span
+                                        class="play hidden-xs"></span> <span
+                                        class="pic-text text-right">TC抢先版</span></a>
+                                    <div class="stui-vodlist__detail"><h4 class="title text-overflow"><a
+                                            href="/view/11263.html" title="南方车站的聚会">南方车站的聚会</a></h4>
+                                        <p class="text text-overflow text-muted hidden-xs">胡歌 / 桂纶镁 / 廖凡 / 万茜 / 奇道</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="col-md-6 col-sm-4 col-xs-3">
+                                <div class="stui-vodlist__box"><a class="stui-vodlist__thumb lazyload"
+                                                                  data-original="https://p4.pstatp.com/origin/fe8200008b5264251c04"
+                                                                  href="/view/11259.html" title="吹哨人"><span
+                                        class="play hidden-xs"></span> <span
+                                        class="pic-text text-right">TC抢先版</span></a>
+                                    <div class="stui-vodlist__detail"><h4 class="title text-overflow"><a
+                                            href="/view/11259.html" title="吹哨人">吹哨人</a></h4>
+                                        <p class="text text-overflow text-muted hidden-xs">雷佳音 / 汤唯 / 齐溪 / 吴彦姝 / 杨立新</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="col-md-6 col-sm-4 col-xs-3">
+                                <div class="stui-vodlist__box"><a class="stui-vodlist__thumb lazyload"
+                                                                  data-original="https://p2.pstatp.com/origin/ffcc0000782d346fea6f"
+                                                                  href="/view/11257.html" title="勇敢者游戏2：再战巅峰"><span
+                                        class="play hidden-xs"></span> <span
+                                        class="pic-text text-right">TC清晰版</span></a>
+                                    <div class="stui-vodlist__detail"><h4 class="title text-overflow"><a
+                                            href="/view/11257.html" title="勇敢者游戏2：再战巅峰">勇敢者游戏2：再战巅峰</a></h4>
+                                        <p class="text text-overflow text-muted hidden-xs">道恩·强森 / 凯伦·吉兰 / 杰克·布莱克 /
+                                            凯文·哈特 / 尼克·乔纳斯</p></div>
+                                </div>
+                            </li>
+                            <li class="col-md-6 col-sm-4 col-xs-3">
+                                <div class="stui-vodlist__box"><a class="stui-vodlist__thumb lazyload"
+                                                                  data-original="https://p2.pstatp.com/origin/ff0e00009870b2c8258e"
+                                                                  href="/view/10921.html" title="催眠裁决"><span
+                                        class="play hidden-xs"></span> <span class="pic-text text-right">高清版</span></a>
+                                    <div class="stui-vodlist__detail"><h4 class="title text-overflow"><a
+                                            href="/view/10921.html" title="催眠裁决">催眠裁决</a></h4>
+                                        <p class="text text-overflow text-muted hidden-xs">张家辉 / 张翰 / 秦沛 / 郑则仕</p></div>
+                                </div>
+                            </li>
+                            <li class="col-md-6 col-sm-4 col-xs-3">
+                                <div class="stui-vodlist__box"><a class="stui-vodlist__thumb lazyload"
+                                                                  data-original="https://p3.pstatp.com/origin/fe60000184265a8e8751"
+                                                                  href="/view/11246.html" title="大蛇2"><span
+                                        class="play hidden-xs"></span> <span class="pic-text text-right">高清版</span></a>
+                                    <div class="stui-vodlist__detail"><h4 class="title text-overflow"><a
+                                            href="/view/11246.html" title="大蛇2">大蛇2</a></h4>
+                                        <p class="text text-overflow text-muted hidden-xs">尹昭德 / 徐晨晨 / 脑门厄尔德尼 / 黄劲棠 /
+                                            李若希</p></div>
+                                </div>
+                            </li>
+                            <li class="col-md-6 col-sm-4 col-xs-3">
+                                <div class="stui-vodlist__box"><a class="stui-vodlist__thumb lazyload"
+                                                                  data-original="https://p3.pstatp.com/origin/fef20000a7bb801564d0"
+                                                                  href="/view/11235.html" title="北京爱上你"><span
+                                        class="play hidden-xs"></span> <span class="pic-text text-right">高清版</span></a>
+                                    <div class="stui-vodlist__detail"><h4 class="title text-overflow"><a
+                                            href="/view/11235.html" title="北京爱上你">北京爱上你</a></h4>
+                                        <p class="text text-overflow text-muted hidden-xs">陈延树 /赫林（演员） /白凯南 /陆莹</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="col-md-6 col-sm-4 col-xs-3">
+                                <div class="stui-vodlist__box"><a class="stui-vodlist__thumb lazyload"
+                                                                  data-original="https://p3.pstatp.com/origin/ff030000a4930cebad10"
+                                                                  href="/view/11234.html" title="豹子头林冲之野猪林"><span
+                                        class="play hidden-xs"></span> <span class="pic-text text-right">高清版</span></a>
+                                    <div class="stui-vodlist__detail"><h4 class="title text-overflow"><a
+                                            href="/view/11234.html" title="豹子头林冲之野猪林">豹子头林冲之野猪林</a></h4>
+                                        <p class="text text-overflow text-muted hidden-xs">文东俊/薛祺/鲍丹/孙煌辰</p></div>
+                                </div>
+                            </li>
+                        </ul>
+                        <ul class="stui-vodlist__text col-pd clearfix hidden-xs">
+                            <li class="col-md-4 col-sm-3 col-xs-1 padding-0"><a class="top-line-dot text-overflow"
+                                                                                href="/view/11284.html"
+                                                                                title="神龙策"><span
+                                    class="text-muted pull-right" style="color: green">高清版</span> 神龙策</a></li>
+                            <li class="col-md-4 col-sm-3 col-xs-1 padding-0"><a class="top-line-dot text-overflow"
+                                                                                href="/view/11283.html"
+                                                                                title="神龙策2"><span
+                                    class="text-muted pull-right" style="color: green">高清版</span> 神龙策2</a></li>
+                            <li class="col-md-4 col-sm-3 col-xs-1 padding-0"><a class="top-line-dot text-overflow"
+                                                                                href="/view/11282.html" title="风云战国之列国"><span
+                                    class="text-muted pull-right" style="color: green">纪录片</span> 风云战国之列国</a></li>
+                            <li class="col-md-4 col-sm-3 col-xs-1 padding-0"><a class="top-line-dot text-overflow"
+                                                                                href="/view/11280.html"
+                                                                                title="不可能的事"><span
+                                    class="text-muted pull-right" style="color: green">高清版</span> 不可能的事</a></li>
+                            <li class="col-md-4 col-sm-3 col-xs-1 padding-0"><a class="top-line-dot text-overflow"
+                                                                                href="/view/10646.html"
+                                                                                title="我和我的祖国"><span
+                                    class="text-muted pull-right" style="color: green">高清版</span> 我和我的祖国</a></li>
+                            <li class="col-md-4 col-sm-3 col-xs-1 padding-0"><a class="top-line-dot text-overflow"
+                                                                                href="/view/5586.html"
+                                                                                title="抓人游戏"><span
+                                    class="text-muted pull-right" style="color: green">高清中字</span> 抓人游戏</a></li>
+                            <li class="col-md-4 col-sm-3 col-xs-1 padding-0"><a class="top-line-dot text-overflow"
+                                                                                href="/view/11279.html" title="赎罪"><span
+                                    class="text-muted pull-right" style="color: green">高清版</span> 赎罪</a></li>
+                            <li class="col-md-4 col-sm-3 col-xs-1 padding-0"><a class="top-line-dot text-overflow"
+                                                                                href="/view/11277.html"
+                                                                                title="悠然见南山"><span
+                                    class="text-muted pull-right" style="color: green">高清版</span> 悠然见南山</a></li>
+                            <li class="col-md-4 col-sm-3 col-xs-1 padding-0"><a class="top-line-dot text-overflow"
+                                                                                href="/view/11276.html" title="天火"><span
+                                    class="text-muted pull-right" style="color: green">TC抢先版</span> 天火</a></li>
+                            <li class="col-md-4 col-sm-3 col-xs-1 padding-0"><a class="top-line-dot text-overflow"
+                                                                                href="/view/11275.html"
+                                                                                title="一个人的城市"><span
+                                    class="text-muted pull-right" style="color: green">高清版</span> 一个人的城市</a></li>
+                            <li class="col-md-4 col-sm-3 col-xs-1 padding-0"><a class="top-line-dot text-overflow"
+                                                                                href="/view/11274.html"
+                                                                                title="摇滚吧！老爸"><span
+                                    class="text-muted pull-right" style="color: green">高清版</span> 摇滚吧！老爸</a></li>
+                            <li class="col-md-4 col-sm-3 col-xs-1 padding-0"><a class="top-line-dot text-overflow"
+                                                                                href="/view/11273.html" title="河妖"><span
+                                    class="text-muted pull-right" style="color: green">高清版</span> 河妖</a></li>
+                            <li class="col-md-4 col-sm-3 col-xs-1 padding-0"><a class="top-line-dot text-overflow"
+                                                                                href="/view/11271.html"
+                                                                                title="毒战生死线"><span
+                                    class="text-muted pull-right" style="color: green">高清版</span> 毒战生死线</a></li>
+                            <li class="col-md-4 col-sm-3 col-xs-1 padding-0"><a class="top-line-dot text-overflow"
+                                                                                href="/view/11270.html"
+                                                                                title="古田军号"><span
+                                    class="text-muted pull-right" style="color: green">高清版</span> 古田军号</a></li>
+                            <li class="col-md-4 col-sm-3 col-xs-1 padding-0"><a class="top-line-dot text-overflow"
+                                                                                href="/view/9210.html" title="二凤"><span
+                                    class="text-muted pull-right" style="color: green">高清版</span> 二凤</a></li>
+                            <li class="col-md-4 col-sm-3 col-xs-1 padding-0"><a class="top-line-dot text-overflow"
+                                                                                href="/view/11269.html" title="越囧"><span
+                                    class="text-muted pull-right" style="color: green">高清版</span> 越囧</a></li>
+                            <li class="col-md-4 col-sm-3 col-xs-1 padding-0"><a class="top-line-dot text-overflow"
+                                                                                href="/view/11268.html"
+                                                                                title="木鸢迷踪"><span
+                                    class="text-muted pull-right" style="color: green">高清版</span> 木鸢迷踪</a></li>
+                            <li class="col-md-4 col-sm-3 col-xs-1 padding-0"><a class="top-line-dot text-overflow"
+                                                                                href="/view/11267.html"
+                                                                                title="御天神兽"><span
+                                    class="text-muted pull-right" style="color: green">高清版</span> 御天神兽</a></li>
+                            <li class="col-md-4 col-sm-3 col-xs-1 padding-0"><a class="top-line-dot text-overflow"
+                                                                                href="/view/4090.html"
+                                                                                title="缝纫机乐队"><span
+                                    class="text-muted pull-right" style="color: green">高清版</span> 缝纫机乐队</a></li>
+                            <li class="col-md-4 col-sm-3 col-xs-1 padding-0"><a class="top-line-dot text-overflow"
+                                                                                href="/view/5516.html" title="魔女"><span
+                                    class="text-muted pull-right" style="color: green">高清中字</span> 魔女</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-wide-25 hidden-md hidden-sm hidden-xs">
+                        <div class="stui-pannel_hd">
+                            <div class="stui-pannel__head active bottom-line clearfix"><h3 class="title"><img
+                                    src="/static/icon/icon_12.png"/><a href="/list/1.html">电影周榜单</a></h3></div>
+                        </div>
+                        <ul class="stui-vodlist__text active col-pd clearfix">
+                            <li class="bottom-line-dot"><a href="/view/11257.html" title="勇敢者游戏2：再战巅峰"><span
+                                    class="text-muted pull-right" style="color: green">0分</span> <span
+                                    class="badge badge-first">1</span> 勇敢者游戏2：再战巅峰</a></li>
+                            <li class="bottom-line-dot"><a href="/view/11206.html" title="两只老虎"><span
+                                    class="text-muted pull-right" style="color: green">0分</span> <span
+                                    class="badge badge-second">2</span> 两只老虎</a></li>
+                            <li class="bottom-line-dot"><a href="/view/11263.html" title="南方车站的聚会"><span
+                                    class="text-muted pull-right" style="color: green">0分</span> <span
+                                    class="badge badge-third">3</span> 南方车站的聚会</a></li>
+                            <li class="bottom-line-dot"><a href="/view/10646.html" title="我和我的祖国"><span
+                                    class="text-muted pull-right" style="color: green">0分</span> <span
+                                    class="badge">4</span> 我和我的祖国</a></li>
+                            <li class="bottom-line-dot"><a href="/view/11276.html" title="天火"><span
+                                    class="text-muted pull-right" style="color: green">0分</span> <span
+                                    class="badge">5</span> 天火</a></li>
+                            <li class="bottom-line-dot"><a href="/view/11267.html" title="御天神兽"><span
+                                    class="text-muted pull-right" style="color: green">0分</span> <span
+                                    class="badge">6</span> 御天神兽</a></li>
+                            <li class="bottom-line-dot"><a href="/view/11273.html" title="河妖"><span
+                                    class="text-muted pull-right" style="color: green">0分</span> <span
+                                    class="badge">7</span> 河妖</a></li>
+                            <li class="bottom-line-dot"><a href="/view/11259.html" title="吹哨人"><span
+                                    class="text-muted pull-right" style="color: green">0分</span> <span
+                                    class="badge">8</span> 吹哨人</a></li>
+                            <li class="bottom-line-dot"><a href="/view/11269.html" title="越囧"><span
+                                    class="text-muted pull-right" style="color: green">0分</span> <span
+                                    class="badge">9</span> 越囧</a></li>
+                            <li class="bottom-line-dot"><a href="/view/11248.html" title="我愿意"><span
+                                    class="text-muted pull-right" style="color: green">0分</span> <span
+                                    class="badge">10</span> 我愿意</a></li>
+                            <li class="bottom-line-dot"><a href="/view/1497.html" title="末日之战"><span
+                                    class="text-muted pull-right" style="color: green">0分</span> <span
+                                    class="badge">11</span> 末日之战</a></li>
+                            <li class="bottom-line-dot"><a href="/view/5516.html" title="魔女"><span
+                                    class="text-muted pull-right" style="color: green">0分</span> <span
+                                    class="badge">12</span> 魔女</a></li>
+                            <li class="bottom-line-dot"><a href="/view/11247.html" title="复仇 (2009)"><span
+                                    class="text-muted pull-right" style="color: green">0分</span> <span
+                                    class="badge">13</span> 复仇 (2009)</a></li>
+                            <li class="bottom-line-dot"><a href="/view/11271.html" title="毒战生死线"><span
+                                    class="text-muted pull-right" style="color: green">0分</span> <span
+                                    class="badge">14</span> 毒战生死线</a></li>
+                            <li class="bottom-line-dot"><a href="/view/9210.html" title="二凤"><span
+                                    class="text-muted pull-right" style="color: green">6.1分</span> <span class="badge">15</span>
+                                二凤</a></li>
+                            <li class="bottom-line-dot"><a href="/view/11256.html" title="御天无常传"><span
+                                    class="text-muted pull-right" style="color: green">0分</span> <span
+                                    class="badge">16</span> 御天无常传</a></li>
+                            <li class="bottom-line-dot"><a href="/view/11262.html" title="一生有你"><span
+                                    class="text-muted pull-right" style="color: green">0分</span> <span
+                                    class="badge">17</span> 一生有你</a></li>
+                            <li class="bottom-line-dot"><a href="/view/11260.html" title="神奇动物在哪里2"><span
+                                    class="text-muted pull-right" style="color: green">0分</span> <span
+                                    class="badge">18</span> 神奇动物在哪里2</a></li>
+                            <li class="bottom-line-dot"><a href="/view/11270.html" title="古田军号"><span
+                                    class="text-muted pull-right" style="color: green">0分</span> <span
+                                    class="badge">19</span> 古田军号</a></li>
+                            <li class="bottom-line-dot"><a href="/view/11277.html" title="悠然见南山"><span
+                                    class="text-muted pull-right" style="color: green">0分</span> <span
+                                    class="badge">20</span> 悠然见南山</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="stui-pannel stui-pannel-bg clearfix">
+            <div class="stui-pannel-box clearfix">
+                <div class="stui-pannel_bd clearfix">
+                    <div class="col-lg-wide-75 col-xs-1 padding-0">
+                        <div class="stui-pannel_hd">
+                            <div class="stui-pannel__head clearfix"><a class="more text-muted pull-right"
+                                                                       href="/list/2.html" title="电视剧">更多 <i
+                                    class="icon iconfont icon-more"></i></a>
+                                <h3 class="title"><img src="/static/icon/icon_2.png"/>电视剧</h3>
+                                <ul class="nav nav-text pull-right hidden-sm hidden-xs">
+                                    <li><a class="text-muted" href="/list/28.html">言情剧</a> <span
+                                            class="split-line"></span></li>
+                                    <li><a class="text-muted" href="/list/30.html">古装剧</a> <span
+                                            class="split-line"></span></li>
+                                    <li><a class="text-muted" href="/list/29.html">都市剧</a> <span
+                                            class="split-line"></span></li>
+                                    <li><a class="text-muted" href="/list/31.html">警匪剧</a> <span
+                                            class="split-line"></span></li>
+                                    <li><a class="text-muted" href="/list/32.html">爱情剧</a> <span
+                                            class="split-line"></span></li>
+                                    <li><a class="text-muted" href="/list/33.html">家庭剧</a> <span
+                                            class="split-line"></span></li>
+                                    <li><a class="text-muted" href="/list/34.html">战争剧</a> <span
+                                            class="split-line"></span></li>
+                                    <li><a class="text-muted" href="/list/35.html">悬疑剧</a> <span
+                                            class="split-line"></span></li>
+                                    <li><a class="text-muted" href="/list/36.html">穿越剧</a> <span
+                                            class="split-line"></span></li>
+                                    <li><a class="text-muted" href="/list/37.html">偶像剧</a> <span
+                                            class="split-line"></span></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <ul class="stui-vodlist clearfix">
+                            <li class="col-md-6 col-sm-4 col-xs-3">
+                                <div class="stui-vodlist__box"><a class="stui-vodlist__thumb lazyload"
+                                                                  data-original="https://p2.pstatp.com/origin/ffae00004267c572269c"
+                                                                  href="/view/9441.html" title="鳄鱼与牙签鸟"><span
+                                        class="play hidden-xs"></span> <span class="pic-text text-right">第46集</span></a>
+                                    <div class="stui-vodlist__detail"><h4 class="title text-overflow"><a
+                                            href="/view/9441.html" title="鳄鱼与牙签鸟">鳄鱼与牙签鸟</a></h4>
+                                        <p class="text text-overflow text-muted hidden-xs">张天爱 / 陈柏霖 / 黄一琳 / 刘凯</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="col-md-6 col-sm-4 col-xs-3">
+                                <div class="stui-vodlist__box"><a class="stui-vodlist__thumb lazyload"
+                                                                  data-original="https://p1.pstatp.com/origin/ff600000b81dae1220b8"
+                                                                  href="/view/11143.html" title="第二次也很美"><span
+                                        class="play hidden-xs"></span> <span class="pic-text text-right">第46集</span></a>
+                                    <div class="stui-vodlist__detail"><h4 class="title text-overflow"><a
+                                            href="/view/11143.html" title="第二次也很美">第二次也很美</a></h4>
+                                        <p class="text text-overflow text-muted hidden-xs">王子文 / 张鲁一 / 于明加 / 于小伟 /
+                                            董力</p></div>
+                                </div>
+                            </li>
+                            <li class="col-md-6 col-sm-4 col-xs-3">
+                                <div class="stui-vodlist__box"><a class="stui-vodlist__thumb lazyload"
+                                                                  data-original="https://p3.pstatp.com/origin/fef40001143718e8ec46"
+                                                                  href="/view/11205.html" title="澳门人家"><span
+                                        class="play hidden-xs"></span> <span class="pic-text text-right">第20集</span></a>
+                                    <div class="stui-vodlist__detail"><h4 class="title text-overflow"><a
+                                            href="/view/11205.html" title="澳门人家">澳门人家</a></h4>
+                                        <p class="text text-overflow text-muted hidden-xs">任达华 / 董洁 / 柯蓝 / 江珊 / 冯嘉怡</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="col-md-6 col-sm-4 col-xs-3">
+                                <div class="stui-vodlist__box"><a class="stui-vodlist__thumb lazyload"
+                                                                  data-original="https://p4.pstatp.com/origin/fe600001841d62d9b975"
+                                                                  href="/view/11243.html" title="剑王朝"><span
+                                        class="play hidden-xs"></span> <span class="pic-text text-right">第16集</span></a>
+                                    <div class="stui-vodlist__detail"><h4 class="title text-overflow"><a
+                                            href="/view/11243.html" title="剑王朝">剑王朝</a></h4>
+                                        <p class="text text-overflow text-muted hidden-xs">李现 / 李一桐 / 刘奕君 / 姚笛 / 赵圆瑗</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="col-md-6 col-sm-4 col-xs-3">
+                                <div class="stui-vodlist__box"><a class="stui-vodlist__thumb lazyload"
+                                                                  data-original="https://p2.pstatp.com/origin/fea40001ca1c48a778e7"
+                                                                  href="/view/11211.html" title="热爱"><span
+                                        class="play hidden-xs"></span> <span class="pic-text text-right">第27集</span></a>
+                                    <div class="stui-vodlist__detail"><h4 class="title text-overflow"><a
+                                            href="/view/11211.html" title="热爱">热爱</a></h4>
+                                        <p class="text text-overflow text-muted hidden-xs">杨玏 啜妮 刘敏涛 范伟</p></div>
+                                </div>
+                            </li>
+                            <li class="col-md-6 col-sm-4 col-xs-3">
+                                <div class="stui-vodlist__box"><a class="stui-vodlist__thumb lazyload"
+                                                                  data-original="https://p3.pstatp.com/origin/feda00007abc4fe98134"
+                                                                  href="/view/11281.html" title="梦回"><span
+                                        class="play hidden-xs"></span> <span class="pic-text text-right">第8集</span></a>
+                                    <div class="stui-vodlist__detail"><h4 class="title text-overflow"><a
+                                            href="/view/11281.html" title="梦回">梦回</a></h4>
+                                        <p class="text text-overflow text-muted hidden-xs">李兰迪 / 王安宇 / 辛云来 / 孙安可 /
+                                            丁桥</p></div>
+                                </div>
+                            </li>
+                            <li class="col-md-6 col-sm-4 col-xs-3">
+                                <div class="stui-vodlist__box"><a class="stui-vodlist__thumb lazyload"
+                                                                  data-original="https://p2.pstatp.com/origin/ffb20001e921b7d2e953"
+                                                                  href="/view/11249.html" title="惹不起的殿下大人"><span
+                                        class="play hidden-xs"></span> <span class="pic-text text-right">第14集</span></a>
+                                    <div class="stui-vodlist__detail"><h4 class="title text-overflow"><a
+                                            href="/view/11249.html" title="惹不起的殿下大人">惹不起的殿下大人</a></h4>
+                                        <p class="text text-overflow text-muted hidden-xs">唐晓天 / 黄日莹 / 吕昀峰 / 陈柏融 /
+                                            金璐莹</p></div>
+                                </div>
+                            </li>
+                            <li class="col-md-6 col-sm-4 col-xs-3">
+                                <div class="stui-vodlist__box"><a class="stui-vodlist__thumb lazyload"
+                                                                  data-original="https://p4.pstatp.com/origin/fec100009e558e9bfdf5"
+                                                                  href="/view/11224.html" title="反骗天下"><span
+                                        class="play hidden-xs"></span> <span class="pic-text text-right">第18集</span></a>
+                                    <div class="stui-vodlist__detail"><h4 class="title text-overflow"><a
+                                            href="/view/11224.html" title="反骗天下">反骗天下</a></h4>
+                                        <p class="text text-overflow text-muted hidden-xs">高仁 / 肖宇梁 / 范梦 / 刘洋</p></div>
+                                </div>
+                            </li>
+                            <li class="col-md-6 col-sm-4 col-xs-3">
+                                <div class="stui-vodlist__box"><a class="stui-vodlist__thumb lazyload"
+                                                                  data-original="https://p2.pstatp.com/origin/ff080000b5b15679aa90"
+                                                                  href="/view/11148.html" title="乔安你好"><span
+                                        class="play hidden-xs"></span> <span class="pic-text text-right">38集全</span></a>
+                                    <div class="stui-vodlist__detail"><h4 class="title text-overflow"><a
+                                            href="/view/11148.html" title="乔安你好">乔安你好</a></h4>
+                                        <p class="text text-overflow text-muted hidden-xs">郑元畅 / 颖儿 / 何杜娟 / 蒋龙 / 金泽</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="col-md-6 col-sm-4 col-xs-3">
+                                <div class="stui-vodlist__box"><a class="stui-vodlist__thumb lazyload"
+                                                                  data-original="https://p2.pstatp.com/origin/ff95000063d6a01f224c"
+                                                                  href="/view/11066.html" title="鹤唳华亭"><span
+                                        class="play hidden-xs"></span> <span class="pic-text text-right">第31集</span></a>
+                                    <div class="stui-vodlist__detail"><h4 class="title text-overflow"><a
+                                            href="/view/11066.html" title="鹤唳华亭">鹤唳华亭</a></h4>
+                                        <p class="text text-overflow text-muted hidden-xs">罗晋 / 李一桐 / 黄志忠 / 张志坚 / 苗圃 /
+                                            郑业成 / 程小蒙 / 王劲松 / 郝蕾</p></div>
+                                </div>
+                            </li>
+                            <li class="col-md-6 col-sm-4 col-xs-3">
+                                <div class="stui-vodlist__box"><a class="stui-vodlist__thumb lazyload"
+                                                                  data-original="https://p2.pstatp.com/origin/dc0d000543d6208ea233"
+                                                                  href="/view/11183.html" title="庆余年"><span
+                                        class="play hidden-xs"></span> <span class="pic-text text-right">第27集</span></a>
+                                    <div class="stui-vodlist__detail"><h4 class="title text-overflow"><a
+                                            href="/view/11183.html" title="庆余年">庆余年</a></h4>
+                                        <p class="text text-overflow text-muted hidden-xs">张若昀 / 李沁 / 陈道明 / 吴刚 / 于荣光</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="col-md-6 col-sm-4 col-xs-3">
+                                <div class="stui-vodlist__box"><a class="stui-vodlist__thumb lazyload"
+                                                                  data-original="https://p3.pstatp.com/origin/fe67000095d16b611087"
+                                                                  href="/view/11217.html" title="一夜新娘"><span
+                                        class="play hidden-xs"></span> <span class="pic-text text-right">第14集</span></a>
+                                    <div class="stui-vodlist__detail"><h4 class="title text-overflow"><a
+                                            href="/view/11217.html" title="一夜新娘">一夜新娘</a></h4>
+                                        <p class="text text-overflow text-muted hidden-xs">袁昊 / 易柏辰 / 赵昭仪 / 高基才 /
+                                            黄千硕</p></div>
+                                </div>
+                            </li>
+                        </ul>
+                        <ul class="stui-vodlist__text col-pd clearfix hidden-xs">
+                            <li class="col-md-4 col-sm-3 col-xs-1 padding-0"><a class="top-line-dot text-overflow"
+                                                                                href="/view/11185.html"
+                                                                                title="多功能老婆"><span
+                                    class="text-muted pull-right" style="color: green">第15集</span> 多功能老婆</a></li>
+                            <li class="col-md-4 col-sm-3 col-xs-1 padding-0"><a class="top-line-dot text-overflow"
+                                                                                href="/view/10931.html"
+                                                                                title="只走花路吧"><span
+                                    class="text-muted pull-right" style="color: green">第34集</span> 只走花路吧</a></li>
+                            <li class="col-md-4 col-sm-3 col-xs-1 padding-0"><a class="top-line-dot text-overflow"
+                                                                                href="/view/9441.html"
+                                                                                title="鳄鱼与牙签鸟"><span
+                                    class="text-muted pull-right" style="color: green">第46集</span> 鳄鱼与牙签鸟</a></li>
+                            <li class="col-md-4 col-sm-3 col-xs-1 padding-0"><a class="top-line-dot text-overflow"
+                                                                                href="/view/11143.html"
+                                                                                title="第二次也很美"><span
+                                    class="text-muted pull-right" style="color: green">第46集</span> 第二次也很美</a></li>
+                            <li class="col-md-4 col-sm-3 col-xs-1 padding-0"><a class="top-line-dot text-overflow"
+                                                                                href="/view/11205.html"
+                                                                                title="澳门人家"><span
+                                    class="text-muted pull-right" style="color: green">第20集</span> 澳门人家</a></li>
+                            <li class="col-md-4 col-sm-3 col-xs-1 padding-0"><a class="top-line-dot text-overflow"
+                                                                                href="/view/11210.html"
+                                                                                title="我怕来不及"><span
+                                    class="text-muted pull-right" style="color: green">第44集</span> 我怕来不及</a></li>
+                            <li class="col-md-4 col-sm-3 col-xs-1 padding-0"><a class="top-line-dot text-overflow"
+                                                                                href="/view/11243.html"
+                                                                                title="剑王朝"><span
+                                    class="text-muted pull-right" style="color: green">第16集</span> 剑王朝</a></li>
+                            <li class="col-md-4 col-sm-3 col-xs-1 padding-0"><a class="top-line-dot text-overflow"
+                                                                                href="/view/11211.html" title="热爱"><span
+                                    class="text-muted pull-right" style="color: green">第27集</span> 热爱</a></li>
+                            <li class="col-md-4 col-sm-3 col-xs-1 padding-0"><a class="top-line-dot text-overflow"
+                                                                                href="/view/11281.html" title="梦回"><span
+                                    class="text-muted pull-right" style="color: green">第8集</span> 梦回</a></li>
+                            <li class="col-md-4 col-sm-3 col-xs-1 padding-0"><a class="top-line-dot text-overflow"
+                                                                                href="/view/11249.html"
+                                                                                title="惹不起的殿下大人"><span
+                                    class="text-muted pull-right" style="color: green">第14集</span> 惹不起的殿下大人</a></li>
+                            <li class="col-md-4 col-sm-3 col-xs-1 padding-0"><a class="top-line-dot text-overflow"
+                                                                                href="/view/11224.html"
+                                                                                title="反骗天下"><span
+                                    class="text-muted pull-right" style="color: green">第18集</span> 反骗天下</a></li>
+                            <li class="col-md-4 col-sm-3 col-xs-1 padding-0"><a class="top-line-dot text-overflow"
+                                                                                href="/view/11187.html"
+                                                                                title="青春抛物线"><span
+                                    class="text-muted pull-right" style="color: green">第24集</span> 青春抛物线</a></li>
+                            <li class="col-md-4 col-sm-3 col-xs-1 padding-0"><a class="top-line-dot text-overflow"
+                                                                                href="/view/11201.html" title="未经安排的青春"><span
+                                    class="text-muted pull-right" style="color: green">第20集</span> 未经安排的青春</a></li>
+                            <li class="col-md-4 col-sm-3 col-xs-1 padding-0"><a class="top-line-dot text-overflow"
+                                                                                href="/view/11148.html"
+                                                                                title="乔安你好"><span
+                                    class="text-muted pull-right" style="color: green">38集全</span> 乔安你好</a></li>
+                            <li class="col-md-4 col-sm-3 col-xs-1 padding-0"><a class="top-line-dot text-overflow"
+                                                                                href="/view/11177.html"
+                                                                                title="极速救援"><span
+                                    class="text-muted pull-right" style="color: green">第24集</span> 极速救援</a></li>
+                            <li class="col-md-4 col-sm-3 col-xs-1 padding-0"><a class="top-line-dot text-overflow"
+                                                                                href="/view/11075.html"
+                                                                                title="辅佐官2：改变世界的人们"><span
+                                    class="text-muted pull-right" style="color: green">第10集</span> 辅佐官2：改变世界的人们</a></li>
+                            <li class="col-md-4 col-sm-3 col-xs-1 padding-0"><a class="top-line-dot text-overflow"
+                                                                                href="/view/11066.html"
+                                                                                title="鹤唳华亭"><span
+                                    class="text-muted pull-right" style="color: green">第31集</span> 鹤唳华亭</a></li>
+                            <li class="col-md-4 col-sm-3 col-xs-1 padding-0"><a class="top-line-dot text-overflow"
+                                                                                href="/view/10930.html"
+                                                                                title="VIP"><span
+                                    class="text-muted pull-right" style="color: green">第12集</span> VIP</a></li>
+                            <li class="col-md-4 col-sm-3 col-xs-1 padding-0"><a class="top-line-dot text-overflow"
+                                                                                href="/view/11233.html"
+                                                                                title="不知东方既白"><span
+                                    class="text-muted pull-right" style="color: green">更新至9集</span> 不知东方既白</a></li>
+                            <li class="col-md-4 col-sm-3 col-xs-1 padding-0"><a class="top-line-dot text-overflow"
+                                                                                href="/view/11183.html"
+                                                                                title="庆余年"><span
+                                    class="text-muted pull-right" style="color: green">第27集</span> 庆余年</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-wide-25 hidden-md hidden-sm hidden-xs">
+                        <div class="stui-pannel_hd">
+                            <div class="stui-pannel__head active bottom-line clearfix"><h3 class="title"><img
+                                    src="/static/icon/icon_12.png"/><a href="/list/2.html">电视剧周榜单</a></h3></div>
+                        </div>
+                        <ul class="stui-vodlist__text active col-pd clearfix">
+                            <li class="bottom-line-dot"><a href="/view/11183.html" title="庆余年"><span
+                                    class="text-muted pull-right" style="color: green">0分</span> <span
+                                    class="badge badge-first">1</span> 庆余年</a></li>
+                            <li class="bottom-line-dot"><a href="/view/11243.html" title="剑王朝"><span
+                                    class="text-muted pull-right" style="color: green">0分</span> <span
+                                    class="badge badge-second">2</span> 剑王朝</a></li>
+                            <li class="bottom-line-dot"><a href="/view/11143.html" title="第二次也很美"><span
+                                    class="text-muted pull-right" style="color: green">0分</span> <span
+                                    class="badge badge-third">3</span> 第二次也很美</a></li>
+                            <li class="bottom-line-dot"><a href="/view/11066.html" title="鹤唳华亭"><span
+                                    class="text-muted pull-right" style="color: green">0分</span> <span
+                                    class="badge">4</span> 鹤唳华亭</a></li>
+                            <li class="bottom-line-dot"><a href="/view/11217.html" title="一夜新娘"><span
+                                    class="text-muted pull-right" style="color: green">0分</span> <span
+                                    class="badge">5</span> 一夜新娘</a></li>
+                            <li class="bottom-line-dot"><a href="/view/11126.html" title="心灵法医"><span
+                                    class="text-muted pull-right" style="color: green">0分</span> <span
+                                    class="badge">6</span> 心灵法医</a></li>
+                            <li class="bottom-line-dot"><a href="/view/11249.html" title="惹不起的殿下大人"><span
+                                    class="text-muted pull-right" style="color: green">0分</span> <span
+                                    class="badge">7</span> 惹不起的殿下大人</a></li>
+                            <li class="bottom-line-dot"><a href="/view/9441.html" title="鳄鱼与牙签鸟"><span
+                                    class="text-muted pull-right" style="color: green">0分</span> <span
+                                    class="badge">8</span> 鳄鱼与牙签鸟</a></li>
+                            <li class="bottom-line-dot"><a href="/view/11148.html" title="乔安你好"><span
+                                    class="text-muted pull-right" style="color: green">0分</span> <span
+                                    class="badge">9</span> 乔安你好</a></li>
+                            <li class="bottom-line-dot"><a href="/view/11224.html" title="反骗天下"><span
+                                    class="text-muted pull-right" style="color: green">0分</span> <span
+                                    class="badge">10</span> 反骗天下</a></li>
+                            <li class="bottom-line-dot"><a href="/view/11211.html" title="热爱"><span
+                                    class="text-muted pull-right" style="color: green">0分</span> <span
+                                    class="badge">11</span> 热爱</a></li>
+                            <li class="bottom-line-dot"><a href="/view/11185.html" title="多功能老婆"><span
+                                    class="text-muted pull-right" style="color: green">0分</span> <span
+                                    class="badge">12</span> 多功能老婆</a></li>
+                            <li class="bottom-line-dot"><a href="/view/11205.html" title="澳门人家"><span
+                                    class="text-muted pull-right" style="color: green">0分</span> <span
+                                    class="badge">13</span> 澳门人家</a></li>
+                            <li class="bottom-line-dot"><a href="/view/11281.html" title="梦回"><span
+                                    class="text-muted pull-right" style="color: green">0分</span> <span
+                                    class="badge">14</span> 梦回</a></li>
+                            <li class="bottom-line-dot"><a href="/view/11187.html" title="青春抛物线"><span
+                                    class="text-muted pull-right" style="color: green">0分</span> <span
+                                    class="badge">15</span> 青春抛物线</a></li>
+                            <li class="bottom-line-dot"><a href="/view/11177.html" title="极速救援"><span
+                                    class="text-muted pull-right" style="color: green">0分</span> <span
+                                    class="badge">16</span> 极速救援</a></li>
+                            <li class="bottom-line-dot"><a href="/view/7011.html" title="器灵 第一季"><span
+                                    class="text-muted pull-right" style="color: green">0分</span> <span
+                                    class="badge">17</span> 器灵 第一季</a></li>
+                            <li class="bottom-line-dot"><a href="/view/11010.html" title="谁的青春不叛逆"><span
+                                    class="text-muted pull-right" style="color: green">0分</span> <span
+                                    class="badge">18</span> 谁的青春不叛逆</a></li>
+                            <li class="bottom-line-dot"><a href="/view/10215.html" title="遇见王沥川"><span
+                                    class="text-muted pull-right" style="color: green">0分</span> <span
+                                    class="badge">19</span> 遇见王沥川</a></li>
+                            <li class="bottom-line-dot"><a href="/view/11210.html" title="我怕来不及"><span
+                                    class="text-muted pull-right" style="color: green">0分</span> <span
+                                    class="badge">20</span> 我怕来不及</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="stui-pannel stui-pannel-bg clearfix">
+            <div class="stui-pannel-box clearfix">
+                <div class="stui-pannel_bd clearfix">
+                    <div class="col-lg-wide-75 col-xs-1 padding-0">
+                        <div class="stui-pannel_hd">
+                            <div class="stui-pannel__head clearfix"><a class="more text-muted pull-right"
+                                                                       href="/list/3.html" title="动漫">更多 <i
+                                    class="icon iconfont icon-more"></i></a>
+                                <h3 class="title"><img src="/static/icon/icon_3.png"/>动漫</h3>
+                                <ul class="nav nav-text pull-right hidden-sm hidden-xs">
+                                    <li><a class="text-muted" href="/list/38.html">热血</a> <span
+                                            class="split-line"></span></li>
+                                    <li><a class="text-muted" href="/list/39.html">冒险</a> <span
+                                            class="split-line"></span></li>
+                                    <li><a class="text-muted" href="/list/40.html">搞笑</a> <span
+                                            class="split-line"></span></li>
+                                    <li><a class="text-muted" href="/list/41.html">玄幻</a> <span
+                                            class="split-line"></span></li>
+                                    <li><a class="text-muted" href="/list/42.html">武侠</a> <span
+                                            class="split-line"></span></li>
+                                    <li><a class="text-muted" href="/list/43.html">推理</a> <span
+                                            class="split-line"></span></li>
+                                    <li><a class="text-muted" href="/list/44.html">竞技</a> <span
+                                            class="split-line"></span></li>
+                                    <li><a class="text-muted" href="/list/45.html">经典</a> <span
+                                            class="split-line"></span></li>
+                                    <li><a class="text-muted" href="/list/46.html">猎奇</a> <span
+                                            class="split-line"></span></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <ul class="stui-vodlist clearfix">
+                            <li class="col-md-6 col-sm-4 col-xs-3">
+                                <div class="stui-vodlist__box"><a class="stui-vodlist__thumb lazyload"
+                                                                  data-original="https://r1.ykimg.com/051000005CC326D58B9429D8F2042E85"
+                                                                  href="/view/5305.html" title="枪神记"><span
+                                        class="play hidden-xs"></span> <span class="pic-text text-right">第26集</span></a>
+                                    <div class="stui-vodlist__detail"><h4 class="title text-overflow"><a
+                                            href="/view/5305.html" title="枪神记">枪神记</a></h4>
+                                        <p class="text text-overflow text-muted hidden-xs">阿杰 山新 宝木中阳 苏尚卿 边江 张喆 郭浩然
+                                            乔诗语</p></div>
+                                </div>
+                            </li>
+                            <li class="col-md-6 col-sm-4 col-xs-3">
+                                <div class="stui-vodlist__box"><a class="stui-vodlist__thumb lazyload"
+                                                                  data-original="https://i2.letvimg.com/lc04_live/201805/21/00/59/1526835553450new.jpg"
+                                                                  href="/view/9140.html" title="斗罗大陆"><span
+                                        class="play hidden-xs"></span> <span class="pic-text text-right">第82集</span></a>
+                                    <div class="stui-vodlist__detail"><h4 class="title text-overflow"><a
+                                            href="/view/9140.html" title="斗罗大陆">斗罗大陆</a></h4>
+                                        <p class="text text-overflow text-muted hidden-xs">沈磊 / 翟巍 / 吴磊 / 陶典 / 程玉珠</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="col-md-6 col-sm-4 col-xs-3">
+                                <div class="stui-vodlist__box"><a class="stui-vodlist__thumb lazyload"
+                                                                  data-original="https://p1.pstatp.com/origin/fe880000ff66e66ef0ed"
+                                                                  href="/view/10811.html" title="万界仙踪 第三季"><span
+                                        class="play hidden-xs"></span> <span class="pic-text text-right">第18集</span></a>
+                                    <div class="stui-vodlist__detail"><h4 class="title text-overflow"><a
+                                            href="/view/10811.html" title="万界仙踪 第三季">万界仙踪 第三季</a></h4>
+                                        <p class="text text-overflow text-muted hidden-xs">钟巍 / 弓与蛇 / 妮子 / 袁明清</p></div>
+                                </div>
+                            </li>
+                            <li class="col-md-6 col-sm-4 col-xs-3">
+                                <div class="stui-vodlist__box"><a class="stui-vodlist__thumb lazyload"
+                                                                  data-original="https://p1.pstatp.com/origin/fecb000064f1457866f1"
+                                                                  href="/view/10357.html" title="西行纪 第2季"><span
+                                        class="play hidden-xs"></span> <span class="pic-text text-right">第15集</span></a>
+                                    <div class="stui-vodlist__detail"><h4 class="title text-overflow"><a
+                                            href="/view/10357.html" title="西行纪 第2季">西行纪 第2季</a></h4>
+                                        <p class="text text-overflow text-muted hidden-xs">沈达威 / 夏磊 / 吴磊 / 樊俊航 / 谢添天 /
+                                            冯骏骅 / 刘北辰</p></div>
+                                </div>
+                            </li>
+                            <li class="col-md-6 col-sm-4 col-xs-3">
+                                <div class="stui-vodlist__box"><a class="stui-vodlist__thumb lazyload"
+                                                                  data-original="https://r1.ykimg.com/051000005CC31CF58B9429A3C7017811"
+                                                                  href="/view/5276.html" title="魔道祖师"><span
+                                        class="play hidden-xs"></span> <span class="pic-text text-right">23集全</span></a>
+                                    <div class="stui-vodlist__detail"><h4 class="title text-overflow"><a
+                                            href="/view/5276.html" title="魔道祖师">魔道祖师</a></h4>
+                                        <p class="text text-overflow text-muted hidden-xs">阿杰 / 边江</p></div>
+                                </div>
+                            </li>
+                            <li class="col-md-6 col-sm-4 col-xs-3">
+                                <div class="stui-vodlist__box"><a class="stui-vodlist__thumb lazyload"
+                                                                  data-original="https://p3.pstatp.com/origin/ff9e00004bcdd908d470"
+                                                                  href="/view/9497.html" title="太乙仙魔录之灵飞纪 第3季"><span
+                                        class="play hidden-xs"></span> <span class="pic-text text-right">第22集</span></a>
+                                    <div class="stui-vodlist__detail"><h4 class="title text-overflow"><a
+                                            href="/view/9497.html" title="太乙仙魔录之灵飞纪 第3季">太乙仙魔录之灵飞纪 第3季</a></h4>
+                                        <p class="text text-overflow text-muted hidden-xs">张思王之 / 贺文潇</p></div>
+                                </div>
+                            </li>
+                            <li class="col-md-6 col-sm-4 col-xs-3">
+                                <div class="stui-vodlist__box"><a class="stui-vodlist__thumb lazyload"
+                                                                  data-original="https://r1.ykimg.com/051000005CC2FAA21B6A8DD9D2083D0C"
+                                                                  href="/view/6603.html" title="博人传之次世代继承者"><span
+                                        class="play hidden-xs"></span> <span
+                                        class="pic-text text-right">第135集</span></a>
+                                    <div class="stui-vodlist__detail"><h4 class="title text-overflow"><a
+                                            href="/view/6603.html" title="博人传之次世代继承者">博人传之次世代继承者</a></h4>
+                                        <p class="text text-overflow text-muted hidden-xs">小野贤章 / 白石凉子 / 阿部敦 / 竹内顺子 /
+                                            水树奈奈</p></div>
+                                </div>
+                            </li>
+                            <li class="col-md-6 col-sm-4 col-xs-3">
+                                <div class="stui-vodlist__box"><a class="stui-vodlist__thumb lazyload"
+                                                                  data-original="https://r1.ykimg.com/051000005CC3243F1B6A8DDAA704B1DA"
+                                                                  href="/view/4991.html" title="海贼王"><span
+                                        class="play hidden-xs"></span> <span
+                                        class="pic-text text-right">第913集</span></a>
+                                    <div class="stui-vodlist__detail"><h4 class="title text-overflow"><a
+                                            href="/view/4991.html" title="海贼王">海贼王</a></h4>
+                                        <p class="text text-overflow text-muted hidden-xs">田中真弓 / 冈村明美 / 中井和哉 / 平田广明 /
+                                            山口胜平</p></div>
+                                </div>
+                            </li>
+                            <li class="col-md-6 col-sm-4 col-xs-3">
+                                <div class="stui-vodlist__box"><a class="stui-vodlist__thumb lazyload"
+                                                                  data-original="https://i1.letvimg.com/lc07_live/201812/03/20/22/1543839808747new.jpg"
+                                                                  href="/view/6962.html" title="斗罗大陆2：绝世唐门荣耀篇"><span
+                                        class="play hidden-xs"></span> <span class="pic-text text-right">已完结</span></a>
+                                    <div class="stui-vodlist__detail"><h4 class="title text-overflow"><a
+                                            href="/view/6962.html" title="斗罗大陆2：绝世唐门荣耀篇">斗罗大陆2：绝世唐门荣耀篇</a></h4>
+                                        <p class="text text-overflow text-muted hidden-xs">山新南</p></div>
+                                </div>
+                            </li>
+                            <li class="col-md-6 col-sm-4 col-xs-3">
+                                <div class="stui-vodlist__box"><a class="stui-vodlist__thumb lazyload"
+                                                                  data-original="https://3img.hitv.com/preview/internettv/sp_images/ott/2018/dongman/321672/20180105125305110-new.jpg_220x308.jpg"
+                                                                  href="/view/4766.html" title="妖神记 第二季"><span
+                                        class="play hidden-xs"></span> <span class="pic-text text-right">全集</span></a>
+                                    <div class="stui-vodlist__detail"><h4 class="title text-overflow"><a
+                                            href="/view/4766.html" title="妖神记 第二季">妖神记 第二季</a></h4>
+                                        <p class="text text-overflow text-muted hidden-xs">内详</p></div>
+                                </div>
+                            </li>
+                            <li class="col-md-6 col-sm-4 col-xs-3">
+                                <div class="stui-vodlist__box"><a class="stui-vodlist__thumb lazyload"
+                                                                  data-original="https://r1.ykimg.com/051000005CC30DAC1B6A8DCEFD042800"
+                                                                  href="/view/4738.html" title="斗破苍穹第二季"><span
+                                        class="play hidden-xs"></span> <span class="pic-text text-right">12集全</span></a>
+                                    <div class="stui-vodlist__detail"><h4 class="title text-overflow"><a
+                                            href="/view/4738.html" title="斗破苍穹第二季">斗破苍穹第二季</a></h4>
+                                        <p class="text text-overflow text-muted hidden-xs">内详</p></div>
+                                </div>
+                            </li>
+                            <li class="col-md-6 col-sm-4 col-xs-3">
+                                <div class="stui-vodlist__box"><a class="stui-vodlist__thumb lazyload"
+                                                                  data-original="https://r1.ykimg.com/051000005CC30F608B9429CE150E71B5"
+                                                                  href="/view/5023.html" title="武庚纪第二季"><span
+                                        class="play hidden-xs"></span> <span class="pic-text text-right">42集全</span></a>
+                                    <div class="stui-vodlist__detail"><h4 class="title text-overflow"><a
+                                            href="/view/5023.html" title="武庚纪第二季">武庚纪第二季</a></h4>
+                                        <p class="text text-overflow text-muted hidden-xs">内详</p></div>
+                                </div>
+                            </li>
+                        </ul>
+                        <ul class="stui-vodlist__text col-pd clearfix hidden-xs">
+                            <li class="col-md-4 col-sm-3 col-xs-1 padding-0"><a class="top-line-dot text-overflow"
+                                                                                href="/view/11285.html"
+                                                                                title="厨神小当家"><span
+                                    class="text-muted pull-right" style="color: green">第10集</span> 厨神小当家</a></li>
+                            <li class="col-md-4 col-sm-3 col-xs-1 padding-0"><a class="top-line-dot text-overflow"
+                                                                                href="/view/10754.html" title="刀剑神域第4季"><span
+                                    class="text-muted pull-right" style="color: green">第10集</span> 刀剑神域第4季</a></li>
+                            <li class="col-md-4 col-sm-3 col-xs-1 padding-0"><a class="top-line-dot text-overflow"
+                                                                                href="/view/5305.html" title="枪神记"><span
+                                    class="text-muted pull-right" style="color: green">第26集</span> 枪神记</a></li>
+                            <li class="col-md-4 col-sm-3 col-xs-1 padding-0"><a class="top-line-dot text-overflow"
+                                                                                href="/view/9129.html"
+                                                                                title="绝命响应"><span
+                                    class="text-muted pull-right" style="color: green">第30集</span> 绝命响应</a></li>
+                            <li class="col-md-4 col-sm-3 col-xs-1 padding-0"><a class="top-line-dot text-overflow"
+                                                                                href="/view/10213.html"
+                                                                                title="假面骑士零一"><span
+                                    class="text-muted pull-right" style="color: green">第15集</span> 假面骑士零一</a></li>
+                            <li class="col-md-4 col-sm-3 col-xs-1 padding-0"><a class="top-line-dot text-overflow"
+                                                                                href="/view/5385.html"
+                                                                                title="名侦探柯南"><span
+                                    class="text-muted pull-right" style="color: green">第1020集</span> 名侦探柯南</a></li>
+                            <li class="col-md-4 col-sm-3 col-xs-1 padding-0"><a class="top-line-dot text-overflow"
+                                                                                href="/view/8763.html" title="逆天邪神 第1季"><span
+                                    class="text-muted pull-right" style="color: green">第35集</span> 逆天邪神 第1季</a></li>
+                            <li class="col-md-4 col-sm-3 col-xs-1 padding-0"><a class="top-line-dot text-overflow"
+                                                                                href="/view/9140.html"
+                                                                                title="斗罗大陆"><span
+                                    class="text-muted pull-right" style="color: green">第82集</span> 斗罗大陆</a></li>
+                            <li class="col-md-4 col-sm-3 col-xs-1 padding-0"><a class="top-line-dot text-overflow"
+                                                                                href="/view/8018.html"
+                                                                                title="狐妖小红娘"><span
+                                    class="text-muted pull-right" style="color: green">第106集</span> 狐妖小红娘</a></li>
+                            <li class="col-md-4 col-sm-3 col-xs-1 padding-0"><a class="top-line-dot text-overflow"
+                                                                                href="/view/11200.html" title="锁龙"><span
+                                    class="text-muted pull-right" style="color: green">第5集</span> 锁龙</a></li>
+                            <li class="col-md-4 col-sm-3 col-xs-1 padding-0"><a class="top-line-dot text-overflow"
+                                                                                href="/view/11278.html"
+                                                                                title="海洋之歌"><span
+                                    class="text-muted pull-right" style="color: green">高清版</span> 海洋之歌</a></li>
+                            <li class="col-md-4 col-sm-3 col-xs-1 padding-0"><a class="top-line-dot text-overflow"
+                                                                                href="/view/8708.html"
+                                                                                title="系统逼我做皇后"><span
+                                    class="text-muted pull-right" style="color: green">第40集</span> 系统逼我做皇后</a></li>
+                            <li class="col-md-4 col-sm-3 col-xs-1 padding-0"><a class="top-line-dot text-overflow"
+                                                                                href="/view/10071.html"
+                                                                                title="总裁的天价萌妻3"><span
+                                    class="text-muted pull-right" style="color: green">第36集</span> 总裁的天价萌妻3</a></li>
+                            <li class="col-md-4 col-sm-3 col-xs-1 padding-0"><a class="top-line-dot text-overflow"
+                                                                                href="/view/10344.html"
+                                                                                title="书灵记"><span
+                                    class="text-muted pull-right" style="color: green">第27集</span> 书灵记</a></li>
+                            <li class="col-md-4 col-sm-3 col-xs-1 padding-0"><a class="top-line-dot text-overflow"
+                                                                                href="/view/9305.html"
+                                                                                title="银翼战刃"><span
+                                    class="text-muted pull-right" style="color: green">第30集</span> 银翼战刃</a></li>
+                            <li class="col-md-4 col-sm-3 col-xs-1 padding-0"><a class="top-line-dot text-overflow"
+                                                                                href="/view/8043.html"
+                                                                                title="墓王之王"><span
+                                    class="text-muted pull-right" style="color: green">第66集</span> 墓王之王</a></li>
+                            <li class="col-md-4 col-sm-3 col-xs-1 padding-0"><a class="top-line-dot text-overflow"
+                                                                                href="/view/10811.html"
+                                                                                title="万界仙踪 第三季"><span
+                                    class="text-muted pull-right" style="color: green">第18集</span> 万界仙踪 第三季</a></li>
+                            <li class="col-md-4 col-sm-3 col-xs-1 padding-0"><a class="top-line-dot text-overflow"
+                                                                                href="/view/11184.html" title="虚空魔境第二季"><span
+                                    class="text-muted pull-right" style="color: green">第11集</span> 虚空魔境第二季</a></li>
+                            <li class="col-md-4 col-sm-3 col-xs-1 padding-0"><a class="top-line-dot text-overflow"
+                                                                                href="/view/10699.html" title="战鼎"><span
+                                    class="text-muted pull-right" style="color: green">第12集</span> 战鼎</a></li>
+                            <li class="col-md-4 col-sm-3 col-xs-1 padding-0"><a class="top-line-dot text-overflow"
+                                                                                href="/view/10357.html" title="西行纪 第2季"><span
+                                    class="text-muted pull-right" style="color: green">第15集</span> 西行纪 第2季</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-wide-25 hidden-md hidden-sm hidden-xs">
+                        <div class="stui-pannel_hd">
+                            <div class="stui-pannel__head active bottom-line clearfix"><h3 class="title"><img
+                                    src="/static/icon/icon_12.png"/><a href="/list/3.html">动漫周榜单</a></h3></div>
+                        </div>
+                        <ul class="stui-vodlist__text active col-pd clearfix">
+                            <li class="bottom-line-dot"><a href="/view/9140.html" title="斗罗大陆"><span
+                                    class="text-muted pull-right" style="color: green">0分</span> <span
+                                    class="badge badge-first">1</span> 斗罗大陆</a></li>
+                            <li class="bottom-line-dot"><a href="/view/10357.html" title="西行纪 第2季"><span
+                                    class="text-muted pull-right" style="color: green">0分</span> <span
+                                    class="badge badge-second">2</span> 西行纪 第2季</a></li>
+                            <li class="bottom-line-dot"><a href="/view/4991.html" title="海贼王"><span
+                                    class="text-muted pull-right" style="color: green">0分</span> <span
+                                    class="badge badge-third">3</span> 海贼王</a></li>
+                            <li class="bottom-line-dot"><a href="/view/10811.html" title="万界仙踪 第三季"><span
+                                    class="text-muted pull-right" style="color: green">0分</span> <span
+                                    class="badge">4</span> 万界仙踪 第三季</a></li>
+                            <li class="bottom-line-dot"><a href="/view/6603.html" title="博人传之次世代继承者"><span
+                                    class="text-muted pull-right" style="color: green">0分</span> <span
+                                    class="badge">5</span> 博人传之次世代继承者</a></li>
+                            <li class="bottom-line-dot"><a href="/view/5276.html" title="魔道祖师"><span
+                                    class="text-muted pull-right" style="color: green">0分</span> <span
+                                    class="badge">6</span> 魔道祖师</a></li>
+                            <li class="bottom-line-dot"><a href="/view/11032.html" title="逆转次元：AI崛起"><span
+                                    class="text-muted pull-right" style="color: green">0分</span> <span
+                                    class="badge">7</span> 逆转次元：AI崛起</a></li>
+                            <li class="bottom-line-dot"><a href="/view/9497.html" title="太乙仙魔录之灵飞纪 第3季"><span
+                                    class="text-muted pull-right" style="color: green">0分</span> <span
+                                    class="badge">8</span> 太乙仙魔录之灵飞纪 第3季</a></li>
+                            <li class="bottom-line-dot"><a href="/view/10344.html" title="书灵记"><span
+                                    class="text-muted pull-right" style="color: green">0分</span> <span
+                                    class="badge">9</span> 书灵记</a></li>
+                            <li class="bottom-line-dot"><a href="/view/8763.html" title="逆天邪神 第1季"><span
+                                    class="text-muted pull-right" style="color: green">0分</span> <span
+                                    class="badge">10</span> 逆天邪神 第1季</a></li>
+                            <li class="bottom-line-dot"><a href="/view/8018.html" title="狐妖小红娘"><span
+                                    class="text-muted pull-right" style="color: green">0分</span> <span
+                                    class="badge">11</span> 狐妖小红娘</a></li>
+                            <li class="bottom-line-dot"><a href="/view/8043.html" title="墓王之王"><span
+                                    class="text-muted pull-right" style="color: green">0分</span> <span
+                                    class="badge">12</span> 墓王之王</a></li>
+                            <li class="bottom-line-dot"><a href="/view/7492.html" title="斗破苍穹之大主宰"><span
+                                    class="text-muted pull-right" style="color: green">0分</span> <span
+                                    class="badge">13</span> 斗破苍穹之大主宰</a></li>
+                            <li class="bottom-line-dot"><a href="/view/9129.html" title="绝命响应"><span
+                                    class="text-muted pull-right" style="color: green">0分</span> <span
+                                    class="badge">14</span> 绝命响应</a></li>
+                            <li class="bottom-line-dot"><a href="/view/11200.html" title="锁龙"><span
+                                    class="text-muted pull-right" style="color: green">0分</span> <span
+                                    class="badge">15</span> 锁龙</a></li>
+                            <li class="bottom-line-dot"><a href="/view/6517.html" title="黑色四叶草"><span
+                                    class="text-muted pull-right" style="color: green">0分</span> <span
+                                    class="badge">16</span> 黑色四叶草</a></li>
+                            <li class="bottom-line-dot"><a href="/view/10699.html" title="战鼎"><span
+                                    class="text-muted pull-right" style="color: green">0分</span> <span
+                                    class="badge">17</span> 战鼎</a></li>
+                            <li class="bottom-line-dot"><a href="/view/5385.html" title="名侦探柯南"><span
+                                    class="text-muted pull-right" style="color: green">0分</span> <span
+                                    class="badge">18</span> 名侦探柯南</a></li>
+                            <li class="bottom-line-dot"><a href="/view/8708.html" title="系统逼我做皇后"><span
+                                    class="text-muted pull-right" style="color: green">0分</span> <span
+                                    class="badge">19</span> 系统逼我做皇后</a></li>
+                            <li class="bottom-line-dot"><a href="/view/10754.html" title="刀剑神域第4季"><span
+                                    class="text-muted pull-right" style="color: green">0分</span> <span
+                                    class="badge">20</span> 刀剑神域第4季</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="stui-pannel stui-pannel-bg clearfix hidden-xs">
+            <div class="stui-pannel-box clearfix">
+                <div class="col-lg-4 col-md-3 col-sm-2 col-xs-1">
+                    <div class="stui-pannel_hd">
+                        <div class="stui-pannel__head active bottom-line clearfix"><h3 class="title"><img
+                                src="/static/icon/icon_12.png"/>电影热播榜</h3></div>
+                    </div>
+                    <div class="stui-pannel_bd clearfix">
+                        <ul class="stui-vodlist__text active col-pd clearfix">
+                            <li class="bottom-line-dot"><a href="/view/9782.html" title="幻影车神2"><span
+                                    class="text-muted pull-right hidden-md" style="color: green">78291次</span> <span
+                                    class="badge badge-first">1</span> 幻影车神2</a></li>
+                            <li class="bottom-line-dot"><a href="/view/10640.html" title="中国机长"><span
+                                    class="text-muted pull-right hidden-md" style="color: green">64866次</span> <span
+                                    class="badge badge-second">2</span> 中国机长</a></li>
+                            <li class="bottom-line-dot"><a href="/view/11246.html" title="大蛇2"><span
+                                    class="text-muted pull-right hidden-md" style="color: green">47461次</span> <span
+                                    class="badge badge-third">3</span> 大蛇2</a></li>
+                            <li class="bottom-line-dot"><a href="/view/11257.html" title="勇敢者游戏2：再战巅峰"><span
+                                    class="text-muted pull-right hidden-md" style="color: green">35962次</span> <span
+                                    class="badge">4</span> 勇敢者游戏2：再战巅峰</a></li>
+                            <li class="bottom-line-dot"><a href="/view/11206.html" title="两只老虎"><span
+                                    class="text-muted pull-right hidden-md" style="color: green">35016次</span> <span
+                                    class="badge">5</span> 两只老虎</a></li>
+                            <li class="bottom-line-dot"><a href="/view/11263.html" title="南方车站的聚会"><span
+                                    class="text-muted pull-right hidden-md" style="color: green">32795次</span> <span
+                                    class="badge">6</span> 南方车站的聚会</a></li>
+                            <li class="bottom-line-dot"><a href="/view/10921.html" title="催眠裁决"><span
+                                    class="text-muted pull-right hidden-md" style="color: green">26674次</span> <span
+                                    class="badge">7</span> 催眠裁决</a></li>
+                            <li class="bottom-line-dot"><a href="/view/10646.html" title="我和我的祖国"><span
+                                    class="text-muted pull-right hidden-md" style="color: green">26457次</span> <span
+                                    class="badge">8</span> 我和我的祖国</a></li>
+                            <li class="bottom-line-dot"><a href="/view/11276.html" title="天火"><span
+                                    class="text-muted pull-right hidden-md" style="color: green">26204次</span> <span
+                                    class="badge">9</span> 天火</a></li>
+                            <li class="bottom-line-dot"><a href="/view/11267.html" title="御天神兽"><span
+                                    class="text-muted pull-right hidden-md" style="color: green">20352次</span> <span
+                                    class="badge">10</span> 御天神兽</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-3 col-sm-2 col-xs-1">
+                    <div class="stui-pannel_hd">
+                        <div class="stui-pannel__head active bottom-line clearfix"><h3 class="title"><img
+                                src="/static/icon/icon_12.png"/>电视剧热播榜</h3></div>
+                    </div>
+                    <div class="stui-pannel_bd clearfix">
+                        <ul class="stui-vodlist__text active col-pd clearfix">
+                            <li class="bottom-line-dot"><a href="/view/11183.html" title="庆余年"><span
+                                    class="text-muted pull-right hidden-md" style="color: green">1480673次</span> <span
+                                    class="badge badge-first">1</span> 庆余年</a></li>
+                            <li class="bottom-line-dot"><a href="/view/11243.html" title="剑王朝"><span
+                                    class="text-muted pull-right hidden-md" style="color: green">117935次</span> <span
+                                    class="badge badge-second">2</span> 剑王朝</a></li>
+                            <li class="bottom-line-dot"><a href="/view/11143.html" title="第二次也很美"><span
+                                    class="text-muted pull-right hidden-md" style="color: green">57911次</span> <span
+                                    class="badge badge-third">3</span> 第二次也很美</a></li>
+                            <li class="bottom-line-dot"><a href="/view/11066.html" title="鹤唳华亭"><span
+                                    class="text-muted pull-right hidden-md" style="color: green">57184次</span> <span
+                                    class="badge">4</span> 鹤唳华亭</a></li>
+                            <li class="bottom-line-dot"><a href="/view/11217.html" title="一夜新娘"><span
+                                    class="text-muted pull-right hidden-md" style="color: green">51955次</span> <span
+                                    class="badge">5</span> 一夜新娘</a></li>
+                            <li class="bottom-line-dot"><a href="/view/11126.html" title="心灵法医"><span
+                                    class="text-muted pull-right hidden-md" style="color: green">39427次</span> <span
+                                    class="badge">6</span> 心灵法医</a></li>
+                            <li class="bottom-line-dot"><a href="/view/11249.html" title="惹不起的殿下大人"><span
+                                    class="text-muted pull-right hidden-md" style="color: green">39367次</span> <span
+                                    class="badge">7</span> 惹不起的殿下大人</a></li>
+                            <li class="bottom-line-dot"><a href="/view/11076.html" title="从前有座灵剑山"><span
+                                    class="text-muted pull-right hidden-md" style="color: green">33821次</span> <span
+                                    class="badge">8</span> 从前有座灵剑山</a></li>
+                            <li class="bottom-line-dot"><a href="/view/9490.html" title="亲爱的，热爱的"><span
+                                    class="text-muted pull-right hidden-md" style="color: green">28173次</span> <span
+                                    class="badge">9</span> 亲爱的，热爱的</a></li>
+                            <li class="bottom-line-dot"><a href="/view/9441.html" title="鳄鱼与牙签鸟"><span
+                                    class="text-muted pull-right hidden-md" style="color: green">14783次</span> <span
+                                    class="badge">10</span> 鳄鱼与牙签鸟</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-3 col-sm-2 col-xs-1">
+                    <div class="stui-pannel_hd">
+                        <div class="stui-pannel__head active bottom-line clearfix"><h3 class="title"><img
+                                src="/static/icon/icon_12.png"/>动漫热播榜</h3></div>
+                    </div>
+                    <div class="stui-pannel_bd clearfix">
+                        <ul class="stui-vodlist__text active col-pd clearfix">
+                            <li class="bottom-line-dot"><a href="/view/9140.html" title="斗罗大陆"><span
+                                    class="text-muted pull-right hidden-md" style="color: green">54451次</span> <span
+                                    class="badge badge-first">1</span> 斗罗大陆</a></li>
+                            <li class="bottom-line-dot"><a href="/view/10357.html" title="西行纪 第2季"><span
+                                    class="text-muted pull-right hidden-md" style="color: green">20208次</span> <span
+                                    class="badge badge-second">2</span> 西行纪 第2季</a></li>
+                            <li class="bottom-line-dot"><a href="/view/4991.html" title="海贼王"><span
+                                    class="text-muted pull-right hidden-md" style="color: green">11294次</span> <span
+                                    class="badge badge-third">3</span> 海贼王</a></li>
+                            <li class="bottom-line-dot"><a href="/view/10811.html" title="万界仙踪 第三季"><span
+                                    class="text-muted pull-right hidden-md" style="color: green">7648次</span> <span
+                                    class="badge">4</span> 万界仙踪 第三季</a></li>
+                            <li class="bottom-line-dot"><a href="/view/6603.html" title="博人传之次世代继承者"><span
+                                    class="text-muted pull-right hidden-md" style="color: green">4349次</span> <span
+                                    class="badge">5</span> 博人传之次世代继承者</a></li>
+                            <li class="bottom-line-dot"><a href="/view/5276.html" title="魔道祖师"><span
+                                    class="text-muted pull-right hidden-md" style="color: green">4010次</span> <span
+                                    class="badge">6</span> 魔道祖师</a></li>
+                            <li class="bottom-line-dot"><a href="/view/11149.html" title="冰雪奇缘2"><span
+                                    class="text-muted pull-right hidden-md" style="color: green">3614次</span> <span
+                                    class="badge">7</span> 冰雪奇缘2</a></li>
+                            <li class="bottom-line-dot"><a href="/view/11032.html" title="逆转次元：AI崛起"><span
+                                    class="text-muted pull-right hidden-md" style="color: green">3302次</span> <span
+                                    class="badge">8</span> 逆转次元：AI崛起</a></li>
+                            <li class="bottom-line-dot"><a href="/view/9497.html" title="太乙仙魔录之灵飞纪 第3季"><span
+                                    class="text-muted pull-right hidden-md" style="color: green">3228次</span> <span
+                                    class="badge">9</span> 太乙仙魔录之灵飞纪 第3季</a></li>
+                            <li class="bottom-line-dot"><a href="/view/10344.html" title="书灵记"><span
+                                    class="text-muted pull-right hidden-md" style="color: green">2819次</span> <span
+                                    class="badge">10</span> 书灵记</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-3 col-sm-2 col-xs-1">
+                    <div class="stui-pannel_hd">
+                        <div class="stui-pannel__head active bottom-line clearfix"><h3 class="title"><img
+                                src="/static/icon/icon_12.png"/>综艺热播榜</h3></div>
+                    </div>
+                    <div class="stui-pannel_bd clearfix">
+                        <ul class="stui-vodlist__text active col-pd clearfix">
+                            <li class="bottom-line-dot"><a href="/view/11226.html" title="明星大侦探第五季"><span
+                                    class="text-muted pull-right hidden-md" style="color: green">6783次</span> <span
+                                    class="badge badge-first">1</span> 明星大侦探第五季</a></li>
+                            <li class="bottom-line-dot"><a href="/view/11229.html" title="吐槽大会第四季"><span
+                                    class="text-muted pull-right hidden-md" style="color: green">3540次</span> <span
+                                    class="badge badge-second">2</span> 吐槽大会第四季</a></li>
+                            <li class="bottom-line-dot"><a href="/view/8669.html" title="快乐大本营[2019]"><span
+                                    class="text-muted pull-right hidden-md" style="color: green">2819次</span> <span
+                                    class="badge badge-third">3</span> 快乐大本营[2019]</a></li>
+                            <li class="bottom-line-dot"><a href="/view/11163.html" title="蒙面唱将猜猜猜第四季"><span
+                                    class="text-muted pull-right hidden-md" style="color: green">1863次</span> <span
+                                    class="badge">4</span> 蒙面唱将猜猜猜第四季</a></li>
+                            <li class="bottom-line-dot"><a href="/view/11231.html" title="亲爱的客栈第三季"><span
+                                    class="text-muted pull-right hidden-md" style="color: green">1642次</span> <span
+                                    class="badge">5</span> 亲爱的客栈第三季</a></li>
+                            <li class="bottom-line-dot"><a href="/view/11227.html" title="妻子的浪漫旅行第三季"><span
+                                    class="text-muted pull-right hidden-md" style="color: green">1637次</span> <span
+                                    class="badge">6</span> 妻子的浪漫旅行第三季</a></li>
+                            <li class="bottom-line-dot"><a href="/view/11154.html" title="奇葩说第六季"><span
+                                    class="text-muted pull-right hidden-md" style="color: green">1578次</span> <span
+                                    class="badge">7</span> 奇葩说第六季</a></li>
+                            <li class="bottom-line-dot"><a href="/view/11161.html" title="我们的歌"><span
+                                    class="text-muted pull-right hidden-md" style="color: green">1347次</span> <span
+                                    class="badge">8</span> 我们的歌</a></li>
+                            <li class="bottom-line-dot"><a href="/view/11214.html" title="妻子的浪漫旅行第3季"><span
+                                    class="text-muted pull-right hidden-md" style="color: green">1224次</span> <span
+                                    class="badge">9</span> 妻子的浪漫旅行第3季</a></li>
+                            <li class="bottom-line-dot"><a href="/view/11228.html" title="小小的追球"><span
+                                    class="text-muted pull-right hidden-md" style="color: green">1019次</span> <span
+                                    class="badge">10</span> 小小的追球</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="stui-pannel stui-pannel-bg hidden-sm hidden-xs clearfix">
+            <div class="stui-pannel-box">
+                <div class="stui-pannel_hd">
+                    <div class="stui-pannel__head clearfix"><h3 class="title"><img src="/static/icon/icon_26.png"/>友情链接
+                    </h3></div>
+                </div>
+                <div class="stui-pannel_bd clearfix">
+                    <div class="col-xs-1">
+                        <ul class="stui-link__text clearfix">
+                            <li><a class="text-muted" href="https://www.hemaii.com" target="_blank"
+                                   title="河马影院">河马影院</a></li>
+                            <li><a class="text-muted" href="https://www.dianyingtong.org" target="_blank" title="电影通">电影通</a>
+                            </li>
+                            <li><a class="text-muted" href="https://www.52kanku.com" target="_blank"
+                                   title="我爱酷播">我爱酷播</a></li>
+                            <li><a class="text-muted" href="http://www.52linzi.com" target="_blank"
+                                   title="星辰影院">星辰影院</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="stui-foot clearfix">
+    <div class="container">
+        <div class="row">
+            <div class="col-pd text-center hidden-xs">免责声明:本网站只提供web页面服务，并不提供影片资源存储，也不参与录制、上传。<br/>
+                若本站收录的节目无意侵犯了贵司版权，请给网页底部邮箱地址来信，我们会及时处理和回复，谢谢。<br/> Copyright © 2016-2020 www.pite.tv <a
+                        href="/index.html" title="皮特电影院">皮特电影院</a><br/> 版权投诉邮箱:pitejun@gmail.com<br/> <a href="/"><img
+                        alt="皮特电影院" height="48"
+                        src="https://i3.letvimg.com/lc05_live/201904/27/10/54/1556333656427new.png" width="150"/></a>
+            </div>
+            <p class="text-muted text-center visible-xs">本站所有内容采集于互联网，只供网络测试和学习交流所用；<br/> 若如有关视频侵权，请联系告之，将于第一时间删除。<br/>
+                联系方式：pitevip@gmail.com<br/></p>
+            <p style="margin-bottom: 40px;"></p></div>
+    </div>
+</div>
+<div style="display:none">
+    <script language="JavaScript" src="https://s22.cnzz.com/z_stat.php?id=1273729398&amp;web_id=1273729398"></script>
+    <script src="https://css.toocr.com/js/wcnm/dipiao.js" type="text/javascript"></script>
+    <script src="https://css.toocr.com/js/wcnm/xtb.js" type="text/javascript"></script>
+    <script src="https://s22.cnzz.com/z_stat.php?id=1273903688&amp;web_id=1273903688" type="text/javascript"></script>
+</div>
+</body>
+</html>
