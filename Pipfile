@@ -1,0 +1,29 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+verify_ssl = true
+
+[dev-packages]
+watchdog = "*"
+sqlacodegen = "*"
+
+[packages]
+python-dotenv = "*"
+requests = "*"
+flask = "*"
+flask-sqlalchemy = "*"
+flask-login = "*"
+flask-mail = "*"
+flask-session = "*"
+flask-bootstrap = "*"
+flask-moment = "*"
+flaks-script = "*"
+flask-script = "*"
+flask-migrate = "*"
+flask-wtf = "*"
+mysqldb = "*"
+pymysql = "*"
+mysqlclient = "*"
+
+[requires]
+python_version = "3.7"

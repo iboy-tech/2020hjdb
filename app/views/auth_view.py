@@ -12,10 +12,12 @@ import datetime
 import json
 
 
-from main import auth
+from app.main import auth
 from flask import render_template, request
 from flask_cors import cross_origin
 from flask import json
+
+
 
 
 @auth.route('/', methods=['GET', 'POST', 'OPTIONS'])
@@ -58,8 +60,38 @@ def login():
     return render_template('login.html')
 
 
-@auth.route('/recognize')
+@auth.route('/recognize',methods=['POST'])
 def recognize():
-    print('我是认证模块')
-    print(request.json)
-    pass
+    data=request.json
+    print(data)
+    usr=data['username']
+    pwd=data['password']
+    qq=data['qq']
+    # code=data['code']
+    from app.untils.jwc import user_verify
+    user=user_verify(usr,pwd)
+    if user is not  None:
+        print(user,'验证成功')
+    else:
+        print('用户名或密码有误')
+    data={
+          "success" : True,
+          "code" : 1000,
+          "msg" : "处理成功",
+          "data" : {
+              "user": {
+                  "studentNum": "201520180508",
+                  "realName": "cpwu",
+                  "icon": 'https://q2.qlogo.cn/headimg_dl?dst_uin={}&spec=100'.format(qq),
+                  "email": qq+'@qq.com',
+                  "schoolName": "东华理工大学",
+                  "gender": 1,
+                  "createTime": "2019-04-10 19:06:10",
+                  "lastLogin": "2019-04-10 19:06:10",
+                  "kind": 0
+              }
+          }
+          # "ext" : None
+        }
+    return data
+

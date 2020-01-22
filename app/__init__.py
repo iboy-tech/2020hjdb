@@ -33,10 +33,11 @@ def creat_app(config_name):
     mail.init_app(app)
     moment.init_app(app)
     db.init_app(app)
+    # migrate.init_app(db,app)
     # 附加路由和自定义错误页面@app.route() @app.errorhandler
-    from main import admin as admin_blueprint
+    from app.main import admin as admin_blueprint
     # 蓝本在工厂函数 create_app() 中注册到程序上
     app.register_blueprint(admin_blueprint)
-    from main import auth as auth_blueprint
+    from app.main import auth as auth_blueprint
     app.register_blueprint(auth_blueprint)
     return app

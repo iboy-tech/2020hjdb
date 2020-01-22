@@ -11,7 +11,7 @@
 from datetime import datetime
 from flask import render_template, url_for, session, redirect
 
-from main import admin
+from app.main import admin
 
 # from .. import db
 # from .forms import NameForm

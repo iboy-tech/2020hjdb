@@ -11,7 +11,7 @@
 from flask import render_template
 from flask_cors import cross_origin
 
-from main import home
+from app.main import home
 
 
 @home.route('/', methods=['POST', 'OPTIONS', 'GET'])

@@ -20,7 +20,7 @@
 """
 from flask import render_template
 
-from main import category
+from app.main import category
 
 
 @category.route('/')

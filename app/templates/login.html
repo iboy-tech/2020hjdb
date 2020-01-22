@@ -53,13 +53,13 @@
                         <input v-model="user.username" type="text" placeholder="学号" required=""/>
                         <input v-model="user.password" type="password" :placeholder="tabIndex==1?'教务处密码':'密码'" required=""/>
                         <input v-model="user.qq" v-if="tabIndex!=0" type="text" placeholder="QQ" required=""/>
-                        <div class="opt" v-if="tabIndex==1">
-                            <input id="vcode" style="width: 65%; display: inline-block;float: left;" type="text" @keyup.enter="submit"
-                                   v-model="user.code"
-                                   placeholder="验证码" required="" maxlength="5"/>
-                            <img alt="验证码" title="点击刷新" id="codeImg" @click="newCode" src="http://210.42.38.26:84/jwc_glxt/ValidateCode.aspx"
-                                 style="float: right;  border-radius: 0px; display: inline-block; height: 40px;border: none;">
-                        </div>
+{#                        <div class="opt" v-if="tabIndex==1">#}
+{#                            <input id="vcode" style="width: 65%; display: inline-block;float: left;" type="text" @keyup.enter="submit"#}
+{#                                   v-model="user.code"#}
+{#                                   placeholder="验证码" required="" maxlength="5"/>#}
+{#                            <img alt="验证码" title="点击刷新" id="codeImg" @click="newCode" src="http://210.42.38.26:84/jwc_glxt/ValidateCode.aspx"#}
+{#                                 style="float: right;  border-radius: 0px; display: inline-block; height: 40px;border: none;">#}
+{#                        </div>#}
                         <input @click="submit" type="button" class="btn" value="确定"/>
                     </form>
                 </div>
@@ -93,7 +93,7 @@
                 password: "",
                  // password: "553966",
                 qq: "",
-                code: ""
+                {#code: ""#}
             },
         },
         methods: {

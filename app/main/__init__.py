@@ -19,5 +19,5 @@ admin = Blueprint('admin', __name__,url_prefix='/admin')
 auth=Blueprint('auth',__name__)
 home=Blueprint('home',__name__,url_prefix='/home')
 category=Blueprint('category',__name__,url_prefix='category')
-from views import admin_view, auth_view,home_view,category_view
+from ..views import admin_view, auth_view,home_view,category_view
 print('main蓝图注册了')
