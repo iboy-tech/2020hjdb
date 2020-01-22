@@ -4,10 +4,10 @@ from sqlalchemy import FetchedValue
 from app import db
 
 
-class TFeedback(db.Model):
+class Feedback(db.Model):
     __tablename__ = 't_feedback'
 
-    id = db.Column(db.String(64), primary_key=True, info='??')
+    id = db.Column(db.Integer, primary_key=True, info='主键')
     answer = db.Column(db.String(1024), info='?????')
     content = db.Column(db.String(1024), nullable=False, info='?????')
     create_time = db.Column(db.DateTime, nullable=False, info='????')

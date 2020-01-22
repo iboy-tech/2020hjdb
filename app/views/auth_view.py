@@ -9,15 +9,11 @@
 @Software: PyCharm
 """
 import datetime
-import json
 
-
-from app.main import auth
 from flask import render_template, request
 from flask_cors import cross_origin
-from flask import json
 
-
+from app.main import auth
 
 
 @auth.route('/', methods=['GET', 'POST', 'OPTIONS'])
@@ -60,7 +56,8 @@ def login():
     return render_template('login.html')
 
 
-@auth.route('/recognize',methods=['POST'])
+@auth.route('/recognize',methods=['POST','OPTIONS','GET'])
+@cross_origin()
 def recognize():
     data=request.json
     print(data)

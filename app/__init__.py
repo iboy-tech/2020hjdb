@@ -14,7 +14,6 @@ from flask import Flask
 from .extensions import *
 from flask_cors import CORS
 
-
 # .表示当前路径
 from config import config  # 导入存储配置的字典
 
@@ -22,7 +21,7 @@ from config import config  # 导入存储配置的字典
 # 工厂函数
 def creat_app(config_name):
     app = Flask(__name__)
-    CORS(app, resources=r'/*')# 允许所有域名跨域
+    CORS(app, resources=r'/*')  # 允许所有域名跨域
     print('工厂函数执行了')
     # app.logger.info('工厂函数执行了')
     # app.config.from_pyfile('settings.py')

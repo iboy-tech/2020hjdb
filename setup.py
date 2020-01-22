@@ -10,9 +10,10 @@
 """
 import os,sys
 from app import creat_app, db
-from app.models import User
 from flask_script import Manager, Shell
 from flask_migrate import Migrate, MigrateCommand
+
+from app.models.user_model import User
 
 print('导入环境变量')
 print(os.path.realpath)

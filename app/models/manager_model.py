@@ -4,10 +4,10 @@ from app import  db
 
 
 
-class TManager(db.Model):
+class Manager(db.Model):
     __tablename__ = 't_manager'
 
-    id = db.Column(db.String(64), primary_key=True, info='??')
+    id = db.Column(db.Integer, primary_key=True, info='??')
     create_time = db.Column(db.DateTime, nullable=False)
     creator_id = db.Column(db.DateTime, nullable=False)
     qq = db.Column(db.String(256), nullable=False)
