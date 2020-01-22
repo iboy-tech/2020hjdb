@@ -7,12 +7,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>登录页面</title>
+    <title>用户登陆</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <link href="./css/style-login.css" rel="stylesheet" type="text/css" media="all"/><!--stylesheet-css-->
-    <script src="./js/vue.js"></script>
-    <script src="./js/jquery.js"></script>
+    <link href="../../static/css/style-login.css" rel="stylesheet" type="text/css" media="all"/><!--stylesheet-css-->
+    <script src="../../static/js/vue.js"></script>
+    <script src="../../static/js/jquery.js"></script>
     <style>
         .tabContainer {
             display: flex;
@@ -50,29 +50,14 @@
                             <div class="tab" :class="{tabActive: tabIndex == 1}" @click="changeTab(1)">身份认证</div>
                             <!--<div class="tab" :class="{tabActive: tabIndex == 2}" @click="changeTab(2)">账号注册</div>-->
                         </div>
-                        <!--<h3 style="color: #fff;">完善信息</h3>-->
-                        <div class="opt">
-                            <!--<label>选择你的学校：</label>-->
-                            <select @change="changeSelect($event)"
-                                    style="border: none; width: 100%; background-color: #fff; color: #000; margin-bottom: 1em; font-size: 15px; padding: 10px 4px;">
-
-                                <option value="">选择你的学校</option>
-                                <option v-show="schools == undefined || schools.length == 0" disabled>暂无数据{{schools}}
-                                </option>
-
-                                <option v-for="item in schools" :key="item" :value="item.schoolId">
-                                    {{item.schoolName}}
-                                </option>
-                            </select>
-                        </div>
-                        <input v-model="user.username" type="text" :placeholder="tabIndex==1?'学号':'用户名'" required=""/>
-                        <input v-model="user.password" type="password" placeholder="密码" required=""/>
-                        <input v-model="user.email" v-if="tabIndex!=0" type="email" placeholder="邮箱" required=""/>
-                        <div class="opt">
-                            <input id="vcode" style="width: 65%; display: inline-block; float: left;" type="text" @keyup.enter="submit"
+                        <input v-model="user.username" type="text" placeholder="学号" required=""/>
+                        <input v-model="user.password" type="password" :placeholder="tabIndex==1?'教务处密码':'密码'" required=""/>
+                        <input v-model="user.qq" v-if="tabIndex!=0" type="text" placeholder="QQ" required=""/>
+                        <div class="opt" v-if="tabIndex==1">
+                            <input id="vcode" style="width: 65%; display: inline-block;float: left;" type="text" @keyup.enter="submit"
                                    v-model="user.code"
                                    placeholder="验证码" required="" maxlength="5"/>
-                            <img alt="验证码" title="点击刷新" id="codeImg" @click="newCode" :src="src + now"
+                            <img alt="验证码" title="点击刷新" id="codeImg" @click="newCode" src="http://210.42.38.26:84/jwc_glxt/ValidateCode.aspx"
                                  style="float: right;  border-radius: 0px; display: inline-block; height: 40px;border: none;">
                         </div>
                         <input @click="submit" type="button" class="btn" value="确定"/>
@@ -83,7 +68,7 @@
         <div class="clear"></div>
     </div>
     <footer>
-        &copy; 2019 校园失物招领网站系统 | <a href="http://www.ecit.edu.cn/" target="_blank">ECUT</a>
+        &copy;校园失物招领网站系统 | <a href="http://www.ctgu.edu.cn/" target="_blank">CTGU</a>
         <!--&copy; 2019 校园失物招领网站系统 | <a href="a.html" target="_blank">ECUT</a>-->
         <!--&copy; 2019 校园失物招领网站系统 | <a href="a.html" target="_self">ECUT</a>-->
     </footer>
@@ -91,27 +76,25 @@
 <!--<script src="https://cdn.bootcss.com/toastr.js/latest/toastr.min.js"></script>-->
 <!--<link href="https://cdn.bootcss.com/toastr.js/latest/toastr.min.css" rel="stylesheet">-->
 
-<script src="./js/layer.js"></script>
-<script src="js/mine/common.js"></script>
+<script src="../../static/js/layer.js"></script>
+<script src="../../static/js/mine/common.js"></script>
 <script>
 
     var app = new Vue({
         el: "#app",
         data: {
             tabIndex: 0,
-            src: baseUrl + "/public/verifyCode?t=",
+            src: baseUrl,
             now: new Date().getTime(),
             user: {
-                schoolId: "",
                 // username: "2943884288@qq.com",//"201520180508",
-                username: "201520180508",
+                username: "",
                 //username: "201520180508",//"201520180508",
-                password: "123456",
+                password: "",
                  // password: "553966",
-                email: "",
+                qq: "",
                 code: ""
             },
-            schools: []
         },
         methods: {
             changeTab: function (index) {
@@ -119,13 +102,9 @@
                 this.tabIndex = index;
             },
             submit: function () {
-                if (this.user.schoolId == "") {
-                    showAlert("请选择学校！")
-                    return;
-                }
                 let me = this;
                 $.ajax({
-                    url: baseUrl + (me.tabIndex == 0 ? "/public/login" : "/public/recognize"),
+                    url: baseUrl + (me.tabIndex == 0 ? "/" : "/recognize"),
                     method: "POST",
                     data: JSON.stringify(this.user),
                     success: function (res, status) {
@@ -137,12 +116,10 @@
                                     showOK("登录成功！");
                                     saveSession("user", res.data.user);
                                     if (res.data.user.kind >= 2) {
-                                        location.replace("index.html");
+                                        location.replace("admin.html");
                                     } else {
                                         location.replace("home.html");
-
                                     }
-
                                 }
                                 //clean data
                                 me.user.password = "";
@@ -159,9 +136,6 @@
                     },
                 });
             },
-            changeSelect(event) {
-                this.user.schoolId = event.target.value
-            },
             newCode() {
                 this.now = new Date().getTime();
             }
@@ -173,7 +147,7 @@
         $(window).resize(function () {
             $("#codeImg").css("height", $("#vcode").outerHeight() + 'px');
         });
-        app.schools = get(baseUrl + "/public/schools");
+        {#app.schools = get(baseUrl + "/public/schools");#}
     });
 
     function get(url, data) {

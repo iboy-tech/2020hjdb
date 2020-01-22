@@ -7,7 +7,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <!DOCTYPE HTML>
 <html>
 <head>
-<title>物品分类</title>
+    <title>通知</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="keywords" content="Novus Admin Panel Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template,
@@ -20,37 +20,31 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
         window.scrollTo(0, 1);
     } </script>
     <!-- Bootstrap Core CSS -->
-    <link href="css/bootstrap.css" rel='stylesheet' type='text/css'/>
+    <link href="../../static/css/bootstrap.css" rel='stylesheet' type='text/css'/>
     <!-- Custom CSS -->
-    <link href="css/style.css" rel='stylesheet' type='text/css'/>
+    <link href="../../static/css/style.css" rel='stylesheet' type='text/css'/>
     <!-- font CSS -->
     <!-- font-awesome icons -->
-    <link href="css/font-awesome.css" rel="stylesheet">
+    <link href="../../static/css/font-awesome.css" rel="stylesheet">
     <!-- //font-awesome icons -->
     <!-- js-->
-    <script src="js/jquery-1.11.1.min.js"></script>
-    <script src="js/modernizr.custom.js"></script>
+    <script src="../../static/js/jquery-1.11.1.min.js"></script>
+    <script src="../../static/js/modernizr.custom.js"></script>
     <!--webfonts-->
     <!-- <link href='//fonts.googleapis.com/css?family=Roboto+Condensed:400,300,300italic,400italic,700,700italic' rel='stylesheet' type='text/css'> -->
     <!--//webfonts-->
     <!--animate-->
-    <link href="css/animate.css" rel="stylesheet" type="text/css" media="all">
-    <script src="js/wow.min.js"></script>
+    <link href="../../static/css/animate.css" rel="stylesheet" type="text/css" media="all">
+    <script src="../../static/js/wow.min.js"></script>
     <script>
         new WOW().init();
     </script>
     <!--//end-animate-->
     <!-- Metis Menu -->
-    <script src="js/metisMenu.min.js"></script>
-    <script src="js/custom.js"></script>
-    <link href="css/custom.css" rel="stylesheet">
+    <script src="../../static/js/metisMenu.min.js"></script>
+    <script src="../../static/js/custom.js"></script>
+    <link href="../../static/css/custom.css" rel="stylesheet">
     <!--//Metis Menu -->
-    <style>
-        .compose-left span {
-            background-color: inherit;
-            clear: both;
-        }
-    </style>
 </head>
 <body class="cbp-spmenu-push">
 <div class="main-content" id="app">
@@ -60,7 +54,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
             <nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-left" id="cbp-spmenu-s1">
                 <ul class="nav" id="side-menu">
                     <li>
-                        <a href="index.html"><i class="fa fa-bar-chart nav_icon"></i>数据统计</a>
+                        <a href="admin.html"><i class="fa fa-bar-chart nav_icon"></i>数据统计</a>
                     </li>
                     <li>
                         <a href="#"><i class="fa fa-list-ul nav_icon"></i>招领管理<span class="fa arrow"></span></a>
@@ -80,14 +74,13 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                         <a href="users.html"><i class="fa fa-users nav_icon"></i>用户管理</a>
                     </li>
                     <!--<li>-->
-                        <!--<a href="campus.html"><i class="fa fa-university nav_icon"></i>校区管理</a>-->
+                    <!--<a href="campus.html"><i class="fa fa-university nav_icon"></i>校区管理</a>-->
                     <!--</li>-->
                     <li>
                         <a href="notice.html"><i class="fa fa-rss nav_icon"></i>&nbsp;公告管理</a>
                     </li>
                     <li>
-                        <a href="feedback.html">
-                            <i class="fa fa-envelope nav_icon"></i>反馈管理
+                        <a href="feedback.html"><i class="fa fa-envelope nav_icon"></i>反馈管理
                             <!--<span class="nav-badge-btm">08</span>-->
                         </a>
                         <!-- //nav-second-level -->
@@ -107,7 +100,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
             <!--toggle button end-->
             <!--logo -->
             <div class="logo">
-                <a href="index.html">
+                <a href="admin.html">
                     <h1>校园失物招领系统</h1>
                     <span>管理控制台</span>
                 </a>
@@ -115,6 +108,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
             <div class="clearfix"></div>
         </div>
         <div class="header-right">
+
             <!--notification menu end -->
             <div class="profile_details">
                 <ul>
@@ -149,53 +143,86 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
     <!-- //header-ends -->
     <!-- main content start-->
     <div id="page-wrapper">
-        <div class="main-page compose">
-            <div class="col-md-4 compose-left">
-                <div class="folder widget-shadow" style="max-height: 420px; overflow: hidden; overflow-y: scroll;">
-                    <ul>
-                        <li class="head">所有类别（{{categoryList.length}}）：</li>
-                        <block v-for="(item, index) in categoryList">
-                            <li>
-                                <a @click="showAbout(index)">
-                                    {{item.name}}
-                                    <span v-if="item.count > 0" style="background-color: rgba(233, 78, 2, 0.73);">{{item.count}}</span>
-                                    <span v-else @click.stop="deleteCategory(item.name)" style="background-color: #d9534f;"
-                                          class="glyphicon glyphicon-remove"></span>
-                                </a>
-                            </li>
-                        </block>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-md-8 compose-right widget-shadow">
-                <div class="panel-default">
-                    <div class="panel-heading">
-                        新增类别：
-                    </div>
-                    <div class="panel-body">
-                        <!--<div class="alert alert-info">-->
-                        <!--Please fill details to send a new message-->
-                        <!--</div>-->
-                        <div class="com-mail">
-                            <input v-model="category.name" type="text" class="form-control1 control3"
-                                   maxlength="128" placeholder="名称">
-                            <!--<input type="text" class="form-control1 control3" placeholder="Subject :">-->
-                            <textarea v-model="category.about" rows="6" class="form-control1 control2"
-                                      placeholder="说明" maxlength="256"></textarea>
-                            <!--<div class="form-group">-->
-                            <!--<div class="btn btn-default btn-file">-->
-                            <!--<i class="fa fa-paperclip"></i> Attachment-->
-                            <!--<input type="file" name="attachment">-->
-                            <!--</div>-->
-                            <!--<p class="help-block">Max. 32MB</p>-->
-                            <!--</div>-->
-                            <input :disabled="category.name.length==0" type="submit" @click="submit" value="确定">
+        <div class="main-page general">
+            <!--<h3 class="title1">General Elements</h3>-->
+            <div class="panel-info widget-shadow">
+                <h4 class="title2">
+                    公告一览：
+                    <button @click="showAdd" type="button" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span>
+                    </button>
+                </h4>
+                <div class="col-md-6 panel-grids">
+                    <div class="panel panel-info" v-for="(item,index) in list">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">{{item.title}}</h3>
+                        </div>
+                        <div class="panel-body">
+                            {{item.content}}
+                        </div>
+                        <div class="panel-footer">
+                            <!--<p>-->
+                            <h5 style="display: inline-block;">{{item.time}}</h5>
+
+                            <button @click="deleteNotice(item.id)" style="float: right;" type="button" class="btn btn-danger btn-xs">
+                                <!--<span class="thumbtack icon"></span>-->
+                                <span class="glyphicon glyphicon-trash"></span>
+                            </button>
+                            <button @click="switchFix(item.id, index)" :title="item.fixTop==1?'已置顶':'未置顶'"
+                                    :class="{'btn-primary': item.fixTop==1, 'btn-default': item.fixTop==0}"
+                                    style="float: right; margin-right: 4px;" type="button" class="btn btn-xs">
+                                <!--<span class="thumbtack icon"></span>-->
+                                <span class="glyphicon glyphicon-pushpin"></span>
+                            </button>
+                            <!--</p>-->
+                            <!--<h6>2019-04-13 16:48:55</h6>-->
+                            <!--<span style="float: right;" class="label label-info">2019-04-13 16:48:55</span>-->
                         </div>
                     </div>
+
                 </div>
+
+
+                <div class="clearfix"></div>
             </div>
-            <div class="clearfix"></div>
+
         </div>
+        <class class="row" id="addDiv" style="display: none;">
+            <div class="form-three widget-shadow">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label for="focusedinput" class="col-sm-2 control-label">标题</label>
+                        <div class="col-sm-8">
+                            <input type="text" v-model="notice.title" class="form-control1" id="focusedinput" placeholder="标题">
+                        </div>
+                       <!-- <div class="col-sm-2">
+                            <p class="help-block">Your help text!</p>
+                        </div>-->
+                    </div>
+
+                    <div class="form-group">
+                        <label for="txtarea1" class="col-sm-2 control-label">内容</label>
+                        <div class="col-sm-8">
+                            <textarea v-model="notice.content" id="txtarea1" cols="50" rows="5" placeholder="详情"
+                                                        class="form-control1" style="height: auto;"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">设置</label>
+                        <div class="col-sm-8">
+                            <div class="checkbox-inline"><label><input type="checkbox" v-model="notice.fixTop">置顶</label></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label"></label>
+                        <div class="col-sm-8">
+                            <button type="button" class="btn btn-default" style="background-color: #6164C1;
+                                color: #fff;" @click="submit">确定</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </class>
     </div>
     <!--footer-->
     <div class="footer">
@@ -204,17 +231,16 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
     <!--//footer-->
 </div>
 <!-- Classie -->
-<script src="js/classie.js"></script>
-
+<script src="../../static/js/classie.js"></script>
 <!--scrolling js-->
-<script src="js/jquery.nicescroll.js"></script>
-<script src="js/scripts.js"></script>
+<script src="../../static/js/jquery.nicescroll.js"></script>
+<script src="../../static/js/scripts.js"></script>
 <!--//scrolling js-->
 <!-- Bootstrap Core JavaScript -->
-<script src="js/bootstrap.js"></script>
-<script src="js/vue.js"></script>
-<script src="./js/layer.js"></script>
-<script src="js/mine/common.js"></script>
-<script src="js/mine/category.js"></script>
+<script src="../../static/js/bootstrap.js"></script>
+<script src="../../static/js/vue.js"></script>
+<script src="../../static/js/layer.js"></script>
+<script src="../../static/js/mine/common.js"></script>
+<script src="../../static/js/mine/notice.js"></script>
 </body>
 </html>

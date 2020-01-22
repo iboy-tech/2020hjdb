@@ -1,0 +1,183 @@
+<!--
+	Author: W3layouts
+	Author URL: http://w3layouts.com
+	License: Creative Commons Attribution 3.0 Unported
+	License URL: http://creativecommons.org/licenses/by/3.0/
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>用户登陆</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link href="../../static/css/style-login.css" rel="stylesheet" type="text/css" media="all"/><!--stylesheet-css-->
+    <script src="../../static/js/vue.js"></script>
+    <script src="../../static/js/jquery.js"></script>
+    <!-- 导入qs -->
+{#    <script src="https://cdn.bootcss.com/qs/6.5.2/qs.min.js"></script>#}
+    <style>
+        .tabContainer {
+            display: flex;
+            margin-bottom: 1em;
+        }
+
+        .tab {
+            font-size: 15px;
+            padding: 10px;
+            box-sizing: border-box;
+            flex: 1;
+            cursor: pointer;
+        }
+
+        .tabActive {
+            color: #fff;
+            border-bottom: 1px solid #fff;
+        }
+    </style>
+</head>
+<body>
+<!-- <h1>creative <span>m</span><span>u</span><span>l</span><span>t</span><span>i</span> forms</h1> -->
+<h1>校园失物招领管理系统</h1>
+
+<div class="w3l-form" id="app">
+    <div class="w3l-grids-from2">
+        <div class="w3l-user2">
+            <div class="agile">
+                <div class="w3l-signup5" style="">
+                    <form method="post">
+                        <div class="tabContainer">
+                            <div title="" class="tab" :class="{tabActive: tabIndex == 0}" @click="changeTab(0)">
+                                用户登录
+                            </div>
+                            <div class="tab" :class="{tabActive: tabIndex == 1}" @click="changeTab(1)">身份认证</div>
+                            <!--<div class="tab" :class="{tabActive: tabIndex == 2}" @click="changeTab(2)">账号注册</div>-->
+                        </div>
+
+                        <input v-model="user.username" type="text" placeholder="学号" required=""/>
+                        <input v-model="user.password" type="password" placeholder="教务系统密码" required=""/>
+                        <input v-model="user.email" v-if="tabIndex!=0" type="email" placeholder="QQ邮箱" required=""/>
+                        <div class="opt">
+                            <input id="vcode" style="width: 65%; display: inline-block; float: left;" type="text" @keyup.enter="submit" v-model="user.code" placeholder="验证码" required="" maxlength="5"/>
+                            <img alt="验证码" title="点击刷新" id="codeImg" @click="newCode"  src="http://210.42.38.26:84/jwc_glxt/ValidateCode.aspx"
+                                 style="float: right;  border-radius: 0px; display: inline-block; height: 40px;border: none;">
+                        </div>
+
+                        <input @click="submit" type="button" class="btn" value="确定"/>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <footer>
+        &copy;  校园失物招领系统 | <a href="http://www.ctgu.edu.cn/" target="_blank">CTGU</a>
+    </footer>
+</div>
+<!--<script src="https://cdn.bootcss.com/toastr.js/latest/toastr.min.js"></script>-->
+<!--<link href="https://cdn.bootcss.com/toastr.js/latest/toastr.min.css" rel="stylesheet">-->
+
+<script src="../../static/js/layer.js"></script>
+<script src="../../static/js/mine/common.js"></script>
+<script>
+
+    var app = new Vue({
+        el: "#app",
+        data: {
+            tabIndex: 0,
+            {#src: baseUrl + "/public/verifyCode?t=",#}
+            src: "http://210.42.38.26:84/jwc_glxt/ValidateCode.aspx",
+            now: new Date().getTime(),
+            user: {
+                {#schoolId: "",#}
+                // username: "2943884288@qq.com",//"201520180508",
+                username: "",
+                //username: "201520180508",//"201520180508",
+                password: "",
+                // password: "553966",
+                email: "",
+                code: ""
+            },
+            {#schools: []#}
+        },
+        methods: {
+            changeTab: function (index) {
+                console.log(index);
+                this.tabIndex = index;
+            },
+            submit: function () {
+                let _this = this;
+                $.ajax({
+                    url: baseUrl + (me.tabIndex == 0 ? "/" : "/recognize"),
+                    method: "POST",
+                    data: JSON.stringify(this.user),
+                    success: function (res, status) {
+                        if (status == "success") {
+                            if (res.success) {
+                                if (!res.data.user) {//no user
+                                    showAlertError("你的账号未进行邮箱验证，现已向其发送验证邮件，验证后即可使用，请注意查收！")
+                                } else {
+                                    showOK("登录成功！");
+                                    saveSession("user", res.data.user);
+                                    if (res.data.user.kind >= 2) {
+                                        location.replace("index.html");
+                                    } else {
+                                        location.replace("home.html");
+
+                                    }
+
+                                }
+                                //clean data
+                                _this.user.password = "";
+                                _this.user.code = "";
+                            } else {
+                                showAlertError(res.msg);
+                                _this.user.code = "";
+                            }
+                            _this.newCode();
+                        } else {
+                            console.log(res);
+                            alert(res)
+                        }
+                    },
+                });
+            },
+            changeSelect(event) {
+                this.user.schoolId = event.target.value
+            },
+            newCode() {
+                this.now = new Date().getTime();
+            }
+        }
+    }
+    $(function () {
+        //验证码高度设置
+        $("#codeImg").css("height", $("#vcode").outerHeight() + 'px');
+        $(window).resize(function () {
+            $("#codeImg").css("height", $("#vcode").outerHeight() + 'px');
+        });
+        {#app.schools = get(baseUrl + "/public/schools");#}
+    });
+
+    function get(url, data) {
+        $.ajax({
+            url: url,
+            method: "GET",
+            data: data || "",
+            success: function (res, status) {
+                if (status == "success") {
+                    if (res.success) {
+                        app.schools = res.data.schools
+                    } else {
+                        showAlertError(res.msg)
+                    }
+                } else {
+                    console.log(res);
+                    alert(res)
+                }
+            }
+        });
+    }
+
+</script>
+</body>
+</html>

@@ -16,7 +16,7 @@ var app = new Vue({
            kind: 0
        },*/
         category: getCategory() || [],
-        userIcon: "http://localhost:8080/static/icon/user_icon.png",
+        userIcon: "http://localhost/static/icon/user_icon.png",
         imgPrefix: staticUrl,
         tab: [
             {

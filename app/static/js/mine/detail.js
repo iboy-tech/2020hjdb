@@ -2,7 +2,7 @@ var app = new Vue({
     el: "#app",
     data: {
         imgPrefix: staticUrl,
-        userIcon: "http://localhost:8080/static/icon/user_icon.png",
+        userIcon: "http://localhost/static/icon/user_icon.png",
         comment: "",//发布评论
         images: {
             "title": "", //相册标题
