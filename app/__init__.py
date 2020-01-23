@@ -26,6 +26,11 @@ login_manager.login_view = 'auth.login'
 # 工厂函数
 def creat_app(config_name):
     app = Flask(__name__)
+    app.config['SECRET_KEY'] = os.urandom(24)#产生n个字节的字符串
+    temp=app.config['SECRET_KEY']
+    print('我是SECRET_KEY',temp,type(temp))
+    # print(temp.decode("utf-8","strict"))
+    # print(str(temp,encoding='gb18030'))
     CORS(app, resources=r'/*')  # 允许所有域名跨域
     print('工厂函数执行了')
     # app.logger.info('工厂函数执行了')
@@ -58,5 +63,8 @@ def creat_app(config_name):
 
     from app.main import notice as notice_blueprint
     app.register_blueprint(notice_blueprint)  # 通知
+
+    from app.main import userlist as  userlist_blueprint
+    app.register_blueprint(userlist_blueprint)  # 用户管理
 
     return app

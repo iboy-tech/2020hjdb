@@ -8,7 +8,7 @@
 @Description : 
 @Software: PyCharm
 """
-from flask import render_template, request, g, current_app
+from flask import render_template, request, g, current_app, session
 from flask_cors import cross_origin
 
 from app.main import user
@@ -19,7 +19,8 @@ from app.main import user
 def index():
     data=request.json
     print('user页面收到请求',data)
-    print(g)
+    # print('我是g对象',g.user)
+    print(session.get('user'))
     print(current_app)
     user = {
         "success": True,
@@ -119,7 +120,7 @@ def index():
     },
     "ext" : None
     }
-    notice =[ {
+    notice=[ {#正确
           "id" : "3091171d88de43319253c5d03bf267e1",
           "title" : "公告标题",
           "content" : "公告详情",
@@ -150,8 +151,7 @@ def index():
           "time" : "2019-04-22 20:29",
           "fixTop" : 0
         } ]
-    return render_template('user.html', user=user,item=item,notice=notice)
-    # return render_template('user.html', user=user)错误了
+    return render_template('user.html', user=user,item=item,notice=notice)#所有参数都要
 
 
 def logout():

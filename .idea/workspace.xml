@@ -1,24 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1fdc08d0-af6c-437b-85ec-7249d8cd86e2" name="Default Changelist" comment="完成后台登录跳转">
-      <change afterPath="$PROJECT_DIR$/app/templates/userlist.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/views/page_view.py" afterDir="false" />
+    <list default="true" id="1fdc08d0-af6c-437b-85ec-7249d8cd86e2" name="Default Changelist" comment="去看demo，了解返回的数据类型，明天准备写用户页">
+      <change afterPath="$PROJECT_DIR$/app/views/userlist_view.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/main/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/main/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/static/js/mine/category.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/static/js/mine/category.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/static/js/mine/detail.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/static/js/mine/detail.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/static/js/mine/home.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/static/js/mine/home.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/static/js/mine/notice.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/static/js/mine/notice.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/detail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/user.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/login.bak.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/login.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/users.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/static/js/mine/users.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/static/js/mine/users.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/notice.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/notice.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/userlist.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/userlist.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/views/auth_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/auth_view.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/views/category_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/category_view.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/home_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/user_view.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/views/notice_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/notice_view.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/views/page_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/page_view.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/views/user_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/user_view.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -437,7 +434,7 @@
       <workItem from="1579677206575" duration="1099000" />
       <workItem from="1579678556086" duration="15164000" />
       <workItem from="1579698030824" duration="10783000" />
-      <workItem from="1579750115691" duration="25491000" />
+      <workItem from="1579750115691" duration="31975000" />
     </task>
     <task id="LOCAL-00001" summary="初始化仓库">
       <created>1578632264764</created>
@@ -502,7 +499,14 @@
       <option name="project" value="LOCAL" />
       <updated>1579767067697</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="去看demo，了解返回的数据类型，明天准备写用户页">
+      <created>1579785379482</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1579785379482</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -535,7 +539,8 @@
     <MESSAGE value="写了注释，更改部分字段的数据类型" />
     <MESSAGE value="增加密码散列支持，准备写管理员模块" />
     <MESSAGE value="完成后台登录跳转" />
-    <option name="LAST_COMMIT_MESSAGE" value="完成后台登录跳转" />
+    <MESSAGE value="去看demo，了解返回的数据类型，明天准备写用户页" />
+    <option name="LAST_COMMIT_MESSAGE" value="去看demo，了解返回的数据类型，明天准备写用户页" />
   </component>
   <component name="WindowStateProjectService">
     <state x="261" y="0" key="#Inspections" timestamp="1579437247077">
@@ -566,30 +571,30 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="456" y="9" key="#models/0.0.1536.824@0.0.1536.824" timestamp="1579701657091" />
-    <state x="303" y="0" key="CommitChangelistDialog2" timestamp="1579767052835">
+    <state x="303" y="0" key="CommitChangelistDialog2" timestamp="1579785336593">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="303" y="0" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1579767052835" />
+    <state x="303" y="0" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1579785336593" />
     <state x="499" y="115" key="FileChooserDialogImpl" timestamp="1579683499076">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="499" y="115" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1579683499076" />
-    <state width="1483" height="3" key="GridCell.Tab.0.bottom" timestamp="1579784072233">
+    <state width="1483" height="68" key="GridCell.Tab.0.bottom" timestamp="1579790507222">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1483" height="3" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1579784072233" />
-    <state width="1483" height="3" key="GridCell.Tab.0.center" timestamp="1579784072233">
+    <state width="1483" height="68" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1579790507222" />
+    <state width="1483" height="68" key="GridCell.Tab.0.center" timestamp="1579790507221">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1483" height="3" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1579784072233" />
-    <state width="1483" height="3" key="GridCell.Tab.0.left" timestamp="1579784072233">
+    <state width="1483" height="68" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1579790507221" />
+    <state width="1483" height="68" key="GridCell.Tab.0.left" timestamp="1579790507219">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1483" height="3" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1579784072233" />
-    <state width="1483" height="3" key="GridCell.Tab.0.right" timestamp="1579784072233">
+    <state width="1483" height="68" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1579790507219" />
+    <state width="1483" height="68" key="GridCell.Tab.0.right" timestamp="1579790507222">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1483" height="3" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1579784072233" />
+    <state width="1483" height="68" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1579790507222" />
     <state width="1483" height="423" key="GridCell.Tab.1.bottom" timestamp="1579678305820">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -610,10 +615,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="47" y="0" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1579609641663" />
-    <state x="261" y="81" key="Vcs.Push.Dialog.v2" timestamp="1579766042171">
+    <state x="261" y="81" key="Vcs.Push.Dialog.v2" timestamp="1579785397766">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="261" y="81" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1579766042171" />
+    <state x="261" y="81" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1579785397766" />
     <state x="348" y="-1" width="840" height="1034" key="search.everywhere.popup" timestamp="1579694646394">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -640,6 +645,6 @@
     <SUITE FILE_PATH="coverage/Flask_WC$Flask__app_py_.coverage" NAME="Flask (app.py) Coverage Results" MODIFIED="1578646864622" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/Flask_WC$views.coverage" NAME="views Coverage Results" MODIFIED="1579437303025" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/app/main" />
     <SUITE FILE_PATH="coverage/Flask_WC$test.coverage" NAME="test Coverage Results" MODIFIED="1578906119617" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/Flask_WC$Flask__setup_py_.coverage" NAME="Flask (setup.py) Coverage Results" MODIFIED="1579777329122" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Flask_WC$Flask__setup_py_.coverage" NAME="Flask (setup.py) Coverage Results" MODIFIED="1579786774398" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

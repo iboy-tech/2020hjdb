@@ -13,7 +13,7 @@ from flask import request
 from app.main import category
 
 
-@category.route('/',methods=['GET','POST','OPTIONS'])
+@category.route('/',methods=['GET','POST','OPTIONS'],strict_slashes=False)
 def index():
     data=request.json
     print('category页面收到请求',data)
@@ -134,7 +134,7 @@ def index():
       },
       "ext" : None
     }
-    data=[ {
+    data_test=[ {
           "name" : "哈哈",
           "about" : "哈哈爱是擦好吃吧唧",
           "image" : None,

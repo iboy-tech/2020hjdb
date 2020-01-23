@@ -21,5 +21,6 @@ user=Blueprint('user', __name__, url_prefix='/user')
 category=Blueprint('category',__name__,url_prefix='/category')
 page=Blueprint('page',__name__,url_prefix='/page')
 notice=Blueprint('notice',__name__,url_prefix='/notice')
-from ..views import admin_view, auth_view,user_view,category_view,page_view,notice_view,comment_view,feedback_view
+userlist=Blueprint('userlist',__name__,url_prefix='/userlist')
+from ..views import admin_view, auth_view,user_view,category_view,page_view,notice_view,comment_view,feedback_view,userlist_view
 print('main蓝图注册了')

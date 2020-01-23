@@ -114,6 +114,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                         <ul class="nav nav-second-level collapse">
                             <li>
                                 <a href="login.html">Login</a>
+
                             </li>
                             <li>
                                 <a href="signup.html">SignUp</a>
@@ -156,7 +157,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                             <div class="profile_img">
 									<span class="prfil-img">
-										<img :src="user.icon?imgPrefix+user.icon:schoolIcon"
+										<img :src="user.icon"
                                              style="max-width: 50px; max-height: 50px;">
 									</span>
                                 <div class="user-name">
@@ -218,8 +219,12 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                         </tr>
                         </thead>
                         <tbody>
-                        <tr v-for="(item, index) in result.list">
-                            <th scope="row">{{index+1}}</th>
+{#                        <tr v-for="(item, index) in result.list">#}
+                     {% for item in result.list %}
+
+{#                        <tr v-for="(item, index) in result.list">#}
+                            <tr>
+{#                            <th scope="row">{{index+1}}</th>#}
                             <td>{{item.username}}</td>
                             <td>{{item.name}}&nbsp;<span v-if="item.kind==2" class="glyphicon glyphicon-user text-primary" title="管理员"></span></td>
                             <td>{{item.gender}}</td>
@@ -254,6 +259,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                                 </div>
                             </td>
                         </tr>
+                {% endfor %}
 
                         </tbody>
                     </table>

@@ -126,11 +126,12 @@ $(function () {
 //获取用户列表
 function getUserList(data, app, append) {
     $.ajax({
-        url: baseUrl + "/admin/userList",
+        url: baseUrl + "/userlist",
         data: JSON.stringify(data),
         method: "POST",
         success: function (res, status) {
             console.log(res);
+            alert('我是userlist'+res)
             if (status == "success") {
                 if (res.success) {
                     app.search.pageNum = res.data.page.pageNum;

@@ -13,7 +13,7 @@ from flask import request
 from app.main import page
 
 
-@page.route('/', methods=['GET', 'POST', 'OPTIONS'])
+@page.route('/', methods=['GET', 'POST', 'OPTIONS'],strict_slashes=False)
 def index():
     data=request.json
     print('page页面收到请求',data)
@@ -83,7 +83,7 @@ def index():
         },
         "ext": None
     }
-    data=[{
+    data_test=[{
                     "id": "b8a3d60480fd45308fd16c1fcfe77caa",
                     "icon": "upload_6720338131142720698.jpg",
                     "kind": 0,

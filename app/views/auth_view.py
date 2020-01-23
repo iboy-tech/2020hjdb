@@ -10,7 +10,7 @@
 """
 import datetime
 
-from flask import render_template, request, redirect, url_for
+from flask import render_template, request, redirect, url_for, g, session
 from flask_cors import cross_origin
 
 from app import db
@@ -29,6 +29,8 @@ def login():
     if request.method == 'POST':
         user = User.query.filter_by(username=data['username']).first()
         if user is not None and user.verify_password(data['password']):
+            # session['user'] = user
+            print(session.get('user'))
             data = {
                 "success": True,
                 "code": 1000,
@@ -78,6 +80,7 @@ def recognize():
                academy=user_jwc['academy'],class_id=user_jwc['class_id'],major=user_jwc['major'],
                qq=qq,sex=user_jwc['sex'],create_time=datetime.datetime.now())
         print(u)
+        # g.user=u
         db.session.add(u)
         db.session.commit()
     else:

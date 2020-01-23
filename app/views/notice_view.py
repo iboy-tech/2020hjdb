@@ -13,7 +13,7 @@ from flask import request
 from app.main import notice
 
 
-@notice.route('/', methods=['GET', 'POST', 'OPTIONS'])
+@notice.route('/', methods=['GET', 'POST', 'OPTIONS'],strict_slashes=False)
 def index():
     data=request.json
     print('notice页面收到请求',data)
@@ -56,7 +56,7 @@ def index():
         },
         "ext": None
     }
-    data=[{
+    data_test=[{
                 "id": "3091171d88de43319253c5d03bf267e1",
                 "title": "公告标题",
                 "content": "公告详情",

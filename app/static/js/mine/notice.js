@@ -153,8 +153,8 @@ function getNoticeList(app) {
         method: "POST",
         success: function (res, status) {
             console.log(res);
-            alert('notice'+res)
-            alert('我是'+status)
+            // alert('notice'+res)
+            // alert('我是'+status)
             if (status == "success") {
                 if (res.success) {
                     app.list = res.data.list;
