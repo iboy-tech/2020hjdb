@@ -1,0 +1,3 @@
+[console_scripts]
+flask-sqlacodegen = sqlacodegen.main:main
+

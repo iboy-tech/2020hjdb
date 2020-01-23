@@ -9,12 +9,14 @@
 @Software: PyCharm
 """
 from flask_bootstrap import Bootstrap
+from flask_login import LoginManager
 from flask_mail import Mail
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate, MigrateCommand
+from flask_migrate import Migrate
 bootstrap = Bootstrap()
 mail = Mail()
 migrate=Migrate()
 moment = Moment()
 db = SQLAlchemy()
+login_manager = LoginManager()

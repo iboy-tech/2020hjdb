@@ -10,48 +10,53 @@
 """
 import datetime
 
-from flask import render_template, request
+from flask import render_template, request, redirect, url_for
 from flask_cors import cross_origin
 
+from app import db
 from app.main import auth
+from app.models.user_model import User
 
 
 @auth.route('/', methods=['GET', 'POST', 'OPTIONS'])
 @cross_origin()
 def login():
     data=request.json
+    print(data, type(data))
     print('请求成功',type(data))
     # print(request.args)
     # print(request.json_module)
     if request.method == 'POST':
+        user = User.query.filter_by(username=data['username']).first()
+        if user is not None and user.verify_password(data['password']):
+            data = {
+                "success": True,
+                "code": 1000,
+                "msg": "处理成功",
+                "data": {
+                    "user": {
+                        "studentNum": user.username,
+                        "realName": user.real_name,
+                        "icon": 'https://q2.qlogo.cn/headimg_dl?dst_uin={}&spec=100'.format(user.qq),
+                        "email": user.qq + '@qq.com',
+                        # "schoolName": "东华理工大学",
+                        # "gender": 1,
+                        "createTime": user.create_time,
+                        "lastLogin": user.last_login,
+                        "kind": user.kind
+                    }
+                }
+                # "ext" : None
+            }
+            print(data)
+            return data
         # data = request.get_data(as_text=True)
-        print(data, type(data))
+
         # print(aws)
         # data = json.loads(data)
         # print(data)
         print(data['username'])
-        item = {
-            "success": True,
-            "code": 1000,
-            "msg": "处理成功",
-            "data": {
-                "schools": [
-                    {
-                        "schoolId": "12345678123456781234567812345678",
-                        "schoolName": "东华理工大学"
-                    },
-                    {
-                        "schoolId": "12345678123456781234567812345677",
-                        "schoolName": "南昌大学"
-                    },
-                    {
-                        "schoolId": "12345678123456781234567812345676",
-                        "schoolName": "江西财经大学"
-                    }
-                ]
-            },
-            "ext": None
-        }
+
     print('登录请求成功！', datetime.datetime.now())
     return render_template('login.html')
 
@@ -66,9 +71,15 @@ def recognize():
     qq=data['qq']
     # code=data['code']
     from app.untils.jwc import user_verify
-    user=user_verify(usr,pwd)
-    if user is not  None:
-        print(user,'验证成功')
+    user_jwc=user_verify(usr,pwd)
+    if user_jwc is not  None:
+        print(user_jwc,'验证成功')
+        u=User(username=user_jwc['username'],password=pwd,real_name=user_jwc['real_name'],
+               academy=user_jwc['academy'],class_id=user_jwc['class_id'],major=user_jwc['major'],
+               qq=qq,sex=user_jwc['sex'],create_time=datetime.datetime.now())
+        print(u)
+        db.session.add(u)
+        db.session.commit()
     else:
         print('用户名或密码有误')
     data={
@@ -85,7 +96,7 @@ def recognize():
                   "gender": 1,
                   "createTime": "2019-04-10 19:06:10",
                   "lastLogin": "2019-04-10 19:06:10",
-                  "kind": 0
+                  "kind": 2
               }
           }
           # "ext" : None

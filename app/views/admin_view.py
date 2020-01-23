@@ -9,7 +9,8 @@
 @Software: PyCharm
 """
 from datetime import datetime
-from flask import render_template, url_for, session, redirect
+from flask import render_template, url_for, session, redirect, request
+from flask_login import login_required
 
 from app.main import admin
 
@@ -20,8 +21,11 @@ from app.main import admin
 print('视图文件加载')
 
 
-@admin.route('/admin', methods=['GET', 'POST'])
+@admin.route('/', methods=['GET', 'POST'])
+# @login_required
 def index():
+    data=request.json
+    print(data)
     print('蓝图请求成功！')
     # form = NameForm()
     # if form:
