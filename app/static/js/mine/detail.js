@@ -157,7 +157,7 @@ function deletePub(data) {
             console.log(res);
             if (status == "success") {
                 if (res.success) {
-                    window.open("./home.html", "_self");
+                    window.open("./user.html", "_self");
                 } else {
                     showAlertError(res.msg)
                 }
@@ -173,7 +173,7 @@ function deletePub(data) {
 //查询相关类别
 function pageLostFound(data, result) {
     $.ajax({
-        url: baseUrl + "/user/page",
+        url: baseUrl + "/page",
         data: JSON.stringify(data),
         method: "POST",
         beforeSend: function () {

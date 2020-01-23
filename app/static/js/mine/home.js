@@ -424,7 +424,7 @@ function deletePub(data) {
 //查询通知列表
 function getNoticeList(app) {
     $.ajax({
-        url: baseUrl + "/common/noticeList",
+        url: baseUrl + "/notice",
         //data: JSON.stringify(data),
         method: "POST",
         success: function (res, status) {
@@ -618,7 +618,7 @@ function pubLostFound(data) {
 function pageLostFound(data, result, append) {
     //console.log(data);
     $.ajax({
-        url: baseUrl + "/user/page",
+        url: baseUrl + "/page",
         data: JSON.stringify(data),
         method: "POST",
         success: function (res, status) {
@@ -651,7 +651,7 @@ function pageLostFound(data, result, append) {
 //获取物品类别list
 function getCategory() {
     $.ajax({
-        url: baseUrl + "/common/category",
+        url: baseUrl + "/category",
         method: "POST",
         success: function (res, status) {
             console.log(res);

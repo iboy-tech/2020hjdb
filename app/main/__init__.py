@@ -17,7 +17,9 @@ from flask import Blueprint
 # __name__ 变量即可。
 admin = Blueprint('admin', __name__,url_prefix='/admin')
 auth=Blueprint('auth',__name__)
-home=Blueprint('home',__name__,url_prefix='/home')
-category=Blueprint('category',__name__,url_prefix='category')
-from ..views import admin_view, auth_view,home_view,category_view
+user=Blueprint('user', __name__, url_prefix='/user')
+category=Blueprint('category',__name__,url_prefix='/category')
+page=Blueprint('page',__name__,url_prefix='/page')
+notice=Blueprint('notice',__name__,url_prefix='/notice')
+from ..views import admin_view, auth_view,user_view,category_view,page_view,notice_view,comment_view,feedback_view
 print('main蓝图注册了')

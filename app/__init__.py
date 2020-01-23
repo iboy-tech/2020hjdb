@@ -16,10 +16,12 @@ from flask_cors import CORS
 
 # .表示当前路径
 from config import config  # 导入存储配置的字典
+
 #  会记录客户端 IP
 # 地址和浏览器的用户代理信息，如果发现异动就登出用户
 login_manager.session_protection = 'strong'
 login_manager.login_view = 'auth.login'
+
 
 # 工厂函数
 def creat_app(config_name):
@@ -40,7 +42,21 @@ def creat_app(config_name):
     # 附加路由和自定义错误页面@app.route() @app.errorhandler
     from app.main import admin as admin_blueprint
     # 蓝本在工厂函数 create_app() 中注册到程序上
-    app.register_blueprint(admin_blueprint)
+    app.register_blueprint(admin_blueprint)  # 管理员
+
     from app.main import auth as auth_blueprint
-    app.register_blueprint(auth_blueprint)
+    app.register_blueprint(auth_blueprint)  # 认证
+
+    from app.main import user as user_blueprint
+    app.register_blueprint(user_blueprint)  # 用户
+
+    from app.main import page as page_blueprint
+    app.register_blueprint(page_blueprint)  # 分页
+
+    from app.main import category as category_blueprint
+    app.register_blueprint(category_blueprint)  # 分类
+
+    from app.main import notice as notice_blueprint
+    app.register_blueprint(notice_blueprint)  # 通知
+
     return app

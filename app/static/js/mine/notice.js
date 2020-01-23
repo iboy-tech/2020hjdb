@@ -148,11 +148,13 @@ function addNotice(notice) {
 //查询通知列表
 function getNoticeList(app) {
     $.ajax({
-        url: baseUrl + "/common/noticeList",
+        url: baseUrl + "/notice",
         //data: JSON.stringify(data),
         method: "POST",
         success: function (res, status) {
             console.log(res);
+            alert('notice'+res)
+            alert('我是'+status)
             if (status == "success") {
                 if (res.success) {
                     app.list = res.data.list;

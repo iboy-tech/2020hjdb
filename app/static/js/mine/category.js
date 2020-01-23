@@ -36,7 +36,8 @@ var app = new Vue({
                 btn: ['确定', '取消'] //按钮
             }, function () {
                 deleteSession("user");
-                window.location.replace("login.html");
+                // window.location.replace("login.html");
+                window.location.replace("/");
             }, function () {
 
             });
@@ -96,7 +97,7 @@ function addCategory(data, app) {
 //获取物品类别list
 function getCategory() {
     $.ajax({
-        url: baseUrl + "/common/category",
+        url: baseUrl + "/category",
         method: "POST",
         success: function (res, status) {
             console.log(res);

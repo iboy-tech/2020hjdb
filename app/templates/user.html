@@ -15,7 +15,7 @@
         .up-img {
             border: 1px solid #dddddd;
             height: 110px !important;
-            /*background: url("./images/plus.png") no-repeat center center;*/
+            /*background: url("../../static/images/plus.png") no-repeat center center;*/
         }
 
         .up-img input {
@@ -68,7 +68,7 @@
                                 <div class="avatar-wrap">
                                     <a class="ui small circular image avatar">
                                         <div class="osc-avatar large-portrait _120x120">
-                                            <img v-if="user.icon" :src="imgPrefix+user.icon" :alt="user.realName"/>
+                                            <img v-if="user.icon" :src="user.icon" :alt="user.realName"/>
                                             <div v-else style="height: 120px; width: 120px; font-size: 80px;
                                                 text-align: center; line-height: 80px; padding: 20px 0px;
                                              color: #fff;background-color: #3879d9; cursor: pointer;"
@@ -650,7 +650,7 @@
                                                      style="display: inline-block !important;">
                                                     <!--<input id="in1" type="file" accept="image/*"-->
                                                     <!--onchange="changeImg(this)">-->
-                                                    <!--<img id="img1" src="./images/plus.png">-->
+                                                    <!--<img id="img1" src="../../static/images/plus.png">-->
                                                     <div class="ui fluid image up-img">
                                                         <input id="imgInput" type="file" accept="image/*"
                                                                onchange="changeInput(this)">
@@ -660,7 +660,7 @@
                                                 <!--<div class="ui image up-img" style="display: inline-block !important;">-->
                                                 <!--</div>-->
                                                 <!--<div class="ui image up-img" style="display: inline-block !important;">-->
-                                                <!--<img src="./images/plus.png">-->
+                                                <!--<img src="../../static/images/plus.png">-->
                                                 <!--</div>-->
                                             </div>
 
