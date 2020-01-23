@@ -95,7 +95,7 @@ fabric.properties
 venv/Include/
 /venv/
 #包含敏感信息的环境变量
-/.env
+.env
 Pipfile
 Pipfile.lock
 Study-Test/001/__pycache__/

@@ -1,7 +1,9 @@
 # coding: utf-8
-from sqlalchemy import Index
+from datetime import datetime
+
+from sqlalchemy import Index,text
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.schema import FetchedValue
+
 
 from app import db
 
@@ -23,10 +25,10 @@ class User(db.Model):
     major = db.Column(db.String(50), nullable=False, info='专业')
     qq = db.Column(db.String(16), nullable=False, info='QQ')
     # avatar = db.Column(db.String(256), info='??')
-    kind = db.Column(db.Integer, nullable=False, server_default=FetchedValue(), info='是否为管理员')
-    sex = db.Column(db.Integer, server_default=FetchedValue(), info='0男1女')
-    create_time = db.Column(db.DateTime, nullable=False, server_default=FetchedValue(), info='时间')
-    last_login = db.Column(db.DateTime, nullable=True,info='最后登录时间')
+    kind = db.Column(db.Integer, nullable=False, server_default=text('0'), info='是否为管理员')
+    sex = db.Column(db.Integer, server_default=text('0'), info='0男1女')
+    create_time = db.Column(db.DateTime, nullable=False, default=datetime.utcnow(), info='时间')
+    last_login = db.Column(db.DateTime, default=datetime.utcnow(),nullable=True,info='最后登录时间')
     # 返回一个具有可读性的字符串模型  方便调试
     def __repr__(self):
         return '<TUser %r>' % self.name

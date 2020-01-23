@@ -13,7 +13,12 @@ from app import creat_app, db
 from flask_script import Manager, Shell
 from flask_migrate import Migrate, MigrateCommand
 
+from app.models.feedback_model import Feedback
+from app.models.lostfound_model import LostFound
+from app.models.notice_model import Notice
 from app.models.user_model import User
+from app.models.comment_model import Comment
+from app.models.category_model import Category
 
 print('导入环境变量')
 print(os.path.realpath)
@@ -38,7 +43,7 @@ migrate = Migrate(app,db)
 
 
 def make_shell_context():
-    return dict(app=app, db=db, User=User)
+    return dict(app=app, db=db, User=User,Category=Category,Comment=Comment,Notice=Notice,LostFound=LostFound,Feedback=Feedback)
 
 
 manager.add_command('shell', Shell(make_shell_context()))

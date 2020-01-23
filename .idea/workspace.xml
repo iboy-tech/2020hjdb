@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1fdc08d0-af6c-437b-85ec-7249d8cd86e2" name="Default Changelist" comment="建立了所有ORM模型">
+    <list default="true" id="1fdc08d0-af6c-437b-85ec-7249d8cd86e2" name="Default Changelist" comment="写了注释，更改部分字段的数据类型">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/models/category_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/category_model.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/models/comment_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/comment_model.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/models/feedback_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/feedback_model.py" afterDir="false" />
@@ -11,7 +11,7 @@
       <change beforePath="$PROJECT_DIR$/app/models/manager_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/manager_model.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/models/notice_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/notice_model.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/models/user_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/user_model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/auth_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/auth_view.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/versions/4460f753b4b3_初始化迁移.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/setup.py" beforeDir="false" afterPath="$PROJECT_DIR$/setup.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -338,10 +338,10 @@
       <item itemvalue="Flask server.Flask (setup.py) (2)" />
       <item itemvalue="Flask server.Flask (setup.py)" />
       <item itemvalue="Python.__init__" />
+      <item itemvalue="Python.models" />
       <item itemvalue="Python.auth_view" />
       <item itemvalue="Python.jwc" />
       <item itemvalue="Python.__init__ (1)" />
-      <item itemvalue="Python.models" />
     </list>
     <recent_temporary>
       <list>
@@ -415,7 +415,8 @@
       <workItem from="1579671595139" duration="5525000" />
       <workItem from="1579677206575" duration="1099000" />
       <workItem from="1579678556086" duration="15164000" />
-      <workItem from="1579698030824" duration="8780000" />
+      <workItem from="1579698030824" duration="10783000" />
+      <workItem from="1579750115691" duration="734000" />
     </task>
     <task id="LOCAL-00001" summary="初始化仓库">
       <created>1578632264764</created>
@@ -459,7 +460,14 @@
       <option name="project" value="LOCAL" />
       <updated>1579704031189</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="写了注释，更改部分字段的数据类型">
+      <created>1579706881658</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1579706881658</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -489,7 +497,8 @@
     <MESSAGE value="更改了登录界面" />
     <MESSAGE value="建立了User模型" />
     <MESSAGE value="建立了所有ORM模型" />
-    <option name="LAST_COMMIT_MESSAGE" value="建立了所有ORM模型" />
+    <MESSAGE value="写了注释，更改部分字段的数据类型" />
+    <option name="LAST_COMMIT_MESSAGE" value="写了注释，更改部分字段的数据类型" />
   </component>
   <component name="WindowStateProjectService">
     <state x="261" y="0" key="#Inspections" timestamp="1579437247077">
@@ -520,30 +529,30 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="456" y="9" key="#models/0.0.1536.824@0.0.1536.824" timestamp="1579701657091" />
-    <state x="303" y="0" key="CommitChangelistDialog2" timestamp="1579704022937">
+    <state x="303" y="0" key="CommitChangelistDialog2" timestamp="1579706873943">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="303" y="0" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1579704022937" />
+    <state x="303" y="0" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1579706873943" />
     <state x="499" y="115" key="FileChooserDialogImpl" timestamp="1579683499076">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="499" y="115" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1579683499076" />
-    <state width="1040" height="183" key="GridCell.Tab.0.bottom" timestamp="1579705496059">
+    <state width="1040" height="183" key="GridCell.Tab.0.bottom" timestamp="1579708842094">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1040" height="183" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1579705496059" />
-    <state width="1040" height="183" key="GridCell.Tab.0.center" timestamp="1579705496059">
+    <state width="1040" height="183" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1579708842094" />
+    <state width="1040" height="183" key="GridCell.Tab.0.center" timestamp="1579708842094">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1040" height="183" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1579705496059" />
-    <state width="1040" height="183" key="GridCell.Tab.0.left" timestamp="1579705496059">
+    <state width="1040" height="183" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1579708842094" />
+    <state width="1040" height="183" key="GridCell.Tab.0.left" timestamp="1579708842093">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1040" height="183" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1579705496059" />
-    <state width="1040" height="183" key="GridCell.Tab.0.right" timestamp="1579705496059">
+    <state width="1040" height="183" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1579708842093" />
+    <state width="1040" height="183" key="GridCell.Tab.0.right" timestamp="1579708842094">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1040" height="183" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1579705496059" />
+    <state width="1040" height="183" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1579708842094" />
     <state width="1483" height="423" key="GridCell.Tab.1.bottom" timestamp="1579678305820">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -564,10 +573,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="47" y="0" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1579609641663" />
-    <state x="261" y="81" key="Vcs.Push.Dialog.v2" timestamp="1579704875664">
+    <state x="261" y="81" key="Vcs.Push.Dialog.v2" timestamp="1579706890150">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="261" y="81" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1579704875664" />
+    <state x="261" y="81" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1579706890150" />
     <state x="348" y="-1" width="840" height="1034" key="search.everywhere.popup" timestamp="1579694646394">
       <screen x="0" y="0" width="1536" height="824" />
     </state>

@@ -1,7 +1,7 @@
 # coding: utf-8
-from sqlalchemy import Index
-from sqlalchemy.schema import FetchedValue
-from .category_model import Category
+from datetime import datetime
+
+from sqlalchemy import Index, text
 
 from app import db
 
@@ -20,12 +20,12 @@ class LostFound(db.Model):
     title = db.Column(db.String(128), nullable=False, info='帖子标题')
     images = db.Column(db.String(1024), info='?????')
     claimant_id = db.Column(db.String(64), info='???ID')
-    create_time = db.Column(db.DateTime, nullable=False, info='????')
+    create_time = db.Column(db.DateTime,default=datetime.utcnow(), nullable=False, info='????')
     deal_time = db.Column(db.DateTime, info='?????')
-    fix_top = db.Column(db.Integer, nullable=False, server_default=FetchedValue(), info='????')
+    fix_top = db.Column(db.Integer, nullable=False, server_default=text('0'), info='????')
     location = db.Column(db.String(512), info='????')
-    look_count = db.Column(db.Integer, nullable=False, server_default=FetchedValue())
-    record_status = db.Column(db.Integer, nullable=False, server_default=FetchedValue())
+    look_count = db.Column(db.Integer, nullable=False,server_default=text('0'))
+    record_status = db.Column(db.Integer, nullable=False,server_default=text('0'))
     status = db.Column(db.Integer, nullable=False, info='??????????0??1??')
     user_id = db.Column(db.String(64), nullable=False, info='???id')
 
