@@ -5,4 +5,7 @@
 venv
 #包含敏感信息的环境变量
 .env
+.idea
+__pycache__
+Study-Test
 
