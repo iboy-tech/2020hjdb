@@ -5,6 +5,7 @@
       <w>appsecret</w>
       <w>flasky</w>
       <w>sqlalchemy</w>
+      <w>userlist</w>
     </words>
   </dictionary>
 </component>

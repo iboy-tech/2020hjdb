@@ -167,7 +167,7 @@ function resetPassword(userId) {
             showLoading();
         },
         success: function (res, status) {
-            console.log(res);
+            console.log('我是res'+res);
             if (status == "success") {
                 if (res.success) {
                     showOK();

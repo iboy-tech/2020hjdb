@@ -8,7 +8,7 @@
 @Description : 
 @Software: PyCharm
 """
-from flask import request
+from flask import request, render_template
 
 from app.main import notice
 
@@ -87,4 +87,16 @@ def index():
                 "time": "2019-04-22 20:29",
                 "fixTop": 0
             }]
-    return data
+    user = {
+        "studentNum": "201520180508",
+        "realName": "cpwu",
+        "icon": "www.baidu.com/icon.png",
+        "email": "cpwu@foxmail.com",
+        "phoneNumber": "15911112222",
+        "schoolName": "东华理工大学",
+        # "gender": 1,
+        "createTime": "2019-04-10 19:06:10",
+        "lastLogin": "2019-04-10 19:06:10",
+        "kind": 0
+    }
+    return render_template('notice.html',user=user,item=data)

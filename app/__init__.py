@@ -67,4 +67,13 @@ def creat_app(config_name):
     from app.main import userlist as  userlist_blueprint
     app.register_blueprint(userlist_blueprint)  # 用户管理
 
+    from app.main import found as  found_blueprint
+    app.register_blueprint(found_blueprint)  # 用户管理
+
+    from app.main import feedback as  feedback_blueprint
+    app.register_blueprint(feedback_blueprint)  # 用户管理
+
+    from app.main import detail as  detail_blueprint
+    app.register_blueprint(detail_blueprint)  # 用户管理
+
     return app
