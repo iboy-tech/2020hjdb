@@ -43,7 +43,8 @@ migrate = Migrate(app,db)
 
 
 def make_shell_context():
-    return dict(app=app, db=db, User=User,Category=Category,Comment=Comment,Notice=Notice,LostFound=LostFound,Feedback=Feedback)
+    return dict(app=app, db=db, User=User,Category=Category,
+                Comment=Comment,Notice=Notice,LostFound=LostFound,Feedback=Feedback)
 
 
 manager.add_command('shell', Shell(make_shell_context()))

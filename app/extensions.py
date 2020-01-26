@@ -20,3 +20,4 @@ migrate=Migrate()
 moment = Moment()
 db = SQLAlchemy()
 login_manager = LoginManager()
+
