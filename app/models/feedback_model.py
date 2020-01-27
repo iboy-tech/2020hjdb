@@ -17,7 +17,7 @@ class Feedback(db.Model):
     real_name = db.Column(db.String(256), nullable=False, info='????????')
     record_status = db.Column(db.Integer, nullable=False,server_default=text('0'), info='????0/1 0????')
     subject = db.Column(db.String(256), nullable=False, info='?????')
-    user_id = db.Column(db.String(64), nullable=False, info='???ID')
+    user_id = db.Column(db.Integer,db.ForeignKey('t_user.id'),nullable=False, info='创建人ID')
     username = db.Column(db.String(64), nullable=False, info='?????')
     def __repr__(self):
         return '<TFeedback %r>' % self.name

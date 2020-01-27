@@ -3,6 +3,7 @@ var app = new Vue({
     data: {
         imgPrefix: staticUrl,
         schoolIcon: './images/icon-school.png',
+        item:'',
         user: getSession("user") ? JSON.parse(getSession('user')) : {},
         search: {
             keyword: "",
@@ -43,12 +44,12 @@ var app = new Vue({
                 return;
             }
             this.search.pageNum = pageNum;
-            getUserList(app.search, app, false);
+            // getUserList(app.search, app, false);
         },
         submit() {
             let pgNum = $('#pgNum').val() - 1;
             this.search.pageNum = pgNum < 0 ? 0 : pgNum;
-            getUserList(app.search, app, false);
+            // getUserList(app.search, app, false);
         },
         freezeUser(userId) {
             layer.confirm('冻结后该用户将无法再登录系统，确定要冻结码？', {
@@ -83,7 +84,7 @@ var app = new Vue({
                 btn: ['确定', '取消'] //按钮
             }, function () {
                 deleteSession("user");
-                window.location.replace("login.html");
+                window.location.replace("/logout");
             }, function () {
 
             });
@@ -120,11 +121,11 @@ $(function () {
         }
     }
 
-    getUserList(app.search, app, false);
+    // getUserList(app.search, app, false);
 });
 
 //获取用户列表
-function getUserList(data, app, append) {
+function getUserList_BAK(data, app, append) {
     $.ajax({
         url: baseUrl + "/userlist",
         data: JSON.stringify(data),
@@ -193,7 +194,7 @@ function setAsAdmin(userId, flag) {
             if (status == "success") {
                 if (res.success) {
                     showOK();
-                    getUserList(app.search, app, false);
+                    // getUserList(app.search, app, false);
                 } else {
                     showAlertError(res.msg)
                 }
@@ -219,7 +220,7 @@ function freezeUser(userId) {
             if (status == "success") {
                 if (res.success) {
                     showOK();
-                    getUserList(app.search, app, false);
+                    // getUserList(app.search, app, false);
                 } else {
                     showAlertError(res.msg)
                 }
@@ -248,7 +249,7 @@ function unfreezeUser(userId) {
             if (status == "success") {
                 if (res.success) {
                     showOK();
-                    getUserList(app.search, app, false);
+                    // getUserList(app.search, app, false);
                 } else {
                     showAlertError(res.msg)
                 }

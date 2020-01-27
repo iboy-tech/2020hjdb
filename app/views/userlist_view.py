@@ -71,36 +71,65 @@ def index():
         "lastLogin": "2019-04-10 19:06:10",
         "kind": 0
     }
-    data = [{
-        "userId": "316a62ea3a444711927d872609296dbf",
-        "name": "赵大海",
-        "username": "201520180517",
-        "gender": "男",
-        "email": "admin",
-        "phoneNumber": "13511112222",
-        "classNum": "1521805",
-        "major": "软件工程",
-        "academy": "软件学院",
-        "campus": "南昌校区",
-        "lastLogin": "2020-01-21 14:04",
-        "status": "正常",
-        "kind": 2
-    }, {
-        "userId": "6529d0739c344ccba3f4f0f820edcc98",
-        "name": "钱二喜",
-        "username": "201520180508",
-        "gender": "男",
-        "email": "547142436@qq.com",
-        "phoneNumber": "123456 ",
-        "classNum": "1521805",
-        "major": "软件工程",
-        "academy": "软件学院",
-        "campus": "南昌校区",
-        "lastLogin": "2020-01-23 22:49",
-        "status": "正常",
-        "kind": 0
-    }]
-    return render_template('userlist.html',user=user,result=data)
+    items=[{
+                    "userId": "316a62ea3a444711927d872609296dbf",
+                    "name": "赵大海",
+                    "username": "201520180517",
+                    "gender": "男",
+                    "email": "admin",
+                    "phoneNumber": "13511112222",
+                    "classNum": "1521805",
+                    "major": "软件工程",
+                    "academy": "软件学院",
+                    "campus": "南昌校区",
+                    "lastLogin": "2020-01-21 14:04",
+                    "status": "正常",
+                    "kind": 2
+                }, {
+                    "userId": "6529d0739c344ccba3f4f0f820edcc98",
+                    "name": "钱二喜",
+                    "username": "201520180508",
+                    "gender": "男",
+                    "email": "547142436@qq.com",
+                    "phoneNumber": "123456 ",
+                    "classNum": "1521805",
+                    "major": "软件工程",
+                    "academy": "软件学院",
+                    "campus": "南昌校区",
+                    "lastLogin": "2020-01-23 22:49",
+                    "status": "正常",
+                    "kind": 0
+                }]
+    # data = [{
+    #     "userId": "316a62ea3a444711927d872609296dbf",
+    #     "name": "赵大海",
+    #     "username": "201520180517",
+    #     "gender": "男",
+    #     "email": "admin",
+    #     "phoneNumber": "13511112222",
+    #     "classNum": "1521805",
+    #     "major": "软件工程",
+    #     "academy": "软件学院",
+    #     "campus": "南昌校区",
+    #     "lastLogin": "2020-01-21 14:04",
+    #     "status": "正常",
+    #     "kind": 2
+    # }, {
+    #     "userId": "6529d0739c344ccba3f4f0f820edcc98",
+    #     "name": "钱二喜",
+    #     "username": "201520180508",
+    #     "gender": "男",
+    #     "email": "547142436@qq.com",
+    #     "phoneNumber": "123456 ",
+    #     "classNum": "1521805",
+    #     "major": "软件工程",
+    #     "academy": "软件学院",
+    #     "campus": "南昌校区",
+    #     "lastLogin": "2020-01-23 22:49",
+    #     "status": "正常",
+    #     "kind": 0
+    # }]
+    return render_template('userlist.html',user=user,result=data,items=items)
     # return data
 
 

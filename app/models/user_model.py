@@ -16,23 +16,19 @@ class User(db.Model, UserMixin):
     __table_args__ = (
         Index('UNIQUE_USER', 'username', 'qq'),
     )
-
     id = db.Column(db.Integer, primary_key=True, info='主键')
     username = db.Column(db.String(25), nullable=False, info='学号')
-    # pasword = db.Column(db.String(128), nullable=False, info='密码')
+    password_hash = db.Column(db.String(128), info='密码散列')
     real_name = db.Column(db.String(100), nullable=False, info='真名')
     academy = db.Column(db.String(150), nullable=False, info='学院')
-    class_id = db.Column(db.String(30), nullable=False, info='班级')
+    class_name = db.Column(db.String(30), nullable=False, info='班级')
     major = db.Column(db.String(50), nullable=False, info='专业')
     qq = db.Column(db.String(16), nullable=False, info='QQ')
     # avatar = db.Column(db.String(256), info='??')
     kind = db.Column(db.Integer, nullable=False, server_default=text('0'), info='是否为管理员')
-    sex = db.Column(db.Integer, server_default=text('0'), info='0男1女')
+    gender = db.Column(db.Integer, server_default=text('0'), info='0男1女')
     create_time = db.Column(db.DateTime, nullable=False, default=datetime.utcnow(), info='时间')
     last_login = db.Column(db.DateTime, default=datetime.utcnow(), nullable=True, info='最后登录时间')
-
-    password_hash = db.Column(db.String(128))
-
     # @property是让这个更简洁
     # ，既保持直接对属性赋值的方便，又对条件做了限制：
     # 调用的时候仍然是方便快捷的直接赋值：

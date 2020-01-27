@@ -18,10 +18,11 @@ class Config:
     FLASK_RUN_PORT = 80
     PIPENV_DONT_LOAD_ENV = 1
     FLASK_DEBUG = True
-    SECRET_KEY = os.environ.get('SECRET_KEY') or 'hard to guess string'
+    SECRET_KEY = os.urandom(24) #随机秘钥
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True  # 每次请求结束后都会自动提交数据库中的变动
     SQLALCHEMY_TRACK_MODIFICATIONS = True
     SQLALCHEMY_COMMIT_TEARDOWN = True
+    DEBUG_TB_INTERCEPT_REDIRECTS = False
     FLASKY_MAIL_SUBJECT_PREFIX = ['Flasky']
     FLASKY_MAIL_SENDER = 'FLASK Admin <547142436@qq.com>'
     FLASKY_ADMIN = os.environ.get('FLASKY_ADMIN')

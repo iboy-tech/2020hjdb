@@ -37,7 +37,7 @@ var app = new Vue({
             }, function () {
                 deleteSession("user");
                 // window.location.replace("login.html");
-                window.location.replace("/");
+                window.location.replace("/logout");
             }, function () {
 
             });

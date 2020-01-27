@@ -27,8 +27,8 @@ class LostFound(db.Model):
     look_count = db.Column(db.Integer, nullable=False,server_default=text('0'))
     record_status = db.Column(db.Integer, nullable=False,server_default=text('0'))
     status = db.Column(db.Integer, nullable=False, info='??????????0??1??')
-    user_id = db.Column(db.String(64), nullable=False, info='???id')
+    user_id = db.Column(db.Integer, db.ForeignKey('t_user.id'),nullable=False, info='创建者id')
 
     # 返回一个具有可读性的字符串模型  方便调试
     def __repr__(self):
-        return '<TLostFound %r>' % self.name
+        return '<TLostFound %r>' % self.title

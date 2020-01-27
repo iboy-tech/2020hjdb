@@ -118,9 +118,9 @@ def user_verify(xuehao, mima):
             'username': data[3].text.replace("\n", ""),
             'real_name': data[5].text.replace("\n", ""),
             'academy': data[16].text.replace("\n", ""),
-            'class_id': data[1].text.replace("\n", ""),
+            'class_name': data[1].text.replace("\n", ""),
             'major': data[18].text.replace("\n", ""),
-            'sex': 1 if data[8].text == '男' else 0,
+            'gender': 0 if data[8].text == '男' else 1,
         }
         return user
     return user

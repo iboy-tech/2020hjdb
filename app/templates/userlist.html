@@ -82,6 +82,12 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                     <li>
                         <a href="/userlist"><i class="fa fa-users nav_icon"></i>用户管理</a>
                     </li>
+                    <li>
+                        <a href="/user"><i class="fa fa-home nav_icon"></i>用户主页
+                            <!--<span class="nav-badge-btm">08</span>-->
+                        </a>
+                        <!-- //nav-second-level -->
+                    </li>
                     <!--<li>-->
                     <!--<a href="campus.html"><i class="fa fa-university nav_icon"></i>校区管理</a>-->
                     <!--</li>-->
@@ -94,40 +100,8 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                         </a>
                         <!-- //nav-second-level -->
                     </li>
-                    <!--<li>
-                        <a href="tables.html"><i class="fa fa-table nav_icon"></i>Tables <span class="nav-badge">05</span></a>
-                    </li>
-                    <li>
-                        <a href="#"><i class="fa fa-check-square-o nav_icon"></i>Forms<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level collapse">
-                            <li>
-                                <a href="forms.html">Basic Forms <span class="nav-badge-btm">07</span></a>
-                            </li>
-                            <li>
-                                <a href="validation.html">Validation</a>
-                            </li>
-                        </ul>
-                        &lt;!&ndash; //nav-second-level &ndash;&gt;
-                    </li>
-                    <li>
-                        <a href="#"><i class="fa fa-file-text-o nav_icon"></i>Pages<span class="nav-badge-btm">02</span><span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level collapse">
-                            <li>
-                                <a href="login.html">Login</a>
 
-                            </li>
-                            <li>
-                                <a href="signup.html">SignUp</a>
-                            </li>
-                            <li>
-                                <a href="blank-page.html">Blank Page</a>
-                            </li>
-                        </ul>
-                        &lt;!&ndash; //nav-second-level &ndash;&gt;
-                    </li>
-                    <li>
-                        <a href="charts.html" class="chart-nav"><i class="fa fa-bar-chart nav_icon"></i>Charts <span class="nav-badge-btm pull-right">new</span></a>
-                    </li>-->
+
                 </ul>
                 <!-- //sidebar-collapse -->
             </nav>
@@ -142,7 +116,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
             <!--toggle button end-->
             <!--logo -->
             <div class="logo">
-                <a href="admin.html">
+                <a href="/admin">
                     <h1>校园失物招领系统</h1>
                     <span>管理控制台</span>
                 </a>
@@ -205,12 +179,12 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                             <th>学号</th>
                             <th>姓名</th>
                             <th>性别</th>
+                            <th>学院</th>
                             <th>专业</th>
                             <th>班级</th>
-                            <th>学院</th>
-                            <th>地址</th>
-                            <th>邮箱</th>
-                            <th>手机</th>
+{#                            <th>地址</th>#}
+                            <th>QQ</th>
+{#                            <th>手机</th>#}
                             <td>最近登录</td>
                             <th>状态</th>
                             <th>
@@ -220,24 +194,32 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                         </thead>
                         <tbody>
 {#                        <tr v-for="(item, index) in result.list">#}
-                     {% for item in result.list %}
+                     {% for item in items %}
 
 {#                        <tr v-for="(item, index) in result.list">#}
                             <tr>
 {#                            <th scope="row">{{index+1}}</th>#}
-                            <td>{{item.username}}</td>
-                            <td>{{item.name}}&nbsp;<span v-if="item.kind==2" class="glyphicon glyphicon-user text-primary" title="管理员"></span></td>
-                            <td>{{item.gender}}</td>
-                            <td>{{item.major}}</td>
-                            <td>{{item.classNum}}</td>
-                            <td>{{item.academy}}</td>
-                            <td>{{item.campus}}</td>
-                            <td>{{item.email}}</td>
-                            <td>{{item.phoneNumber}}</td>
-                            <td>{{item.lastLogin}}</td>
+{#                                <td>{{index+1}}</td>#}
+                               <td>{{ loop.index }}</td>
+                            <td>{{ item.username }}</td>
+                            <td>{{ item.name }}&nbsp;<span v-if="item.kind==2" class="glyphicon glyphicon-user text-primary" title="管理员"></span></td>
+                            <td>{{ item.gender }}</td>
+                            <td>{{ item.major }}</td>
+                            <td>{{ item.classNum }}</td>
+                            <td>{{ item.academy }}</td>
+{#                            <td>{{item.campus}}</td>#}
+                            <td>{{ item.qq }}</td>
+{#                            <td>{{item.phoneNumber}}</td>#}
+                            <td>{{ item.lastLogin }}</td>
                             <td>
-                                <span v-if="item.status=='正常'" class="label-success label">{{item.status}}</span>
-                                <span v-else class="label-danger label">{{item.status}}</span>
+                                 {% if item.status=='正常' %}
+<span  class="label-success label">{{ item.status }}</span>
+    {% else %}
+<span v-else class="label-danger label">{{ item.status }}</span>
+    {% endif %}
+
+{#                                <span  class="label-success label">{{ item.status }}</span>#}
+{#                                <span v-else class="label-danger label">{{ item.status }}</span>#}
                             </td>
                             <td>
                                 <div class="btn-group">

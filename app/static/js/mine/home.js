@@ -135,7 +135,7 @@ var app = new Vue({
                 btn: ['确定', '取消'] //按钮
             }, function () {
                 deleteSession("user");
-                window.location.replace("login.html");
+                window.location.replace("/logout");
             }, function () {
 
             });
