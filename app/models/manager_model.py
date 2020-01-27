@@ -10,7 +10,7 @@ class Manager(db.Model):
     __tablename__ = 't_manager'
 
     id = db.Column(db.Integer, primary_key=True, info='??')
-    create_time = db.Column(db.DateTime, default=datetime.utcnow(),nullable=False)
+    create_time = db.Column(db.DateTime, default=datetime.now(),nullable=False)
     creator_id = db.Column(db.DateTime, nullable=False)
     qq = db.Column(db.String(256), nullable=False)
     user_id = db.Column(db.String(64), nullable=False, unique=True, info='??ID')

@@ -36,7 +36,7 @@ app = create_app(os.getenv('FlASK_CONFIG') or 'default')
 manager = Manager(app)
 migrate = Migrate(app,db)
 toolbar = DebugToolbarExtension(app)
-print('FLASK_APP:'+os.getenv('FLASK_APP'))
+# print('FLASK_APP:'+os.getenv('FLASK_APP'))
 
 
 def make_shell_context():
