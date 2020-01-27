@@ -79,7 +79,7 @@ def logout():
     return redirect(url_for('auth.login')),301
 
 
-@cross_origin()
+
 @auth.route('/recognize', methods=['POST', 'OPTIONS', 'GET'])
 @cross_origin()
 def recognize():

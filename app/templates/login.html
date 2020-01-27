@@ -51,7 +51,7 @@
                             <!--<div class="tab" :class="{tabActive: tabIndex == 2}" @click="changeTab(2)">账号注册</div>-->
                         </div>
                         <input v-model="user.username" type="text" placeholder="学号" required=""/>
-                        <input v-model="user.password" type="password" :placeholder="tabIndex==1?'教务处密码':'密码'" required=""/>
+                        <input v-model="user.password" type="password" :placeholder="tabIndex==1?'教务系统密码':'密码'" required=""/>
                         <input v-model="user.qq" v-if="tabIndex!=0" type="text" placeholder="QQ" required=""/>
 {#                        <div class="opt" v-if="tabIndex==1">#}
 {#                            <input id="vcode" style="width: 65%; display: inline-block;float: left;" type="text" @keyup.enter="submit"#}

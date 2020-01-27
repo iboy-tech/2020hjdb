@@ -56,7 +56,7 @@ def create_app(config_name=None):
     # print('我是SECRET_KEY', temp, type(temp))
     # print(temp.decode("utf-8","strict"))
     # print(str(temp,encoding='gb18030'))
-    CORS(app, resources=r'/*')  # 允许所有域名跨域
+    CORS(app,supports_credentials=True, resources=r'/*')  # 允许所有域名跨域
     # print('工厂函数执行了')
     # app.logger.info('工厂函数执行了')
     # app.config.from_pyfile('settings.py')

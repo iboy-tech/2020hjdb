@@ -242,7 +242,7 @@ var app = new Vue({
         },
         jumpDetail(id) {
             //跳转详情页面
-            window.open("./detail.html?id=" + id, "_self");
+            window.open("./detail?id=" + id, "_self");
         },
         showFeedback() {
             app.showMenu = false;
@@ -290,7 +290,7 @@ var app = new Vue({
         },
         setPhone() {
             app.showMenu = false;
-            layer.prompt({title: '请输入手机号码：'}, function (phone, index) {
+            layer.prompt({title: '请输入新的QQ：'}, function (phone, index) {
                 showOK(phone);
                 //layer.close(index);
                 setPhone(phone);
@@ -302,7 +302,7 @@ var app = new Vue({
         },
         showAbout() {
             app.showMenu = false;
-            showAlert("ECUT失物招领系统", "关于");
+            showAlert("CTGU失物招领系统", "关于");
         }
     }
 });
@@ -424,10 +424,12 @@ function deletePub(data) {
 //查询通知列表
 function getNoticeList(app) {
     $.ajax({
-        url: baseUrl + "/notice",
+        url: baseUrl + "/notice/getall",
         //data: JSON.stringify(data),
         method: "POST",
         success: function (res, status) {
+            // alert(res)
+            // alert(status)
             console.log(res);
             if (status == "success") {
                 if (res.success) {
@@ -587,7 +589,7 @@ function changeInput(obj) {
 function pubLostFound(data) {
     console.log(data);
     $.ajax({
-        url: baseUrl + "/user/pub",
+        url: baseUrl + "/found/pub",
         data: JSON.stringify(data),
         method: "POST",
         success: function (res, status) {
@@ -651,7 +653,7 @@ function pageLostFound(data, result, append) {
 //获取物品类别list
 function getCategory() {
     $.ajax({
-        url: baseUrl + "/category",
+        url: baseUrl + "/category/getall",
         method: "POST",
         success: function (res, status) {
             console.log(res);

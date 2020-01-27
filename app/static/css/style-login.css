@@ -60,6 +60,7 @@ h1 {
     padding: 30px 0 30px 0;
     color: #fff;
 	font-family: 'Josefin Slab', serif;
+    margin-top: 5%;
 }
 h3 {
     font-size: 20px;
@@ -115,6 +116,7 @@ input[type="password"] {
 	-webkit-box-shadow: 3px 3px 18px 7px rgba(0,0,0,0.49);
     -moz-box-shadow: 3px 3px 18px 7px rgba(0,0,0,0.49);
     box-shadow: 3px 3px 18px 7px rgb(12, 0, 0);
+    margin-top: 3%;
 }
 input.btn {
     font-size: 15px;
@@ -168,7 +170,7 @@ input.btn {
     font-size: 20px;
 }
 .w3l-signin2{
-	background:url(../images/memphis.png) repeat 0px 0px;
+	/*background:url(../images/memphis.png) repeat 0px 0px;*/
 	background-size: cover;
 	background-position: 50% 50%;
 }
@@ -242,7 +244,7 @@ input.btn {
      background: #25544b;
 }
 .w3l-signin4{
-	background:url(../images/memphis.png) repeat 0px 0px;
+	/*background:url(../images/memphis.png) repeat 0px 0px;*/
 	background-size: cover;
 	background-position: 50% 50%;
 }
@@ -317,7 +319,7 @@ input.btn {
     border: 2px solid #fff;
 }
 .w3l-signup6{
-	background: url(../images/doodles.png) repeat 0px 0px;
+	/*background: url(../images/doodles.png) repeat 0px 0px;*/
 	background-size: cover;
 	background-position: 50% 50%;
 }
@@ -347,7 +349,7 @@ input.btn {
     background: gray;
 }
 .w3l-signup7 {
-    background: url(../images/memphis.png) repeat 0px 0px;
+    /*background: url(../images/memphis.png) repeat 0px 0px;*/
 	background-size: cover;
 	background-position: 50% 50%;
 }
@@ -392,7 +394,7 @@ input.btn {
     background: #501d1e;
 }
 .w3l-signup8{
-	background:url(../images/coffee.jpg) no-repeat 0px 0px;
+	/*background:url(../static/images/coffee.jpg) no-repeat 0px 0px;*/
 	background-size: cover;
 	background-position: 50% 50%;
 }
@@ -480,6 +482,7 @@ footer {
     padding: 20px 0 20px 0;
 	color: #fff;
 	font-family: 'Raleway', sans-serif;
+    margin-top: 5%;
 }
 footer a{
 	font-size: 15px;
@@ -804,93 +807,107 @@ footer a:hover{
 		letter-spacing: 1px;
 	}
 }
-@media(max-width:600px){
-	h1 {
-		font-size: 36px;
-	}
-	.w3l-signin1, .w3l-signin2, .w3l-signin3, .w3l-signin4, .w3l-signup5, .w3l-signup6, .w3l-signup7, .w3l-signup8 {
-		width: 57%;
-		margin: 13px;
-	}
-	.w3l-signin2 {
-		margin-bottom: 22px;
-	}
-@media(max-width:568px){
-	h1 {
-		font-size: 33px;
-	}
-	
-	.w3l-signin1, .w3l-signin2, .w3l-signin3, .w3l-signin4, .w3l-signup5, .w3l-signup6, .w3l-signup7, .w3l-signup8 {
-		width: 57%;
-		margin: 11px;
-	}
-	.w3l-signin2 {
-		margin-bottom: 22px;
-	}
-	footer a {
-		font-size: 14px;
-		letter-spacing: 1px;
-		line-height: 28px;
-	}
+@media(max-width:600px) {
+    h1 {
+        font-size: 36px;
+    }
+
+    .w3l-signin1, .w3l-signin2, .w3l-signin3, .w3l-signin4, .w3l-signup5, .w3l-signup6, .w3l-signup7, .w3l-signup8 {
+        width: 57%;
+        margin: 13px;
+    }
+
+    .w3l-signin2 {
+        margin-bottom: 22px;
+    }
+
+    @media (max-width: 568px) {
+        h1 {
+            font-size: 33px;
+        }
+
+        .w3l-signin1, .w3l-signin2, .w3l-signin3, .w3l-signin4, .w3l-signup5, .w3l-signup6, .w3l-signup7, .w3l-signup8 {
+            width: 57%;
+            margin: 11px;
+        }
+
+        .w3l-signin2 {
+            margin-bottom: 22px;
+        }
+
+        footer a {
+            font-size: 14px;
+            letter-spacing: 1px;
+            line-height: 28px;
+        }
+    }
+    @media (max-width: 480px) {
+        h1 {
+            font-size: 28px;
+            letter-spacing: 3px;
+        }
+
+        .w3l-signin1, .w3l-signin2, .w3l-signin3, .w3l-signin4, .w3l-signup5, .w3l-signup6, .w3l-signup7, .w3l-signup8 {
+            width: 80%;
+            margin: 18px;
+        }
+
+    }
+    @media (max-width: 414px) {
+        h1 {
+            font-size: 25px;
+        }
+
+    }
+    @media (max-width: 384px) {
+        h1 {
+            font-size: 21px;
+        }
+
+        .w3l-signin1, .w3l-signin2, .w3l-signin3, .w3l-signin4, .w3l-signup5, .w3l-signup6, .w3l-signup7, .w3l-signup8 {
+            width: 80%;
+            margin: 15px;
+        }
+
+        .w3l-signin2 {
+            margin-bottom: 22px;
+        }
+    }
+    @media (max-width: 375px) {
+        .w3l-signin1, .w3l-signin2, .w3l-signin3, .w3l-signin4, .w3l-signup5, .w3l-signup6, .w3l-signup7, .w3l-signup8 {
+            width: 80%;
+            margin: 13.5px;
+        }
+
+        .w3l-signin2 {
+            margin-bottom: 22px;
+        }
+    }
+    @media (max-width: 320px) {
+        h1 {
+            font-size: 18px;
+            letter-spacing: 2px;
+        }
+
+        .w3l-signin1, .w3l-signin2, .w3l-signin3, .w3l-signin4, .w3l-signup5, .w3l-signup6, .w3l-signup7, .w3l-signup8 {
+            swidth: 80%;
+            margin: 8px;
+        }
+
+        .w3l-signin2 {
+            margin-bottom: 22px;
+        }
+
+        footer a {
+            font-size: 13px;
+            letter-spacing: 1px;
+            line-height: 28px;
+        }
+
+        .opt select {
+            font-size: 13px;
+            padding: 10px 1px;
+        }
+    }
 }
-@media(max-width:480px){
-	h1 {
-		font-size: 28px;
-		letter-spacing: 3px;
-	}
-	.w3l-signin1, .w3l-signin2, .w3l-signin3, .w3l-signin4, .w3l-signup5, .w3l-signup6, .w3l-signup7, .w3l-signup8 {
-		width: 80%;
-		margin: 18px;
-	}
-	
-}	
-@media(max-width:414px){
-	h1{
-		font-size: 25px;
-	}
-	
-}
-@media(max-width:384px){
-	h1{
-		font-size: 21px;
-	}
-	.w3l-signin1, .w3l-signin2, .w3l-signin3, .w3l-signin4, .w3l-signup5, .w3l-signup6, .w3l-signup7, .w3l-signup8 {
-		width: 80%;
-		margin: 15px;
-	}
-	.w3l-signin2 {
-		margin-bottom: 22px;
-	}
-}
-@media(max-width:375px){
-	.w3l-signin1, .w3l-signin2, .w3l-signin3, .w3l-signin4, .w3l-signup5, .w3l-signup6, .w3l-signup7, .w3l-signup8 {
-		width: 80%;
-		margin: 13.5px;
-	}
-	.w3l-signin2 {
-		margin-bottom: 22px;
-	}
-}
-@media(max-width:320px){
-	h1{
-		font-size: 18px;
-		letter-spacing: 2px;
-	}
-	.w3l-signin1, .w3l-signin2, .w3l-signin3, .w3l-signin4, .w3l-signup5, .w3l-signup6, .w3l-signup7, .w3l-signup8 {
-		swidth: 80%;
-		margin: 8px;
-	}
-	.w3l-signin2 {
-		margin-bottom: 22px;
-	}
-	footer a {
-    font-size: 13px;
-    letter-spacing: 1px;
-    line-height: 28px;
-	}
-	.opt select {
-		font-size: 13px;
-		padding: 10px 1px;
-	}
-}	
 /*--/responsive--*/

@@ -97,7 +97,7 @@ function addCategory(data, app) {
 //获取物品类别list
 function getCategory() {
     $.ajax({
-        url: baseUrl + "/category",
+        url: baseUrl + "/category/getall",
         method: "POST",
         success: function (res, status) {
             console.log(res);

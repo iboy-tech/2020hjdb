@@ -64,7 +64,7 @@ def index():
               "pageSize" : 10,
               "list" : [ {
                 "id" : "00000000001",
-                # "icon" : null,
+                # "icon" : None,
                 "kind" : 0,
                 "username" : "201520180508",
                 "realName": "赵大海",
@@ -79,7 +79,7 @@ def index():
               } ]
             }
           },
-          # "ext" : null
+          # "ext" : None
         }
     notice={
       "success" : True,
@@ -154,5 +154,34 @@ def index():
     return render_template('user.html', user=user,item=item,notice=notice)#所有参数都要
 
 
-def logout():
-    pass
+@user.route('/messages', methods=['POST', 'OPTIONS', 'GET'])
+@cross_origin()
+def get_message():
+    data={
+      "success" : True,
+      "code" : 1000,
+      "msg" : "处理成功",
+      "data" : {
+        "list" : [ {
+          "id" : "b659546fb35b465e839ed91989fed40c",
+          "userId" : "6529d0739c344ccba3f4f0f820edcc98",
+          "icon" : "upload_6720338131142720698.jpg",
+          "username" : "普通用户201520180508",
+          "time" : "2020-01-21 13:13",
+          "title" : "手机掉了",
+          "lostFoundId" : "b8a3d60480fd45308fd16c1fcfe77caa",
+          "content" : "哈哈"
+        }, {
+          "id" : "85a84663de594f57a5cbe1c5a4ea0eef",
+          "userId" : "6529d0739c344ccba3f4f0f820edcc98",
+          "icon" : "upload_6720338131142720698.jpg",
+          "username" : "普通用户201520180508",
+          "time" : "2020-01-15 20:45",
+          "title" : "我的校园卡掉了",
+          "lostFoundId" : "83b9f303927b4255869280fcf40a009a",
+          "content" : "哈哈"
+        } ]
+      },
+      "ext" : None
+    }
+    return data

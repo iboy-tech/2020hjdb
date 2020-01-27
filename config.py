@@ -14,8 +14,6 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 # 基类配置
 class Config:
-    FLASK_RUN_HOST = '127.0.0.1'
-    FLASK_RUN_PORT = 80
     PIPENV_DONT_LOAD_ENV = 1
     FLASK_DEBUG = True
     SECRET_KEY = os.urandom(24) #随机秘钥
@@ -26,6 +24,7 @@ class Config:
     FLASKY_MAIL_SUBJECT_PREFIX = ['Flasky']
     FLASKY_MAIL_SENDER = 'FLASK Admin <547142436@qq.com>'
     FLASKY_ADMIN = os.environ.get('FLASKY_ADMIN')
+    MXA_ATTEMPT_NUMBER = 5
 
 
     @staticmethod

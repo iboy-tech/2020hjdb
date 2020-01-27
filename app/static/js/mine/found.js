@@ -222,7 +222,7 @@ function deletePub(data) {
 function pageLostFound(data, result, append) {
     //console.log(data);
     $.ajax({
-        url: baseUrl + "/user/page",
+        url: baseUrl + "/found/getall",
         data: JSON.stringify(data),
         method: "POST",
         success: function (res, status) {

@@ -182,7 +182,7 @@ function replyFeedback(data, app) {
 //查询反馈列表
 function getFeedbackList(app) {
     $.ajax({
-        url: baseUrl + "/admin/listFeedback",
+        url: baseUrl + "/feedback/getall",
         //data: JSON.stringify(data),
         method: "POST",
         success: function (res, status) {
