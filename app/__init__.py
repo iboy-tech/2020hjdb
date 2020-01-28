@@ -62,11 +62,6 @@ def create_app(config_name=None):
     # app.config.from_pyfile('settings.py')
 
     config[config_name].init_app(app)
-
-    # migrate.init_app(db,app)
-    # 附加路由和自定义错误页面@app.route() @app.errorhandler
-
-    # 蓝本在工厂函数 create_app() 中注册到程序上
     return app
 
 

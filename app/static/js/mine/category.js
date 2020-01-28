@@ -47,7 +47,7 @@ var app = new Vue({
 //删除类别
 function deleteCategory(name) {
     $.ajax({
-        url: baseUrl + "/admin/deleteCategory?name=" + name,
+        url: baseUrl + "/category/delete?name=" + name,
         method: "POST",
         success: function (res, status) {
             console.log(res);
@@ -69,7 +69,7 @@ function deleteCategory(name) {
 //新增类别
 function addCategory(data, app) {
     $.ajax({
-        url: baseUrl + "/admin/addCategory",
+        url: baseUrl + "/category/add",
         method: "POST",
         data: JSON.stringify(data),
         success: function (res, status) {

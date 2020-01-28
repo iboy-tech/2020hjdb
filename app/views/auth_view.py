@@ -12,9 +12,9 @@ import datetime
 
 from flask import render_template, request, redirect, url_for, g, session
 from flask_cors import cross_origin
-from flask_login import logout_user
+from flask_login import logout_user, login_user, login_required, current_user
 
-from app import db
+from app import db, login_manager
 from app.main import auth
 from app.models.user_model import User
 
@@ -31,8 +31,12 @@ def login():
     if request.method == 'POST':
         user = User.query.filter_by(username=data['username']).first()
         if user is not None and user.verify_password(data['password']):
-            session['uid'] = user.id
-            user.last_login=datetime.datetime.now()
+            login_user(user,remember=True)
+            print('当前登录的用户', current_user.real_name)
+            print('current_user.is_authenticated',current_user.is_authenticated)
+            print('Flask-Login自动添加',session['user_id'])
+            # session['uid'] = user.id
+            user.last_login = datetime.datetime.now()
             print(user)
             # db.session.add(user)
             db.session.commit()
@@ -73,11 +77,12 @@ def login():
 
 
 @auth.route('/logout', methods=['GET'])
+@login_required
 def logout():
     print(session.get('uid'))
     print('用户登出成功')
-    return redirect(url_for('auth.login')),301
-
+    logout_user()
+    return redirect(url_for('auth.login')), 301
 
 
 @auth.route('/recognize', methods=['POST', 'OPTIONS', 'GET'])
@@ -135,10 +140,11 @@ def internal_server_error():
     return render_template('500.html'), 500
 
 
-from app import login_manager
-
-
 @login_manager.user_loader
-def load_user(id):
+def load_user(user_id):
     """加载用户信息回调"""
-    return User.query.get(int(id))
+
+    return User.query.get(int(user_id))
+    # user=User.query.get(int(id))
+    # print(user)
+    # return User.query.filter_by(id=int(user_id))
