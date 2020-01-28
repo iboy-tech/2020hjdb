@@ -109,7 +109,7 @@ $(function () {
 //标记已读反馈
 function deleteFeedback(id) {
     $.ajax({
-        url: baseUrl + "/admin/deleteFeedback?id="+id,
+        url: baseUrl + "/feedback/delete?id="+id,
         method: "POST",
         //data: JSON.stringify(data),
         success: function (res, status) {
@@ -132,7 +132,7 @@ function deleteFeedback(id) {
 //标记已读反馈
 function markFeedback(id) {
     $.ajax({
-        url: baseUrl + "/admin/markFeedback?id="+id,
+        url: baseUrl + "/feedback/mark?id="+id,
         method: "POST",
         //data: JSON.stringify(data),
         success: function (res, status) {
@@ -156,7 +156,7 @@ function markFeedback(id) {
 //回复反馈
 function replyFeedback(data, app) {
     $.ajax({
-        url: baseUrl + "/admin/replyFeedback",
+        url: baseUrl + "/feedback/reply",
         method: "POST",
         data: JSON.stringify(data),
         success: function (res, status) {

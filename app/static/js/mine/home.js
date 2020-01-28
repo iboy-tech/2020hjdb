@@ -288,12 +288,12 @@ var app = new Vue({
                 }
             });
         },
-        setPhone() {
+        setQQ() {
             app.showMenu = false;
-            layer.prompt({title: '请输入新的QQ：'}, function (phone, index) {
-                showOK(phone);
+            layer.prompt({title: '请输入新的QQ：'}, function (qq, index) {
+                showOK(qq);
                 //layer.close(index);
-                setPhone(phone);
+                setQQ(qq);
             });
         },
         setIcon() {
@@ -315,10 +315,10 @@ $(function () {
 
 
 //设置手机号
-function setPhone(phone) {
+function setQQ(qq) {
     //console.log(data);
     $.ajax({
-        url: baseUrl + "/user/setPhone?phone=" + phone,
+        url: baseUrl + "/user/setQQ?qq=" + qq,
         //data: JSON.stringify(data),
         method: "POST",
         success: function (res, status) {
@@ -327,7 +327,7 @@ function setPhone(phone) {
                 if (res.success) {
                     layer.closeAll();
                     showOK();
-                    app.user.phoneNumber = res.data.phone;
+                    app.user.QQ = res.data.qq;
                     saveSession("user", app.user);
                 } else {
                     showAlertError(res.msg)
@@ -344,7 +344,7 @@ function setPhone(phone) {
 function pubFeedback(data) {
     console.log(data);
     $.ajax({
-        url: baseUrl + "/user/addFeedback",
+        url: baseUrl + "/feedback/add",
         data: JSON.stringify(data),
         method: "POST",
         success: function (res, status) {

@@ -22,7 +22,7 @@ from config import config  # 导入存储配置的字典
 
 #  会记录客户端 IP
 # 地址和浏览器的用户代理信息，如果发现异动就登出用户
-login_manager.session_protection = 'strong'
+login_manager.session_protection = 'basic'
 login_manager.login_view = 'auth.login'
 from app.main import admin as admin_bp
 from app.main import auth as auth_bp

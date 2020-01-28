@@ -97,12 +97,16 @@
                                             class="bars icon"></i></div>
                                     <div class="menu transition " tabindex="-1"
                                          :style="{display: showMenu?'block':'none'}">
-                                        <a class="item" @click="setIcon">
-                                            <i class="user circle icon"></i>修改头像
+{#                                        <a class="item" @click="setIcon">#}
+{#                                            <i class="user circle icon"></i>修改头像#}
+{#                                        </a>#}
+{#                                        <a class="item" @click="setQQ">#}
+{#                                            <i class="comments icon"></i>修改QQ#}
+{#                                        </a>#}
+                                        <a class="item" @click="setQQ">
+                                            <i class="user circle icon"></i>修改QQ
                                         </a>
-                                        <a class="item" @click="setPhone">
-                                            <i class="mobile alternate icon"></i>修改手机
-                                        </a>
+
                                         <a class="item" @click="setPassword">
                                             <i class="lock alternate icon"></i>修改密码
                                         </a>
@@ -120,9 +124,9 @@
                             <div class="ui basic segment sidebar-section">
                                 <h3 class="header">个人信息</h3>
                                 <div class="ui list">
-                                    <div class="item">学生号码：{{user.studentNum}}</div>
-                                    <div class="item">邮箱地址：{{user.email}}</div>
-                                    <div class="item">手机号码：{{user.phoneNumber}}</div>
+                                    <div class="item">学号：{{user.studentNum}}</div>
+                                    <div class="item">邮箱：{{user.email}}</div>
+                                    <div class="item">QQ：<a class="view" href="https://api.uomg.com/api/qq.talk?qq=user.qq">{{user.qq}}</a></div>
                                     <div class="item">加入时间：{{user.createTime}}</div>
                                     <div class="item">最近登录：{{user.lastLogin}}</div>
                                 </div>

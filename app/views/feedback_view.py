@@ -8,130 +8,132 @@
 @Description : 
 @Software: PyCharm
 """
-from flask import render_template, request
+from datetime import datetime
 
+from flask import render_template, request
+from flask_login import current_user
+
+from app import db
 from app.main import feedback
+from app.models.feedback_model import Feedback
+from app.models.user_model import User
 
 
 @feedback.route('/', methods=['GET', 'POST', 'OPTIONS'], strict_slashes=False)
 def index():
-    user = {
-        "studentNum": "201520180508",
-        "realName": "cpwu",
-        "icon": "www.baidu.com/icon.png",
-        "email": "cpwu@foxmail.com",
-        "phoneNumber": "15911112222",
-        "schoolName": "东华理工大学",
-        # "gender": 1,
-        "createTime": "2019-04-10 19:06:10",
-        "lastLogin": "2019-04-10 19:06:10",
-        "kind": 0
-    }
-    item = {
-        "success": True,
-        "code": 1000,
-        "msg": "处理成功",
-        "data": {
-            "list": [{
-                "id": "44db1dff514740069714c868422bd3ec",
-                "kind": 0,
-                "targetId": None,
-                "schoolId": "000",
-                "userId": "6529d0739c344ccba3f4f0f820edcc98",
-                "username": "201520180508",
-                "realName": "普通用户",
-                "subject": "反馈的主题",
-                "content": "反馈的详情",
-                "createTime": "2020-01-21 13:35",
-                "status": 0,
-                "handlerId": "316a62ea3a444711927d872609296dbf",
-                "handlerName": "管理员",
-                "handlerEmail": "admin",
-                "answer": "收到answer",
-                "handlerTime": "2020-01-21 13:35",
-                "recordStatus": 1
-            }, {
-                "id": "fea99e8f678048dbb65cf5f710378393",
-                "kind": 0,
-                "targetId": None,
-                "schoolId": "000",
-                "userId": "316a62ea3a444711927d872609296dbf",
-                "username": "201520180517",
-                "realName": "赵大海",
-                "subject": "测试",
-                "content": "有BUG",
-                "createTime": "2020-01-15 19:44",
-                "status": 1,
-                "handlerId": "316a62ea3a444711927d872609296dbf",
-                "handlerName": "赵大海",
-                "handlerEmail": "admin@qq.com",
-                "answer": None,
-                "handlerTime": "2020-01-15 19:48",
-                "recordStatus": 1
-            }]
-        },
-        "ext": None
-    }
-    return render_template('feedback.html', user=user, item=item)
+    return render_template('feedback.html')
 
 
 @feedback.route('/getall', methods=['GET', 'POST', 'OPTIONS'], strict_slashes=False)
 def get_all():
+    feedbacks=Feedback.query.all()
+    list=[]
+    for f in feedbacks:
+        admin=None
+        if f.handler_id is not None:
+            admin=User.query.get(int(f.handler_id))
+        user=User.query.get(int(f.user_id))
+        dict={
+            "id": f.id,
+            # "kind": 0,
+            # "targetId": None,
+            # "schoolId": "000",
+            "userId": user.id,
+            "username": user.username,
+            "realName": user.real_name,
+            "subject": f.subject,
+            "content": f.content,
+            "createTime": f.create_time.strftime('%Y-%m-%d %H:%M:%S'),
+            "status": f.status,
+            "handlerId": f.handler_id,
+            "handlerName": admin.real_name if admin is not None else None,
+            "handlerEmail": admin.qq+'@qq.com' if admin is not None else None,
+            "answer": f.answer,
+            "handlerTime": f.handler_time.strftime('%Y-%m-%d %H:%M:%S') if f.handler_time is not  None else None,
+            # "recordStatus": 1
+        }
+        list.append(dict)
     data = {
         "success": True,
         "code": 1000,
         "msg": "处理成功",
         "data": {
-            "list": [{
-                "id": "44db1dff514740069714c868422bd3ec",
-                "kind": 0,
-                "targetId": None,
-                "schoolId": "000",
-                "userId": "6529d0739c344ccba3f4f0f820edcc98",
-                "username": "201520180508",
-                "realName": "普通用户",
-                "subject": "反馈的主题",
-                "content": "反馈的详情",
-                "createTime": "2020-01-21 13:35",
-                "status": 0,
-                "handlerId": "316a62ea3a444711927d872609296dbf",
-                "handlerName": "管理员",
-                "handlerEmail": "admin",
-                "answer": "收到answer",
-                "handlerTime": "2020-01-21 13:35",
-                "recordStatus": 1
-            }, {
-                "id": "fea99e8f678048dbb65cf5f710378393",
-                "kind": 0,
-                "targetId": None,
-                "schoolId": "000",
-                "userId": "316a62ea3a444711927d872609296dbf",
-                "username": "201520180517",
-                "realName": "赵大海",
-                "subject": "测试",
-                "content": "有BUG",
-                "createTime": "2020-01-15 19:44",
-                "status": 1,
-                "handlerId": "316a62ea3a444711927d872609296dbf",
-                "handlerName": "赵大海",
-                "handlerEmail": "admin@qq.com",
-                "answer": None,
-                "handlerTime": "2020-01-15 19:48",
-                "recordStatus": 1
-            }]
+            "list":list
         },
         "ext": None
     }
     return data
+
+
 @feedback.route('/add', methods=['GET', 'POST', 'OPTIONS'], strict_slashes=False)
-def add():
+def feedback_add():
+    req = request.json
+    print('req', req)
+    f = Feedback(subject=req['subject'].replace('<','&lt;').replace('>','&gt;'), content=req['content'].replace('<','&lt;').replace('>','&gt;'), user_id=current_user.id)
+    db.session.add(f)
+    db.session.commit()
+    data = {
+        "success": True,
+        "code": 1000,
+        "msg": "处理成功",
+        "data": {},
+        "ext": None
+    }
+    return data
+
+
+@feedback.route('/delete', methods=['POST', 'OPTIONS'], strict_slashes=False)
+def feedback_delete():
+    req = request.args.get('id')
+    print('request.args.get(\'id\')', req)
+    f = Feedback.query.get(int(req))
+    db.session.delete(f)
+    db.session.commit()
+    data = {
+        "success": True,
+        "code": 1000,
+        "msg": "处理成功",
+        "data": {},
+        "ext": None
+    }
+    return data
+
+
+@feedback.route('/reply', methods=['POST', 'OPTIONS'], strict_slashes=False)
+def feedback_replay():
     req=request.json
-    print('req',req)
-    data={
-      "success" : True,
-      "code" : 1000,
-      "msg" : "处理成功",
-      "data" : { },
-      "ext" : None
+    print(req)
+    id=int(req['id'])
+    f=Feedback.query.get(id)
+    f.handler_id=current_user.id
+    f.status=1
+    f.handler_time=datetime.now()
+    f.answer=req['content']
+    db.session.commit()
+    data = {
+        "success": True,
+        "code": 1001,
+        "msg": "发生异常：Failed messages: com.sun.mail.smtp.SMTPSendFailedException: 501 Mail from address must be same as authorization user.\n;\n  nested exception is:\n\tcom.sun.mail.smtp.SMTPSenderFailedException: 501 Mail from address must be same as authorization user.\n",
+        "data": {},
+        "ext": "org.springframework.mail.MailSendException"
+    }
+    return data
+
+
+@feedback.route('/mark', methods=['POST', 'OPTIONS'], strict_slashes=False)
+def feedback_mark():
+    req=request.args.get('id')
+    print('request.args.get(\'id\')',req)
+    f=Feedback.query.get(int(req))
+    f.status=1
+    f.handler_time=datetime.now()
+    f.handler_id=current_user.id
+    db.session.commit()
+    data = {
+        "success": True,
+        "code": 1000,
+        "msg": "处理成功",
+        "data": {},
+        "ext": None
     }
     return data

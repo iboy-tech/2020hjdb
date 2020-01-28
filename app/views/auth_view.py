@@ -54,8 +54,8 @@ def login():
                         "realName": user.real_name,
                         "icon": 'https://q2.qlogo.cn/headimg_dl?dst_uin={}&spec=100'.format(user.qq),
                         "email": user.qq + '@qq.com',
-                        # "schoolName": "东华理工大学",
-                        # "gender": 1,
+                        "qq": user.qq,
+                        "gender": user.gender,
                         "createTime": user.create_time.strftime( '%Y-%m-%d %H:%M:%S' ),
                         "lastLogin": user.last_login.strftime( '%Y-%m-%d %H:%M:%S' ),
                         "kind": user.kind

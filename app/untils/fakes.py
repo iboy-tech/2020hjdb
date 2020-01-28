@@ -39,3 +39,8 @@ from  app.models.notice_model import Notice,db
 notice=Notice(title='放假通知',content='考试周，失物招领工作暂停，感谢大家的支持！',fix_top=1,user_id=2)
 db.session.add(notice)
 db.session.commit()
+
+from  app.models.feedback_model import Feedback,db
+feed=Feedback(subject='发现BUG',content='考试周，失物招领工作暂停，感谢大家的支持！',user_id='1',handler_id='2',answer='收到谢谢')
+db.session.add(feed)
+db.session.commit()
