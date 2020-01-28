@@ -16,6 +16,17 @@ class Notice(db.Model):
     fix_top = db.Column(db.Integer, nullable=False,server_default=text('0'), info='是否置顶')
     create_time = db.Column(db.DateTime,default=datetime.now(), nullable=False, info='创建时间')
     user_id = db.Column(db.Integer,db.ForeignKey('t_user.id'),nullable=False, info='创建者')
+    def to_dict(self):
+        dict = {
+            "id": self.id,
+            "title": self.title,
+            "content": self.content,
+            "time": self.create_time.strftime('%Y-%m-%d %H:%M:%S'),
+            "fixTop": self.fix_top
+        }
+        return dict
+
     # 返回一个具有可读性的字符串模型  方便调试
     def __repr__(self):
         return '<TNotice %r>' % self.title
+

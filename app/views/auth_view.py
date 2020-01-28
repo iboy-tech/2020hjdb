@@ -56,8 +56,8 @@ def login():
                         "email": user.qq + '@qq.com',
                         # "schoolName": "东华理工大学",
                         # "gender": 1,
-                        "createTime": user.create_time,
-                        "lastLogin": user.last_login,
+                        "createTime": user.create_time.strftime( '%Y-%m-%d %H:%M:%S' ),
+                        "lastLogin": user.last_login.strftime( '%Y-%m-%d %H:%M:%S' ),
                         "kind": user.kind
                     }
                 }

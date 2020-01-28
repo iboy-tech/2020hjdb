@@ -8,7 +8,7 @@
 @Description : 
 @Software: PyCharm
 """
-from flask import render_template
+from flask import render_template, request
 
 from app.main import feedback
 
@@ -121,5 +121,17 @@ def get_all():
             }]
         },
         "ext": None
+    }
+    return data
+@feedback.route('/add', methods=['GET', 'POST', 'OPTIONS'], strict_slashes=False)
+def add():
+    req=request.json
+    print('req',req)
+    data={
+      "success" : True,
+      "code" : 1000,
+      "msg" : "处理成功",
+      "data" : { },
+      "ext" : None
     }
     return data

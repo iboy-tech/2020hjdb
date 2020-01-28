@@ -65,14 +65,13 @@ var app = new Vue({
                 deleteSession("user");
                 window.location.replace("/logout");
             }, function () {
-
             });
         }
     }
 });
 function switchFix(id){
     $.ajax({
-        url: baseUrl + "/admin/noticeSwitch?id=" + id,
+        url: baseUrl + "/notice/switch?id=" + id,
         //data: JSON.stringify(data),
         method: "POST",
         success: function (res, status) {
@@ -95,7 +94,7 @@ function switchFix(id){
 //删除通知
 function deleteNotice(id) {
     $.ajax({
-        url: baseUrl + "/admin/noticeDelete?id=" + id,
+        url: baseUrl + "/notice/delete?id=" + id,
         //data: JSON.stringify(data),
         method: "POST",
         success: function (res, status) {
@@ -119,7 +118,7 @@ function deleteNotice(id) {
 function addNotice(notice) {
     //console.log(data);
     $.ajax({
-        url: baseUrl + "/admin/noticeAdd",
+        url: baseUrl + "/notice/add",
         method: "POST",
         data: JSON.stringify(notice),
         success: function (res, status) {
