@@ -22,6 +22,8 @@ from app.models.user_model import User
 @auth.route('/', methods=['GET', 'POST', 'OPTIONS'])
 @cross_origin()
 def login():
+    # from app.untils.create_data import create_test_data
+    # create_test_data()
     data = request.json
     print(data, type(data))
     print('请求成功', type(data))

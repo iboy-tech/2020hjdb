@@ -185,3 +185,8 @@ def get_message():
       "ext" : None
     }
     return data
+
+@user.route('/getall', methods=['POST', 'OPTIONS', 'GET'])
+@cross_origin()
+def get_all_user():
+    pass

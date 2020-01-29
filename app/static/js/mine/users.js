@@ -69,11 +69,11 @@ var app = new Vue({
 
             });
         },
-        setAsManager(userId, flag) {
+        setAsManager(userId) {
             layer.confirm('设置为管理员的账号可登录后台，请谨慎操作，确定要将其设置为管理员吗？', {
                 btn: ['确定', '取消'] //按钮
             }, function () {
-                setAsAdmin(userId, flag);
+                setAsAdmin(userId);
             }, function () {
 
             });
@@ -161,7 +161,7 @@ function getUserList(data, app, append) {
 //重置密码
 function resetPassword(userId) {
     $.ajax({
-        url: baseUrl + "/admin/resetPassword?userId=" + userId,
+        url: baseUrl + "/userlist/resetPassword?userId=" + userId,
         method: "POST",
         //data: JSON.stringify(data),
         beforeSend: function () {
@@ -184,9 +184,9 @@ function resetPassword(userId) {
 }
 
 //设置/取消用户为管理员
-function setAsAdmin(userId, flag) {
+function setAsAdmin(userId) {
     $.ajax({
-        url: baseUrl + "/admin/setAsAdmin?userId=" + userId + "&flag=" + flag,
+        url: baseUrl + "/userlist/setAsAdmin?userId=" + userId,
         method: "POST",
         //data: JSON.stringify(data),
         success: function (res, status) {
@@ -209,7 +209,7 @@ function setAsAdmin(userId, flag) {
 //冻结用户
 function freezeUser(userId) {
     $.ajax({
-        url: baseUrl + "/admin/freezeUser?userId=" + userId,
+        url: baseUrl + "/userlist/freeze?userId=" + userId,
         method: "POST",
         //data: JSON.stringify(data),
         beforeSend: function () {
@@ -238,7 +238,7 @@ function freezeUser(userId) {
 //解冻用户
 function unfreezeUser(userId) {
     $.ajax({
-        url: baseUrl + "/admin/unfreezeUser?userId=" + userId,
+        url: baseUrl + "/userlist/freeze?userId=" + userId,
         method: "POST",
         //data: JSON.stringify(data),
         beforeSend: function () {

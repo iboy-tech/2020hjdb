@@ -1,7 +1,7 @@
 # -*- coding:UTF-8 -*-
 #!/usr/bin/python
 """
-@File    : mail.py
+@File    : mail_sender.py
 @Time    : 2020/1/18 15:03
 @Author  : iBoy
 @Email   : iboy@iboy.tech

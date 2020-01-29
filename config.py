@@ -25,7 +25,7 @@ class Config:
     FLASKY_MAIL_SENDER = 'FLASK Admin <547142436@qq.com>'
     FLASKY_ADMIN = os.environ.get('FLASKY_ADMIN')
     MXA_ATTEMPT_NUMBER = 5
-
+    ARTISAN_POSTS_PER_PAGE=120
 
     @staticmethod
     def init_app(app):
