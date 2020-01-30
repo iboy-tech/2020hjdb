@@ -21,11 +21,14 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = True
     SQLALCHEMY_COMMIT_TEARDOWN = True
     DEBUG_TB_INTERCEPT_REDIRECTS = False
-    FLASKY_MAIL_SUBJECT_PREFIX = ['Flasky']
-    FLASKY_MAIL_SENDER = 'FLASK Admin <547142436@qq.com>'
+    FLASKY_MAIL_SUBJECT_PREFIX = '三峡大学失物招领处：'
+    FLASKY_MAIL_SENDER = '三峡大学失物招领处 <ctgu@iboy.tech>'
     FLASKY_ADMIN = os.environ.get('FLASKY_ADMIN')
     MXA_ATTEMPT_NUMBER = 5
     ARTISAN_POSTS_PER_PAGE=120
+    MAIL_SENDGRID_API_KEY = 'SG.Ksvhquq2TJuXgwKPWeuJCw.9-8CZEP5Tp9mG8P8ypoouGNqgoC48vYwdb8qQTEr9Xg'
+    MAIL_DEFAULT_SENDER='ctgu@iboy.tech'
+
 
     @staticmethod
     def init_app(app):
@@ -36,11 +39,11 @@ class Config:
 # 开发环境的子类配置
 class DevelopmentConfig(Config):
     DEBUG = True
-    MAIL_SERVER = 'smtp.qq.com'
-    MAIL_PORT = '25'
-    MAIL_USE_TLS = True
-    MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
-    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
+    # MAIL_SERVER = 'smtp.ym.163.com'
+    # MAIL_PORT = '465'
+    # MAIL_USE_TLS = True
+    # MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
+    # MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     # SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or \
     #                           'sqlite:///' + os.path.join(basedir, 'data-dev.sqlite')
     SQLALCHEMY_DATABASE_URI = 'mysql://root:root@127.0.0.1/swzl'

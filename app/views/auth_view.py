@@ -30,6 +30,31 @@ def login():
 
     # print(request.args)
     # print(request.json_module)
+    # if "user_id" in session:
+    #     user=current_user
+    #     login_user(user,remember=True)
+    #     data = {
+    #         "success": True,
+    #         "code": 1000,
+    #         "msg": "处理成功",
+    #         "data": {
+    #             "user": {
+    #                 "studentNum": user.username,
+    #                 "realName": user.real_name,
+    #                 "icon": 'https://q2.qlogo.cn/headimg_dl?dst_uin={}&spec=100'.format(user.qq),
+    #                 "email": user.qq + '@qq.com',
+    #                 "qq": user.qq,
+    #                 "gender": user.gender,
+    #                 "createTime": user.create_time.strftime('%Y-%m-%d %H:%M:%S'),
+    #                 "lastLogin": user.last_login.strftime('%Y-%m-%d %H:%M:%S'),
+    #                 "kind": user.kind
+    #             }
+    #         }
+    #         # "ext" : None
+    #     }
+    #     print(data)
+    #     return data
+    #     print('已经登录测试')
     if request.method == 'POST':
         user = User.query.filter_by(username=data['username']).first()
         if user is not None and user.verify_password(data['password']):

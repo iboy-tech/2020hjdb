@@ -8,16 +8,16 @@
 @Description : 初始化扩展
 @Software: PyCharm
 """
+from flask_mail_sendgrid import MailSendGrid
 from flask_bootstrap import Bootstrap
 from flask_login import LoginManager
-from flask_mail import Mail
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+
 bootstrap = Bootstrap()
-mail = Mail()
-migrate=Migrate()
+mail = MailSendGrid()
+migrate = Migrate()
 moment = Moment()
 db = SQLAlchemy()
 login_manager = LoginManager()
-

@@ -188,7 +188,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                         </thead>
                         <tbody>
                         <tr v-for="(item, index) in result.list">
-                            <th scope="row">{{index+1}}</th>
+                            <th scope="row">{{index+1+search.pageSize*search.pageNum}}</th>
                             <td>{{item.username}}</td>
                             <td>{{item.name}}&nbsp;<span v-if="item.kind==2" class="glyphicon glyphicon-user text-primary" title="管理员"></span></td>
                             <td>{{item.gender}}</td>

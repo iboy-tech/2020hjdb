@@ -8,7 +8,10 @@
 @Description : 
 @Software: PyCharm
 """
+from datetime import datetime
+
 from flask import render_template, request, current_app
+from flask_login import current_user
 from sqlalchemy import desc
 
 from app import db
@@ -78,11 +81,19 @@ def user_freeze_or_unfreeze():
     data = {
         "success": True,
         "code": 1001,
-        "msg": "发生异常：Failed messages: com.sun.mail.smtp.SMTPSendFailedException: 501 Mail from address must be same as authorization user.\n;\n  nested exception is:\n\tcom.sun.mail.smtp.SMTPSenderFailedException: 501 Mail from address must be same as authorization user.\n",
+        "msg": "发生异常：Failed messages: com.sun.mails.smtp.SMTPSendFailedException: 501 Mail from address must be same as authorization user.\n;\n  nested exception is:\n\tcom.sun.mails.smtp.SMTPSenderFailedException: 501 Mail from address must be same as authorization user.\n",
         "data": {},
-        "ext": "org.springframework.mail.MailSendException"
+        "ext": "org.springframework.mails.MailSendException"
     }
     print('要给用户发送提醒邮件')
+    from app.untils.mail_sender import send_email
+    messages ={
+        'realName':u.real_name,
+        'handlerName':datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+        'handlerEmail':current_user.qq+'@qq.com',
+        'appName':'三峡大学失物招领处'
+    }
+    send_email('yang.hao@aliyun.com','账户冻结通知','userFreeze',messages)
     return data
 
 
@@ -97,9 +108,9 @@ def reset_pssword():
     data = {
         "success": True,
         "code": 1001,
-        "msg": "发生异常：Failed messages: com.sun.mail.smtp.SMTPSendFailedException: 501 Mail from address must be same as authorization user.\n;\n  nested exception is:\n\tcom.sun.mail.smtp.SMTPSenderFailedException: 501 Mail from address must be same as authorization user.\n",
+        "msg": "发生异常：Failed messages: com.sun.mails.smtp.SMTPSendFailedException: 501 Mail from address must be same as authorization user.\n;\n  nested exception is:\n\tcom.sun.mails.smtp.SMTPSenderFailedException: 501 Mail from address must be same as authorization user.\n",
         "data": {},
-        "ext": "org.springframework.mail.MailSendException"
+        "ext": "org.springframework.mails.MailSendException"
     }
     return data
 
@@ -115,8 +126,8 @@ def set_or_cancle_admin():
     data = {
         "success": True,
         "code": 1001,
-        "msg": "发生异常：Failed messages: com.sun.mail.smtp.SMTPSendFailedException: 501 Mail from address must be same as authorization user.\n;\n  nested exception is:\n\tcom.sun.mail.smtp.SMTPSenderFailedException: 501 Mail from address must be same as authorization user.\n",
+        "msg": "发生异常：Failed messages: com.sun.mails.smtp.SMTPSendFailedException: 501 Mail from address must be same as authorization user.\n;\n  nested exception is:\n\tcom.sun.mails.smtp.SMTPSenderFailedException: 501 Mail from address must be same as authorization user.\n",
         "data": {},
-        "ext": "org.springframework.mail.MailSendException"
+        "ext": "org.springframework.mails.MailSendException"
     }
     return data

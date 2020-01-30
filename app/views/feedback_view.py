@@ -113,9 +113,9 @@ def feedback_replay():
     data = {
         "success": True,
         "code": 1001,
-        "msg": "发生异常：Failed messages: com.sun.mail.smtp.SMTPSendFailedException: 501 Mail from address must be same as authorization user.\n;\n  nested exception is:\n\tcom.sun.mail.smtp.SMTPSenderFailedException: 501 Mail from address must be same as authorization user.\n",
+        "msg": "发生异常：Failed messages: com.sun.mails.smtp.SMTPSendFailedException: 501 Mail from address must be same as authorization user.\n;\n  nested exception is:\n\tcom.sun.mails.smtp.SMTPSenderFailedException: 501 Mail from address must be same as authorization user.\n",
         "data": {},
-        "ext": "org.springframework.mail.MailSendException"
+        "ext": "org.springframework.mails.MailSendException"
     }
     return data
 

@@ -80,10 +80,11 @@ def register_blueprints(app):
 
 def register_extensions(app):  # 实例化扩展
     bootstrap.init_app(app)
-    mail.init_app(app)
+    mail.init_app(app)#发送邮件
     moment.init_app(app)
     db.init_app(app)
     login_manager.init_app(app)
+
 
 # def register_shell_context(app):
 #     @app.shell_context_processor

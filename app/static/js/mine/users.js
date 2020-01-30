@@ -8,7 +8,7 @@ var app = new Vue({
         search: {
             keyword: "",
             pageNum: 0,
-            pageSize: 10
+            pageSize: 120
         },
         result: {
             totalPage: 0,
@@ -139,6 +139,7 @@ function getUserList(data, app, append) {
                     app.search.pageSize = res.data.page.pageSize;
                     app.result.totalPage = res.data.page.totalPage;
                     app.result.total = res.data.page.total;
+
                     if (append) {
                         for (let v in res.data.page.list) {
                             //console.log(v);

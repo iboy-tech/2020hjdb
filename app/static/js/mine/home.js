@@ -17,6 +17,7 @@ var app = new Vue({
        },*/
         category: getCategory() || [],
         userIcon: "http://localhost/static/icon/user_icon.png",
+        api:'https://api.uomg.com/api/qq.talk?qq=',
         imgPrefix: staticUrl,
         tab: [
             {
