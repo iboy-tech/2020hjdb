@@ -1,5 +1,5 @@
 # -*- coding:UTF-8 -*-
-#!/usr/bin/python
+# !/usr/bin/python
 """
 @File    : found_view.py
 @Time    : 2020/1/24 20:35
@@ -10,197 +10,99 @@
 """
 import base64
 
-from flask import render_template, request
+from flask import render_template, request, current_app
+from flask_login import current_user
+from sqlalchemy import desc
 
+from app import db
 from app.main import found
+from app.models.category_model import Category
+from app.models.lostfound_model import LostFound
+from app.models.user_model import User
 
 
-@found.route('/',methods=['GET','POST'],strict_slashes=False)
+@found.route('/', methods=['GET', 'POST'], strict_slashes=False)
 def index():
-    user = {
-        "studentNum": "201520180508",
-        "realName": "cpwu",
-        "icon": "www.baidu.com/icon.png",
-        "email": "cpwu@foxmail.com",
-        "phoneNumber": "15911112222",
-        "schoolName": "东华理工大学",
-        # "gender": 1,
-        "createTime": "2019-04-10 19:06:10",
-        "lastLogin": "2019-04-10 19:06:10",
-        "kind": 0
-    }
-    item={
+    return render_template('found.html')
+
+
+@found.route('/getall', methods=['GET', 'POST', 'OPTIONS'], strict_slashes=False)
+def get_all():
+
+    req = request.json
+    print(req)
+    print('get_users收到请求')
+    page=int(req['pageNum'])
+    pagination =LostFound.query.order_by(desc('create_time')).paginate(page+1, per_page=current_app.config[
+        'ARTISAN_POSTS_PER_PAGE'], error_out=False)
+    losts = pagination.items
+    print(losts)
+    datalist=[]
+    for l in losts:
+        print(l.images,type(l.images))
+        l.images=l.images.replace('[','').replace(']','').replace(' \'','').replace('\'','')
+        print(l.images, type(l.images))
+        imglist=l.images.strip().split(',')
+        print(imglist,type(imglist))
+        user=User.query.get(l.user_id)
+        dict={
+                "id": l.id,
+                "icon": 'https://q2.qlogo.cn/headimg_dl?dst_uin={}&spec=100'.format(user.qq),
+                "kind": l.kind,
+                "status": l.status,
+                "claimantId": l.claimant_id,
+                "userId": l.user_id,
+                "username": user.username,
+                "realName": user.real_name,
+                "time": l.create_time.strftime( '%Y-%m-%d %H:%M:%S'),
+                "location": l.location,
+                "title": l.title,
+                "about": l.about,
+                "images": imglist,
+                "category": Category.query.get(l.category_id).name,
+                "lookCount": l.look_count,
+                "commentCount": 0
+            }
+        datalist.append(dict)
+    data = {
         "success": True,
         "code": 1000,
         "msg": "处理成功",
         "data": {
             "page": {
-                "total": 3,
-                "totalPage": 1,
-                "pageNum": 0,
-                "pageSize": 3,
-                "list": [{
-                    "id": "b8a3d60480fd45308fd16c1fcfe77caa",
-                    "icon": "upload_6720338131142720698.jpg",
-                    "kind": 0,
-                    "status": 1,
-                    "claimantId": None,
-                    "userId": "6529d0739c344ccba3f4f0f820edcc98",
-                    "username": "201520180508",
-                    "realName": "普通用户",
-                    "time": "2020-01-21 13:12",
-                    "location": "欣苑",
-                    "title": "手机掉了",
-                    "about": "手机掉了啊啊啊详情",
-                    "images": ["upload_8124810867403574170.jpg"],
-                    "category": "手机",
-                    "lookCount": 13,
-                    "commentCount": 1
-                }, {
-                    "id": "390dcac7dec44861a21b8c933fd88eab",
-                    "icon": "upload_3606103688582511042.jpg",
-                    "kind": 1,
-                    "status": 3,
-                    "claimantId": "6529d0739c344ccba3f4f0f820edcc98",
-                    "userId": "316a62ea3a444711927d872609296dbf",
-                    "username": "2018171109",
-                    "realName": "管理员",
-                    "time": "2020-01-19 16:35",
-                    "location": "西苑食堂",
-                    "title": "苹果手机",
-                    "about": "手机掉了",
-                    "images": ["upload_3284452982529621166.jpg"],
-                    "category": "手机",
-                    "lookCount": 20,
-                    "commentCount": 0
-                }, {
-                    "id": "83b9f303927b4255869280fcf40a009a",
-                    "icon": "upload_6720338131142720698.jpg",
-                    "kind": 0,
-                    "status": 1,
-                    "claimantId": None,
-                    "userId": "6529d0739c344ccba3f4f0f820edcc98",
-                    "username": "201520180508",
-                    "realName": "普通用户",
-                    "time": "2020-01-15 20:40",
-                    "location": "东苑",
-                    "title": "我的校园卡掉了",
-                    "about": "大概在东苑到图书馆的小路上",
-                    "images": ["upload_2180137498044705888.jpg"],
-                    "category": "校园卡",
-                    "lookCount": 1016,
-                    "commentCount": 1
-                }]
+                "total": pagination.total,
+                "totalPage": pagination.pages,
+                "pageNum": req['pageNum'],
+                "pageSize": current_app.config['ARTISAN_POSTS_PER_PAGE'],
+                "list": datalist
             }
         },
         "ext": None
     }
-    userInfo={
-          "success" : True,
-          "code" : 1000,
-          "msg" : "处理成功",
-          "data" : {
-            "user" : {
-              "userId" : "6529d0739c344ccba3f4f0f820edcc98",
-              "name" : "钱二喜",
-              "username" : "201520180508",
-              "gender" : "男",
-              "email" : "547142436@qq.com",
-              "phoneNumber" : "123456 ",
-              "classNum" : "1521805",
-              "major" : "软件工程",
-              "academy" : "软件学院",
-              "campus" : "南昌校区",
-              "lastLogin" : "2020-01-25 21:56",
-              "status" : "正常",
-              "kind" : None
-            }
-          },
-          "ext" : None
-        }
-    return render_template('found.html',user=user,index=1,item=item,userInfo=userInfo,result=item)
-@found.route('/getall', methods=['GET', 'POST', 'OPTIONS'],strict_slashes=False)
-def get_all():
-    data={
-      "success" : True,
-      "code" : 1000,
-      "msg" : "处理成功",
-      "data" : {
-        "page" : {
-          "total" : 3,
-          "totalPage" : 1,
-          "pageNum" : 0,
-          "pageSize" : 3,
-          "list" : [ {
-            "id" : "b8a3d60480fd45308fd16c1fcfe77caa",
-            "icon" : "upload_6720338131142720698.jpg",
-            "kind" : 0,
-            "status" : 1,
-            "claimantId" : None,
-            "userId" : "6529d0739c344ccba3f4f0f820edcc98",
-            "username" : "201520180508",
-            "realName" : "普通用户",
-            "time" : "2020-01-21 13:12",
-            "location" : "欣苑",
-            "title" : "手机掉了",
-            "about" : "手机掉了啊啊啊详情",
-            "images" : [ "upload_8124810867403574170.jpg" ],
-            "category" : "手机",
-            "lookCount" : 14,
-            "commentCount" : 1
-          }, {
-            "id" : "390dcac7dec44861a21b8c933fd88eab",
-            "icon" : "upload_3606103688582511042.jpg",
-            "kind" : 1,
-            "status" : 3,
-            "claimantId" : "6529d0739c344ccba3f4f0f820edcc98",
-            "userId" : "316a62ea3a444711927d872609296dbf",
-            "username" : "2018171109",
-            "realName" : "管理员",
-            "time" : "2020-01-19 16:35",
-            "location" : "西苑食堂",
-            "title" : "苹果手机",
-            "about" : "手机掉了",
-            "images" : [ "upload_3284452982529621166.jpg" ],
-            "category" : "手机",
-            "lookCount" : 20,
-            "commentCount" : 0
-          }, {
-            "id" : "83b9f303927b4255869280fcf40a009a",
-            "icon" : "upload_6720338131142720698.jpg",
-            "kind" : 0,
-            "status" : 1,
-            "claimantId" : None,
-            "userId" : "6529d0739c344ccba3f4f0f820edcc98",
-            "username" : "201520180508",
-            "realName" : "普通用户",
-            "time" : "2020-01-15 20:40",
-            "location" : "东苑",
-            "title" : "我的校园卡掉了",
-            "about" : "大概在东苑到图书馆的小路上",
-            "images" : [ "upload_2180137498044705888.jpg" ],
-            "category" : "校园卡",
-            "lookCount" : 1016,
-            "commentCount" : 1
-          } ]
-        }
-      },
-      "ext" : None
-    }
     return data
-@found.route('/pub', methods=['GET', 'POST', 'OPTIONS'],strict_slashes=False)
+
+
+@found.route('/pub', methods=['GET', 'POST', 'OPTIONS'], strict_slashes=False)
 def pub():
-    data=request.json
-    # print(data['images'],type(data['images']))
-    print(data['images'][0],len(data['images']))
-    strs=data['images'][0]
-    with open('test.jpeg', 'wb') as f:
-        f.write(base64.b64decode(strs))
-    data={
-      "success" : True,
-      "code" : 1000,
-      "msg" : "处理成功",
-      "data" : { },
-      "ext" : None
+    data = request.json
+    print(data)
+    print(data['images'], type(data['images']))
+    imgstr=str(data['images'])
+    print(type(imgstr),imgstr)
+    lost=LostFound(kind=data['applyKind'],category_id=data['categoryId'],
+    images=imgstr,location =data['location'] ,
+    title=data['title'],about=data['about'],user_id=current_user.id)
+    db.session.add(lost)
+    db.session.commit()
+    # print(data['images'][0],len(data['images']))
+    # strs=data['images'][0]
+    # with open('test.jpeg', 'wb') as f:
+    #     f.write(base64.b64decode(strs))
+    data = {
+        "success": True,
+        "code": 1000,
+        "msg": "处理成功",
+        "data": {},
+        "ext": None
     }
     return data

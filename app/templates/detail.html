@@ -41,7 +41,7 @@
                                     <div class="item">
                                         <a>
                                             <div class="osc-avatar small-portrait _35x35 avatar">
-                                                <img :src="item.icon?imgPrefix+item.icon:userIcon"
+                                                <img :src="item.icon"
                                                      alt="头像"
                                                      :title="item.username"/>
                                             </div>
@@ -83,7 +83,7 @@
                                     <div data-multi-image-raw="list" class="multimgs" style="display: flex;">
                                         <div v-for="(src, index) in item.images" class="wrapper multing-wrapper">
                                             <img
-                                                    :src="imgPrefix + src" :key="src" @click="viewImages(index)"
+                                                    :src="src" :key="src" @click="viewImages(index)"
                                                     style="max-width: 160px; height: auto;">
                                         </div>
                                     </div>
@@ -126,7 +126,7 @@
                                         <span></span>{{item.email}}</a>
                                     <a class="share">
                                         <i class="mobile alternate icon"></i>
-                                        <span></span>{{item.phoneNumber}}
+                                        <span></span>{{item.QQ}}
                                     </a>
                                     <!--  <div class="right">
                                           <a class="ban" ban-report data-id="19937739" data-obj-type="100"
@@ -178,7 +178,7 @@
                                 <div class="label">
                                     <a>
                                         <div class="osc-avatar small-portrait _35x35">
-                                            <img :src="item.icon?imgPrefix+item.icon:userIcon"/>
+                                            <img :src="item.icon"/>
                                         </div>
                                     </a>
                                 </div>
@@ -229,7 +229,7 @@
                                 <div class="label">
                                     <a @click="jumpDetail(item.id)">
                                         <div class="osc-avatar small-portrait _35x35">
-                                            <img :src="item.icon?imgPrefix+item.icon:userIcon"/>
+                                            <img :src="item.icon"/>
                                         </div>
                                     </a>
                                 </div>
@@ -260,14 +260,14 @@
                                         <div class="multimgs">
                                             <div class="wrapper single-wrapper" v-for="src in item.images">
                                                 <a>
-                                                    <img :src="imgPrefix + src" :key="src" @click="jumpDetail(item.id)"
+                                                    <img :src="src" :key="src" @click="jumpDetail(item.id)"
                                                          data-max-width="160" data-max-height="160" alt="图片">>
                                                 </a>
                                             </div>
 
                                             <!--   <div class="wrapper single-wrapper" data-multi-image-raw="item">
                                                    <a @click="jumpDetail(item.id)">
-                                                       <img :src="imgPrefix + src" :key="src"
+                                                       <img :src="src" :key="src"
                                                             data-max-width="160" data-max-height="160" alt="图片">
                                                    </a>
                                                </div>-->

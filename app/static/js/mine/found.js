@@ -101,7 +101,7 @@ var app = new Vue({
         },
         jumpDetail(id) {
             //跳转详情页面
-            window.open("./detail.html?id=" + id, "_blank");
+            window.open("./detail?id=" + id, "_blank");
         },
         logout() {
             //询问框

@@ -29,7 +29,7 @@ def get_all():
     # notices=Notice.query.limit(10).order_by(Notice.create_time.desc()).all()
     # notices = Notice.query.all().order_by(Notice.create_time.desc())
     # notices = Notice.query.limit(10).order_by(desc('create_time')).all()
-    notices = Notice.query.order_by(desc('create_time')).limit(10)
+    notices = Notice.query.order_by(desc('fix_top'),desc('create_time')).limit(10)
     cnt = len(Notice.query.all())
     print('cnt:',cnt)
     print('notices:',notices)

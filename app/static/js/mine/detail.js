@@ -34,7 +34,7 @@ var app = new Vue({
                 dealTime: null,
                 isSelf: false,
                 email: "cpwu@foxmail.com",
-                phoneNumber: "15912345678",*/
+                QQ: "15912345678",*/
 
         },
         comments: [
@@ -129,7 +129,7 @@ var app = new Vue({
         },
         jumpDetail(id) {
             //跳转详情页面
-            window.open("./detail.html?id=" + id, "_self");
+            window.open("./detail?id=" + id, "_self");
         },
         claim(){
             claim(this.item.id);
@@ -173,7 +173,7 @@ function deletePub(data) {
 //查询相关类别
 function pageLostFound(data, result) {
     $.ajax({
-        url: baseUrl + "/page",
+        url: baseUrl + "/found/getall",
         data: JSON.stringify(data),
         method: "POST",
         beforeSend: function () {
@@ -252,7 +252,7 @@ function getComments(id, app) {
 function getDetail(id, result) {
     //console.log(data);
     $.ajax({
-        url: baseUrl + "/user/detail?id=" + id,
+        url: baseUrl + "/detail/get?id=" + id,
         method: "POST",
         success: function (res, status) {
             console.log(res);

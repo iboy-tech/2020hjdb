@@ -13,23 +13,7 @@ var app = new Vue({
         result: {
             totalPage: 0,
             total: 0,
-            list: [
-                /*{
-                    userId: "001",
-                    name: "Alice",
-                    username: "201520180508",
-                    gender: "male",
-                    email: "cpwu@foxmail.com",
-                    phoneNumber: "15911112222",
-                    classNum: "1521805",
-                    major: "soft making",
-                    academy: "soft academy",
-                    campus: "gl",
-                    lastLogin: "2019-4-20 13:00",
-                    status: "正常",
-                    kind: 0
-                }*/
-            ]
+            list: []
         }
     },
     computed: {

@@ -12,13 +12,12 @@ class LostFound(db.Model):
         Index('INDEX_LF', 'title', 'category_id'),  # 索引名称
     )
     # category_id = db.Column(db.Integer, )  # 定义外键
-
     id = db.Column(db.Integer, primary_key=True, info='主键')
     kind = db.Column(db.Integer, nullable=False, info='类型失物或招领01')
     category_id = db.Column(db.Integer, db.ForeignKey('t_category.id'),nullable=False, info='外键')
     about = db.Column(db.String(1024), nullable=False, info='详情')
     title = db.Column(db.String(128), nullable=False, info='帖子标题')
-    images = db.Column(db.String(1024), info='图片')
+    images = db.Column(db.Text, info='图片')
     user_id = db.Column(db.Integer, db.ForeignKey('t_user.id'),nullable=False, info='创建者id')
     claimant_id = db.Column(db.Integer, info='索要者ID',default=None)
     create_time = db.Column(db.DateTime,default=datetime.now(), nullable=False, info='创建时间')
@@ -27,9 +26,7 @@ class LostFound(db.Model):
     location = db.Column(db.String(512), info='位置')
     look_count = db.Column(db.Integer, nullable=False,server_default=text('0'))
     # record_status = db.Column(db.Integer, nullable=False,server_default=text('0'))
-    status = db.Column(db.Integer, nullable=False, info='物品的状态01是否被领取',default=0)
-
-
+    status = db.Column(db.Integer, nullable=False, info='物品的状态01是否被领取',default=1)
     # 返回一个具有可读性的字符串模型  方便调试
     def __repr__(self):
         return '<TLostFound %r>' % self.title

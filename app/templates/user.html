@@ -126,7 +126,7 @@
                                 <div class="ui list">
                                     <div class="item">学号：{{user.studentNum}}</div>
                                     <div class="item">邮箱：{{user.email}}</div>
-                                    <div class="item">QQ：<a class="view" :href="api+user.qq">{{user.qq}}</a></div>
+                                    <div class="item">QQ：<a class="item" :href="api+user.qq">{{user.qq}}</a></div>
                                     <div class="item">加入时间：{{user.createTime}}</div>
                                     <div class="item">最近登录：{{user.lastLogin}}</div>
                                 </div>
@@ -248,7 +248,7 @@
                                                                 <a @click="jumpDetail(item.id)">
                                                                     <div class="osc-avatar small-portrait _35x35 avatar"
                                                                          :title="item.username">
-                                                                        <img :src="item.icon?imgPrefix+item.icon:userIcon"
+                                                                        <img :src="item.icon"
                                                                              alt="头像"
                                                                              :title="item.username">
                                                                     </div>
@@ -290,7 +290,7 @@
                                                                          v-for="src in item.images">
                                                                         <a>
                                                                             <img @click="jumpDetail(item.id)"
-                                                                                 :src="imgPrefix + src" :key="src"
+                                                                                 :src="src" :key="src"
                                                                                  style="max-width: 160px; height: auto;">
                                                                         </a>
                                                                     </div>
@@ -359,7 +359,7 @@
                                                                 <a @click="jumpDetail(item.id)">
                                                                     <div class="osc-avatar small-portrait _35x35 avatar"
                                                                          :title="item.username">
-                                                                        <img :src="item.icon?imgPrefix+item.icon:userIcon"
+                                                                        <img :src="item.icon"
                                                                              alt="头像"
                                                                              :title="item.username">
                                                                     </div>
@@ -401,7 +401,7 @@
                                                                          v-for="src in item.images">
                                                                         <a>
                                                                             <img @click="jumpDetail(item.id)"
-                                                                                 :src="imgPrefix + src" :key="src"
+                                                                                 :src="src" :key="src"
                                                                                  style="max-width: 160px; height: auto;">
                                                                         </a>
                                                                     </div>
@@ -460,7 +460,7 @@
                                                                 <a @click="jumpDetail(item.id)">
                                                                     <div class="osc-avatar small-portrait _35x35 avatar"
                                                                          :title="item.username">
-                                                                        <img :src="item.icon?imgPrefix+item.icon:userIcon"
+                                                                        <img :src="item.icon"
                                                                              alt="头像"
                                                                              :title="item.username">
                                                                     </div>
@@ -501,7 +501,7 @@
                                                                      v-for="src in item.images">
                                                                     <a>
                                                                         <img @click="jumpDetail(item.id)"
-                                                                             :src="imgPrefix + src" :key="src"
+                                                                             :src="src" :key="src"
                                                                              style="max-width: 160px; height: auto;">
                                                                     </a>
                                                                 </div>
@@ -554,7 +554,7 @@
                                                 <div class="ui avatar image">
                                                     <a>
                                                         <div class="osc-avatar small-portrait _35x35">
-                                                            <img :src="item.icon?imgPrefix+item.icon:userIcon">
+                                                            <img :src="item.icon">
                                                         </div>
                                                     </a>
                                                 </div>
@@ -564,7 +564,7 @@
 
                                                     </div>
                                                     <div class="description summary" data-emoji-render="">
-                                                        评论了：<a class="user" :href="'detail.html?id='+item.lostFoundId">{{item.title}}</a>
+                                                        评论了：<a class="user" :href="'detail?id='+item.lostFoundId">{{item.title}}</a>
                                                     </div>
                                                     <div class="extra referer">
                                                         <div class="referer-wrapper">
@@ -655,9 +655,9 @@
                                                     <!--<input id="in1" type="file" accept="image/*"-->
                                                     <!--onchange="changeImg(this)">-->
                                                     <!--<img id="img1" src="../../static/images/plus.png">-->
-                                                    <div class="ui fluid image up-img">
+                                                      <div class="ui fluid image up-img">
                                                         <input id="imgInput" type="file" accept="image/*"
-                                                               onchange="changeInput(this)">
+                                                               onchange="changeInput(this)"  multiple="multiple">
                                                         <img src="../../static/images/plus.png">
                                                     </div>
                                                 </div>

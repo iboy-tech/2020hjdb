@@ -38,6 +38,7 @@ class User(db.Model, UserMixin):
     def password(self, password):  # 生成密码散列
         self.password_hash = generate_password_hash(password)
 
+    # generate_password_hash(password, method='pbkdf2:sha1', salt_length=8)
     def verify_password(self, password):  # 验证密码
         return check_password_hash(self.password_hash, password)
 

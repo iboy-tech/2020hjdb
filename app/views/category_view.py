@@ -164,7 +164,7 @@ def get_all():
             "name":c.name,
             "about":c.about,
             # "image": None,
-            "creatorId": c.user_id,
+            "categoryId": c.id,
             "createTime": c.create_time,
             # "level": 1,
             # "targetId": "000",

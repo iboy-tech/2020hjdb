@@ -4,21 +4,10 @@ var app = new Vue({
         showMenu: false,
         tabIndex: 0,
         user: getSession("user") ? JSON.parse(getSession('user')) : {},
-        /*   {
-           studentNum: "201520180508",
-           realName: "cpwu",
-           icon: "https://avatars1.githubusercontent.com/u/30117131?s=460&v=4",
-           email: "cpwu@foxmail.com",
-           schoolName: "东华理工大学",
-           gender: 1,
-           createTime: "2019-04-10 19:06:10",
-           lastLogin: "2019-04-10 19:06:10",
-           kind: 0
-       },*/
         category: getCategory() || [],
         userIcon: "http://localhost/static/icon/user_icon.png",
         api:'https://api.uomg.com/api/qq.talk?qq=',
-        imgPrefix: staticUrl,
+        // imgPrefix: staticUrl,
         tab: [
             {
                 search: {//tab0
@@ -31,22 +20,7 @@ var app = new Vue({
                 },
                 totalPage: 0,
                 total: 0,
-                list: [
-                    /* {
-                         id: "00000000000000001",
-                         icon: "./images/icon.jpg",
-                         kind: 0,
-                         username: "201520180508",
-                         realName: "Alice",
-                         time: "2019-04-16 09:27:10",
-                         location: "研一的门口",
-                         title: "丢了一只篮球",
-                         images: ["./images/icon.jpg"],
-                         category: "电子数码",
-                         lookCount: 12,
-                         commentCount: 2,
-                     }*/
-                ]
+                list: []
             },
             {
                 search: {//tab1
@@ -91,6 +65,7 @@ var app = new Vue({
         tab4: {
             applyKind: 0,
             categoryIndex: -1,
+            categoryId:13,
             title: "",
             about: "",
             location: null,
@@ -98,10 +73,10 @@ var app = new Vue({
         },
         notice: [
             {
-                id: "0000000001",
-                title: "every one notice",
-                content: "hello, thank u, thank u very much!",
-                time: "2019-04-21 18:45",
+                id: "1",
+                title: "使用须知（必看）",
+                content: "本程序使用时会采集部分个人信息，所私密信息都加密处理，请放心使用!",
+                time: "2020-01-23 18:45",
                 fixTop: 1,
             }
         ],
@@ -138,9 +113,7 @@ var app = new Vue({
                 deleteSession("user");
                 window.location.replace("/logout");
             }, function () {
-
             });
-
         },
         changeTab(index) {
             //console.log(index);
@@ -155,7 +128,6 @@ var app = new Vue({
             } else if (index == 3) {//我的消息
                 getMessages(this);
             } else if (index == 4) {
-
             }
         },
         search() {
@@ -197,9 +169,7 @@ var app = new Vue({
                     ]
                 });
             }, function () {
-
             });
-
         },
         removeComment(id) {
             console.log(id);
@@ -212,7 +182,6 @@ var app = new Vue({
                     ]
                 });
             }, function () {
-
             });
         },
         changeTab4EventKind(index) {
@@ -228,7 +197,7 @@ var app = new Vue({
                 return;
             }
             let data = this.tab4;
-            data.categoryName = this.category[data.categoryIndex < 0 ? 0 : data.categoryIndex].name;
+            data.categoryId = this.category[data.categoryIndex < 0 ? 0 : data.categoryIndex].categoryId;
             console.log(data);
             pubLostFound(data);
             //console.log(this.tab4);
@@ -243,7 +212,7 @@ var app = new Vue({
         },
         jumpDetail(id) {
             //跳转详情页面
-            window.open("./detail?id=" + id, "_self");
+            window.open("detail?id=" + id, "_self");
         },
         showFeedback() {
             app.showMenu = false;
@@ -310,12 +279,11 @@ var app = new Vue({
 
 $(function () {
     pageLostFound(app.tab[0].search, app.tab[0], true);
-
     getNoticeList(app);
 });
 
 
-//设置手机号
+//设置QQ号
 function setQQ(qq) {
     //console.log(data);
     $.ajax({
@@ -419,7 +387,6 @@ function deletePub(data) {
             }
         }
     });
-
 }
 
 //查询通知列表
@@ -495,7 +462,7 @@ function getMessages(app) {
 function changeIcon(obj) {
     console.log('change img')
     console.log(obj);
-    let file = obj.files[0];
+    let file = obj.file[0];
 
     //console.log(file);
     console.log("file.size = " + file.size);  //file.size 单位为byte
@@ -551,13 +518,11 @@ function setIcon(icon) {
 
 //选择上传图片
 function changeInput(obj) {
-    console.log('change img')
+    console.log('搜狗上传图片change img')
     console.log(obj);
     let file = obj.files[0];
-
-    //console.log(file);
     console.log("file.size = " + file.size);  //file.size 单位为byte
-
+    // alert('执行了file_upload')
     let reader = new FileReader();
 
     //读取文件过程方法
@@ -573,14 +538,52 @@ function changeInput(obj) {
      reader.onerror = function (e) {
          console.log("读取异常....");
      }*/
-    reader.onload = function (e) {
+    reader.onload = function () {
         //console.log("成功读取....");
 
         //var img = document.getElementById("image1");
         //img.src = e.target.result;
-        app.tab4.images.push(e.target.result);
+        // app.tab4.images.push(e.target.result);
         //console.log(img.src)
         //或者 img.src = this.result;  //e.target == this
+         let imageData = new FormData();
+                imageData.append("file", 'multipart');
+                imageData.append("Filedata", file);
+        //         imageData.append('smfile', file);
+        // imageData.append('ssl', true);
+
+                // this.$http.post("https://api.uomg.com/api/image.sogou", imageData ,
+                // {
+                //     emulateJSON: true
+
+                // }).then(result => {
+                //         console.log(result.body);
+                // });
+console.log("我是传给后台的id：" + imageData);
+    var ajax;
+    ajax = new XMLHttpRequest();
+    ajax.onreadystatechange = function() {
+        if (4 == ajax.readyState && 200 == ajax.status) {
+            var result = ajax.responseText;
+            console.log('返回的结果：'+result);
+            eval("var data=" + result);
+            if (data.code == 1) {
+                // alert("删除成功！");
+                console.log('图片的链接'+data.imgurl);
+                app.tab4.images.push(data.imgurl);
+                // window.location.href = "/admin/list";
+            } else {
+                alert("文件过大,请重新上传！");
+            }
+        }
+    }
+    imgApi_AL='https://api.uomg.com/api/image.ali'
+    ssm_API='https://sm.ms/api/upload'
+    imgApi_JJ='https://api.uomg.com/api/image.juejin'
+    imgApi_JD='https://api.uomg.com/api/image.jd'
+    ajax.open("post",imgApi_AL);
+    // ajax.setRequestHeader("Content-Type", "application/json");
+    ajax.send(imageData);
     }
 
     reader.readAsDataURL(file)
@@ -601,6 +604,7 @@ function pubLostFound(data) {
                     app.tab4 = {
                         applyKind: 0,
                         categoryIndex: -1,
+                        categoryId:13,
                         title: "",
                         about: "",
                         location: null,
@@ -621,7 +625,7 @@ function pubLostFound(data) {
 function pageLostFound(data, result, append) {
     //console.log(data);
     $.ajax({
-        url: baseUrl + "/page",
+        url: baseUrl + "/found/getall",
         data: JSON.stringify(data),
         method: "POST",
         success: function (res, status) {
@@ -687,3 +691,5 @@ $('select.dropdown')
 //         alert("you are in the bottom");
 //     }
 // });
+
+

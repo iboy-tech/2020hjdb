@@ -1,143 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1fdc08d0-af6c-437b-85ec-7249d8cd86e2" name="Default Changelist" comment="完成分页功能，准备写失物发布功能">
-      <change afterPath="$PROJECT_DIR$/app/static/images/mail/aside.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/static/images/mail/bottom.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/static/images/mail/header.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/static/images/mail/logo-bottom.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/static/images/mail/logo.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/static/images/mail/qq.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/static/images/mail/top-3.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/static/images/mail/top-4.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/static/images/mail/top.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/templates/mails/base-local.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/templates/mails/base.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/templates/mails/feedbackReply.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/templates/mails/resetPassword.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/templates/mails/taskError.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/templates/mails/userActivate.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/templates/mails/userFreeze.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/untils/mial_test.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/untils/new_test.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/untils/sendgrid_api.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/Flask_Mail_SendGrid-0.3-py3.7.egg-info/PKG-INFO" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/Flask_Mail_SendGrid-0.3-py3.7.egg-info/SOURCES.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/Flask_Mail_SendGrid-0.3-py3.7.egg-info/dependency_links.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/Flask_Mail_SendGrid-0.3-py3.7.egg-info/installed-files.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/Flask_Mail_SendGrid-0.3-py3.7.egg-info/requires.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/Flask_Mail_SendGrid-0.3-py3.7.egg-info/top_level.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/flask_mail_sendgrid.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/python_http_client-3.2.4-py3.7.egg-info/PKG-INFO" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/python_http_client-3.2.4-py3.7.egg-info/SOURCES.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/python_http_client-3.2.4-py3.7.egg-info/dependency_links.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/python_http_client-3.2.4-py3.7.egg-info/installed-files.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/python_http_client-3.2.4-py3.7.egg-info/top_level.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/python_http_client/VERSION.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/python_http_client/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/python_http_client/client.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/python_http_client/exceptions.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid-6.1.1.dist-info/INSTALLER" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid-6.1.1.dist-info/LICENSE.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid-6.1.1.dist-info/METADATA" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid-6.1.1.dist-info/RECORD" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid-6.1.1.dist-info/WHEEL" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid-6.1.1.dist-info/top_level.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/endpoints/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/endpoints/ip/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/endpoints/ip/unassigned.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/inbound/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/inbound/app.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/inbound/config.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/inbound/parse.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/inbound/sample_data/default_data.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/inbound/sample_data/default_data_with_attachments.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/inbound/sample_data/raw_data.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/inbound/sample_data/raw_data_with_attachments.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/inbound/send.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/mail/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/mail/asm.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/mail/attachment.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/mail/batch_id.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/mail/bcc_email.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/mail/bcc_settings.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/mail/bcc_settings_email.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/mail/bypass_list_management.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/mail/category.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/mail/cc_email.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/mail/click_tracking.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/mail/content.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/mail/content_id.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/mail/custom_arg.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/mail/disposition.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/mail/dynamic_template_data.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/mail/email.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/mail/exceptions.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/mail/file_content.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/mail/file_name.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/mail/file_type.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/mail/footer_html.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/mail/footer_settings.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/mail/footer_text.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/mail/from_email.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/mail/ganalytics.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/mail/group_id.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/mail/groups_to_display.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/mail/header.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/mail/html_content.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/mail/ip_pool_name.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/mail/mail.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/mail/mail_settings.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/mail/mime_type.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/mail/open_tracking.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/mail/open_tracking_substitution_tag.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/mail/personalization.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/mail/plain_text_content.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/mail/reply_to.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/mail/sandbox_mode.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/mail/section.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/mail/send_at.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/mail/spam_check.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/mail/spam_threshold.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/mail/spam_url.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/mail/subject.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/mail/subscription_html.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/mail/subscription_substitution_tag.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/mail/subscription_text.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/mail/subscription_tracking.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/mail/substitution.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/mail/template_id.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/mail/to_email.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/mail/tracking_settings.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/mail/utm_campaign.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/mail/utm_content.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/mail/utm_medium.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/mail/utm_source.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/mail/utm_term.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/mail/validators.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/stats/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/helpers/stats/stats.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/sendgrid.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/sendgrid/version.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
+    <list default="true" id="1fdc08d0-af6c-437b-85ec-7249d8cd86e2" name="Default Changelist" comment="增加异步发送邮件的功能，准备写图床上传功能">
+      <change afterPath="$PROJECT_DIR$/test.jpeg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/extensions.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/extensions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/static/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/app/static/css/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models/lostfound_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/lostfound_model.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models/user_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/user_model.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/static/js/mine/detail.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/static/js/mine/detail.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/static/js/mine/found.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/static/js/mine/found.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/static/js/mine/home.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/static/js/mine/home.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/static/js/mine/users.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/static/js/mine/users.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/static/js/semantic.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/static/js/semantic.min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/campus.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/campus.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/feedback.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/feedback.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/detail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/found.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/found.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/templates/user.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/user.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/userlist.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/userlist.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/untils/mail_sender.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/untils/mail_sender.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/auth_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/auth_view.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/feedback_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/feedback_view.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/userlist_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/userlist_view.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/views/category_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/category_view.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/views/detail_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/detail_view.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/views/found_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/found_view.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/views/notice_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/notice_view.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -150,6 +29,7 @@
         <option value="Flask Main" />
         <option value="HTML File" />
         <option value="Python Script" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
@@ -183,17 +63,10 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="add_unversioned_files" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/app/templates/mails" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/app/templates" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="O:\Python\Flask-WC\app\templates\mails" />
-      <recent name="O:\Python\Flask-WC\app\templates\mail" />
-      <recent name="O:\Python\Flask-WC" />
-      <recent name="O:\Python\Flask-WC\app\untils" />
-      <recent name="O:\Python\Flask-WC\app\templates\errors" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="O:\Python\Flask-WC\app\static\images\mail" />
       <recent name="O:\Python\Flask-WC\app\static\images" />
@@ -201,8 +74,15 @@
       <recent name="O:\Python\Flask-WC\app\templates\errors" />
       <recent name="O:\Python\Flask-WC\app\static" />
     </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="O:\Python\Flask-WC\app\templates" />
+      <recent name="O:\Python\Flask-WC\app\templates\mails" />
+      <recent name="O:\Python\Flask-WC\app\templates\mail" />
+      <recent name="O:\Python\Flask-WC" />
+      <recent name="O:\Python\Flask-WC\app\untils" />
+    </key>
   </component>
-  <component name="RunManager" selected="Python.userlist_view">
+  <component name="RunManager" selected="Flask server.Flask (setup.py)">
     <configuration name="__init__" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="Flask-WC" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -447,36 +327,6 @@
       <method v="2" />
     </configuration>
     <configuration name="Flask (setup.py)" type="Python.FlaskServer" temporary="true" nameIsGenerated="true">
-      <module name="Flask-WC" />
-      <option name="target" value="$PROJECT_DIR$/setup.py" />
-      <option name="targetType" value="PATH" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="launchJavascriptDebuger" value="false" />
-      <method v="2" />
-    </configuration>
-    <configuration name="Flask (setup.py)" type="Python.FlaskServer" temporary="true" nameIsGenerated="true">
-      <module name="Flask-WC" />
-      <option name="target" value="$PROJECT_DIR$/setup.py" />
-      <option name="targetType" value="PATH" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="launchJavascriptDebuger" value="false" />
-      <method v="2" />
-    </configuration>
-    <configuration name="Flask (setup.py)" type="Python.FlaskServer" temporary="true" nameIsGenerated="true">
       <option name="flaskEnv" />
       <module name="Flask-WC" />
       <option name="target" value="$PROJECT_DIR$/setup.py" />
@@ -558,6 +408,36 @@
       <option name="launchJavascriptDebuger" value="false" />
       <method v="2" />
     </configuration>
+    <configuration name="Flask (setup.py)" type="Python.FlaskServer" temporary="true" nameIsGenerated="true">
+      <module name="Flask-WC" />
+      <option name="target" value="$PROJECT_DIR$/setup.py" />
+      <option name="targetType" value="PATH" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Flask (setup.py)" type="Python.FlaskServer" temporary="true" nameIsGenerated="true">
+      <module name="Flask-WC" />
+      <option name="target" value="$PROJECT_DIR$/setup.py" />
+      <option name="targetType" value="PATH" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <method v="2" />
+    </configuration>
     <configuration name="Flask-WC" type="Python.FlaskServer">
       <module name="Flask-WC" />
       <option name="target" value="$PROJECT_DIR$/app/untils/wechat.py" />
@@ -585,8 +465,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.userlist_view" />
         <item itemvalue="Flask server.Flask (setup.py)" />
+        <item itemvalue="Python.userlist_view" />
         <item itemvalue="Python.new_test" />
         <item itemvalue="Python.mial_test" />
         <item itemvalue="Python.sendgrid_api" />
@@ -671,7 +551,10 @@
       <workItem from="1580268124589" duration="7084000" />
       <workItem from="1580284772199" duration="15431000" />
       <workItem from="1580353199182" duration="9052000" />
-      <workItem from="1580372694540" duration="10681000" />
+      <workItem from="1580372694540" duration="17226000" />
+      <workItem from="1580437843747" duration="613000" />
+      <workItem from="1580443377883" duration="14000" />
+      <workItem from="1580462410501" duration="18211000" />
     </task>
     <task id="LOCAL-00001" summary="初始化仓库">
       <created>1578632264764</created>
@@ -792,7 +675,14 @@
       <option name="project" value="LOCAL" />
       <updated>1580293683177</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="增加异步发送邮件的功能，准备写图床上传功能">
+      <created>1580385855225</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1580385855225</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -835,7 +725,8 @@
     <MESSAGE value="完成通知功能，准别写反馈功能" />
     <MESSAGE value="完成反馈功能，准备写用户管理模块" />
     <MESSAGE value="完成分页功能，准备写失物发布功能" />
-    <option name="LAST_COMMIT_MESSAGE" value="完成分页功能，准备写失物发布功能" />
+    <MESSAGE value="增加异步发送邮件的功能，准备写图床上传功能" />
+    <option name="LAST_COMMIT_MESSAGE" value="增加异步发送邮件的功能，准备写图床上传功能" />
   </component>
   <component name="WindowStateProjectService">
     <state x="261" y="0" key="#Inspections" timestamp="1579437247077">
@@ -866,30 +757,30 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="456" y="9" key="#models/0.0.1536.824@0.0.1536.824" timestamp="1579701657091" />
-    <state x="303" y="0" key="CommitChangelistDialog2" timestamp="1580293643846">
+    <state x="303" y="0" key="CommitChangelistDialog2" timestamp="1580385805089">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="303" y="0" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1580293643846" />
+    <state x="303" y="0" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1580385805089" />
     <state x="499" y="115" key="FileChooserDialogImpl" timestamp="1579683499076">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="499" y="115" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1579683499076" />
-    <state width="1483" height="320" key="GridCell.Tab.0.bottom" timestamp="1580380333056">
+    <state width="1483" height="308" key="GridCell.Tab.0.bottom" timestamp="1580475856481">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1483" height="320" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1580380333056" />
-    <state width="1483" height="320" key="GridCell.Tab.0.center" timestamp="1580380333056">
+    <state width="1483" height="308" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1580475856481" />
+    <state width="1483" height="308" key="GridCell.Tab.0.center" timestamp="1580475856481">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1483" height="320" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1580380333056" />
-    <state width="1483" height="320" key="GridCell.Tab.0.left" timestamp="1580380333056">
+    <state width="1483" height="308" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1580475856481" />
+    <state width="1483" height="308" key="GridCell.Tab.0.left" timestamp="1580475856481">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1483" height="320" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1580380333056" />
-    <state width="1483" height="320" key="GridCell.Tab.0.right" timestamp="1580380333056">
+    <state width="1483" height="308" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1580475856481" />
+    <state width="1483" height="308" key="GridCell.Tab.0.right" timestamp="1580475856481">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1483" height="320" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1580380333056" />
+    <state width="1483" height="308" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1580475856481" />
     <state width="1483" height="83" key="GridCell.Tab.1.bottom" timestamp="1580370778561">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -910,10 +801,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="47" y="0" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1579609641663" />
-    <state x="214" y="80" key="Vcs.Push.Dialog.v2" timestamp="1580293654557">
+    <state x="214" y="80" key="Vcs.Push.Dialog.v2" timestamp="1580385813623">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="214" y="80" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1580293654557" />
+    <state x="214" y="80" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1580385813623" />
     <state x="539" y="315" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1580111877991">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -944,8 +835,8 @@
     <SUITE FILE_PATH="coverage/Flask_WC$__init____1_.coverage" NAME="__init__ (1) Coverage Results" MODIFIED="1579697440224" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/app" />
     <SUITE FILE_PATH="coverage/Flask_WC$views.coverage" NAME="views Coverage Results" MODIFIED="1579437303025" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/app/main" />
     <SUITE FILE_PATH="coverage/Flask_WC$test.coverage" NAME="test Coverage Results" MODIFIED="1578906119617" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/Flask_WC$Flask__setup_py_.coverage" NAME="Flask (setup.py) Coverage Results" MODIFIED="1580379057331" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Flask_WC$userlist_view.coverage" NAME="userlist_view Coverage Results" MODIFIED="1580380327206" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/app/views" />
+    <SUITE FILE_PATH="coverage/Flask_WC$Flask__setup_py_.coverage" NAME="Flask (setup.py) Coverage Results" MODIFIED="1580462644107" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Flask_WC$Flask__app___init___py_creat_app_.coverage" NAME="Flask (app/__init__.py:creat_app) Coverage Results" MODIFIED="1579418449718" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/Flask_WC$Flask__tests_test_app_py_.coverage" NAME="Flask (tests/test_app.py) Coverage Results" MODIFIED="1580269505928" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/Flask_WC$Flask__setup_py___1_.coverage" NAME="Flask (setup.py) (1) Coverage Results" MODIFIED="1579677389336" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
