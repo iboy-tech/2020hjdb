@@ -93,7 +93,7 @@ var app = new Vue({
             let t = this.item.images.length;
             for (; i < t; i++) {
                 let src = this.item.images[i];
-                let d = {"src": staticUrl + src};
+                let d = {"src":src};
                 this.images.data.push(d);
             }
             console.log(this.images);
@@ -129,7 +129,7 @@ var app = new Vue({
         },
         jumpDetail(id) {
             //跳转详情页面
-            window.open("./detail?id=" + id, "_self");
+            window.open(baseUrl+"/detail?id=" + id, "_self");
         },
         claim(){
             claim(this.item.id);
@@ -201,7 +201,7 @@ function pageLostFound(data, result) {
 //发布评论
 function pubComment(data, app) {
     $.ajax({
-        url: baseUrl + "/user/comment",
+        url: baseUrl + "/comment",
         data: JSON.stringify(data),
         method: "POST",
         success: function (res, status) {
@@ -226,7 +226,7 @@ function pubComment(data, app) {
 function getComments(id, app) {
     //console.log(data);
     $.ajax({
-        url: baseUrl + "/user/comments?id=" + id,
+        url: baseUrl + "/comment?id=" + id,
         method: "POST",
         beforeSend: function () {
 
@@ -252,7 +252,8 @@ function getComments(id, app) {
 function getDetail(id, result) {
     //console.log(data);
     $.ajax({
-        url: baseUrl + "/detail/get?id=" + id,
+        url: baseUrl + "/detail",
+        data:id,
         method: "POST",
         success: function (res, status) {
             console.log(res);

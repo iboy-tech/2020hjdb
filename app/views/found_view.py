@@ -17,6 +17,7 @@ from sqlalchemy import desc
 from app import db
 from app.main import found
 from app.models.category_model import Category
+from app.models.comment_model import Comment
 from app.models.lostfound_model import LostFound
 from app.models.user_model import User
 
@@ -26,72 +27,55 @@ def index():
     return render_template('found.html')
 
 
-@found.route('/getall', methods=['GET', 'POST', 'OPTIONS'], strict_slashes=False)
+@found.route('/getall', methods=['POST'], strict_slashes=False)
 def get_all():
-
     req = request.json
+    page = int(req['pageNum'])
     print(req)
     print('get_users收到请求')
-    page=int(req['pageNum'])
-    pagination =LostFound.query.order_by(desc('create_time')).paginate(page+1, per_page=current_app.config[
-        'ARTISAN_POSTS_PER_PAGE'], error_out=False)
-    losts = pagination.items
-    print(losts)
-    datalist=[]
-    for l in losts:
-        print(l.images,type(l.images))
-        l.images=l.images.replace('[','').replace(']','').replace(' \'','').replace('\'','')
-        print(l.images, type(l.images))
-        imglist=l.images.strip().split(',')
-        print(imglist,type(imglist))
-        user=User.query.get(l.user_id)
-        dict={
-                "id": l.id,
-                "icon": 'https://q2.qlogo.cn/headimg_dl?dst_uin={}&spec=100'.format(user.qq),
-                "kind": l.kind,
-                "status": l.status,
-                "claimantId": l.claimant_id,
-                "userId": l.user_id,
-                "username": user.username,
-                "realName": user.real_name,
-                "time": l.create_time.strftime( '%Y-%m-%d %H:%M:%S'),
-                "location": l.location,
-                "title": l.title,
-                "about": l.about,
-                "images": imglist,
-                "category": Category.query.get(l.category_id).name,
-                "lookCount": l.look_count,
-                "commentCount": 0
-            }
-        datalist.append(dict)
-    data = {
-        "success": True,
-        "code": 1000,
-        "msg": "处理成功",
-        "data": {
-            "page": {
-                "total": pagination.total,
-                "totalPage": pagination.pages,
-                "pageNum": req['pageNum'],
-                "pageSize": current_app.config['ARTISAN_POSTS_PER_PAGE'],
-                "list": datalist
-            }
-        },
-        "ext": None
-    }
-    return data
+    if req['kind'] == -1 and req['category'] == '' and req['username'] == '':
+        pagination = LostFound.query.order_by(desc('create_time')).paginate(page + 1, per_page=current_app.config['ARTISAN_POSTS_PER_PAGE'], error_out=False)
+        data = get_search_data(pagination, page)
+        return data
 
+    elif req['kind'] == -1 and req['category'] != '':
+        c = Category.query.filter_by(name=req['category']).first()
+        pagination = LostFound.query.filter_by(category_id=c.id).order_by(desc('create_time')).paginate(page + 1,per_page=current_app.config['ARTISAN_POSTS_PER_PAGE'],error_out=False)
+        data=get_search_data(pagination,page)
+        return data
+    elif req['username'] != '':
+        print('这是用户个人查询')
+        u = User.query.filter_by(username=req['username']).first()
+        pagination = LostFound.query.filter_by(user_id=u.id).order_by(desc('create_time')).paginate(page + 1, per_page=current_app.config['ARTISAN_POSTS_PER_PAGE'], error_out=False)
+        data=get_search_data(pagination,page)
+        return data
+    elif req['kind'] != -1 and req['category'] != '':
+        print('这是分类查询')
+        print(req['category'])
+        c = Category.query.filter_by(name=req['category']).first()
+        print('Category.query.',c)
+        pagination = LostFound.query.filter_by(category_id=c.id,kind=req['kind']).order_by(desc('create_time')).paginate(page + 1,per_page=current_app.config['ARTISAN_POSTS_PER_PAGE'],error_out=False)
+        data=get_search_data(pagination,page)
+        print('分类查询：',data)
+        return data
+    elif req['kind'] != -1 and req['category'] == '':
+        print('这是分类查询')
+        c = Category.query.filter_by(name=req['category']).first()
+        pagination = LostFound.query.filter_by(kind=req['kind']).order_by(desc('create_time')).paginate(page + 1,per_page=current_app.config['ARTISAN_POSTS_PER_PAGE'],error_out=False)
+        data=get_search_data(pagination,page)
+        print('分类查询：',data)
+        return data
 
 @found.route('/pub', methods=['GET', 'POST', 'OPTIONS'], strict_slashes=False)
 def pub():
     data = request.json
     print(data)
     print(data['images'], type(data['images']))
-    imgstr=str(data['images'])
-    print(type(imgstr),imgstr)
-    lost=LostFound(kind=data['applyKind'],category_id=data['categoryId'],
-    images=imgstr,location =data['location'] ,
-    title=data['title'],about=data['about'],user_id=current_user.id)
+    imgstr = str(data['images'])
+    print(type(imgstr), imgstr)
+    lost = LostFound(kind=data['applyKind'], category_id=data['categoryId'],
+                     images=imgstr, location=data['location'],
+                     title=data['title'], about=data['about'], user_id=current_user.id)
     db.session.add(lost)
     db.session.commit()
     # print(data['images'][0],len(data['images']))
@@ -106,3 +90,51 @@ def pub():
         "ext": None
     }
     return data
+
+def get_search_data(pagination,pageNum):
+    losts = pagination.items
+    print(losts)
+    datalist = []
+    for l in losts:
+        print(l.images, type(l.images))
+        l.images = l.images.replace('[', '').replace(']', '').replace(' \'', '').replace('\'', '')
+        print(l.images, type(l.images))
+        imglist = l.images.strip().split(',')
+        print(imglist, type(imglist))
+        user = User.query.get(l.user_id)
+        dict = {
+            "id": l.id,
+            "icon": 'https://q2.qlogo.cn/headimg_dl?dst_uin={}&spec=100'.format(user.qq),
+            "kind": l.kind,
+            "status": l.status,
+            "claimantId": l.claimant_id,
+            "userId": l.user_id,
+            "username": user.username,
+            "realName": user.real_name,
+            "time": l.create_time.strftime('%Y-%m-%d %H:%M:%S'),
+            "location": l.location,
+            "title": l.title,
+            "about": l.about,
+            "images": imglist,
+            "category": Category.query.get(l.category_id).name,
+            "lookCount": l.look_count,
+            "commentCount": len(Comment.query.filter_by(lost_found_id=l.id).all())
+        }
+        datalist.append(dict)
+    data = {
+        "success": True,
+        "code": 1000,
+        "msg": "处理成功",
+        "data": {
+            "page": {
+                "total": pagination.total,
+                "totalPage": pagination.pages,
+                "pageNum": pageNum,
+                "pageSize": current_app.config['ARTISAN_POSTS_PER_PAGE'],
+                "list": datalist
+            }
+        },
+        "ext": None
+    }
+    return data
+

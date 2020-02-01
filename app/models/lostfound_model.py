@@ -1,7 +1,7 @@
 # coding: utf-8
 from datetime import datetime
 
-from sqlalchemy import Index, text
+from sqlalchemy import Index, text, desc
 
 from app import db
 
@@ -13,12 +13,13 @@ class LostFound(db.Model):
     )
     # category_id = db.Column(db.Integer, )  # 定义外键
     id = db.Column(db.Integer, primary_key=True, info='主键')
+    comments=db.relationship('Comment',order_by=(desc('create_time')),backref='t_lost_found',lazy="select", cascade='all', passive_deletes = True)
     kind = db.Column(db.Integer, nullable=False, info='类型失物或招领01')
-    category_id = db.Column(db.Integer, db.ForeignKey('t_category.id'),nullable=False, info='外键')
+    category_id = db.Column(db.Integer, db.ForeignKey('t_category.id',ondelete='CASCADE'),nullable=False, info='外键')
     about = db.Column(db.String(1024), nullable=False, info='详情')
     title = db.Column(db.String(128), nullable=False, info='帖子标题')
     images = db.Column(db.Text, info='图片')
-    user_id = db.Column(db.Integer, db.ForeignKey('t_user.id'),nullable=False, info='创建者id')
+    user_id = db.Column(db.Integer,db.ForeignKey('t_user.id',ondelete='CASCADE'),nullable=False, info='创建者id')
     claimant_id = db.Column(db.Integer, info='索要者ID',default=None)
     create_time = db.Column(db.DateTime,default=datetime.now(), nullable=False, info='创建时间')
     deal_time = db.Column(db.DateTime, info='领取的时间',default=None)
@@ -29,4 +30,4 @@ class LostFound(db.Model):
     status = db.Column(db.Integer, nullable=False, info='物品的状态01是否被领取',default=1)
     # 返回一个具有可读性的字符串模型  方便调试
     def __repr__(self):
-        return '<TLostFound %r>' % self.title
+        return '<LostFound %r>' % self.title

@@ -34,7 +34,7 @@ from app.main import userlist as  userlist_bp
 from app.main import found as  found_bp
 from app.main import feedback as  feedback_bp
 from app.main import detail as  detail_bp
-
+from app.main import comment as  comment_bp
 
 # 工厂函数
 def create_app(config_name=None):
@@ -76,6 +76,7 @@ def register_blueprints(app):
     app.register_blueprint(found_bp)  # 用户管理
     app.register_blueprint(feedback_bp)  # 用户管理
     app.register_blueprint(detail_bp)  # 用户管理
+    app.register_blueprint(comment_bp)
 
 
 def register_extensions(app):  # 实例化扩展

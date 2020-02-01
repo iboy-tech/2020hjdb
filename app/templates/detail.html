@@ -28,7 +28,7 @@
             <div class="ui internally stackable grid tweet-detail-page">
                 <div class="eleven wide computer sixteen wide tablet column tweet-detail-wrap">
                     <div class="ui breadcrumb">
-                        <a class="section" href="user.html">所有启事</a>
+                        <a class="section" href="user">所有启事</a>
                         <i class="right chevron icon divider"></i>
                         <div class="active section">详情</div>
                     </div>
@@ -139,7 +139,11 @@
                         </div>
                     </div>
                     <div v-if="!item.isSelf && item.kind == 1" class="field foot-bar" style="text-align: center;">
-                        <button class="ui blue small button" @click="claim">我要认领
+                        <button class="ui blue small button" @click="claim()">我要认领
+                        </button>
+                    </div>
+                    <div v-if="!item.isSelf && item.kind == 0" class="field foot-bar" style="text-align: center;">
+                        <button class="ui red small button" @click="claim()">我要上报
                         </button>
                     </div>
                     <!--comment-->
@@ -191,15 +195,15 @@
                                     <div class="extra text" data-emoji-render>
                                         {{item.content}}
                                     </div>
-                                    <!-- <div class="meta">
-                                         <a class="reply">
-                                             <i class="comment outline icon"></i> 回复
-                                         </a>
-                                         <a class="ban" ban-report data-id="19937818" data-obj-type="101"
-                                            data-url="https://my.oschina.net/u/2553562/tweet/19937739/#rpl_19937818">
-                                             <i class="ban icon"></i> 举报
-                                         </a>
-                                     </div>-->
+{#                                   <div class="meta">#}
+{#                                         <a class="reply">#}
+{#                                             <i class="comment outline icon"></i> 回复#}
+{#                                         </a>#}
+{#                                         <a class="ban" ban-report data-id="19937818" data-obj-type="101"#}
+{#                                            data-url="https://my.oschina.net/u/2553562/tweet/19937739/#rpl_19937818">#}
+{#                                             <i class="ban icon"></i> 举报#}
+{#                                         </a>#}
+{#                                     </div>#}
                                 </div>
                             </div>
 

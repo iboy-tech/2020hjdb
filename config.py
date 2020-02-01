@@ -28,6 +28,7 @@ class Config:
     ARTISAN_POSTS_PER_PAGE=120
     MAIL_SENDGRID_API_KEY = 'SG.Ksvhquq2TJuXgwKPWeuJCw.9-8CZEP5Tp9mG8P8ypoouGNqgoC48vYwdb8qQTEr9Xg'
     MAIL_DEFAULT_SENDER='ctgu@iboy.tech'
+    QQ_AVATAR_API='https://q2.qlogo.cn/headimg_dl?dst_uin={}&spec=100'
 
 
     @staticmethod

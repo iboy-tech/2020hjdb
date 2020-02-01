@@ -1,14 +1,12 @@
 # coding: utf-8
 from datetime import datetime
-from werkzeug.security import generate_password_hash, check_password_hash
-from sqlalchemy import Index, text
-from sqlalchemy.ext.declarative import declarative_base
-from flask_login import UserMixin
-from app import login_manager
-from app import db
 
-Base = declarative_base()
-metadata = Base.metadata
+from flask_login import UserMixin
+from sqlalchemy import text
+from werkzeug.security import generate_password_hash, check_password_hash
+
+from app import db
+from app import login_manager
 
 
 class User(db.Model, UserMixin):
@@ -26,6 +24,11 @@ class User(db.Model, UserMixin):
     status = db.Column(db.Integer, nullable=False, default=1, info='用户状态01')
     create_time = db.Column(db.DateTime, default=datetime.now(), info='时间')
     last_login = db.Column(db.DateTime, default=datetime.now(), info='最后登录时间')
+    lost_founds=db.relationship('LostFound', backref='t_lost_founds',lazy="select")#关联评论表
+    categories = db.relationship('Category', backref='t_category',lazy="select")#关联创建目录
+    comments = db.relationship('Comment', backref='t_comment', lazy="select")  # 关联评论表
+
+
 
     # @property是让这个更简洁
     # ，既保持直接对属性赋值的方便，又对条件做了限制：
