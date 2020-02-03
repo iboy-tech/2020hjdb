@@ -16,6 +16,8 @@ from flask_debugtoolbar import DebugToolbarExtension
 from app.models.feedback_model import Feedback
 from app.models.lostfound_model import LostFound
 from app.models.notice_model import Notice
+from app.models.permission_model import Permission
+from app.models.role_model import Role
 from app.models.user_model import User
 from app.models.comment_model import Comment
 from app.models.category_model import Category
@@ -41,7 +43,7 @@ toolbar = DebugToolbarExtension(app)
 
 def make_shell_context():
     return dict(app=app, db=db, User=User,Category=Category,
-                Comment=Comment,Notice=Notice,LostFound=LostFound,Feedback=Feedback)
+                Comment=Comment,Notice=Notice,LostFound=LostFound,Feedback=Feedback,Role = Role,Permission = Permission)
 
 
 manager.add_command('shell', Shell(make_shell_context()))

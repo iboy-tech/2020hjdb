@@ -8,7 +8,7 @@
 @Description : 
 @Software: PyCharm
 """
-import datetime
+from datetime import datetime
 
 from flask import render_template, request, redirect, url_for, g, session
 from flask_cors import cross_origin
@@ -37,7 +37,7 @@ def login():
             print('current_user.is_authenticated',current_user.is_authenticated)
             print('Flask-Login自动添加',session['user_id'])
             # session['uid'] = user.id
-            user.last_login = datetime.datetime.now()
+            user.last_login = datetime.now()
             print(user)
             db.session.add(user)
             db.session.commit()
