@@ -15,7 +15,7 @@ import os
 from datetime import datetime
 from multiprocessing import Pool
 
-start_time = datetime.now()
+start_time = datetime.now
 # https://temp-mail.org/zh/接码免费申请apikey
 key = 'mmnYWFKXVlkxsKtFbdx17FSqFj5YhWq0'  # 登录后去主页就可以查看到key
 tinify.key = key
@@ -46,6 +46,6 @@ if __name__ == '__main__':
         p.apply_async(tinypng, args=(path,))
     p.close()
     p.join()
-    end_time = datetime.now()
+    end_time = datetime.now
     total_seconds = (end_time - start_time).total_seconds()
     print('一共用了 %f s' % total_seconds)

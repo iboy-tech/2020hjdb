@@ -8,11 +8,12 @@
 @Description : 
 @Software: PyCharm
 """
-from flask import render_template, request, g, current_app, session
+from flask import render_template, request, g, current_app, session, redirect, url_for
 from flask_cors import cross_origin
 from flask_login import current_user
 
-from app.main import user
+from app import db
+from app.main import user, auth
 from app.models.comment_model import Comment
 from app.models.lostfound_model import LostFound
 from app.models.user_model import User
@@ -72,7 +73,30 @@ def get_message():
             }
     return data
 
-@user.route('/getall', methods=['POST', 'OPTIONS', 'GET'])
+@user.route('/setPassword', methods=['POST'])
 @cross_origin()
 def get_all_user():
-    pass
+    print('用户准备更改密码')
+    req=request.json
+    print(req)
+    u=User.query.get(current_user.id)
+    if u.verify_password(req['oldPassword']):
+        u.password=req['newPassword']
+        db.session.commit()
+        data={
+                "success":True,
+                "code": 1002,
+                "msg": "改密成功",
+                "data": {},
+                "ext": None
+            }
+        return data
+    data = {
+        "success": False,
+        "code": 1002,
+        "msg": "您输入的密码有误",
+        "data": {},
+        "ext": None
+    }
+    return data
+

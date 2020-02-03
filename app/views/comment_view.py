@@ -24,8 +24,8 @@ from app.models.user_model import User
 def index():
     id=request.args.get('id')
     print('评论的ID',id)
-    if id is None:
-        req = request.json
+    req = request.json
+    if req is not None:
         print('添加评论',req)
         comment = Comment(lost_found_id=req['targetId'], user_id=current_user.id, content=req['content'])
         db.session.add(comment)
@@ -38,7 +38,7 @@ def index():
             "ext": None
         }
     else:
-        comments=Comment.query.order_by(desc('create_time')).filter_by(lost_found_id=id).all()
+        comments=Comment.query.order_by(desc('create_time')).filter_by(lost_found_id=int(id)).all()
         print(comments)
         if not comments:
             data={

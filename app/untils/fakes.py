@@ -18,7 +18,7 @@ db.session.commit()
 
 from datetime import datetime
 from app.models.category_model import  Category,db
-category=Category(name='校园卡',about='校园卡',user_id='2',create_time=datetime.now())
+category=Category(name='校园卡',about='校园卡',user_id='2',create_time=datetime.now)
 db.session.add(category)
 db.session.commit()
 

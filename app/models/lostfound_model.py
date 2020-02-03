@@ -21,7 +21,7 @@ class LostFound(db.Model):
     images = db.Column(db.Text, info='图片')
     user_id = db.Column(db.Integer,db.ForeignKey('t_user.id',ondelete='CASCADE'),nullable=False, info='创建者id')
     claimant_id = db.Column(db.Integer, info='索要者ID',default=None)
-    create_time = db.Column(db.DateTime,default=datetime.now(), nullable=False, info='创建时间')
+    create_time = db.Column(db.DateTime,default=datetime.now, nullable=False, info='创建时间')
     deal_time = db.Column(db.DateTime, info='领取的时间',default=None)
     # fix_top = db.Column(db.Integer, nullable=False, server_default=text('0'), info='置顶')
     location = db.Column(db.String(512), info='位置')

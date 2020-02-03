@@ -70,7 +70,6 @@ var app = new Vue({
                 deleteSession("user");
                 window.location.replace("/logout");
             }, function () {
-
             });
         },
         resetPassword(userId) {

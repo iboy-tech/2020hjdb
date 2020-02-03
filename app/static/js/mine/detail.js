@@ -18,7 +18,7 @@ var app = new Vue({
             ]
         },
         item: {
-            /*    id: null,
+           id: null,
                 icon: "./images/icon.jpg",
                 kind: 0,
                 username: "201520180508",
@@ -34,8 +34,7 @@ var app = new Vue({
                 dealTime: null,
                 isSelf: false,
                 email: "cpwu@foxmail.com",
-                QQ: "15912345678",*/
-
+                QQ: "15912345678",
         },
         comments: [
             /* {
@@ -210,7 +209,12 @@ function pubComment(data, app) {
                 if (res.success) {
                     showOK("发布成功！");
                     app.comment = "";
+                    // location.reload();
+                    console.log('把评论框清空')
+                    console.log('我是传给详情的ID:'+app.item.id)
+                    console.log(""+data.targetId )
                     getDetail(app.item.id, app);
+                    console.log('评论完成之后刷新')
                 } else {
                     showAlertError(res.msg)
                 }
@@ -228,9 +232,6 @@ function getComments(id, app) {
     $.ajax({
         url: baseUrl + "/comment?id=" + id,
         method: "POST",
-        beforeSend: function () {
-
-        },
         success: function (res, status) {
             console.log(res);
             if (status == "success") {
@@ -250,10 +251,10 @@ function getComments(id, app) {
 
 //获得启事详情
 function getDetail(id, result) {
-    //console.log(data);
+    console.log('这是帖子的ID:'+id);
     $.ajax({
-        url: baseUrl + "/detail",
-        data:id,
+        url: baseUrl + "/detail?id="+id,
+        // data:id,
         method: "POST",
         success: function (res, status) {
             console.log(res);

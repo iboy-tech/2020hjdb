@@ -58,10 +58,6 @@ headers = {
 s = requests.session()
 def user_verify(xuehao, mima):
     print('验证模块被调用了',xuehao,mima)
-    # resp = s.get('http://210.42.38.26:84/jwc_glxt/Login.aspx?xttc=1')
-    # soup = BeautifulSoup(resp.content, 'lxml')
-    # viewstate = (soup.select_one('#__VIEWSTATE')).get('value')
-    # eventvalidation = (soup.select_one('#__EVENTVALIDATION')).get('value')
     resp = s.get(url)
     soup = BeautifulSoup(resp.content, 'lxml')
     viewstate = (soup.select_one('#__VIEWSTATE')).get('value')
@@ -83,8 +79,8 @@ def user_verify(xuehao, mima):
         tmpimg.crop((start, 6, start + 12, 16)).save('tmperror.jpg')
         pimg = Image.open('tmperror.jpg')
         code += collation(pimg, error)[1]
-    if error:
-        print('验证码识别测试')
+    if '?' in code:
+        print('验证码识别错误')
         return user_verify(xuehao, mima)
     data = {
         '__VIEWSTATE': viewstate,
@@ -122,5 +118,10 @@ def user_verify(xuehao, mima):
             'major': data[18].text.replace("\n", ""),
             'gender': 0 if data[8].text == '男' else 1,
         }
+        try:
+            os.remove('code.jpg')
+            os.remove('tmperror.jpg')
+        except:
+            pass
         return user
     return user

@@ -21,3 +21,5 @@ migrate = Migrate()
 moment = Moment()
 db = SQLAlchemy()
 login_manager = LoginManager()
+login_manager.login_message = '你必须登陆后才能访问该页面'
+login_manager.login_view = 'auth.login'

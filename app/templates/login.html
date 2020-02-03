@@ -85,13 +85,9 @@
             src: baseUrl,
             now: new Date().getTime(),
             user: {
-                // username: "2943884288@qq.com",//"201520180508",
                 username: "",
-                //username: "201520180508",//"201520180508",
                 password: "",
-                 // password: "553966",
                 qq: "",
-                {#code: ""#}
             },
         },
         methods: {
@@ -101,6 +97,21 @@
             },
             submit: function () {
                 let me = this;
+                var qq=me.user.qq;
+                if(me.tabIndex == 1){
+                    if(qq.length==0){
+                    showAlertError('QQ号不可为空');
+                    return false;
+                }
+                else{
+                     var reg=/^[1-9][0-9]{5,11}$/;;
+                     if(!reg.test(qq)) {
+                         showAlertError('QQ号格式错误');
+                         return false;
+                        }
+	                }
+                }
+
                 $.ajax({
                     url: baseUrl + (me.tabIndex == 0 ? "/" : "/recognize"),
                     method: "POST",
@@ -111,12 +122,14 @@
                                 if (!res.data.user) {//no user
                                     showAlertError("你的账号未进行邮箱验证，现已向其发送验证邮件，验证后即可使用，请注意查收！")
                                 } else {
-                                    showOK("登录成功！");
+                                    showOK(res.msg);
+                                    if(me.tabIndex==0){
                                     saveSession("user", res.data.user);
                                     if (res.data.user.kind >= 2) {
                                         location.replace("/admin");
                                     } else {
                                         location.replace("/user");
+                                    }
                                     }
                                 }
                                 //clean data
@@ -148,25 +161,7 @@
         {#app.schools = get(baseUrl + "/public/schools");#}
     });
 
-    function get(url, data) {
-        $.ajax({
-            url: url,
-            method: "GET",
-            data: data || "",
-            success: function (res, status) {
-                if (status == "success") {
-                    if (res.success) {
-                        app.schools = res.data.schools
-                    } else {
-                        showAlertError(res.msg)
-                    }
-                } else {
-                    console.log(res);
-                    alert(res)
-                }
-            }
-        });
-    }
+
 </script>
 </body>
 </html>

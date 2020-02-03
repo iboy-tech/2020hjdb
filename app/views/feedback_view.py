@@ -107,7 +107,7 @@ def feedback_replay():
     f=Feedback.query.get(id)
     f.handler_id=current_user.id
     f.status=1
-    f.handler_time=datetime.now()
+    f.handler_time=datetime.now
     f.answer=req['content']
     db.session.commit()
     data = {
@@ -126,7 +126,7 @@ def feedback_mark():
     print('request.args.get(\'id\')',req)
     f=Feedback.query.get(int(req))
     f.status=1
-    f.handler_time=datetime.now()
+    f.handler_time=datetime.now
     f.handler_id=current_user.id
     db.session.commit()
     data = {

@@ -38,12 +38,10 @@ var app = new Vue({
             name: "Alice",
             username: "201520180508",
             gender: "male",
-            email: "cpwu@foxmail.com",
-            phoneNumber: "15911112222",
+            qq: "",
             classNum: "1521805",
             major: "soft making",
             academy: "soft academy",
-            campus: "gl",
             lastLogin: "2019-4-20 13:00",
             status: "正常"
         }
@@ -166,7 +164,7 @@ function freezeUser(userId){
 //查询用户信息
 function getUserInfo(userId, app){
     $.ajax({
-        url: baseUrl + "/admin/userInfo?userId=" + userId,
+        url: baseUrl + "/userlist/userInfo?userId=" + userId,
         method: "POST",
         //data: JSON.stringify(data),
         success: function (res, status) {

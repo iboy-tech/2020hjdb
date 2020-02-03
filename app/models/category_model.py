@@ -13,7 +13,7 @@ class Category(db.Model):
     name = db.Column(db.String(128),nullable=False, info='分类名称',unique=True)
     about = db.Column(db.String(256), info='分类说明')
     user_id = db.Column(db.Integer,db.ForeignKey('t_user.id'),nullable=False, info='创建人ID')
-    create_time = db.Column(db.DateTime,default=datetime.now(),nullable=False, info='创建时间')
+    create_time = db.Column(db.DateTime,default=datetime.now,nullable=False, info='创建时间')
     # 返回一个具有可读性的字符串模型  方便调试
     def __repr__(self):
         return '<TCategory %r>' % self.name

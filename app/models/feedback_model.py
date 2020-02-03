@@ -12,7 +12,7 @@ class Feedback(db.Model):
     user_id = db.Column(db.Integer,db.ForeignKey('t_user.id'),nullable=False, info='创建人ID')
     subject = db.Column(db.String(256), nullable=False, info='反馈的主题')
     content = db.Column(db.String(1024), nullable=False, info='反馈的内容')
-    create_time = db.Column(db.DateTime, default=datetime.now(),nullable=False, info='反馈创建时间')
+    create_time = db.Column(db.DateTime, default=datetime.now,nullable=False, info='反馈创建时间')
     handler_id = db.Column(db.Integer,db.ForeignKey('t_user.id'),default=None, info='回复者ID')
     answer = db.Column(db.String(1024), default=None,info='管理人员的回复内容')
     handler_time = db.Column(db.DateTime,default=None, info='处理的时间')

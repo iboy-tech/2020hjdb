@@ -104,17 +104,6 @@ var app = new Vue({
             });
 
         },
-        logout() {
-            app.showMenu = false;
-            //询问框
-            layer.confirm('确定要退出码？', {
-                btn: ['确定', '取消'] //按钮
-            }, function () {
-                deleteSession("user");
-                window.location.replace("/logout");
-            }, function () {
-            });
-        },
         changeTab(index) {
             //console.log(index);
             this.tabIndex = index;
@@ -168,6 +157,16 @@ var app = new Vue({
                         id
                     ]
                 });
+            }, function () {
+            });
+        },
+        logout() {
+            //询问框
+            layer.confirm('确定要退出码？', {
+                btn: ['确定', '取消'] //按钮
+            }, function () {
+                deleteSession("user");
+                window.location.replace("/logout");
             }, function () {
             });
         },
@@ -243,7 +242,15 @@ var app = new Vue({
                 yes: function () {
                     console.log(app.password);
                     let pwd = app.password;
-                    if (pwd.newPassword != pwd.confirmPassword) {
+                     var reg=/^[a-zA-Z0-9]{6,15}$/;
+                     if(pwd.newPassword=='' || pwd.newPassword.length<6  ) {
+                         showAlertError('密码至少是6位');
+                        return false;
+	            } else if(!reg.test( app.newPassword)){
+                    showAlertError('密码必须包为字母或数字');
+                        return false;
+                     }
+               else if(pwd.newPassword != pwd.confirmPassword) {
                         showAlertError("新密码不一致！");
                         return;
                     }
@@ -261,7 +268,17 @@ var app = new Vue({
         setQQ() {
             app.showMenu = false;
             layer.prompt({title: '请输入新的QQ：'}, function (qq, index) {
-                showOK(qq);
+                if(qq==''){
+                    showAlertError('QQ号不可为空');
+                    return false;
+                }
+                else{
+                     var reg=/^[1-9][0-9]{4,14}$/;;
+                     if(!reg.test(qq)){
+                     showAlertError('QQ号格式错误');
+                    return false;
+	            }
+                }
                 //layer.close(index);
                 setQQ(qq);
             });
@@ -355,6 +372,7 @@ function setPassword(data) {
                         newPassword: "",
                         confirmPassword: ""
                     }
+                    window.location.href=baseUrl+"/logout";
                 } else {
                     showAlertError(res.msg)
                 }

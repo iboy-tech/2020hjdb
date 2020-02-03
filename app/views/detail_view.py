@@ -20,9 +20,16 @@ from app.models.user_model import User
 
 @detail.route('/', methods=['GET', 'POST', 'OPTIONS'], strict_slashes=False)
 def index():
-    req=request.args.get('id')
-    if not req:
-        lost = LostFound.query.get(int(request.json))
+    print('这是详情页面request.json',request.json)
+    if request.method=='GET':
+        print('返回HTML')
+        return render_template('detail.html')
+    else:
+        print('查找详情',type(request.json))
+        id = request.args.get('id')
+        # req = request.json
+        print('我是详情ID', id)
+        lost = LostFound.query.get(int(id))
         if lost is not None:
             user = User.query.get(lost.user_id)
             lost.images = lost.images.replace('[', '').replace(']', '').replace(' \'', '').replace('\'', '')
@@ -60,7 +67,6 @@ def index():
             }
             return data
 
-    return render_template('detail.html')
 
 
 @detail.route('/get', methods=['GET', 'POST', 'OPTIONS'], strict_slashes=False)

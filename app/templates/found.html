@@ -171,7 +171,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                     <table class="table table-bordered table-hover table-condensed">
                         <thead>
                         <tr>
-                            <th>#</th>
+                            <th>ID</th>
                             <!--<th>校区</th>-->
                             <th>标题</th>
                             <th>发布时间</th>
@@ -186,7 +186,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                         </thead>
                         <tbody>
                         <tr v-for="(item, index) in result.list">
-                            <th scope="row">{{index+1}}</th>
+                            <th scope="row">{{index+1+result.search.pageSize*result.search.pageNum}}</th>
                             <td><a @click="jumpDetail(item.id)">{{item.title}}</a></td>
                             <td><span >{{item.time}}</span></td>
                             <td><span class="label label-info">{{item.category}}</span></td>
@@ -320,13 +320,13 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
             <td>性别</td>
             <td>{{userInfo.gender}}</td>
         </tr>
+{#        <tr>#}
+{#            <td>邮箱</td>#}
+{#            <td>{{userInfo.email}}</td>#}
+{#        </tr>#}
         <tr>
-            <td>邮箱</td>
-            <td>{{userInfo.email}}</td>
-        </tr>
-        <tr>
-            <td>电话</td>
-            <td>{{userInfo.phoneNumber}}</td>
+            <td>QQ</td>
+            <td>{{userInfo.qq}}</td>
         </tr>
         <tr>
             <td>班级</td>
@@ -337,13 +337,13 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
             <td>{{userInfo.major}}</td>
         </tr>
         <tr>
-            <td>部门</td>
+            <td>学院</td>
             <td>{{userInfo.academy}}</td>
         </tr>
-        <tr>
-            <td>校区</td>
-            <td>{{userInfo.campus}}</td>
-        </tr>
+{#        <tr>#}
+{#            <td>校区</td>#}
+{#            <td>{{userInfo.campus}}</td>#}
+{#        </tr>#}
         <tr>
             <td>最近登录</td>
             <td>{{userInfo.lastLogin}}</td>

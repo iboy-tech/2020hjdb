@@ -19,6 +19,7 @@ from app.main import auth
 from app.models.user_model import User
 
 
+try_times=0
 @auth.route('/', methods=['GET', 'POST', 'OPTIONS'])
 @cross_origin()
 def login():
@@ -26,35 +27,8 @@ def login():
     # create_test_data()
     data = request.json
     print(data, type(data))
-    print('请求成功', type(data))
 
-    # print(request.args)
-    # print(request.json_module)
-    # if "user_id" in session:
-    #     user=current_user
-    #     login_user(user,remember=True)
-    #     data = {
-    #         "success": True,
-    #         "code": 1000,
-    #         "msg": "处理成功",
-    #         "data": {
-    #             "user": {
-    #                 "studentNum": user.username,
-    #                 "realName": user.real_name,
-    #                 "icon": 'https://q2.qlogo.cn/headimg_dl?dst_uin={}&spec=100'.format(user.qq),
-    #                 "email": user.qq + '@qq.com',
-    #                 "qq": user.qq,
-    #                 "gender": user.gender,
-    #                 "createTime": user.create_time.strftime('%Y-%m-%d %H:%M:%S'),
-    #                 "lastLogin": user.last_login.strftime('%Y-%m-%d %H:%M:%S'),
-    #                 "kind": user.kind
-    #             }
-    #         }
-    #         # "ext" : None
-    #     }
-    #     print(data)
-    #     return data
-    #     print('已经登录测试')
+    print('请求成功', type(data))
     if request.method == 'POST':
         user = User.query.filter_by(username=data['username']).first()
         if user is not None and user.verify_password(data['password']):
@@ -65,7 +39,7 @@ def login():
             # session['uid'] = user.id
             user.last_login = datetime.datetime.now()
             print(user)
-            # db.session.add(user)
+            db.session.add(user)
             db.session.commit()
             print('更新用户登陆时间')
 
@@ -74,7 +48,7 @@ def login():
             data = {
                 "success": True,
                 "code": 1000,
-                "msg": "处理成功",
+                "msg": "登录成功！",
                 "data": {
                     "user": {
                         "studentNum": user.username,
@@ -87,9 +61,14 @@ def login():
                         "lastLogin": user.last_login.strftime( '%Y-%m-%d %H:%M:%S' ),
                         "kind": user.kind
                     }
-                }
-                # "ext" : None
+                },
+                "ext" : None
             }
+            login_user(user,remember = True)
+            # user.last_login = datetime.datetime.now
+            print(user)
+            # db.session.add(user)
+            # db.session.commit()
             print(data)
             return data
         # data = request.get_data(as_text=True)
@@ -97,9 +76,22 @@ def login():
         # print(aws)
         # data = json.loads(data)
         # print(data)
-        print(data['username'])
 
-    print('登录请求成功！', datetime.datetime.now())
+        else:
+            global try_times
+            try_times=try_times+1
+            data = {
+                "success": False,
+                "code": 1000,
+                "msg": "用户名或密码错误！剩余尝试次数 %s " % str(5-try_times),
+                "data": {
+                    "user": {}
+                    },
+                "ext": None
+            }
+            return data
+
+    # print('登录请求成功！', datetime.datetime.now)
     return render_template('login.html')
 
 
@@ -123,35 +115,56 @@ def recognize():
     # code=data['code']
     from app.untils.jwc import user_verify
     user_jwc = user_verify(usr, pwd)
+    user_db=None
     if user_jwc is not None:
-        print(user_jwc, '验证成功')
-        u = User(username=user_jwc['username'], password=pwd, real_name=user_jwc['real_name'],
-                 academy=user_jwc['academy'], class_name=user_jwc['class_name'], major=user_jwc['major'],
-                 qq=qq, gender=user_jwc['gender'], create_time=datetime.datetime.now())
-        print(u)
-        # g.user=u
-        db.session.add(u)
-        db.session.commit()
-    else:
-        print('用户名或密码有误')
-    data = {
-        "success": True,
-        "code": 1000,
-        "msg": "处理成功",
-        "data": {
-            "user": {
-                "studentNum": "201520180508",
-                "realName": "cpwu",
-                "icon": 'https://q2.qlogo.cn/headimg_dl?dst_uin={}&spec=100'.format(qq),
-                "email": qq + '@qq.com',
-                "schoolName": "东华理工大学",
-                "gender": 1,
-                "createTime": "2019-04-10 19:06:10",
-                "lastLogin": "2019-04-10 19:06:10",
-                "kind": 2
-            }
+        user_db=User.query.filter_by(username=user_jwc['username']).first()
+    if  user_db is not  None:
+        data = {
+            "success": False,
+            "code": 1000,
+            "msg": "您的账户已认证，请直接登录",
+            "data": {
+                "user": {}
+            },
+            "ext": None
         }
-        # "ext" : None
+    elif user_jwc is not None and user_db is None:
+        print(user_jwc, '验证成功')
+        user = User(username=user_jwc['username'], password=pwd, real_name=user_jwc['real_name'],
+                 academy=user_jwc['academy'], class_name=user_jwc['class_name'], major=user_jwc['major'],
+                 qq=qq, gender=user_jwc['gender'], create_time=datetime.datetime.now)
+        print(user)
+        # g.user=u
+        db.session.add(user)
+        db.session.commit()
+        data = {
+            "success": True,
+            "code": 1000,
+            "msg": "恭喜验证成功！",
+            "data": {
+                "user": {
+                        "studentNum": user.username,
+                        "realName": user.real_name,
+                        "icon": 'https://q2.qlogo.cn/headimg_dl?dst_uin={}&spec=100'.format(user.qq),
+                        "email": user.qq + '@qq.com',
+                        "qq": user.qq,
+                        "gender": user.gender,
+                        "createTime": user.create_time.strftime( '%Y-%m-%d %H:%M:%S' ),
+                        "lastLogin": user.last_login.strftime( '%Y-%m-%d %H:%M:%S' ),
+                        "kind": user.kind
+                    }
+            },
+            "ext": None
+        }
+    else:
+        data = {
+        "success": False,
+        "code": 1000,
+        "msg": "您的用户名或密码有误，请重新尝试",
+        "data": {
+            "user": {}
+        },
+        "ext" : None
     }
     return data
 
