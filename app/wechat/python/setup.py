@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-File: setup.py
+File: app.py
 Author: huxuan
 Email: i(at)huxuan.org
 Description: Python packaging for wxpusher.

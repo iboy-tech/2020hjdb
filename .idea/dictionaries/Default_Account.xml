@@ -3,11 +3,14 @@
     <words>
       <w>appid</w>
       <w>appsecret</w>
+      <w>dotenv</w>
       <w>eventvalidation</w>
       <w>flasky</w>
       <w>imgs</w>
       <w>lostfounds</w>
+      <w>sendgrid</w>
       <w>sqlalchemy</w>
+      <w>swzl</w>
       <w>tablename</w>
       <w>tinypng</w>
       <w>tmpimage</w>

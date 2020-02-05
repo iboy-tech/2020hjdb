@@ -8,4 +8,6 @@ venv
 .idea
 __pycache__
 Study-Test
+logs/*.log
 
+app/templates/upload/

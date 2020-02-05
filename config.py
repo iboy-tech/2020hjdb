@@ -16,25 +16,24 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 class Config:
     PIPENV_DONT_LOAD_ENV = 1
     FLASK_DEBUG = True
-    SECRET_KEY = os.urandom(24) #随机秘钥
+    SECRET_KEY = os.urandom(24)  # 随机秘钥
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True  # 每次请求结束后都会自动提交数据库中的变动
     SQLALCHEMY_TRACK_MODIFICATIONS = True
     SQLALCHEMY_COMMIT_TEARDOWN = True
     DEBUG_TB_INTERCEPT_REDIRECTS = False
     FLASKY_MAIL_SUBJECT_PREFIX = '三峡大学失物招领处：'
     FLASKY_MAIL_SENDER = '三峡大学失物招领处 <ctgu@iboy.tech>'
-    SUPER_ADMIN_USERNAME='2018171109'
+    SUPER_ADMIN_USERNAME = '2018171109'
+    SUPER_ADMIN_EMAIL = '547142436@qq.com'
     MXA_ATTEMPT_NUMBER = 5
-    ARTISAN_POSTS_PER_PAGE=120
+    ARTISAN_POSTS_PER_PAGE = 120
     MAIL_SENDGRID_API_KEY = 'SG.Ksvhquq2TJuXgwKPWeuJCw.9-8CZEP5Tp9mG8P8ypoouGNqgoC48vYwdb8qQTEr9Xg'
-    MAIL_DEFAULT_SENDER='ctgu@iboy.tech'
-    QQ_AVATAR_API='https://q2.qlogo.cn/headimg_dl?dst_uin={}&spec=100'
-
+    MAIL_DEFAULT_SENDER = 'ctgu@iboy.tech'
+    QQ_AVATAR_API = 'https://q2.qlogo.cn/headimg_dl?dst_uin={}&spec=100'
 
     @staticmethod
     def init_app(app):
         print('app初始化了')
-        pass
 
 
 # 开发环境的子类配置

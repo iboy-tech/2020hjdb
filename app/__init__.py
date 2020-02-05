@@ -9,12 +9,13 @@
 @Software: PyCharm
 """
 import os
+import logging
+from logging.handlers import RotatingFileHandler, SMTPHandler
 
 import click
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from flask_wtf.csrf import CSRFError
 
-from setup import app
 from .extensions import *
 from flask_cors import CORS
 
@@ -48,22 +49,14 @@ def create_app(config_name=None):
     app.jinja_env.variable_start_string = '{{ '
     app.jinja_env.variable_end_string = ' }}'
     app.config.from_object(config[config_name])
-    # register_logging(app)  # 注册日志处理器
+    register_logging(app)  # 注册日志处理器
     register_extensions(app)  # 注册扩展（扩展初始化）
     register_blueprints(app)  # 注册蓝本
-    # register_commands(app)  # 注册自定义shell命令
     register_errors(app)  # 注册错误处理函数
-    # register_shell_context(app)  # 注册shell上下文处理函数
-    # register_template_context(app)  # 注册模板上下文处理函数
-    # app.config['SECRET_KEY'] = os.urandom(24)  # 产生n个字节的字符串
-    # temp = app.config['SECRET_KEY']
-    # print('我是SECRET_KEY', temp, type(temp))
-    # print(temp.decode("utf-8","strict"))
-    # print(str(temp,encoding='gb18030'))
+    register_shell_context(app)  # 注册shell上下文处理函数
+    register_commands(app)  # 注册自定义shell命令
+
     CORS(app, supports_credentials=True, resources=r'/*')  # 允许所有域名跨域
-    # print('工厂函数执行了')
-    # app.logger.info('工厂函数执行了')
-    # app.config.from_pyfile('settings.py')
 
     config[config_name].init_app(app)
     return app
@@ -84,23 +77,91 @@ def register_blueprints(app):
 
 
 def register_extensions(app):  # 实例化扩展
+    print('注册扩展')
+    migrate.init_app(app, db)
     bootstrap.init_app(app)
     mail.init_app(app)  # 发送邮件
     moment.init_app(app)
     db.init_app(app)
     login_manager.init_app(app)
+    toolbar.init_app(app)
 
-    # def register_shell_context(app):
+
+def register_shell_context(app):
+    @app.shell_context_processor
+    def make_shell_context():
+        from app.models.feedback_model import Feedback
+        from app.models.lostfound_model import LostFound
+        from app.models.notice_model import Notice
+        from app.models.permission_model import Permission
+        from app.models.role_model import Role
+        from app.models.user_model import User
+        from app.models.comment_model import Comment
+        from app.models.category_model import Category
+
+        return dict(app=app, db=db, User=User, Category=Category,
+                    Comment=Comment, Notice=Notice, LostFound=LostFound, Feedback=Feedback, Role=Role,
+                    Permission=Permission)
 
 
-#     @app.shell_context_processor
-#     def make_shell_context():
+def register_logging(app):
+    app.logger.setLevel(logging.INFO)
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    # 日志超过10MB会被覆盖
+    file_handler = RotatingFileHandler('logs/app.log', maxBytes=10 * 1024 * 1024, backupCount=10)
+    file_handler.setFormatter(formatter)
+    file_handler.setLevel(logging.INFO)
+
+    mail_handler = SMTPHandler(
+        mailhost=os.getenv('MAIL_SERVER'),
+        fromaddr=os.getenv('MAIL_USERNAME'),
+        toaddrs=os.getenv('SUPER_ADMIN_EMAIL'),
+        subject='应用程序错误通知',
+        credentials=(os.getenv('MAIL_USERNAME'), os.getenv('MAIL_PASSWORD')))
+
+    class RequestFormatter(logging.Formatter):
+        def format(self, record):
+            record.url = request.url
+            record.remote_addr = request.remote_addr
+            return super(RequestFormatter, self).format(record)
+
+    request_formatter = RequestFormatter(
+        '[%(asctime)s] %(remote_addr)s requested %(url)s\n'
+        '%(levelname)s in %(module)s: %(message)s'
+    )
+
+    mail_handler.setLevel(logging.ERROR)
+    mail_handler.setFormatter(request_formatter)
+    # if not app.debug:
+    #     app.logger.addHandler(file_handler)
+    app.logger.addHandler(file_handler)
+
+
+
+#
+# def register_template_context(app):
+#     @app.context_processor
+#     def make_template_context():
 #         pass
+def register_commands(app):
+    @app.cli.command()
+    @click.option('--content', default='世界你好')
+    def hello(content):
+        click.echo('Shell测试消息...')
+        print('这是默认消息' + content)
+
+    @app.cli.command
+    def test():
+        """Run the unit tests."""
+        import unittest
+        tests = unittest.TestLoader().discover('tests')
+        unittest.TextTestRunner(verbosity=2).run(tests)
+
 
 def register_errors(app):
     @app.errorhandler(400)
     def bad_request(e):
-        return render_template('errors/400.html'), 400
+        return render_template('errors/400.html', ), 400
 
     @app.errorhandler(404)
     def page_not_found(e):
@@ -113,20 +174,3 @@ def register_errors(app):
     @app.errorhandler(CSRFError)
     def handle_csrf_error(e):
         return render_template('errors/400.html', description=e.description), 400
-
-
-# def register_logging(app):
-#     pass
-#
-#
-# def register_template_context(app):
-#     @app.context_processor
-#     def make_template_context():
-#         pass
-def register_commands(app):
-    @app.cli.command()
-    def init():
-        """Initialize Albumy."""
-        click.echo('Initializing the roles and permissions...')
-        Role.init_role()
-        click.echo('Done.')
