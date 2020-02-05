@@ -14,6 +14,7 @@ import click
 from flask import Flask, render_template
 from flask_wtf.csrf import CSRFError
 
+from setup import app
 from .extensions import *
 from flask_cors import CORS
 
@@ -22,6 +23,8 @@ from config import config  # 导入存储配置的字典
 
 #  会记录客户端 IP
 # 地址和浏览器的用户代理信息，如果发现异动就登出用户
+from .models.role_model import Role
+
 login_manager.session_protection = 'basic'
 
 from app.main import admin as admin_bp
@@ -35,6 +38,7 @@ from app.main import found as  found_bp
 from app.main import feedback as  feedback_bp
 from app.main import detail as  detail_bp
 from app.main import comment as  comment_bp
+
 
 # 工厂函数
 def create_app(config_name=None):
@@ -56,7 +60,7 @@ def create_app(config_name=None):
     # print('我是SECRET_KEY', temp, type(temp))
     # print(temp.decode("utf-8","strict"))
     # print(str(temp,encoding='gb18030'))
-    CORS(app,supports_credentials=True, resources=r'/*')  # 允许所有域名跨域
+    CORS(app, supports_credentials=True, resources=r'/*')  # 允许所有域名跨域
     # print('工厂函数执行了')
     # app.logger.info('工厂函数执行了')
     # app.config.from_pyfile('settings.py')
@@ -81,13 +85,14 @@ def register_blueprints(app):
 
 def register_extensions(app):  # 实例化扩展
     bootstrap.init_app(app)
-    mail.init_app(app)#发送邮件
+    mail.init_app(app)  # 发送邮件
     moment.init_app(app)
     db.init_app(app)
     login_manager.init_app(app)
 
-
     # def register_shell_context(app):
+
+
 #     @app.shell_context_processor
 #     def make_shell_context():
 #         pass
@@ -109,6 +114,7 @@ def register_errors(app):
     def handle_csrf_error(e):
         return render_template('errors/400.html', description=e.description), 400
 
+
 # def register_logging(app):
 #     pass
 #
@@ -117,14 +123,10 @@ def register_errors(app):
 #     @app.context_processor
 #     def make_template_context():
 #         pass
-# def register_commands(app):
-#     @app.cli.command()
-#     @click.option('--drop', is_flag=True, help='Create after drop.')
-#     def initdb(drop):
-#         pass
-
-
-
-
-
-
+def register_commands(app):
+    @app.cli.command()
+    def init():
+        """Initialize Albumy."""
+        click.echo('Initializing the roles and permissions...')
+        Role.init_role()
+        click.echo('Done.')

@@ -1,12 +1,14 @@
 # coding: utf-8
 from datetime import datetime
 
+from flask import current_app
 from flask_login import UserMixin
 from sqlalchemy import text
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from app import db
+from app import db, Role
 from app import login_manager
+from app.models.permission_model import Permission
 
 
 class User(db.Model, UserMixin):
@@ -46,11 +48,40 @@ class User(db.Model, UserMixin):
     def verify_password(self, password):  # 验证密码
         return check_password_hash(self.password_hash, password)
 
+
+
+    def set_role(self):#权限初始化
+        if self.role is None:
+            if self.username == current_app.config['SUPER_ADMIN_USERNAME']:
+                self.role = Role.query.filter_by(name='SuperAdmin').first()
+        else:
+            self.role = Role.query.filter_by(name='User').first()
+            db.session.commit()
+    @staticmethod
+    def init_role_permission():#为已注册用户添加权限
+        for user in User.query.all():  # 迭代User模型中的所有记录
+            if user.role is None:
+             if user.username == current_app.config['SUPER_ADMIN_USERNAME']:
+                user.role = Role.query.filter_by(name='SuperAdmin').first()
+        else:
+            user.role = Role.query.filter_by(name='User').first()
+            db.session.add(user)
+            db.session.commit()
     # 返回一个具有可读性的字符串模型  方便调试
     def __repr__(self):
         return '<TUser %r>' % self.real_name
         #     return '新建用户'
 
+    @property
+    def is_admin(self):
+        return self.role.name == 'Admin'
+    @property
+    def is_super_admin(self):
+        return self.role.name == 'SuperAdmin'
+    def can(self, permission_name):
+        permission = Permission.query.filter_by(name=permission_name).first()
+        return permission is not None and self.role is not None and \
+        permission in self.role.permissions
 
 @login_manager.user_loader
 def load_user(user_id):

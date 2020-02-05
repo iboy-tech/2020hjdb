@@ -1,54 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1fdc08d0-af6c-437b-85ec-7249d8cd86e2" name="Default Changelist" comment="更改了时间字段的类型utcnow-&gt;now,准备写权限控制">
-      <change afterPath="$PROJECT_DIR$/app/decorators.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/models/permission_model.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/models/role_model.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/migrations - 副本 (2)/README" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/migrations - 副本 (2)/alembic.ini" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/migrations - 副本 (2)/env.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/migrations - 副本 (2)/script.py.mako" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/migrations - 副本 (2)/versions/0599fa3f1b7a_加入用户权限控制_重新初始化.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/migrations - 副本 (2)/versions/fa22f28f3f3f_.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/migrations - 副本 (3)/README" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/migrations - 副本 (3)/alembic.ini" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/migrations - 副本 (3)/env.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/migrations - 副本 (3)/script.py.mako" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/migrations - 副本 (3)/versions/e0c2e307f6d4_增加权限管理.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/migrations - 副本/README" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/migrations - 副本/alembic.ini" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/migrations - 副本/env.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/migrations - 副本/script.py.mako" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/migrations - 副本/versions/ce8f55cb539b_更新时间的默认字段.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/migrations - 副本/versions/f5c89bc771c0_更改了反馈的数据模型.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/migrations - 副本/versions/fe334b260916_增加关联表.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/migrations - 副本/versions/新建文件夹/659428dcfe9b_加入用户权限控制.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/migrations - 副本/versions/新建文件夹/6a14caf8b438_更改反馈类.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/migrations - 副本/versions/新建文件夹/7a988f55ee48_增加用户状态字段.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/migrations - 副本/versions/新建文件夹/7e0c25aeb106_.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/migrations - 副本/versions/新建文件夹/9a12378693d6_.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/migrations - 副本/versions/新建文件夹/ce8f55cb539b_更新时间的默认字段.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/migrations - 副本/versions/新建文件夹/eebcff4e6c33_.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/migrations - 副本/versions/新建文件夹/f5c89bc771c0_更改了反馈的数据模型.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/migrations - 副本/versions/新建文件夹/fa49c4d357a0_.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/migrations - 副本/versions/新建文件夹/fe334b260916_增加关联表.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/migrations/versions/2795f6ec3f3d_.py" afterDir="false" />
+    <list default="true" id="1fdc08d0-af6c-437b-85ec-7249d8cd86e2" name="Default Changelist" comment="增加权限控制模型">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/lostfound_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/lostfound_model.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models/role_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/role_model.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/models/user_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/user_model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/auth_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/auth_view.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/migrations/versions/eebcff4e6c33_.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/migrations/versions/新建文件夹/6a14caf8b438_更改反馈类.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/migrations/versions/新建文件夹/7a988f55ee48_增加用户状态字段.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/migrations/versions/新建文件夹/7e0c25aeb106_.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/migrations/versions/新建文件夹/9a12378693d6_.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/migrations/versions/新建文件夹/ce8f55cb539b_更新时间的默认字段.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/migrations/versions/新建文件夹/eebcff4e6c33_.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/migrations/versions/新建文件夹/f5c89bc771c0_更改了反馈的数据模型.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/migrations/versions/新建文件夹/fa49c4d357a0_.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/migrations/versions/新建文件夹/fe334b260916_增加关联表.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/setup.py" beforeDir="false" afterPath="$PROJECT_DIR$/setup.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -270,36 +228,6 @@
       <method v="2" />
     </configuration>
     <configuration name="Flask (setup.py)" type="Python.FlaskServer" temporary="true" nameIsGenerated="true">
-      <module name="Flask-WC" />
-      <option name="target" value="$PROJECT_DIR$/setup.py" />
-      <option name="targetType" value="PATH" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="launchJavascriptDebuger" value="false" />
-      <method v="2" />
-    </configuration>
-    <configuration name="Flask (setup.py)" type="Python.FlaskServer" temporary="true" nameIsGenerated="true">
-      <module name="Flask-WC" />
-      <option name="target" value="$PROJECT_DIR$/setup.py" />
-      <option name="targetType" value="PATH" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="launchJavascriptDebuger" value="false" />
-      <method v="2" />
-    </configuration>
-    <configuration name="Flask (setup.py)" type="Python.FlaskServer" temporary="true" nameIsGenerated="true">
       <option name="flaskEnv" />
       <module name="Flask-WC" />
       <option name="target" value="$PROJECT_DIR$/setup.py" />
@@ -378,6 +306,36 @@
           <ENTRY IS_ENABLED="true" PARSER="runconfig" />
         </ENTRIES>
       </EXTENSION>
+      <option name="launchJavascriptDebuger" value="false" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Flask (setup.py)" type="Python.FlaskServer" temporary="true" nameIsGenerated="true">
+      <module name="Flask-WC" />
+      <option name="target" value="$PROJECT_DIR$/setup.py" />
+      <option name="targetType" value="PATH" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Flask (setup.py)" type="Python.FlaskServer" temporary="true" nameIsGenerated="true">
+      <module name="Flask-WC" />
+      <option name="target" value="$PROJECT_DIR$/setup.py" />
+      <option name="targetType" value="PATH" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="launchJavascriptDebuger" value="false" />
       <method v="2" />
     </configuration>
@@ -579,7 +537,10 @@
       <workItem from="1580637307300" duration="13475000" />
       <workItem from="1580704703937" duration="23507000" />
       <workItem from="1580732525992" duration="451000" />
-      <workItem from="1580732996369" duration="9738000" />
+      <workItem from="1580732996369" duration="9795000" />
+      <workItem from="1580786319574" duration="3708000" />
+      <workItem from="1580821820841" duration="4120000" />
+      <workItem from="1580871867000" duration="1493000" />
     </task>
     <task id="LOCAL-00001" summary="初始化仓库">
       <created>1578632264764</created>
@@ -721,7 +682,14 @@
       <option name="project" value="LOCAL" />
       <updated>1580733134188</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="增加权限控制模型">
+      <created>1580742784016</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1580742784016</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -768,7 +736,8 @@
     <MESSAGE value="完成图片上传功能，准备写评论功能" />
     <MESSAGE value="完成前端分类搜索和消息，准备重写图片上传" />
     <MESSAGE value="更改了时间字段的类型utcnow-&gt;now,准备写权限控制" />
-    <option name="LAST_COMMIT_MESSAGE" value="更改了时间字段的类型utcnow-&gt;now,准备写权限控制" />
+    <MESSAGE value="增加权限控制模型" />
+    <option name="LAST_COMMIT_MESSAGE" value="增加权限控制模型" />
   </component>
   <component name="WindowStateProjectService">
     <state x="261" y="0" key="#Inspections" timestamp="1579437247077">
@@ -799,10 +768,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="456" y="9" key="#models/0.0.1536.824@0.0.1536.824" timestamp="1579701657091" />
-    <state x="303" y="0" key="CommitChangelistDialog2" timestamp="1580733124682">
+    <state x="261" y="0" key="CommitChangelistDialog2" timestamp="1580742777985">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="303" y="0" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1580733124682" />
+    <state x="261" y="0" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1580742777985" />
     <state x="93" y="93" width="1350" height="638" key="DiffContextDialog" timestamp="1580722657330">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -811,22 +780,22 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="499" y="115" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1579683499076" />
-    <state width="1483" height="539" key="GridCell.Tab.0.bottom" timestamp="1580741388593">
+    <state width="1483" height="407" key="GridCell.Tab.0.bottom" timestamp="1580825945668">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1483" height="539" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1580741388593" />
-    <state width="1483" height="539" key="GridCell.Tab.0.center" timestamp="1580741388593">
+    <state width="1483" height="407" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1580825945668" />
+    <state width="1483" height="407" key="GridCell.Tab.0.center" timestamp="1580825945668">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1483" height="539" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1580741388593" />
-    <state width="1483" height="539" key="GridCell.Tab.0.left" timestamp="1580741388593">
+    <state width="1483" height="407" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1580825945668" />
+    <state width="1483" height="407" key="GridCell.Tab.0.left" timestamp="1580825945668">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1483" height="539" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1580741388593" />
-    <state width="1483" height="539" key="GridCell.Tab.0.right" timestamp="1580741388593">
+    <state width="1483" height="407" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1580825945668" />
+    <state width="1483" height="407" key="GridCell.Tab.0.right" timestamp="1580825945668">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1483" height="539" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1580741388593" />
+    <state width="1483" height="407" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1580825945668" />
     <state width="1483" height="450" key="GridCell.Tab.1.bottom" timestamp="1580729361861">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -847,10 +816,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="47" y="0" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1580734745961" />
-    <state x="214" y="80" key="Vcs.Push.Dialog.v2" timestamp="1580733372095">
+    <state x="214" y="80" key="Vcs.Push.Dialog.v2" timestamp="1580742785257">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="214" y="80" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1580733372095" />
+    <state x="214" y="80" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1580742785257" />
     <state x="539" y="315" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1580111877991">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -911,21 +880,6 @@
           <line>30</line>
           <option name="timeStamp" value="13" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/app/views/auth_view.py</url>
-          <line>24</line>
-          <option name="timeStamp" value="38" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/app/views/auth_view.py</url>
-          <line>27</line>
-          <option name="timeStamp" value="39" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/app/views/auth_view.py</url>
-          <line>28</line>
-          <option name="timeStamp" value="40" />
-        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
@@ -950,7 +904,7 @@
     <SUITE FILE_PATH="coverage/Flask_WC$views.coverage" NAME="views Coverage Results" MODIFIED="1579437303025" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/app/main" />
     <SUITE FILE_PATH="coverage/Flask_WC$test.coverage" NAME="test Coverage Results" MODIFIED="1578906119617" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Flask_WC$userlist_view.coverage" NAME="userlist_view Coverage Results" MODIFIED="1580380327206" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/app/views" />
-    <SUITE FILE_PATH="coverage/Flask_WC$Flask__setup_py_.coverage" NAME="Flask (setup.py) Coverage Results" MODIFIED="1580740227797" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Flask_WC$Flask__setup_py_.coverage" NAME="Flask (setup.py) Coverage Results" MODIFIED="1580825419273" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Flask_WC$Flask__app___init___py_creat_app_.coverage" NAME="Flask (app/__init__.py:creat_app) Coverage Results" MODIFIED="1579418449718" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/Flask_WC$Flask__tests_test_app_py_.coverage" NAME="Flask (tests/test_app.py) Coverage Results" MODIFIED="1580269505928" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/Flask_WC$Flask__setup_py___1_.coverage" NAME="Flask (setup.py) (1) Coverage Results" MODIFIED="1579677389336" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
