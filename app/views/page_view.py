@@ -9,11 +9,13 @@
 @Software: PyCharm
 """
 from flask import request
+from flask_login import login_required
 
 from app.main import page
 
 
 @page.route('/', methods=['GET', 'POST', 'OPTIONS'],strict_slashes=False)
+@login_required
 def index():
     data=request.json
     print('page页面收到请求',data)

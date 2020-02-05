@@ -17,7 +17,6 @@ roles_permissions = db.Table('roles_permissions',
                              db.Column('permission_id', db.Integer, db.ForeignKey('t_permission.id'))
                              )
 
-
 """
 权限分析：
 通知；
@@ -59,10 +58,13 @@ RESET_PASSWORD (超级)管理员
 SUPER_ADMIN
 ADMIN
 """
+from app.models.permission_model import Permission
+
+
 class Role(db.Model):
     __tablename__ = 't_role'
-    id = db.Column(db.Integer,primary_key=True)
-    name = db.Column(db.String(30), unique=True,nullable = False)
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(30), unique=True, nullable=False)
     permissions = db.relationship('Permission', secondary='roles_permissions', back_populates='roles')
     users = db.relationship('User', back_populates='role')
 
@@ -73,16 +75,18 @@ class Role(db.Model):
             'Admin': ['ADMIN'],
             'SuperAdmin': ['ADMIN', 'SUPER_ADMIN']
         }
-        for role_name in roles_permissions_map:#添加角色
+        for role_name in roles_permissions_map:  # 添加角色
+            print('角色名称：' + role_name)
             role = Role.query.filter_by(name=role_name).first()
-        if role is None:
-            role = Role(name=role_name)
-        db.session.add(role)
-        role.permissions = []
-        for permission_name in roles_permissions_map[role_name]:#添加权限
-            permission = Permission.query.filter_by(name=permission_name).first()
-        if permission is None:
-            permission = Permission(name=permission_name)
-        db.session.add(permission)
-        role.permissions.append(permission)
-        db.session.commit()
+            if role is None:
+                role = Role(name=role_name)
+                db.session.add(role)
+            role.permissions = []  # 这会取消该角色对象和相关的权限对象之间的关联
+            for permission_name in roles_permissions_map[role_name]:  # 重新更新权限列表
+                print('权限名称：' + permission_name)
+                permission = Permission.query.filter_by(name=permission_name).first()
+                if permission is None:
+                    permission = Permission(name=permission_name)
+                    db.session.add(permission)
+                role.permissions.append(permission)
+            db.session.commit()

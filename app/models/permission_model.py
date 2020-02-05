@@ -9,7 +9,6 @@
 @Software: PyCharm
 """
 from app import db
-from .role_model import roles_permissions
 
 
 class Permission(db.Model):

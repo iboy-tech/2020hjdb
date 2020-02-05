@@ -11,21 +11,27 @@
 from datetime import datetime
 
 from flask import render_template, request, current_app
-from flask_login import current_user
+from flask_login import current_user, login_required
 from sqlalchemy import desc, or_
 
 from app import db
 from app.main import userlist
 from app.models.user_model import User
+from app.decorators import permission_required, super_admin_required, admin_required
 
 
 @userlist.route('/', methods=['POST', 'GET', 'OPTIONS'], strict_slashes=False)
+@login_required
+@admin_required
 def index():
     return render_template('userlist.html')
     # return data
 
 
+
 @userlist.route('/getall', methods=['POST'], strict_slashes=False)
+@login_required
+@admin_required
 def get_all():
     req = request.json
     print(req)
@@ -99,7 +105,10 @@ def get_all():
         return data
 
 
+
 @userlist.route('/freeze', methods=['POST'], strict_slashes=False)
+@login_required
+@admin_required
 def user_freeze_or_unfreeze():
     req = request.args.get('userId')
     u = User.query.get(int(req))
@@ -124,7 +133,10 @@ def user_freeze_or_unfreeze():
     return data
 
 
+
 @userlist.route('/resetPassword', methods=['POST'], strict_slashes=False)
+@login_required
+@admin_required
 def reset_pssword():
     req = request.args.get('userId')
     print('request.args', req)
@@ -142,7 +154,9 @@ def reset_pssword():
     return data
 
 
+
 @userlist.route('/setAsAdmin', methods=['POST'], strict_slashes=False)
+@super_admin_required
 def set_or_cancle_admin():
     req = request.args.get('userId')
     print('request.args', req)
@@ -158,6 +172,7 @@ def set_or_cancle_admin():
         "ext": "org.springframework.mails.MailSendException"
     }
     return data
+
 
 
 def search(pagination, page):
@@ -199,7 +214,10 @@ def search(pagination, page):
     return data
 
 
+
 @userlist.route('/userInfo', methods=['POST'], strict_slashes=False)
+@login_required
+@admin_required
 def get_userinfo():
     id = int(request.args.get('userId'))
     u = User.query.get_or_404(id)
@@ -212,7 +230,7 @@ def get_userinfo():
                 "userId": u.id,
                 "name": u.real_name,
                 "username": u.username,
-                "gender": "男" if u.gender==0 else "女",
+                "gender": "男" if u.gender == 0 else "女",
                 "qq": u.qq,
                 "classNum": u.class_name,
                 "major": u.major,

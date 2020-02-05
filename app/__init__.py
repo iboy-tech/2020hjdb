@@ -20,11 +20,12 @@ from .extensions import *
 from flask_cors import CORS
 
 # .表示当前路径
-from config import config  # 导入存储配置的字典
+from app.config import config  # 导入存储配置的字典
 
 #  会记录客户端 IP
 # 地址和浏览器的用户代理信息，如果发现异动就登出用户
 from .models.role_model import Role
+from .models.user_model import Guest
 
 login_manager.session_protection = 'basic'
 
@@ -84,6 +85,9 @@ def register_extensions(app):  # 实例化扩展
     moment.init_app(app)
     db.init_app(app)
     login_manager.init_app(app)
+    login_manager.login_message = '你必须登陆后才能访问该页面'
+    login_manager.login_view = 'auth.login'
+    login_manager.anonymous_user = Guest
     toolbar.init_app(app)
 
 
@@ -137,12 +141,12 @@ def register_logging(app):
     app.logger.addHandler(file_handler)
 
 
-
 #
 # def register_template_context(app):
 #     @app.context_processor
 #     def make_template_context():
 #         pass
+
 def register_commands(app):
     @app.cli.command()
     @click.option('--content', default='世界你好')
@@ -150,12 +154,13 @@ def register_commands(app):
         click.echo('Shell测试消息...')
         print('这是默认消息' + content)
 
-    @app.cli.command
-    def test():
-        """Run the unit tests."""
-        import unittest
-        tests = unittest.TestLoader().discover('tests')
-        unittest.TextTestRunner(verbosity=2).run(tests)
+    @app.cli.command()
+    def initrole():
+        """初始化用户角色"""
+        click.echo("Initing roles and permissions...")
+        from app.models.role_model import Role
+        Role.init_role()
+        click.echo("Done.")
 
 
 def register_errors(app):

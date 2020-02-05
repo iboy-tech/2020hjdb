@@ -9,15 +9,18 @@
 @Software: PyCharm
 """
 from flask import request, render_template
-from flask_login import current_user
+from flask_login import current_user, login_required
 from sqlalchemy import desc
 
 from app import db
+from app.decorators import admin_required
 from app.main import notice
 from app.models.notice_model import Notice
 
 
 @notice.route('/', methods=['GET', 'POST', 'OPTIONS'], strict_slashes=False)
+@login_required
+@admin_required
 def index():
     data = request.json
     print('notice页面收到请求', data)
@@ -25,6 +28,7 @@ def index():
 
 
 @notice.route('/getall', methods=['GET', 'POST', 'OPTIONS'], strict_slashes=False)
+@login_required
 def get_all():
     # notices=Notice.query.limit(10).order_by(Notice.create_time.desc()).all()
     # notices = Notice.query.all().order_by(Notice.create_time.desc())
@@ -50,10 +54,12 @@ def get_all():
 
 
 @notice.route('/add', methods=['POST'], strict_slashes=False)
+@login_required
+@admin_required
 def notice_add():
     req = request.json
     print(req)
-    n = Notice(title=req['title'].replace('<','&lt;').replace('>','&gt;'), content=req['content'].replace('<','&lt;').replace('>','&gt;'), fix_top=1 if req['fixTop'] == True else 0, user_id=current_user.id)
+    n = Notice(title=req['title'].replace('<','&lt;').replace('>','&gt;'), content=req['content'].replace('<','&lt;').replace('>','&gt;'), fix_top=1 if req['fixTop'] == True else 0)
     db.session.add(n)
     db.session.commit()
     data = {
@@ -67,6 +73,8 @@ def notice_add():
 
 
 @notice.route('/delete', methods=['POST'], strict_slashes=False)
+@login_required
+@admin_required
 def notice_delete():
     req=request.args.get('id')
     print('request.args.get(\'id\')',req)
@@ -84,6 +92,8 @@ def notice_delete():
 
 
 @notice.route('/switch', methods=['POST'], strict_slashes=False)
+@login_required
+@admin_required
 def notice_switch():
     req=request.args.get('id')
     print('request.args.get(\'id\')',req)

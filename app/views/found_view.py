@@ -11,7 +11,7 @@
 import base64
 
 from flask import render_template, request, current_app
-from flask_login import current_user
+from flask_login import current_user, login_required
 from sqlalchemy import desc, or_
 
 from app import db
@@ -23,11 +23,13 @@ from app.models.user_model import User
 
 
 @found.route('/', methods=['GET', 'POST'], strict_slashes=False)
+@login_required
 def index():
     return render_template('found.html')
 
 
 @found.route('/getall', methods=['POST'], strict_slashes=False)
+@login_required
 def get_all():
     req = request.json
     page = int(req['pageNum'])
@@ -107,6 +109,7 @@ def get_all():
 
 
 @found.route('/pub', methods=['GET', 'POST', 'OPTIONS'], strict_slashes=False)
+@login_required
 def pub():
     data = request.json
     print(data)

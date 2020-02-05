@@ -11,20 +11,25 @@
 from datetime import datetime
 
 from flask import render_template, request
-from flask_login import current_user
+from flask_login import current_user, login_required
 
 from app import db
+from app.decorators import admin_required, super_admin_required
 from app.main import feedback
 from app.models.feedback_model import Feedback
 from app.models.user_model import User
 
 
 @feedback.route('/', methods=['GET', 'POST', 'OPTIONS'], strict_slashes=False)
+@login_required
+@admin_required
 def index():
     return render_template('feedback.html')
 
 
 @feedback.route('/getall', methods=['GET', 'POST', 'OPTIONS'], strict_slashes=False)
+@login_required
+@admin_required
 def get_all():
     feedbacks=Feedback.query.all()
     list=[]
@@ -66,6 +71,8 @@ def get_all():
 
 
 @feedback.route('/add', methods=['GET', 'POST', 'OPTIONS'], strict_slashes=False)
+@login_required
+@admin_required
 def feedback_add():
     req = request.json
     print('req', req)
@@ -83,6 +90,8 @@ def feedback_add():
 
 
 @feedback.route('/delete', methods=['POST', 'OPTIONS'], strict_slashes=False)
+@login_required
+@admin_required
 def feedback_delete():
     req = request.args.get('id')
     print('request.args.get(\'id\')', req)
@@ -100,6 +109,8 @@ def feedback_delete():
 
 
 @feedback.route('/reply', methods=['POST', 'OPTIONS'], strict_slashes=False)
+@login_required
+@admin_required
 def feedback_replay():
     req=request.json
     print(req)
@@ -121,6 +132,8 @@ def feedback_replay():
 
 
 @feedback.route('/mark', methods=['POST', 'OPTIONS'], strict_slashes=False)
+@login_required
+@admin_required
 def feedback_mark():
     req=request.args.get('id')
     print('request.args.get(\'id\')',req)

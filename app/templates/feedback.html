@@ -123,8 +123,9 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                                              style="max-width: 50px; max-height: 50px;">
 									</span>
                                 <div class="user-name">
-                                    <p>三峡大学</p>
-                                    <span>{{user.email}}</span>
+                                    <p v-if="user.kind==2 ">{{"管理员 "+user.realName}}</p>
+                                    <p v-else="user.kind==3 ">{{"超级管理员 "+user.realName}}</p>
+                                    <span>{{user.studentNum}}</span>
                                 </div>
                                 <i class="fa fa-angle-down lnr"></i>
                                 <i class="fa fa-angle-up lnr"></i>

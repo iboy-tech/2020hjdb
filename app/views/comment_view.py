@@ -11,9 +11,10 @@
 import os
 
 from flask import request
-from flask_login import current_user
+from flask_login import current_user, login_required
 from sqlalchemy import desc
 
+from app.decorators import super_admin_required
 from app.models.comment_model import Comment
 from app import db
 from app.main import comment
@@ -72,3 +73,9 @@ def index():
                     "ext": None
                 }
     return data
+
+
+@comment.route('/delete', methods=['GET', 'POST', 'OPTIONS'],strict_slashes=False)
+@login_required
+def delete_comment():
+    pass

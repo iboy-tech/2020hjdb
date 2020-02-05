@@ -12,6 +12,7 @@ from datetime import datetime
 from flask import render_template, url_for, session, redirect, request
 from flask_login import login_required
 
+from app.decorators import admin_required
 from app.main import admin
 
 # from .. import db
@@ -22,19 +23,10 @@ print('视图文件加载')
 
 
 @admin.route('/', methods=['GET', 'POST'])
-# @login_required
+@login_required
+@admin_required
 def index():
     data=request.json
     print(data)
     print('蓝图请求成功！')
-    # form = NameForm()
-    # if form:
-    #     return redirect(url_for('.index'))
-    user = {
-        'schoolName':'三峡大学',
-        'email':'547142436@qq.com'
-    }
-    return render_template('admin.html',user=user)
-    # return render_template('admin.html', form=form, name=session.get('name'),
-    #                        know=session.get('know', False),
-    #                        current_time=datetime.utcnow())
+    return render_template('admin.html')
