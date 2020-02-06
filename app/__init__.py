@@ -40,6 +40,7 @@ from app.main import found as  found_bp
 from app.main import feedback as  feedback_bp
 from app.main import detail as  detail_bp
 from app.main import comment as  comment_bp
+from app.untils.create_data import create_test_data
 
 
 # 工厂函数
@@ -161,6 +162,11 @@ def register_commands(app):
         from app.models.role_model import Role
         Role.init_role()
         click.echo("Done.")
+
+    @app.cli.command()
+    def createuser():
+        create_test_data()
+
 
 
 def register_errors(app):

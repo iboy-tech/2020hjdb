@@ -9,23 +9,24 @@
 @Software: PyCharm
 """
 from flask import render_template, request
-from flask_login import current_user
+from flask_login import current_user, login_required
 
 from app import db
 from app.main import detail
 from app.models.category_model import Category
 from app.models.lostfound_model import LostFound
 from app.models.user_model import User
+from app.untils import restful
 
 
 @detail.route('/', methods=['GET', 'POST', 'OPTIONS'], strict_slashes=False)
+@login_required
 def index():
-    print('这是详情页面request.json',request.json)
-    if request.method=='GET':
-        print('返回HTML')
+    print('这是详情页面request.json', request.json)
+    if request.method == 'GET':
         return render_template('detail.html')
     else:
-        print('查找详情',type(request.json))
+        print('查找详情', type(request.json))
         id = request.args.get('id')
         # req = request.json
         print('我是详情ID', id)
@@ -38,40 +39,26 @@ def index():
             db.session.commit()
             imglist = lost.images.strip().split(',')
             data = {
-                "success": True,
-                "code": 1000,
-                "msg": "处理成功",
-                "data": {
-                    "item": {
-                        "id": lost.id,
-                        "icon": 'https://q2.qlogo.cn/headimg_dl?dst_uin={}&spec=100'.format(user.qq),
-                        "kind": lost.kind,
-                        "userId": lost.user_id,
-                        "username": user.username,
-                        "realName": user.real_name,
-                        "time": lost.create_time.strftime('%Y-%m-%d %H:%M:%S'),
-                        "location": lost.location,
-                        "title": lost.title,
-                        "about": lost.about,
-                        "images": imglist,
-                        "category": (Category.query.get(lost.category_id)).name,
-                        "lookCount": lost.look_count,
-                        "status": lost.status,
-                        "dealTime": None if lost.deal_time is None else lost.deal_time.strftime('%Y-%m-%d %H:%M:%S'),
-                        "isSelf": current_user.id == lost.user_id,
-                        "email": user.qq + '@qq.com',
-                        "QQ": user.qq
-                    }
-                },
-                "ext": None
+                "item": {
+                    "id": lost.id,
+                    "icon": 'https://q2.qlogo.cn/headimg_dl?dst_uin={}&spec=100'.format(user.qq),
+                    "kind": lost.kind,
+                    "userId": lost.user_id,
+                    "username": user.username,
+                    "realName": user.real_name,
+                    "time": lost.create_time.strftime('%Y-%m-%d %H:%M:%S'),
+                    "location": lost.location,
+                    "title": lost.title,
+                    "about": lost.about,
+                    "images": imglist,
+                    "category": (Category.query.get(lost.category_id)).name,
+                    "lookCount": lost.look_count,
+                    "status": lost.status,
+                    "dealTime": None if lost.deal_time is None else lost.deal_time.strftime('%Y-%m-%d %H:%M:%S'),
+                    "isSelf": current_user.id == lost.user_id,
+                    "email": user.qq + '@qq.com',
+                    "QQ": user.qq
+                }
             }
-            return data
-
-
-
-@detail.route('/get', methods=['GET', 'POST', 'OPTIONS'], strict_slashes=False)
-def get_detail():
-    req=request.args.get('id')
-    print('我是详情页面：',req)
-
+            return restful.success(data=data)
 

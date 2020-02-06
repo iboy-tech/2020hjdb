@@ -8,20 +8,20 @@
 @Description : 
 @Software: PyCharm
 """
-import os
 
 from flask import request
 from flask_login import current_user, login_required
 from sqlalchemy import desc
 
-from app.decorators import super_admin_required
-from app.models.comment_model import Comment
 from app import db
 from app.main import comment
+from app.models.comment_model import Comment
 from app.models.user_model import User
+from app.untils import restful
 
 
 @comment.route('/', methods=['GET', 'POST', 'OPTIONS'],strict_slashes=False)
+@login_required
 def index():
     id=request.args.get('id')
     print('评论的ID',id)
@@ -31,26 +31,15 @@ def index():
         comment = Comment(lost_found_id=req['targetId'], user_id=current_user.id, content=req['content'])
         db.session.add(comment)
         db.session.commit()
-        data = {
-            "success": True,
-            "code": 1000,
-            "msg": "处理成功",
-            "data": {},
-            "ext": None
-        }
+        return restful.success()
     else:
         comments=Comment.query.order_by(desc('create_time')).filter_by(lost_found_id=int(id)).all()
-        print(comments)
+        # print("我是帖子的评论：",comments)
         if not comments:
             data={
-                "success": True,
-                "code": 1000,
-                "msg": "处理成功",
-                "data": {
                     "comments": []
-                },
-                "ext": None
-            }
+                }
+            return restful.success(data=data)
         else:
             list=[]
             for c in comments:
@@ -63,16 +52,11 @@ def index():
                         "content": c.content
                 }
                 list.append(dict)
-                data={
-                    "success": True,
-                    "code": 1000,
-                    "msg": "处理成功",
-                    "data": {
-                        "comments": list
-                    },
-                    "ext": None
-                }
-    return data
+            data= {
+                "comments": list
+            }
+            # print("评论参数data：",data)
+            return restful.success(data=data)
 
 
 @comment.route('/delete', methods=['GET', 'POST', 'OPTIONS'],strict_slashes=False)

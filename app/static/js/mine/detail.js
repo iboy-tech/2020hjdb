@@ -24,17 +24,17 @@ var app = new Vue({
                 username: "201520180508",
                 userId: "000000000001",
                 time: "2019-04-16 09:27:10",
-                location: "研一的门口",
-                title: "丢了一只篮球",
-                about: "我的世界只有你没有她",
-                images: ["./images/icon.jpg"],
-                category: "电子数码",
+                location: "欣苑",
+                title: "饭卡掉了",
+                about: "救救孩子",
+                images: ["https://ae01.alicdn.com/kf/Hbb9f7e45f0c5451b8ce7c1489b376360p.jpg"],
+                category: "校园卡",
                 lookCount: 12,
                 status: 1,
                 dealTime: null,
                 isSelf: false,
-                email: "cpwu@foxmail.com",
-                QQ: "15912345678",
+                email: "547142436@qq.com",
+                QQ: "547142436",
         },
         comments: [
             /* {
@@ -116,11 +116,7 @@ var app = new Vue({
             layer.confirm('确定要删除码？', {
                 btn: ['确定', '取消'] //按钮
             }, function () {
-                deletePub({
-                    idList: [
-                        id
-                    ]
-                });
+                deletePub(id);
             }, function () {
 
             });
@@ -130,9 +126,25 @@ var app = new Vue({
             //跳转详情页面
             window.open(baseUrl+"/detail?id=" + id, "_self");
         },
-        claim(){
-            claim(this.item.id);
+        claim(flag,id){
+            if(flag==1){
+                 layer.confirm("物品是您的吗？" , {
+                     btn:["是的","不是"]
+                },function () {
+                    claimID(id);
+                 },function () {
+            });
+            }
+            else{
+                layer.confirm("您找到失物了吗？" , {
+                     btn:["是的","不是"]
+                },function () {
+                    claimID(id);
+                 },function () {
+                });
+            }
         }
+
     }
 });
 
@@ -147,16 +159,16 @@ $(function () {
 });
 
 //删除招领信息
-function deletePub(data) {
+function deletePub(id) {
     $.ajax({
-        url: baseUrl + "/user/removeLost",
+        url: baseUrl + "/user/removeLost?id="+id,
         method: "POST",
-        data: JSON.stringify(data),
         success: function (res, status) {
             console.log(res);
             if (status == "success") {
                 if (res.success) {
-                    window.open("./user.html", "_self");
+                    // showOK(res.msg);
+                    window.location.href=baseUrl+'/user';
                 } else {
                     showAlertError(res.msg)
                 }
@@ -281,7 +293,7 @@ function getDetail(id, result) {
 }
 
 //认领物品
-function claim(id) {
+function claimID(id) {
     $.ajax({
         url: baseUrl + "/user/claim?id=" + id,
         method: "POST",
@@ -289,7 +301,8 @@ function claim(id) {
             console.log(res);
             if (status == "success") {
                 if (res.success) {
-                    showAlert("认领成功！");
+                    showOK(res.msg);
+                    getDetail(id, app);
                 } else {
                     showAlertError(res.msg)
                 }

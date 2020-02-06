@@ -16,6 +16,7 @@ from app import db
 from app.decorators import admin_required
 from app.main import notice
 from app.models.notice_model import Notice
+from app.untils import restful
 
 
 @notice.route('/', methods=['GET', 'POST', 'OPTIONS'], strict_slashes=False)
@@ -41,16 +42,10 @@ def get_all():
     for n in notices:
         dict=n.to_dict()
         list.append(dict)
-    data = {
-        "success": True,
-        "code": 1000,
-        "msg": "处理成功",
-        "data": {
+        data={
             "list": list
-        },
-        "ext": None
-    }
-    return data
+        }
+    return restful.success(data=data)
 
 
 @notice.route('/add', methods=['POST'], strict_slashes=False)
@@ -62,14 +57,7 @@ def notice_add():
     n = Notice(title=req['title'].replace('<','&lt;').replace('>','&gt;'), content=req['content'].replace('<','&lt;').replace('>','&gt;'), fix_top=1 if req['fixTop'] == True else 0)
     db.session.add(n)
     db.session.commit()
-    data = {
-        "success": True,
-        "code": 1000,
-        "msg": "处理成功",
-        "data": {},
-        "ext": None
-    }
-    return data
+    return restful.success()
 
 
 @notice.route('/delete', methods=['POST'], strict_slashes=False)
@@ -81,14 +69,7 @@ def notice_delete():
     n=Notice.query.get(int(req))
     db.session.delete(n)
     db.session.commit()
-    data = {
-        "success": True,
-        "code": 1000,
-        "msg": "处理成功",
-        "data": {},
-        "ext": None
-    }
-    return data
+    return restful.success()
 
 
 @notice.route('/switch', methods=['POST'], strict_slashes=False)
@@ -100,11 +81,4 @@ def notice_switch():
     n=Notice.query.get(int(req))
     n.fix_top=1 if n.fix_top==0 else 0
     db.session.commit()
-    data = {
-        "success": True,
-        "code": 1000,
-        "msg": "处理成功",
-        "data": {},
-        "ext": None
-    }
-    return data
+    return restful.success()

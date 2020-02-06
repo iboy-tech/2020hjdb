@@ -8,16 +8,16 @@
 @Description : 
 @Software: PyCharm
 """
-from datetime import datetime
 
 from flask import render_template, request, current_app
 from flask_login import current_user, login_required
-from sqlalchemy import desc, or_
+from sqlalchemy import or_
 
 from app import db
+from app.decorators import super_admin_required, admin_required
 from app.main import userlist
 from app.models.user_model import User
-from app.decorators import permission_required, super_admin_required, admin_required
+from app.untils import restful
 
 
 @userlist.route('/', methods=['POST', 'GET', 'OPTIONS'], strict_slashes=False)
@@ -25,8 +25,6 @@ from app.decorators import permission_required, super_admin_required, admin_requ
 @admin_required
 def index():
     return render_template('userlist.html')
-    # return data
-
 
 
 @userlist.route('/getall', methods=['POST'], strict_slashes=False)
@@ -47,47 +45,37 @@ def get_all():
         if keyword == '男':
             pagination = User.query.filter(
                 User.gender == 0).order_by(User.kind.desc(), User.status).paginate(page + 1,
-                                                                                   per_page=current_app.config[
-                                                                                       'ARTISAN_POSTS_PER_PAGE'],
-                                                                                   error_out=False)
+                per_page=current_app.config['ARTISAN_POSTS_PER_PAGE'],error_out=False)
             data = search(pagination, page)
             return data
         elif keyword == '女':
             pagination = User.query.filter(
-                User.gender == 1).order_by(User.kind.desc(), User.status).paginate(page + 1,
-                                                                                   per_page=current_app.config[
-                                                                                       'ARTISAN_POSTS_PER_PAGE'],
-                                                                                   error_out=False)
+                User.gender == 1).order_by(User.kind.desc(), User.status).paginate(page + 1
+                ,per_page=current_app.config['ARTISAN_POSTS_PER_PAGE'],error_out=False)
             data = search(pagination, page)
             return data
         elif '正常' in keyword:
             pagination = User.query.filter(
                 User.status == 1).order_by(User.kind.desc(), User.status).paginate(page + 1,
-                                                                                   per_page=current_app.config[
-                                                                                       'ARTISAN_POSTS_PER_PAGE'],
-                                                                                   error_out=False)
+                per_page=current_app.config['ARTISAN_POSTS_PER_PAGE'],error_out=False)
             data = search(pagination, page)
             return data
         elif '冻结' in keyword:
             pagination = User.query.filter(
                 User.status == 0).order_by(User.kind.desc(), User.status).paginate(page + 1,
-                                                                                   per_page=current_app.config[
-                                                                                       'ARTISAN_POSTS_PER_PAGE'],
-                                                                                   error_out=False)
+                per_page=current_app.config['ARTISAN_POSTS_PER_PAGE'],error_out=False)
             data = search(pagination, page)
             return data
         elif '认证' in keyword:
             pagination = User.query.filter(
                 User.status == 2).order_by(User.kind.desc(), User.status).paginate(page + 1,
-                                                                                   per_page=current_app.config[
-                                                                                       'ARTISAN_POSTS_PER_PAGE'],
-                                                                                   error_out=False)
+                per_page=current_app.config['ARTISAN_POSTS_PER_PAGE'],error_out=False)
             data = search(pagination, page)
             return data
         elif '管理' in keyword:
             pagination = User.query.filter(
-                User.kind >= 2).order_by(User.kind.desc(), User.status).paginate(page + 1, per_page=current_app.config[
-                'ARTISAN_POSTS_PER_PAGE'], error_out=False)
+                User.kind >= 2).order_by(User.kind.desc(), User.status).paginate(page + 1,
+                per_page=current_app.config['ARTISAN_POSTS_PER_PAGE'], error_out=False)
             data = search(pagination, page)
             return data
         else:
@@ -105,7 +93,6 @@ def get_all():
         return data
 
 
-
 @userlist.route('/freeze', methods=['POST'], strict_slashes=False)
 @login_required
 @admin_required
@@ -114,24 +101,16 @@ def user_freeze_or_unfreeze():
     u = User.query.get(int(req))
     u.status = 1 if u.status == 0 else 0
     db.session.commit()
-    data = {
-        "success": True,
-        "code": 1001,
-        "msg": "发生异常：Failed messages: com.sun.mails.smtp.SMTPSendFailedException: 501 Mail from address must be same as authorization user.\n;\n  nested exception is:\n\tcom.sun.mails.smtp.SMTPSenderFailedException: 501 Mail from address must be same as authorization user.\n",
-        "data": {},
-        "ext": "org.springframework.mails.MailSendException"
-    }
     print('要给用户发送提醒邮件')
     from app.untils.mail_sender import send_email
     messages = {
         'realName': u.real_name,
-        'handlerName': datetime.now.strftime('%Y-%m-%d %H:%M:%S'),
+        'handlerName': current_user.real_name,
         'handlerEmail': current_user.qq + '@qq.com',
         'appName': '三峡大学失物招领处'
     }
     send_email('yang.hao@aliyun.com', '账户冻结通知', 'userFreeze', messages)
-    return data
-
+    return restful.success()
 
 
 @userlist.route('/resetPassword', methods=['POST'], strict_slashes=False)
@@ -144,15 +123,7 @@ def reset_pssword():
     u.password = '123456'
     db.session.commit()
     print('发送邮件')
-    data = {
-        "success": True,
-        "code": 1001,
-        "msg": "发生异常：Failed messages: com.sun.mails.smtp.SMTPSendFailedException: 501 Mail from address must be same as authorization user.\n;\n  nested exception is:\n\tcom.sun.mails.smtp.SMTPSenderFailedException: 501 Mail from address must be same as authorization user.\n",
-        "data": {},
-        "ext": "org.springframework.mails.MailSendException"
-    }
-    return data
-
+    return restful.success()
 
 
 @userlist.route('/setAsAdmin', methods=['POST'], strict_slashes=False)
@@ -164,18 +135,11 @@ def set_or_cancle_admin():
     u.kind = 2 if u.kind == 1 else 1
     db.session.commit()
     print('发送邮件')
-    data = {
-        "success": True,
-        "code": 1001,
-        "msg": "发生异常：Failed messages: com.sun.mails.smtp.SMTPSendFailedException: 501 Mail from address must be same as authorization user.\n;\n  nested exception is:\n\tcom.sun.mails.smtp.SMTPSenderFailedException: 501 Mail from address must be same as authorization user.\n",
-        "data": {},
-        "ext": "org.springframework.mails.MailSendException"
-    }
-    return data
-
+    return restful.success()
 
 
 def search(pagination, page):
+    global data
     users = pagination.items
     # users = User.query.order_by(desc('kind')).all()
     print(users)
@@ -196,11 +160,7 @@ def search(pagination, page):
             "kind": u.kind
         }
         list.append(dict)
-    data = {
-        "success": True,
-        "code": 1000,
-        "msg": "处理成功",
-        "data": {
+        data={
             "page": {
                 "total": pagination.total,
                 "totalPage": pagination.pages,
@@ -208,11 +168,8 @@ def search(pagination, page):
                 "pageSize": current_app.config['ARTISAN_POSTS_PER_PAGE'],
                 "list": list
             }
-        },
-        "ext": None
-    }
-    return data
-
+        }
+    return restful.success(data=data)
 
 
 @userlist.route('/userInfo', methods=['POST'], strict_slashes=False)
@@ -221,25 +178,19 @@ def search(pagination, page):
 def get_userinfo():
     id = int(request.args.get('userId'))
     u = User.query.get_or_404(id)
-    data = {
-        "success": True,
-        "code": 1000,
-        "msg": "处理成功",
-        "data": {
-            "user": {
-                "userId": u.id,
-                "name": u.real_name,
-                "username": u.username,
-                "gender": "男" if u.gender == 0 else "女",
-                "qq": u.qq,
-                "classNum": u.class_name,
-                "major": u.major,
-                "academy": u.academy,
-                "lastLogin": u.last_login.strftime('%Y-%m-%d %H:%M:%S'),
-                "status": '正常' if u.status == 1 else '正常',
-                "kind": u.kind
-            }
-        },
-        "ext": None
+    data= {
+        "user": {
+            "userId": u.id,
+            "name": u.real_name,
+            "username": u.username,
+            "gender": "男" if u.gender == 0 else "女",
+            "qq": u.qq,
+            "classNum": u.class_name,
+            "major": u.major,
+            "academy": u.academy,
+            "lastLogin": u.last_login.strftime('%Y-%m-%d %H:%M:%S'),
+            "status": '正常' if u.status == 1 else '正常',
+            "kind": u.kind
+        }
     }
-    return data
+    return restful.success(data=data)

@@ -17,15 +17,12 @@ from flask_login import logout_user, login_user, login_required, current_user
 from app import db, login_manager
 from app.main import auth
 from app.models.user_model import User
-
-try_times = 0
+from app.untils import restful
 
 
 @auth.route('/', methods=['GET', 'POST', 'OPTIONS'])
 @cross_origin()
 def login():
-    # from app.untils.create_data import create_test_data
-    # create_test_data()
     data = request.json
     print(data, type(data))
 
@@ -46,53 +43,27 @@ def login():
 
             # print(g.current_user)
             print(session.get('uid'))
-            data = {
-                "success": True,
-                "code": 1000,
-                "msg": "登录成功！",
-                "data": {
-                    "user": {
-                        "studentNum": user.username,
-                        "realName": user.real_name,
-                        "icon": 'https://q2.qlogo.cn/headimg_dl?dst_uin={}&spec=100'.format(user.qq),
-                        "email": user.qq + '@qq.com',
-                        "qq": user.qq,
-                        "gender": user.gender,
-                        "createTime": user.create_time.strftime('%Y-%m-%d %H:%M:%S'),
-                        "lastLogin": user.last_login.strftime('%Y-%m-%d %H:%M:%S'),
-                        "kind": user.kind
-                    }
-                },
-                "ext": None
-            }
             login_user(user, remember=True)
-            # user.last_login = datetime.datetime.now
-            print(user)
-            # db.session.add(user)
-            # db.session.commit()
-            print(data)
-            return data
-        # data = request.get_data(as_text=True)
-
-        # print(aws)
-        # data = json.loads(data)
-        # print(data)
-
-        else:
-            global try_times
-            try_times = try_times + 1
             data = {
-                "success": False,
-                "code": 1000,
-                "msg": "用户名或密码错误！剩余尝试次数 %s " % str(5 - try_times),
-                "data": {
-                    "user": {}
-                },
-                "ext": None
+                "user": {
+                    "studentNum": user.username,
+                    "realName": user.real_name,
+                    "icon": 'https://q2.qlogo.cn/headimg_dl?dst_uin={}&spec=100'.format(user.qq),
+                    "email": user.qq + '@qq.com',
+                    "qq": user.qq,
+                    "gender": user.gender,
+                    "createTime": user.create_time.strftime('%Y-%m-%d %H:%M:%S'),
+                    "lastLogin": user.last_login.strftime('%Y-%m-%d %H:%M:%S'),
+                    "kind": user.kind
+                }
             }
-            return data
-
-    # print('登录请求成功！', datetime.datetime.now)
+            return restful.success(msg='登录成功', data=data)
+        else:
+            return restful.success(success=False, msg="用户名或密码错误")
+    time1 = datetime.now
+    time2 = datetime.now()
+    print('登录请求成功', time1, type(time1))
+    print('登录请求成功', time2, type(time2))
     return render_template('login.html')
 
 
@@ -114,35 +85,23 @@ def recognize():
     pwd = data['password']
     qq = data['qq']
     # code=data['code']
-    from app.untils.jwc import user_verify
-    user_jwc = user_verify(usr, pwd)
-    user_db = None
-    if user_jwc is not None:
-        user_db = User.query.filter_by(username=user_jwc['username']).first()
+    user_db = User.query.filter_by(username=data['username']).first()
     if user_db is not None:
-        data = {
-            "success": False,
-            "code": 1000,
-            "msg": "您的账户已认证，请直接登录",
-            "data": {
-                "user": {}
-            },
-            "ext": None
-        }
-    elif user_jwc is not None and user_db is None:
-        print(user_jwc, '验证成功')
-        user = User(username=user_jwc['username'], password=pwd, real_name=user_jwc['real_name'],
-                    academy=user_jwc['academy'], class_name=user_jwc['class_name'], major=user_jwc['major'],
-                    qq=qq, gender=user_jwc['gender'], create_time=datetime.datetime.now)
-        print(user)
-        # g.user=u
-        db.session.add(user)
-        db.session.commit()
-        data = {
-            "success": True,
-            "code": 1000,
-            "msg": "恭喜验证成功！",
-            "data": {
+        data = {"user": {}}
+        return restful.success(msg="您的账户已认证，请直接登录", data=data)
+    else:
+        from app.untils.jwc import user_verify
+        user_jwc = user_verify(usr, pwd)
+        if user_jwc is not None:
+            print(user_jwc, '验证成功')
+            user = User(username=user_jwc['username'], password=pwd, real_name=user_jwc['real_name'],
+                        academy=user_jwc['academy'], class_name=user_jwc['class_name'], major=user_jwc['major'],
+                        qq=qq, gender=user_jwc['gender'], create_time=datetime.datetime.now)
+            print(user)
+            # g.user=u
+            db.session.add(user)
+            db.session.commit()
+            data={
                 "user": {
                     "studentNum": user.username,
                     "realName": user.real_name,
@@ -154,20 +113,11 @@ def recognize():
                     "lastLogin": user.last_login.strftime('%Y-%m-%d %H:%M:%S'),
                     "kind": user.kind
                 }
-            },
-            "ext": None
-        }
-    else:
-        data = {
-            "success": False,
-            "code": 1000,
-            "msg": "您的用户名或密码有误，请重新尝试",
-            "data": {
-                "user": {}
-            },
-            "ext": None
-        }
-    return data
+            }
+            data=restful.success(msg='恭喜验证成功',data=data)
+        else:
+            data = restful.success(success=False,msg="您的用户名或密码有误，请重新尝试")
+        return data
 
 
 # 注册全局
@@ -184,8 +134,4 @@ def internal_server_error():
 @login_manager.user_loader
 def load_user(user_id):
     """加载用户信息回调"""
-
     return User.query.get(int(user_id))
-    # user=User.query.get(int(id))
-    # print(user)
-    # return User.query.filter_by(id=int(user_id))

@@ -191,7 +191,10 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                         <tr v-for="(item, index) in result.list">
                             <th scope="row">{{index+1+search.pageSize*search.pageNum}}</th>
                             <td>{{item.username}}</td>
-                            <td>{{item.name}}&nbsp;<span v-if="item.kind==2" class="glyphicon glyphicon-user text-primary" title="管理员"></span></td>
+                            <td>{{item.name}}&nbsp;
+                                <span v-if="item.kind==2" class="glyphicon glyphicon-user text-primary" title="管理员"></span>
+                            <span v-if="item.kind==3" class="glyphicon glyphicon-user text-warning" title="超级管理员" style="color: #c54123;"></span>
+                            </td>
                             <td>{{item.gender}}</td>
                             <td>{{item.major}}</td>
                             <td>{{item.classNum}}</td>

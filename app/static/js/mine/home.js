@@ -108,7 +108,7 @@ var app = new Vue({
             //console.log(index);
             this.tabIndex = index;
             if (index == 0) {
-
+                pageLostFound(app.tab[0].search, app.tab[0], true);
             } else if (index == 1) {
 
             } else if (index == 2) {
@@ -149,20 +149,16 @@ var app = new Vue({
         },
         deletePub(id) {
             console.log(id);
-            layer.confirm('确定要删除码？', {
+            layer.confirm('确定要删除吗？', {
                 btn: ['确定', '取消'] //按钮
             }, function () {
-                deletePub({
-                    idList: [
-                        id
-                    ]
-                });
+                deletePub(id);
             }, function () {
             });
         },
         logout() {
             //询问框
-            layer.confirm('确定要退出码？', {
+            layer.confirm('确定要退出吗？', {
                 btn: ['确定', '取消'] //按钮
             }, function () {
                 deleteSession("user");
@@ -172,14 +168,10 @@ var app = new Vue({
         },
         removeComment(id) {
             console.log(id);
-            layer.confirm('确定要删除码？', {
+            layer.confirm('确定要删除吗？', {
                 btn: ['确定', '取消'] //按钮
             }, function () {
-                removeComment({
-                    idList: [
-                        id
-                    ]
-                });
+                removeComment(id);
             }, function () {
             });
         },
@@ -237,21 +229,21 @@ var app = new Vue({
                 type: 1,
                 area: ['300px', 'auto'],
                 //shade: true,
-                title: "修改密码", //不显示标题
+                title: "修改密吗", //不显示标题
                 content: $('#pwdDiv'),  //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
                 yes: function () {
                     console.log(app.password);
                     let pwd = app.password;
                      var reg=/^[a-zA-Z0-9]{6,15}$/;
                      if(pwd.newPassword=='' || pwd.newPassword.length<6  ) {
-                         showAlertError('密码至少是6位');
+                         showAlertError('密吗至少是6位');
                         return false;
 	            } else if(!reg.test( app.newPassword)){
-                    showAlertError('密码必须包为字母或数字');
+                    showAlertError('密吗必须包为字母或数字');
                         return false;
                      }
                else if(pwd.newPassword != pwd.confirmPassword) {
-                        showAlertError("新密码不一致！");
+                        showAlertError("新密吗不一致！");
                         return;
                     }
                     setPassword(app.password);
@@ -354,7 +346,7 @@ function pubFeedback(data) {
     });
 }
 
-//修改密码
+//修改密吗
 function setPassword(data) {
     console.log(data);
     $.ajax({
@@ -394,7 +386,6 @@ function deletePub(data) {
             console.log(res);
             if (status == "success") {
                 if (res.success) {
-                    pageLostFound(app.tab[2].search, app.tab[2], false);
                     layer.closeAll();
                 } else {
                     showAlertError(res.msg)
@@ -432,23 +423,19 @@ function getNoticeList(app) {
 }
 
 //删除消息（评论）
-function removeComment(data) {
+function removeComment(id) {
+    console.log("我是要删除的ID:"+id);
     $.ajax({
-        url: baseUrl + "/user/removeComment",
+        url: baseUrl + "/user/removeComment?id="+id,
         method: "POST",
-        data: JSON.stringify(data),
-        success: function (res, status) {
+        success: function (res) {
             console.log(res);
-            if (status == "success") {
                 if (res.success) {
+                    // showOK(res.msg);
                     getMessages(app);
                 } else {
                     showAlertError(res.msg)
                 }
-            } else {
-                console.log(res);
-                alert(res)
-            }
         }
     });
 
@@ -618,7 +605,7 @@ function pubLostFound(data) {
             console.log(res);
             if (status == "success") {
                 if (res.success) {
-                    showOK("发布成功！");
+                    // showOK("发布成功！");
                     app.tab4 = {
                         applyKind: 0,
                         categoryIndex: -1,
@@ -628,6 +615,8 @@ function pubLostFound(data) {
                         location: null,
                         images: [],//srcList
                     };
+                    window.location.href =baseUrl+'/user'
+                    // changeTab(0);
                 } else {
                     showAlertError(res.msg)
                 }

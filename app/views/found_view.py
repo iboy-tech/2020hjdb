@@ -20,6 +20,7 @@ from app.models.category_model import Category
 from app.models.comment_model import Comment
 from app.models.lostfound_model import LostFound
 from app.models.user_model import User
+from app.untils import restful
 
 
 @found.route('/', methods=['GET', 'POST'], strict_slashes=False)
@@ -125,14 +126,7 @@ def pub():
     # strs=data['images'][0]
     # with open('test.jpeg', 'wb') as f:
     #     f.write(base64.b64decode(strs))
-    data = {
-        "success": True,
-        "code": 1000,
-        "msg": "处理成功",
-        "data": {},
-        "ext": None
-    }
-    return data
+    return restful.success()
 
 def get_search_data(pagination,pageNum):
     losts = pagination.items
@@ -164,20 +158,14 @@ def get_search_data(pagination,pageNum):
             "commentCount": len(Comment.query.filter_by(lost_found_id=l.id).all())
         }
         datalist.append(dict)
-    data = {
-        "success": True,
-        "code": 1000,
-        "msg": "处理成功",
-        "data": {
-            "page": {
-                "total": pagination.total,
-                "totalPage": pagination.pages,
-                "pageNum": pageNum,
-                "pageSize": current_app.config['ARTISAN_POSTS_PER_PAGE'],
-                "list": datalist
-            }
-        },
-        "ext": None
+    data= {
+        "page": {
+            "total": pagination.total,
+            "totalPage": pagination.pages,
+            "pageNum": pageNum,
+            "pageSize": current_app.config['ARTISAN_POSTS_PER_PAGE'],
+            "list": datalist
+        }
     }
-    return data
+    return restful.success(data=data)
 

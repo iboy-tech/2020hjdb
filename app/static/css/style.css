@@ -879,7 +879,7 @@ ul.dropdown-menu.drp-mnu li {
 }
 .charts-grids {
     background-color: #fff;
-    padding:1em;
+    padding:0.5em;
 }
 .charts-grids canvas#bar {
     width: 100% !important;

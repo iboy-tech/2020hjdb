@@ -8,16 +8,12 @@
 @Description : 
 @Software: PyCharm
 """
-from datetime import datetime
-from flask import render_template, url_for, session, redirect, request
+from flask import render_template, request
 from flask_login import login_required
 
 from app.decorators import admin_required
 from app.main import admin
 
-# from .. import db
-# from .forms import NameForm
-# from ..models import User
 
 print('视图文件加载')
 

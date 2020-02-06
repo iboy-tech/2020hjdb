@@ -16,6 +16,7 @@ from app.decorators import admin_required, super_admin_required
 from app.main import category
 from app.models.category_model import Category
 from app.models.lostfound_model import LostFound
+from app.untils import restful
 
 
 @category.route('/', methods=['GET', 'POST', 'OPTIONS'], strict_slashes=False)
@@ -29,33 +30,22 @@ def index():
 @login_required
 def get_all():
     data = request.json
-    print('category页面收到请求', data)
+    # print('category页面收到请求', data)
     categorys=Category.query.all()
-    print('categorys:',categorys)
     list=[]
     for c in categorys:
         dict={
             "name":c.name,
             "about":c.about,
-            # "image": None,
             "categoryId": c.id,
             "createTime": c.create_time,
-            # "level": 1,
-            # "targetId": "000",
             "count": LostFound.query.filter_by(category_id=c.id).count()
         }
-        print(dict)
         list.append(dict)
-    data = {
-        "success": True,
-        "code": 1000,
-        "msg": "处理成功",
-        "data":{
+    data={
             "list":list
-        },
-        "ext": None
-    }
-    return data
+        }
+    return restful.success(data=data)
 
 
 @category.route('/add', methods=['POST'])
@@ -69,22 +59,8 @@ def add_category():
         c = Category(name=req['name'], about=req['about'])
         db.session.add(c)
         db.session.commit()
-        data = {
-            "success": True,
-            "code": 1000,
-            "msg": "处理成功",
-            "data": {},
-            "ext": None
-        }
-        return data
-    data = {
-        "success": False,
-        "code": 2201,
-        "msg": "类别身份证已存在",
-        "data": {},
-        "ext": None
-    }
-    return data
+        return restful.success()
+    return restful.success(success=False,msg="类别身份证已存在")
 
 
 @category.route('/delete', methods=['POST'])
@@ -99,19 +75,5 @@ def delete_category():
     if temp is not None:
         db.session.delete(temp)
         db.session.commit()
-        data = {
-            "success": True,
-            "code": 1000,
-            "msg": "处理成功",
-            "data": {},
-            "ext": None
-        }
-        return data
-    data = {
-        "success": False,
-        "code": 1000,
-        "msg": "删除失败",
-        "data": {},
-        "ext": None
-    }
-    return data
+        return restful.success()
+    return restful.success(success=False,msg='删除失败')

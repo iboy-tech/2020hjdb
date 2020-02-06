@@ -17,6 +17,7 @@ from app.main import user, auth
 from app.models.comment_model import Comment
 from app.models.lostfound_model import LostFound
 from app.models.user_model import User
+from app.untils import restful
 
 
 @user.route('/', methods=['POST', 'OPTIONS', 'GET'])
@@ -36,17 +37,11 @@ def get_message():
     print('查询消息req', req)
     # commens=Comment.query.join(LostFound,user_id=current_user.id)
     losts = LostFound.query.filter_by(user_id=current_user.id).all()
-    print("这是我接受的消息", type(losts), losts, losts[0].comments)
     if len(losts) == 0:
         data = {
-            "success": True,
-            "code": 1000,
-            "msg": "处理成功",
-            "data": {
-                "list": []
-            },
-            "ext": None
+            "list": []
         }
+        return restful.success(data=data)
     else:
         list = []
         for l in losts:
@@ -65,15 +60,9 @@ def get_message():
                     }
                     list.append(dict)
             data = {
-                "success": True,
-                "code": 1000,
-                "msg": "处理成功",
-                "data": {
-                    "list": list
-                },
-                "ext": None
+                "list": list
             }
-    return data
+    return restful.success(data=data)
 
 
 @user.route('/setPassword', methods=['POST'])
@@ -87,19 +76,73 @@ def get_all_user():
     if u.verify_password(req['oldPassword']):
         u.password = req['newPassword']
         db.session.commit()
-        data = {
-            "success": True,
-            "code": 1002,
-            "msg": "改密成功",
-            "data": {},
-            "ext": None
-        }
-        return data
-    data = {
-        "success": False,
-        "code": 1002,
-        "msg": "您输入的密码有误",
-        "data": {},
-        "ext": None
-    }
-    return data
+        return restful.success()
+    return restful.success(success=False, msg="您输入的密码有误")
+
+
+@user.route('/removeComment', methods=['POST'])
+@login_required
+@cross_origin()
+def del_comment():
+    refer = request.referrer
+    print(refer)
+    req = request.args.get('id')
+    print('删除评论：', req, type(req))
+    if not req:
+        return restful.params_error()
+    else:
+        c = Comment.query.get(int(req))
+        if c is not None and (
+                LostFound.query.get(c.lost_found_id).user_id == current_user.id or current_user.kind >= 2):
+            db.session.delete(c)
+            db.session.commit()
+            return restful.success(msg='删除成功')
+        else:
+            return restful.params_error()
+
+
+@user.route('/removeLost', methods=['POST'])
+@login_required
+@cross_origin()
+def del_Lost():
+    refer = request.referrer
+    print(refer)
+    req = request.args.get('id')
+    print('删除评论：', req, type(req))
+    if not req:
+        return restful.params_error()
+    else:
+        l = LostFound.query.get(int(req))
+        if l is not None and (
+                l.user_id == current_user.id or current_user.kind >= 2):
+            db.session.delete(l)
+            db.session.commit()
+            return restful.success(msg='删除成功')
+        else:
+            return restful.params_error()
+
+
+@user.route('/claim', methods=['POST'])
+@login_required
+@cross_origin()
+def claim():
+    req = request.args.get('id')
+    print('删除评论：', req, type(req))
+    if not req:
+        return restful.params_error()
+    else:
+        l = LostFound.query.get(int(req))
+        if l is not None and (l.user_id != current_user.id) and l.kind == 1:
+            l.status = 1
+            l.claim_id=current_user.id
+            db.session.add(l)
+            db.session.commit()
+            return restful.success(msg='认领成功')
+        elif l is not None and (l.user_id != current_user.id) and l.kind == 0:
+            l.status = 1
+            l.claim_id = current_user.id
+            db.session.add(l)
+            db.session.commit()
+            return restful.success(msg='上报成功')
+        else:
+            return restful.params_error()

@@ -59,7 +59,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
     </style>
 </head>
 <body class="cbp-spmenu-push">
-<div class="main-content">
+<div class="main-content" id="app">
     <!--left-fixed -navigation-->
     <div class=" sidebar" role="navigation">
         <div class="navbar-collapse">
@@ -193,31 +193,31 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
             <div class="row-one">
                 <div class="col-md-3 widget">
                     <div class="stats-left ">
-                        <h5>今日失物：12</h5>
-                        <h4>总计：148</h4>
+                        <h5>{{"今日失物："+lost[0]}}</h5>
+                        <h4>{{"总计："+lost[1]}}</h4>
                     </div>
                     <div class="stats-right">
-                        <label>+12</label>
+                        <label>{{"+"+lost[0]}}</label>
                     </div>
                     <div class="clearfix"></div>
                 </div>
                 <div class="col-md-3 widget states-mdl">
                     <div class="stats-left" style="background-color: #e94e02;">
-                        <h5>今日拾物：9</h5>
-                        <h4>总计：93</h4>
+                        <h5>{{"今日拾物："+found[0]}}</h5>
+                        <h4>{{"总计："+found[1]}}</h4>
                     </div>
                     <div class="stats-right" style="background-color: #d14a00;">
-                        <label>+9</label>
+                        <label>{{"+"+found[0]}}</label>
                     </div>
                     <div class="clearfix"></div>
                 </div>
                 <div class="col-md-3 widget states-last">
                     <div class="stats-left" style="background-color: #3dab53">
-                        <h5>今日寻回：2</h5>
+                        <h5>{{"今日寻回："+solve[0]}}</h5>
                         <h4>总计：16</h4>
                     </div>
                     <div class="stats-right" style="background-color: #1d9b13">
-                        <label>+2</label>
+                        <label>{{"+"+found[0]}}</label>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -237,90 +237,8 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                     <canvas id="pie1" height="300" width="400"></canvas>
                 </div>
                 <div class="clearfix"></div>
-                <script>
-                    var barChartData1 = {
-                        labels: ["04/13", "04/14", "04/15", "04/16", "04/17", "04/18", "04/13"],
-                        datasets: [
-                            {
-                                fillColor: "#4F52BA",
-                                strokeColor: "#4F52BA",
-                                highlightFill: "#4F52BA",
-                                highlightStroke: "#4F52BA",
-                                data: [40, 70, 55, 20, 45, 70, 60]
-                            },
-                            {
-                                fillColor: "#e94e02",
-                                strokeColor: "#e94e02",
-                                highlightFill: "#e94e02",
-                                highlightStroke: "#e94e02",
-                                data: [65, 59, 90, 81, 56, 55, 40]
-                            },
-                            {
-                                fillColor: "#3dab53",
-                                strokeColor: "#3dab53",
-                                highlightFill: "#3dab53",
-                                highlightStroke: "#3dab53",
-                                data: [65, 59, 90, 81, 56, 55, 40]
-                            }
-                        ]
-
-                    };
-                    var lineChartData1 = {
-                        labels: ["Jan", "Feb", "March", "April", "May", "June", "July"],
-                        datasets: [
-                            {
-                                fillColor: "rgba(79, 82, 186, 0.9)",
-                                strokeColor: "rgba(79, 82, 186, 0.9)",
-                                pointColor: "rgba(79, 82, 186, 0.9)",
-                                pointStrokeColor: "#fff",
-                                data: [22, 31, 39, 40, 55, 65, 68]
-
-                            },
-                            {
-                                fillColor: "rgba(233, 78, 2, 0.9)",
-                                strokeColor: "rgba(233, 78, 2, 0.9)",
-                                pointColor: "rgba(233, 78, 2, 0.9)",
-                                pointStrokeColor: "#9358ac",
-                                data: [12, 15, 23, 34, 36, 44, 51]
-
-                            },
-                            {
-                                fillColor: "#3dab53",
-                                strokeColor: "#3dab53",
-                                pointColor: "#3dab53",
-                                pointStrokeColor: "#9358ac",
-                                data: [5, 6, 6, 8, 10, 11, 16]
-
-                            }
-                        ]
-
-                    };
-                    var pieData1 = [
-                        {
-                            value: 90,
-                            color: "#4F52BA",
-                            label: "失物",
-                            percentageInnerCutout: 50
-                        },
-                        {
-                            value: 50,
-                            color: "#e94e02",
-                            label: "拾物",
-                            percentageInnerCutout: 50
-                        },
-                        {
-                            value: 60,
-                            color: "#3dab53",
-                            label: "寻回",
-                            percentageInnerCutout: 0
-                        }
-                    ];
-
-                    var line1 = new Chart(document.getElementById("line1").getContext("2d")).Line(lineChartData1, {pointDot: true});
-                    new Chart(document.getElementById("bar1").getContext("2d")).Bar(barChartData1);
-                    new Chart(document.getElementById("pie1").getContext("2d")).Pie(pieData1, {percentageInnerCutout: 50});
-
-                </script>
+{#                <script >#}
+{#                </script>#}
 
             </div>
             <div class="charts">
@@ -338,63 +256,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                 </div>
                 <div class="clearfix"></div>
                 <script>
-                    var lineChartData2 = {
-                        labels: ["04/13", "04/14", "04/15", "04/16", "04/17", "04/18", "04/13"],
-                        datasets: [
-                            {
-                                fillColor: "#2673ec",
-                                strokeColor: "rgba(79, 82, 186, 0.9)",
-                                pointColor: "rgba(79, 82, 186, 0.9)",
-                                pointStrokeColor: "#fff",
-                                data: [22, 31, 39, 40, 55, 65, 68]
 
-                            }
-
-                        ]
-
-                    };
-
-                    var lineChartData3 = {
-                        labels: ["Jan", "Feb", "March", "April", "May", "June", "July"],
-                        datasets: [
-                            {
-                                fillColor: "#00b5ad",
-                                strokeColor: "rgba(79, 82, 186, 0.9)",
-                                pointColor: "#00b5ad",
-                                pointStrokeColor: "#fff",
-                                data: [22, 31, 39, 40, 55, 65, 68]
-
-                            },
-                            {
-                                fillColor: "#e03997",
-                                strokeColor: "rgba(233, 78, 2, 0.9)",
-                                pointColor: "#e03997",
-                                pointStrokeColor: "#9358ac",
-                                data: [12, 15, 23, 34, 36, 44, 51]
-                            }
-                        ]
-
-                    };
-
-                    var pieData2 = [
-                        {
-                            value: 62,
-                            color: "#00b5ad",
-                            label: "男",
-                            percentageInnerCutout: 50
-                        },
-                        {
-                            value: 16,
-                            color: "#e03997",
-                            label: "女",
-                            percentageInnerCutout: 50
-                        }
-
-                    ];
-
-                    new Chart(document.getElementById("line2").getContext("2d")).Line(lineChartData2, {pointDot: true});
-                    new Chart(document.getElementById("line3").getContext("2d")).Line(lineChartData3, {pointDot: true});
-                    new Chart(document.getElementById("pie2").getContext("2d")).Pie(pieData2, {percentageInnerCutout: 50});
 
                 </script>
 

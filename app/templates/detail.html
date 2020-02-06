@@ -138,12 +138,20 @@
                             </div>
                         </div>
                     </div>
-                    <div v-if="!item.isSelf && item.kind == 1" class="field foot-bar" style="text-align: center;">
-                        <button class="ui blue small button" @click="claim()">我要认领
+                    <div v-if="!item.isSelf && item.kind == 1 && item.status==0" class="field foot-bar" style="text-align: center;">
+                        <button class="ui blue small button" @click="claim(1,item.id)">我要认领
                         </button>
                     </div>
-                    <div v-if="!item.isSelf && item.kind == 0" class="field foot-bar" style="text-align: center;">
-                        <button class="ui red small button" @click="claim()">我要上报
+                    <div v-if="item.kind == 1 && item.status==1" class="field foot-bar" style="text-align: center;">
+                        <button class="ui green small button">已认领
+                        </button>
+                    </div>
+                    <div v-if="!item.isSelf && item.kind == 0 && item.status==0" class="field foot-bar" style="text-align: center;">
+                        <button class="ui red small button" @click="claim(0,item.id)">我要上报
+                        </button>
+                    </div>
+                    <div v-if="item.kind == 0 && item.status==1" class="field foot-bar" style="text-align: center;">
+                        <button class="ui green small button">已找到
                         </button>
                     </div>
                     <!--comment-->
@@ -240,12 +248,20 @@
                                 <div class="content content__sidebar">
                                     <div class="tweet-user-info__sidebar">
                                         <a class="user __user" @click="jumpDetail(item.id)">
-                                            <div v-if="item.kind==0" class="ui red label horizontal"
+                                            <div v-if="item.kind==0 && item.status==0" class="ui red label horizontal"
                                                  data-tooltip="正在寻找">
                                                 寻物
                                             </div>
-                                            <div v-else class="ui blue label horizontal" data-tooltip="等待认领">
+                                             <div v-else-if="item.kind==0 && item.status==1"  class="ui green label horizontal"
+                                                 data-tooltip="已经找到">
+                                                已找到
+                                            </div>
+                                            <div v-else-if="item.kind==1 && item.status==0"class="ui blue label horizontal" data-tooltip="等待认领">
                                                 认领
+                                            </div>
+                                            <div v-else-if="item.kind==1 && item.status==1"  class="ui green label horizontal"
+                                                 data-tooltip="已经被认领">
+                                                已认领
                                             </div>
                                             {{item.username}}
                                         </a>

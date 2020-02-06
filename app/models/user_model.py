@@ -30,10 +30,10 @@ class User(db.Model, UserMixin):
     class_name = db.Column(db.String(30), nullable=False, info='班级')
     major = db.Column(db.String(50), nullable=False, info='专业')
     qq = db.Column(db.String(16), nullable=False, info='QQ', unique=True)
-    kind = db.Column(db.Integer, db.ForeignKey('t_role.id'), server_default=text('1'), info='是否为管理员')
+    kind = db.Column(db.Integer, db.ForeignKey('t_role.id'), nullable=False, server_default=text('1'), info='是否为管理员')
     role = db.relationship('Role', back_populates='users')
-    gender = db.Column(db.Integer, server_default=text('0'), info='0男1女')
-    status = db.Column(db.Integer, nullable=False, default=1, info='用户状态01')
+    gender = db.Column(db.Integer, nullable=False, server_default=text('0'), info='0男1女')
+    status = db.Column(db.Integer, nullable=False, server_default=text('1'), info='用户状态01')
     create_time = db.Column(db.DateTime, default=datetime.now, info='时间')
     last_login = db.Column(db.DateTime, default=datetime.now, info='最后登录时间')
     lost_founds = db.relationship('LostFound', backref='t_lost_founds', lazy="select")  # 关联评论表
