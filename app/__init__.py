@@ -25,7 +25,7 @@ from app.config import config  # 导入存储配置的字典
 #  会记录客户端 IP
 # 地址和浏览器的用户代理信息，如果发现异动就登出用户
 from .models.role_model import Role
-from .models.user_model import Guest
+from .models.user_model import Guest, User
 
 login_manager.session_protection = 'basic'
 
@@ -166,7 +166,6 @@ def register_commands(app):
     @app.cli.command()
     def createuser():
         create_test_data()
-
 
 
 def register_errors(app):

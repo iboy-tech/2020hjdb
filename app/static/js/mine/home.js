@@ -304,7 +304,7 @@ function setQQ(qq) {
             if (status == "success") {
                 if (res.success) {
                     layer.closeAll();
-                    showOK();
+                    showOK(res.msg);
                     app.user.QQ = res.data.qq;
                     saveSession("user", app.user);
                 } else {

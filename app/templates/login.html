@@ -116,34 +116,26 @@
                     url: baseUrl + (me.tabIndex == 0 ? "/" : "/recognize"),
                     method: "POST",
                     data: JSON.stringify(this.user),
-                    success: function (res, status) {
-                        if (status == "success") {
+                    success: function (res) {
                             if (res.success) {
-                                if (!res.data.user) {//no user
-                                    showAlertError("你的账号未进行邮箱验证，现已向其发送验证邮件，验证后即可使用，请注意查收！")
-                                } else {
                                     showOK(res.msg);
                                     if(me.tabIndex==0){
-                                    saveSession("user", res.data.user);
-                                    if (res.data.user.kind >= 2) {
-                                        location.replace("/admin");
-                                    } else {
-                                        location.replace("/user");
+                                        saveSession("user", res.data.user);
+                                        if (res.data.user.kind >= 2) {
+                                            location.replace("/admin");
+                                        }
+                                        else{
+                                            location.replace("/user");
+                                        }
                                     }
-                                    }
+                                    me.user.password = "";
+                                    me.user.code = "";
                                 }
-                                //clean data
-                                me.user.password = "";
-                                me.user.code = "";
-                            } else {
+                            else {
                                 showAlertError(res.msg);
                                 me.user.code = "";
                             }
                             me.newCode();
-                        } else {
-                            console.log(res);
-                            alert(res)
-                        }
                     },
                 });
             },

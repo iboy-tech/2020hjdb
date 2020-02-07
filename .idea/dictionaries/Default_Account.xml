@@ -3,6 +3,8 @@
     <words>
       <w>appid</w>
       <w>appsecret</w>
+      <w>asctime</w>
+      <w>categorys</w>
       <w>dercorator</w>
       <w>dotenv</w>
       <w>eventvalidation</w>
@@ -10,8 +12,10 @@
       <w>imgs</w>
       <w>initrole</w>
       <w>lostfounds</w>
+      <w>losts</w>
       <w>paramer</w>
       <w>permisson</w>
+      <w>pssword</w>
       <w>sendgrid</w>
       <w>sqlalchemy</w>
       <w>swzl</w>
@@ -19,6 +23,7 @@
       <w>tinypng</w>
       <w>tmpimage</w>
       <w>unauth</w>
+      <w>userinfo</w>
       <w>userlist</w>
       <w>viewstate</w>
       <w>vlkxs</w>

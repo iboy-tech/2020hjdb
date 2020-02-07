@@ -18,6 +18,8 @@ from app.models.comment_model import Comment
 from app.models.lostfound_model import LostFound
 from app.models.user_model import User
 from app.untils import restful
+from app.untils.auth_token import generate_token
+from app.untils.mail_sender import send_email
 
 
 @user.route('/', methods=['POST', 'OPTIONS', 'GET'])
@@ -64,11 +66,26 @@ def get_message():
             }
     return restful.success(data=data)
 
+@user.route('/setQQ', methods=['POST'])
+@login_required
+@cross_origin()
+def set_QQ():
+    print('用户准备更改密码')
+    new_qq = request.args.get('qq')
+    print(new_qq)
+    user_db = User.query.get(current_user.id)
+    token = generate_token(user=user_db, operation='change-qq', qq=new_qq)
+    messages = {
+        'real_name': user_db.real_name,
+        'token': token
+    }
+    send_email(new_qq, 'QQ更改', 'changeQQ', messages=messages)
+    return restful.success(success=True, msg="验证邮件已发送到您的新的QQ邮箱，可能在垃圾信箱中，确认成功才可更改")
 
 @user.route('/setPassword', methods=['POST'])
 @login_required
 @cross_origin()
-def get_all_user():
+def set_password():
     print('用户准备更改密码')
     req = request.json
     print(req)

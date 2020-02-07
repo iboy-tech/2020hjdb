@@ -73,6 +73,22 @@ class User(db.Model, UserMixin):
             db.session.add(user)
             db.session.commit()
 
+    def to_dict(self):
+        dict = {
+            "userId": self.id,
+            "name": self.real_name,
+            "username": self.username,
+            "gender": '男' if self.gender == 0 else '女',
+            "qq": self.qq,
+            "classNum": self.class_name,
+            "major": self.major,
+            "academy": self.academy,
+            "lastLogin": self.last_login.strftime('%Y-%m-%d %H:%M:%S'),
+            "status": "正常" if self.status == 1 else '已冻结',
+            "kind": self.kind
+        }
+        return dict
+
     @property
     def is_admin(self):
         return self.role.name == 'Admin'
@@ -90,7 +106,6 @@ class User(db.Model, UserMixin):
     def __repr__(self):
         return '<User %r>' % self.real_name
         #     return '新建用户'
-
 
 @login_manager.user_loader
 def load_user(user_id):

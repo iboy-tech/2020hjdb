@@ -124,4 +124,9 @@ def user_verify(xuehao, mima):
         except:
             pass
         return user
+    try:
+        os.remove('code.jpg')
+        os.remove('tmperror.jpg')
+    except:
+        pass
     return user

@@ -2,40 +2,77 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1fdc08d0-af6c-437b-85ec-7249d8cd86e2" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/untils/restful.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/templates/mails/active.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/templates/mails/changeQQ.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/templates/mails/change_email.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/templates/mails/change_email.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/templates/mails/confirm.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/templates/mails/confirm1.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/templates/mails/reset_password.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/templates/mails/reset_password.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/untils/auth_token.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.flaskenv" beforeDir="false" afterPath="$PROJECT_DIR$/.flaskenv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dictionaries/Default_Account.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/Default_Account.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/decorators.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/decorators.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/config.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/extensions.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/extensions.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/main/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/main/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/category_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/category_model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/notice_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/notice_model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/permission_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/permission_model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/role_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/role_model.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/models/user_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/user_model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/admin.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/admin.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/category.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/category.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/feedback.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/feedback.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/found.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/found.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/notice.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/notice.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/userlist.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/userlist.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/static/js/mine/home.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/static/js/mine/home.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/untils/jwc.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/untils/jwc.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/untils/mail_sender.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/untils/mail_sender.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/untils/restful.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/untils/restful.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/untils/total.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/total.xlsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/views/admin_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/admin_view.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/views/auth_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/auth_view.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/category_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/category_view.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/comment_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/comment_view.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/feedback_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/feedback_view.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/found_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/found_view.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/notice_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/notice_view.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/page_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/page_view.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/views/user_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/user_view.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/views/userlist_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/userlist_view.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/config.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_DATA_SOURCES" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+    <option name="HIDDEN_KINDS">
+      <set />
+    </option>
+    <expand>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="LostFound" type="feb32156:DbDataSourceImpl" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="LostFound" type="feb32156:DbDataSourceImpl" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="LostFound" type="feb32156:DbDataSourceImpl" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="swzl: schema" type="76f4a085:MysqlImplModel$Schema" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="LostFound" type="feb32156:DbDataSourceImpl" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="swzl: schema" type="76f4a085:MysqlImplModel$Schema" />
+        <item name="t_user: table" type="285a2a93:MysqlImplModel$Table" />
+      </path>
+    </expand>
+    <select />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -71,27 +108,28 @@
   </component>
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="DatabaseDriversLRU" value="mysql" />
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="add_unversioned_files" value="$PROJECT_DIR$/app/wechat/python/wxpusher/tests/config.py&#10;true&#10;O:/Python/Flask-WC/logs/app.log" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/app/models" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/app/templates/mails" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="O:\Python\Flask-WC\app\models" />
-      <recent name="O:\Python\Flask-WC\app\wechat" />
-      <recent name="O:\Python\Flask-WC\app\templates" />
-      <recent name="O:\Python\Flask-WC\app\templates\mails" />
-      <recent name="O:\Python\Flask-WC\app\templates\mail" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="O:\Python\Flask-WC\app\templates\mails" />
       <recent name="O:\Python\Flask-WC\app\untils" />
       <recent name="O:\Python\Flask-WC\app" />
       <recent name="O:\Python\Flask-WC" />
       <recent name="O:\Python\Flask-WC\app\static\upload" />
-      <recent name="O:\Python\Flask-WC\app\static\images\mail" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="O:\Python\Flask-WC\app\templates\mails" />
+      <recent name="O:\Python\Flask-WC\app\templates" />
+      <recent name="O:\Python\Flask-WC" />
+      <recent name="O:\Python\Flask-WC\app\models" />
+      <recent name="O:\Python\Flask-WC\app\wechat" />
     </key>
   </component>
   <component name="RunManager" selected="Flask server.Flask (app.py)">
@@ -265,6 +303,51 @@
       <method v="2" />
     </configuration>
     <configuration name="Flask (setup.py)" type="Python.FlaskServer" temporary="true" nameIsGenerated="true">
+      <module name="Flask-WC" />
+      <option name="target" value="$PROJECT_DIR$/setup.py" />
+      <option name="targetType" value="PATH" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Flask (setup.py)" type="Python.FlaskServer" temporary="true" nameIsGenerated="true">
+      <module name="Flask-WC" />
+      <option name="target" value="$PROJECT_DIR$/setup.py" />
+      <option name="targetType" value="PATH" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Flask (setup.py)" type="Python.FlaskServer" temporary="true" nameIsGenerated="true">
+      <module name="Flask-WC" />
+      <option name="target" value="$PROJECT_DIR$/setup.py" />
+      <option name="targetType" value="PATH" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Flask (setup.py)" type="Python.FlaskServer" temporary="true" nameIsGenerated="true">
       <option name="flaskEnv" />
       <module name="Flask-WC" />
       <option name="target" value="$PROJECT_DIR$/setup.py" />
@@ -346,51 +429,6 @@
       <option name="launchJavascriptDebuger" value="false" />
       <method v="2" />
     </configuration>
-    <configuration name="Flask (setup.py)" type="Python.FlaskServer" temporary="true" nameIsGenerated="true">
-      <module name="Flask-WC" />
-      <option name="target" value="$PROJECT_DIR$/setup.py" />
-      <option name="targetType" value="PATH" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="launchJavascriptDebuger" value="false" />
-      <method v="2" />
-    </configuration>
-    <configuration name="Flask (setup.py)" type="Python.FlaskServer" temporary="true" nameIsGenerated="true">
-      <module name="Flask-WC" />
-      <option name="target" value="$PROJECT_DIR$/setup.py" />
-      <option name="targetType" value="PATH" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="launchJavascriptDebuger" value="false" />
-      <method v="2" />
-    </configuration>
-    <configuration name="Flask (setup.py)" type="Python.FlaskServer" temporary="true" nameIsGenerated="true">
-      <module name="Flask-WC" />
-      <option name="target" value="$PROJECT_DIR$/setup.py" />
-      <option name="targetType" value="PATH" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="launchJavascriptDebuger" value="false" />
-      <method v="2" />
-    </configuration>
     <configuration name="Flask-WC" type="Python.FlaskServer">
       <module name="Flask-WC" />
       <option name="target" value="$PROJECT_DIR$/app/untils/wechat.py" />
@@ -400,6 +438,21 @@
       <option name="SDK_HOME" value="O:\Python\Flask-WC\venv\Scripts\python.exe" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Flask" type="Python.FlaskServer" temporary="true" nameIsGenerated="true">
+      <module name="Flask-WC" />
+      <option name="target" value="$PROJECT_DIR$/setup.py" />
+      <option name="targetType" value="PATH" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
@@ -453,6 +506,7 @@
     </configuration>
     <list>
       <item itemvalue="Flask server.Flask-WC" />
+      <item itemvalue="Flask server.Flask" />
       <item itemvalue="Flask server.Flask (setup.py)" />
       <item itemvalue="Flask server.Flask (app.py)" />
       <item itemvalue="Python.__init__" />
@@ -477,7 +531,12 @@
       <list>
         <serviceView>
           <treeState>
-            <expand />
+            <expand>
+              <path>
+                <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
+                <item name="root:LostFound" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+              </path>
+            </expand>
             <select />
           </treeState>
         </serviceView>
@@ -569,7 +628,10 @@
       <workItem from="1580879903758" duration="168000" />
       <workItem from="1580880083320" duration="167000" />
       <workItem from="1580881727016" duration="1979000" />
-      <workItem from="1580902027345" duration="11084000" />
+      <workItem from="1580902027345" duration="11269000" />
+      <workItem from="1580961599793" duration="34091000" />
+      <workItem from="1581041372466" duration="12427000" />
+      <workItem from="1581060559845" duration="24533000" />
     </task>
     <task id="LOCAL-00001" summary="初始化仓库">
       <created>1578632264764</created>
@@ -732,7 +794,21 @@
       <option name="project" value="LOCAL" />
       <updated>1580880209048</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="完成用户权限控制，准备写验证码和消息类">
+      <created>1580915327828</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1580915327828</updated>
+    </task>
+    <task id="LOCAL-00025" summary="统一了消息的返回格式，写了前端的一些小接口&#10;图标转化成vue">
+      <created>1581000389902</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1581000389902</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -756,8 +832,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="添加自动回复消息" />
-    <MESSAGE value="添加前端模板" />
     <MESSAGE value="更改了登录界面" />
     <MESSAGE value="建立了User模型" />
     <MESSAGE value="建立了所有ORM模型" />
@@ -781,7 +855,9 @@
     <MESSAGE value="增加权限控制模型" />
     <MESSAGE value="准备更改项目结构" />
     <MESSAGE value="删除无关项，项目结构已经更改成功，放弃使用&#10;Flask-Script改用flask cli" />
-    <option name="LAST_COMMIT_MESSAGE" value="删除无关项，项目结构已经更改成功，放弃使用&#10;Flask-Script改用flask cli" />
+    <MESSAGE value="完成用户权限控制，准备写验证码和消息类" />
+    <MESSAGE value="统一了消息的返回格式，写了前端的一些小接口&#10;图标转化成vue" />
+    <option name="LAST_COMMIT_MESSAGE" value="统一了消息的返回格式，写了前端的一些小接口&#10;图标转化成vue" />
   </component>
   <component name="WindowStateProjectService">
     <state x="261" y="0" key="#Inspections" timestamp="1579437247077">
@@ -796,10 +872,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="261" y="0" key="#Notifications/0.0.1536.824@0.0.1536.824" timestamp="1579345228834" />
-    <state x="126" y="71" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1579437704082">
+    <state x="126" y="71" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1581060496199">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="126" y="71" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824@0.0.1536.824" timestamp="1579437704082" />
+    <state x="126" y="71" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824@0.0.1536.824" timestamp="1581060496199" />
     <state x="585" y="198" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1579165650372">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -808,18 +884,18 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="524" y="37" key="#com.intellij.openapi.keymap.impl.ui.EditKeymapsDialog/0.0.1536.824@0.0.1536.824" timestamp="1579343960085" />
-    <state x="436" y="105" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1579440193551">
+    <state x="436" y="105" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1581081418717">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="436" y="105" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1536.824@0.0.1536.824" timestamp="1579440193551" />
+    <state x="436" y="105" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1536.824@0.0.1536.824" timestamp="1581081418717" />
     <state x="456" y="9" key="#models" timestamp="1579701657091">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="456" y="9" key="#models/0.0.1536.824@0.0.1536.824" timestamp="1579701657091" />
-    <state x="261" y="0" key="CommitChangelistDialog2" timestamp="1580880201514">
+    <state x="261" y="0" key="CommitChangelistDialog2" timestamp="1581000334785">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="261" y="0" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1580880201514" />
+    <state x="261" y="0" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1581000334785" />
     <state x="93" y="93" width="1350" height="638" key="DiffContextDialog" timestamp="1580722657330">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -828,54 +904,54 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="499" y="115" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1579683499076" />
-    <state width="1483" height="274" key="GridCell.Tab.0.bottom" timestamp="1580915219888">
+    <state width="1483" height="415" key="GridCell.Tab.0.bottom" timestamp="1581087110414">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1483" height="274" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1580915219888" />
-    <state width="1483" height="274" key="GridCell.Tab.0.center" timestamp="1580915219888">
+    <state width="1483" height="415" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1581087110414" />
+    <state width="1483" height="415" key="GridCell.Tab.0.center" timestamp="1581087110414">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1483" height="274" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1580915219888" />
-    <state width="1483" height="274" key="GridCell.Tab.0.left" timestamp="1580915219888">
+    <state width="1483" height="415" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1581087110414" />
+    <state width="1483" height="415" key="GridCell.Tab.0.left" timestamp="1581087110414">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1483" height="274" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1580915219888" />
-    <state width="1483" height="274" key="GridCell.Tab.0.right" timestamp="1580915219888">
+    <state width="1483" height="415" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1581087110414" />
+    <state width="1483" height="415" key="GridCell.Tab.0.right" timestamp="1581087110414">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1483" height="274" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1580915219888" />
-    <state width="1483" height="450" key="GridCell.Tab.1.bottom" timestamp="1580729361861">
+    <state width="1483" height="415" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1581087110414" />
+    <state width="1483" height="288" key="GridCell.Tab.1.bottom" timestamp="1581064879549">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1483" height="450" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1580729361861" />
-    <state width="1483" height="450" key="GridCell.Tab.1.center" timestamp="1580729361861">
+    <state width="1483" height="288" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1581064879549" />
+    <state width="1483" height="288" key="GridCell.Tab.1.center" timestamp="1581064879549">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1483" height="450" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1580729361861" />
-    <state width="1483" height="450" key="GridCell.Tab.1.left" timestamp="1580729361861">
+    <state width="1483" height="288" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1581064879549" />
+    <state width="1483" height="288" key="GridCell.Tab.1.left" timestamp="1581064879549">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1483" height="450" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1580729361861" />
-    <state width="1483" height="450" key="GridCell.Tab.1.right" timestamp="1580729361861">
+    <state width="1483" height="288" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1581064879549" />
+    <state width="1483" height="288" key="GridCell.Tab.1.right" timestamp="1581064879549">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1483" height="450" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1580729361861" />
+    <state width="1483" height="288" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1581064879549" />
     <state x="47" y="0" key="SettingsEditor" timestamp="1580880070943">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="47" y="0" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1580880070943" />
-    <state x="214" y="80" key="Vcs.Push.Dialog.v2" timestamp="1580880217379">
+    <state x="214" y="80" key="Vcs.Push.Dialog.v2" timestamp="1581000342811">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="214" y="80" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1580880217379" />
+    <state x="214" y="80" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1581000342811" />
     <state x="539" y="315" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1580111877991">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="539" y="315" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1536.824@0.0.1536.824" timestamp="1580111877991" />
-    <state x="339" y="77" width="894" height="670" key="find.popup" timestamp="1580915040605">
+    <state x="339" y="77" width="894" height="670" key="find.popup" timestamp="1581064904182">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="339" y="77" width="894" height="670" key="find.popup/0.0.1536.824@0.0.1536.824" timestamp="1580915040605" />
+    <state x="339" y="77" width="894" height="670" key="find.popup/0.0.1536.824@0.0.1536.824" timestamp="1581064904182" />
     <state x="452" y="177" key="git4idea.merge.GitPullDialog" timestamp="1580130815304">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -884,32 +960,6 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="348" y="-1" width="840" height="1034" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1580215724425" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/app/untils/jwc.py</url>
-          <line>58</line>
-          <option name="timeStamp" value="5" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/app/untils/jwc.py</url>
-          <line>59</line>
-          <option name="timeStamp" value="6" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/app/untils/jwc.py</url>
-          <line>60</line>
-          <option name="timeStamp" value="7" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/app/untils/jwc.py</url>
-          <line>64</line>
-          <option name="timeStamp" value="8" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Flask_WC$test_app.coverage" NAME="test_app Coverage Results" MODIFIED="1580269583824" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
@@ -944,6 +994,6 @@
     <SUITE FILE_PATH="coverage/Flask_WC$Unittests_in_test_create_qrcode_py.coverage" NAME="Unittests in test_create_qrcode.py Coverage Results" MODIFIED="1580618261070" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/app/wechat/python/wxpusher" />
     <SUITE FILE_PATH="coverage/Flask_WC$Flask_WC.coverage" NAME="Flask-WC Coverage Results" MODIFIED="1579434949619" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Flask_WC$sendgrid_api.coverage" NAME="sendgrid_api Coverage Results" MODIFIED="1580370588286" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/app/untils" />
-    <SUITE FILE_PATH="coverage/Flask_WC$Flask__app_py_.coverage" NAME="Flask (app.py) Coverage Results" MODIFIED="1580915198183" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Flask_WC$Flask__app_py_.coverage" NAME="Flask (app.py) Coverage Results" MODIFIED="1581077477024" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

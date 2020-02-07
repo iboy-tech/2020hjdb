@@ -1,5 +1,5 @@
 # -*- coding:UTF-8 -*-
-#!/usr/bin/python
+# !/usr/bin/python
 """
 @File    : admin_view.py
 @Time    : 2020/1/19 21:21
@@ -14,7 +14,6 @@ from flask_login import login_required
 from app.decorators import admin_required
 from app.main import admin
 
-
 print('视图文件加载')
 
 
@@ -22,7 +21,5 @@ print('视图文件加载')
 @login_required
 @admin_required
 def index():
-    data=request.json
-    print(data)
     print('蓝图请求成功！')
     return render_template('admin.html')

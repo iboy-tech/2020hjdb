@@ -146,19 +146,7 @@ def search(pagination, page):
     list = []
     cnt = len(users)
     for u in users:
-        dict = {
-            "userId": u.id,
-            "name": u.real_name,
-            "username": u.username,
-            "gender": '男' if u.gender == 0 else '女',
-            "qq": u.qq,
-            "classNum": u.class_name,
-            "major": u.major,
-            "academy": u.academy,
-            "lastLogin": u.last_login.strftime('%Y-%m-%d %H:%M:%S'),
-            "status": "正常" if u.status == 1 else '已冻结',
-            "kind": u.kind
-        }
+        dict =u.to_dict()
         list.append(dict)
         data={
             "page": {
@@ -179,18 +167,6 @@ def get_userinfo():
     id = int(request.args.get('userId'))
     u = User.query.get_or_404(id)
     data= {
-        "user": {
-            "userId": u.id,
-            "name": u.real_name,
-            "username": u.username,
-            "gender": "男" if u.gender == 0 else "女",
-            "qq": u.qq,
-            "classNum": u.class_name,
-            "major": u.major,
-            "academy": u.academy,
-            "lastLogin": u.last_login.strftime('%Y-%m-%d %H:%M:%S'),
-            "status": '正常' if u.status == 1 else '正常',
-            "kind": u.kind
-        }
+        "user":u.to_dict()
     }
     return restful.success(data=data)

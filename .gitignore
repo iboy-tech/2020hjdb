@@ -9,5 +9,7 @@ venv
 __pycache__
 Study-Test
 logs/*.log
+total.xlsx
 
 app/templates/upload/
+app/config.py
