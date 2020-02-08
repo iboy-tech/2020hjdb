@@ -6,6 +6,8 @@ Author: huxuan
 Email: i(at)huxuan.org
 Description: WxPusher Python Client.
 """
+import os
+
 import requests
 
 from . import exceptions
@@ -15,7 +17,7 @@ BASEURL = 'http://wxpusher.zjiecode.com/api'
 
 class WxPusher():
     """WxPusher Python Client."""
-    default_token = None
+    default_token = os.getenv()
 
     @classmethod
     def send_message(cls, content, uids, token=None, **kwargs):
