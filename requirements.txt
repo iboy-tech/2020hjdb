@@ -31,7 +31,7 @@ pathtools==0.1.2
 post==2019.4.13
 public==2019.4.13
 python-dateutil==2.8.1
-python-dotenv==0.10.4
+python-dotenv==0.11.0
 python-editor==1.0.4
 pytz==2019.3
 PyYAML==5.3

@@ -11,12 +11,14 @@
 import os
 from app import create_app
 
-from dotenv import load_dotenv
+from dotenv import load_dotenv, find_dotenv
 
+# 路径拼接
 dotenv_path1 = os.path.join(os.path.dirname(__file__), '.env')
 dotenv_path2 = os.path.join(os.path.dirname(__file__), '.flaskenv')
 if os.path.exists(dotenv_path1 and dotenv_path2):
-    load_dotenv(dotenv_path1, dotenv_path2)
+    # load_dotenv(dotenv_path1, dotenv_path2,encoding='utf-8')
+    # load_dotenv(find_dotenv())
     print('环境变量配置文件加载成功')
     print(os.getenv('APPID'))
 
