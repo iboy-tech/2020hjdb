@@ -18,7 +18,7 @@ class LostFound(db.Model):
     category_id = db.Column(db.Integer, db.ForeignKey('t_category.id',ondelete='CASCADE'),nullable=False, info='外键')
     about = db.Column(db.String(1024), nullable=False, info='详情')
     title = db.Column(db.String(128), nullable=False, info='帖子标题')
-    images = db.Column(db.Text, info='图片')
+    images = db.Column(db.String(1024), info='图片')
     user_id = db.Column(db.Integer,db.ForeignKey('t_user.id',ondelete='CASCADE'),nullable=False, info='创建者id')
     claimant_id = db.Column(db.Integer, info='索要者ID',default=None)
     create_time = db.Column(db.DateTime,default=datetime.now, nullable=False, info='创建时间')

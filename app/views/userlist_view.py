@@ -109,7 +109,7 @@ def user_freeze_or_unfreeze():
         'handlerEmail': current_user.qq + '@qq.com',
         'appName': '三峡大学失物招领处'
     }
-    send_email('yang.hao@aliyun.com', '账户冻结通知', 'userFreeze', messages)
+    send_email('547142436', '账户冻结通知', 'userFreeze', messages)
     return restful.success()
 
 

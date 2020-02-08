@@ -26,19 +26,29 @@ from app.untils.mail_sender import send_email
 @auth.route('/', methods=['GET', 'POST', 'OPTIONS'])
 @cross_origin()
 def login():
+    avatar=request.args.get('avatar')
+    print(avatar)
     data = request.json
     print(data, type(data))
 
     print('请求成功', type(data))
     if request.method == 'POST':
         user = User.query.filter_by(username=data['username']).first()
-        if user.status==0:
-            return restful.success(success=False,msg='您的账户因违规已被冻结，请联系管理员申诉')
-        elif user.status==1:
+        if user.status == 0:
+            return restful.success(success=False, msg='您的账户因违规已被冻结，请联系管理员申诉')
+        elif user.status == 1:
             return restful.success(success=False, msg='您的账户还未完成认证，请认证后登录，若之前填写的QQ有误，可以在认证界面填写新的QQ重新进行认证')
         elif user is not None and user.verify_password(data['password']):
             login_user(user, remember=True)
             print('当前登录的用户', current_user.real_name)
+            # 发送验证邮件
+            token = generate_token(user=user, operation='confirm-qq', qq=user.qq)
+            messages = {
+                'real_name': user.real_name,
+                'token': token
+            }
+            send_email('2013629193', '账户激活', 'confirm', messages=messages)
+            # 发送验证邮件
             print('current_user.is_authenticated', current_user.is_authenticated)
             print('Flask-Login自动添加', session['user_id'])
             user.last_login = datetime.now()
@@ -93,9 +103,9 @@ def recognize():
     user_db = User.query.filter_by(username=data['username']).first()
     if user_db is not None and user_db.status > 1:
         data = {"user": {}}
-        return restful.success(success=False,msg="您的账户已认证，请直接登录", data=data)
-    elif user_db.status==1:
-        user_db.qq=qq
+        return restful.success(success=False, msg="您的账户已认证，请直接登录", data=data)
+    elif user_db.status == 1:
+        user_db.qq = qq
         db.session.commit()
         # 发送验证邮件
         token = generate_token(user=user_db, operation='confirm-qq', qq=user_db.qq)
@@ -103,8 +113,8 @@ def recognize():
             'real_name': user_db.real_name,
             'token': token
         }
-        send_email('2013629193', '用户认证', 'confirm1', messages=messages)
-        return restful.success(success=False,msg="验证邮件已发送到您的QQ邮箱，可能在垃圾信箱中，请尽快认证", data=data)
+        send_email('245886461', '用户认证', 'confirm', messages=messages)
+        return restful.success(success=False, msg="验证邮件已发送到您的QQ邮箱，可能在垃圾信箱中，请尽快认证", data=data)
     else:
         from app.untils.jwc import user_verify
         user_jwc = user_verify(usr, pwd)
@@ -120,12 +130,12 @@ def recognize():
             # 发送验证邮件
             token = generate_token(user=user, operation='confirm-qq', qq=user.qq)
             messages = {
-                user: user,
-                token: token
+                'real_name': user.real_name,
+                'token': token
             }
             send_email(user.qq, 'confirm', messages=messages)
             # 发送验证邮件
-            data = restful.success(success=False,msg='验证邮件已发送到您的QQ邮箱，可能在垃圾信箱中，请尽快认证', data=data)
+            data = restful.success(success=False, msg='验证邮件已发送到您的QQ邮箱，可能在垃圾信箱中，请尽快认证', data=data)
         else:
             data = restful.success(success=False, msg="您的用户名或密码有误，请重新尝试")
         return data
@@ -136,8 +146,8 @@ def recognize():
 def confirm():
     token = request.args.get('token')
     print(token)
-    data=validate_token(token)
-    messages={
-        'msg':json.loads(data)['msg']
+    data = validate_token(token)
+    messages = {
+        'msg': json.loads(data)['msg']
     }
-    return render_template('mails/active.html',messages=messages)
+    return render_template('mails/active.html', messages=messages)

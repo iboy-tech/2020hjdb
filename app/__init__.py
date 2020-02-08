@@ -24,6 +24,7 @@ from app.config import config  # 导入存储配置的字典
 
 #  会记录客户端 IP
 # 地址和浏览器的用户代理信息，如果发现异动就登出用户
+from .models.open_model import OpenID
 from .models.role_model import Role
 from .models.user_model import Guest, User
 
@@ -45,9 +46,23 @@ from app.untils.create_data import create_test_data
 
 # 工厂函数
 def create_app(config_name=None):
+    print('MAIL_USERNAME', os.getenv('MAIL_USERNAME'))
+    print('MAIL_PASSWORD',os.getenv('MAIL_PASSWORD'))
+    print('MAIL_SERVER',os.getenv('MAIL_SERVER'))
+    print('MAIL_PORT',os.getenv('MAIL_PORT'))
+    print('MAIL_USE_SSL',os.getenv('MAIL_USE_SSL'))
+    print('MAIL_DEFAULT_SENDER',os.getenv('MAIL_DEFAULT_SENDER'))
+    print('QQ_AVATAR_API',os.getenv('QQ_AVATAR_API'))
+    print('MAIL_SUBJECT_PREFIX',os.getenv('MAIL_SUBJECT_PREFIX'))
+    print('SECRET_KEY',os.getenv('SECRET_KEY'))
+    print('PATH_OF_IMAGES_DIR',os.getenv('PATH_OF_IMAGES_DIR'))
+
+
     if config_name is None:
         config_name = os.getenv('FLASK_CONFIG', 'development')
     app = Flask(__name__)
+    app.config.from_object(config[config_name])
+    app.config['MAIL_DEFAULT_SENDER']= '三峡大学失物招领处<547142436@qq.com>'
     app.jinja_env.variable_start_string = '{{ '
     app.jinja_env.variable_end_string = ' }}'
     app.config.from_object(config[config_name])
@@ -60,7 +75,7 @@ def create_app(config_name=None):
 
     CORS(app, supports_credentials=True, resources=r'/*')  # 允许所有域名跨域
 
-    config[config_name].init_app(app)
+    # config[config_name].init_app(app)
     return app
 
 
@@ -90,6 +105,7 @@ def register_extensions(app):  # 实例化扩展
     login_manager.login_view = 'auth.login'
     login_manager.anonymous_user = Guest
     toolbar.init_app(app)
+    socketio.init_app(app)
 
 
 def register_shell_context(app):
@@ -106,7 +122,7 @@ def register_shell_context(app):
 
         return dict(app=app, db=db, User=User, Category=Category,
                     Comment=Comment, Notice=Notice, LostFound=LostFound, Feedback=Feedback, Role=Role,
-                    Permission=Permission)
+                    Permission=Permission,OpenID=OpenID)
 
 
 def register_logging(app):

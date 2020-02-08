@@ -1,0 +1,73 @@
+Metadata-Version: 2.1
+Name: flask-sqlacodegen
+Version: 1.1.7
+Summary: Automatic model code generator for SQLAlchemy with Flask support
+Home-page: UNKNOWN
+Author: Kamil Sindi
+Author-email: UNKNOWN
+License: MIT
+Keywords: sqlalchemy,sqlacodegen,flask
+Platform: UNKNOWN
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Environment :: Console
+Classifier: Topic :: Database
+Classifier: Topic :: Software Development :: Code Generators
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 2.6
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.2
+Classifier: Programming Language :: Python :: 3.3
+Classifier: Programming Language :: Python :: 3.4
+Classifier: Programming Language :: Python :: 3.5
+Requires-Dist: SQLAlchemy (>=0.6.0)
+Requires-Dist: inflect (>=0.2.0)
+
+flask-sqlacodegen
+=================
+
+GitHub page:
+`flask-sqlacodegen <https://github.com/ksindi/flask-sqlacodegen>`__
+
+Fork of `sqlacodegen <https://pypi.python.org/pypi/sqlacodegen>`__ by
+Alex Gronholm. Based off of version 1.1.6.
+
+What's different:
+
+-  Support for Flask-SQLAlchemy syntax using ``--flask`` option.
+-  Defaults to generating backrefs in relationships. ``--nobackref``
+   still included as option in case backrefs are not wanted.
+-  Naming of backrefs is class name in snake\_case (as opposed to
+   CamelCase) and is pluralized if it's Many-to-One or Many-to-Many
+   using `inflect <https://pypi.python.org/pypi/inflect>`__.
+-  Primary joins are explicit.
+-  If column has a server\_default set it to ``FetchValue()`` instead of
+   trying to determine what that value is. Original code did not set the
+   right server defaults in my setup.
+-  ``--ignore-cols`` ignores special columns when generating association
+   tables. Original code requires all columns to be foreign keys in
+   order to generate association table. Example:
+   ``--ignore-cols id,inserted,updated``.
+-  Uses the command ``flask-sqlacodgen`` instead of ``sqlacodegen``.
+
+Install
+-------
+
+With pip:
+
+::
+
+    pip install flask-sqlacodegen
+
+Without pip:
+
+::
+
+    git clone https://github.com/ksindi/flask-sqlacodegen.git
+    cd flask-sqlacodegen/
+    python setup.py install
+
+
+

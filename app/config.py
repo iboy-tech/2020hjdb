@@ -20,9 +20,12 @@ class Operations:
 
 
 # 基类配置
-class Config:
+class BaseConfig:
     PIPENV_DONT_LOAD_ENV = 1
     FLASK_DEBUG = True
+    # MAIL_PORT = int(os.getenv('MAIL_PORT', default=465))
+    # MAIL_USE_SSL = True if 'true' == os.getenv('MAIL_USE_SSL') else False
+    # MAIL_USE_TLS = True if 'true' == os.getenv('MAIL_USE_TLS') else False
     # SECRET_KEY = os.urandom(24)  # 随机秘钥
     SECRET_KEY = 'adsdad&*^%^$%#afcsefvdzcssef1212'
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True  # 每次请求结束后都会自动提交数据库中的变动
@@ -31,38 +34,43 @@ class Config:
     DEBUG_TB_INTERCEPT_REDIRECTS = False
     MXA_ATTEMPT_NUMBER = 5
     ARTISAN_POSTS_PER_PAGE = 120
-    QQ_AVATAR_API = 'https://q2.qlogo.cn/headimg_dl?dst_uin={}&spec=100'
     MAIL_SUBJECT_PREFIX = '三峡大学失物招领处：'
-    MAIL_PORT = int(os.getenv('MAIL_PORT', default=465))
-    # MAIL_USE_SSL = True if 'True' == os.getenv('MAIL_USE_SSL') else False
-    # MAIL_USE_TLS = True if 'True' == os.getenv('MAIL_USE_TLS') else False
-    MAIL_DEFAULT_SENDER = ('三峡大学失物招领处', '547142436@qq.com')
+    # QQ_AVATAR_API = 'https://q2.qlogo.cn/headimg_dl?dst_uin={}&spec=100'
+    MAIL_SERVER = os.getenv('MAIL_SERVER')
+    MAIL_PORT = 465
+    MAIL_USE_SSL = True
+    MAIL_USERNAME = os.getenv('MAIL_USERNAME')
+    MAIL_PASSWORD = os.getenv('MAIL_PASSWORD')
+
+    # MAIL_DEFAULT_SENDER = ('三峡大学失物招领处', MAIL_USERNAME)
+
     @staticmethod
     def init_app(app):
         print('app初始化了')
 
 
 # 开发环境的子类配置
-class DevelopmentConfig(Config):
+class DevelopmentConfig(BaseConfig):
     DEBUG = True
     # MAIL_SERVER = 'smtp.ym.163.com'
-    # MAIL_PORT = '465'
-    # MAIL_USE_TLS = True
-    # MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
-    # MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
-    # SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or \
-    #                           'sqlite:///' + os.path.join(basedir, 'data-dev.sqlite')
+    #     # MAIL_PORT = '465'
+    #     # MAIL_USE_TLS = True
+    #     # MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
+    #     # MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
+    #     # SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or \
+    #     #                           'sqlite:///' + os.path.join(basedir, 'data-dev.sqlite')
+    QQ_AVATAR_API = 'https://q2.qlogo.cn/headimg_dl?dst_uin={}&spec=100'
     SQLALCHEMY_DATABASE_URI = 'mysql://root:root@127.0.0.1/swzl'
 
 
 # 测试环境的子类配置
-class TestingConfig(Config):
+class TestingConfig(BaseConfig):
     TESTING = True
     SQLALCHEMY_DATABASE_URI = 'mysql://root:root@127.0.0.1/swzl'
 
 
 # 生产环境的配置
-class ProductionConfig(Config):
+class ProductionConfig(BaseConfig):
     SQLALCHEMY_DATABASE_URI = 'mysql://root:root@127.0.0.1/swzl'
 
 

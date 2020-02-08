@@ -16,7 +16,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_debugtoolbar import DebugToolbarExtension
 from flask_mail import Mail
-
+from flask_socketio import  SocketIO
 
 bootstrap = Bootstrap()
 # mail = MailSendGrid()
@@ -26,5 +26,7 @@ moment = Moment()
 db = SQLAlchemy()
 login_manager = LoginManager()
 toolbar = DebugToolbarExtension()
+socketio=SocketIO()
+
 
 

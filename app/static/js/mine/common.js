@@ -1,6 +1,9 @@
 //请求前缀
-const baseUrl = "http://127.0.0.1";
-const staticUrl = "http://127.0.0.1/static/";
+const baseUrl = "http://27.30.89.224:8888";
+const staticUrl = "http://27.30.89.224:8888/static/";
+//请求前缀
+// const baseUrl = "http://127.0.0.1:8888";
+// const staticUrl = "http://127.0.0.1:8888/static/";
 
 //全局设置ajax
 $.ajaxSetup({

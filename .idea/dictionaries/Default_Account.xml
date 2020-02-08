@@ -19,6 +19,8 @@
       <w>permisson</w>
       <w>pssword</w>
       <w>sendgrid</w>
+      <w>smtp</w>
+      <w>socketio</w>
       <w>sqlalchemy</w>
       <w>swzl</w>
       <w>tablename</w>
@@ -29,6 +31,7 @@
       <w>userlist</w>
       <w>viewstate</w>
       <w>vlkxs</w>
+      <w>xgepfanashsmbffi</w>
     </words>
   </dictionary>
 </component>
