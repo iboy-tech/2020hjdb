@@ -476,7 +476,7 @@ function changeIcon(obj) {
 
     reader.onload = function (e) {
         app.icon = this.result;
-        //app.tab4.images.push(e.target.result);
+        //app.tab4.go.push(e.target.result);
         //或者 img.src = this.result;  //e.target == this
     };
     reader.readAsDataURL(file);
@@ -548,7 +548,7 @@ function changeInput(obj) {
 
         //var img = document.getElementById("image1");
         //img.src = e.target.result;
-        // app.tab4.images.push(e.target.result);
+        // app.tab4.go.push(e.target.result);
         //console.log(img.src)
         //或者 img.src = this.result;  //e.target == this
          let imageData = new FormData();

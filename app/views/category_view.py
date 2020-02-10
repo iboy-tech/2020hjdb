@@ -15,7 +15,6 @@ from app import db
 from app.decorators import admin_required, super_admin_required
 from app.main import category
 from app.models.category_model import Category
-from app.models.lostfound_model import LostFound
 from app.untils import restful
 
 
@@ -29,19 +28,9 @@ def index():
 @category.route('/getall', methods=['GET', 'POST', 'OPTIONS'], strict_slashes=False)
 @login_required
 def get_all():
-    data = request.json
     # print('category页面收到请求', data)
     categorys=Category.query.all()
-    list=[]
-    for c in categorys:
-        dict={
-            "name":c.name,
-            "about":c.about,
-            "categoryId": c.id,
-            "createTime": c.create_time,
-            "count": LostFound.query.filter_by(category_id=c.id).count()
-        }
-        list.append(dict)
+    list=[c.to_dict() for c in categorys]
     data={
             "list":list
         }

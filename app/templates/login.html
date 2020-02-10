@@ -121,10 +121,13 @@
                                     showOK(res.msg);
                                     if(me.tabIndex==0){
                                         saveSession("user", res.data.user);
-                                        if (res.data.user.kind >= 2) {
+                                        if(res.ext=='wx'){
+                                             location.replace("/pusher/wx");
+                                        }
+                                        else if (res.data.user.kind >= 2) {
                                             location.replace("/admin");
                                         }
-                                        else{
+                                        else if(res.data.user.kind==1){
                                             location.replace("/user");
                                         }
                                     }

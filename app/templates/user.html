@@ -15,7 +15,7 @@
         .up-img {
             border: 1px solid #dddddd;
             height: 110px !important;
-            /*background: url("../../static/images/plus.png") no-repeat center center;*/
+            /*background: url("../../static/go/plus.png") no-repeat center center;*/
         }
 
         .up-img input {
@@ -255,15 +255,21 @@
                                                                 </a>
                                                                 <div class="content">
                                                                     <a class="user __user" @click="jumpDetail(item.id)">
-                                                                        <div v-if="item.kind==0"
-                                                                             class="ui red label horizontal"
-                                                                             data-tooltip="正在寻找">
-                                                                            寻物
-                                                                        </div>
-                                                                        <div v-else class="ui blue label horizontal"
-                                                                             data-tooltip="等待认领">
-                                                                            认领
-                                                                        </div>
+                                                                         <div v-if="item.kind==0 && item.status==0" class="ui red label horizontal"
+                                                 data-tooltip="正在寻找">
+                                                寻物
+                                            </div>
+                                             <div v-else-if="item.kind==0 && item.status==1"  class="ui  grey label horizontal"
+                                                 data-tooltip="已经找到">
+                                                已找到
+                                            </div>
+                                            <div v-else-if="item.kind==1 && item.status==0"class="ui blue label horizontal" data-tooltip="等待认领">
+                                                认领
+                                            </div>
+                                            <div v-else-if="item.kind==1 && item.status==1"  class="ui grey label horizontal"
+                                                 data-tooltip="已经被认领">
+                                                已认领
+                                            </div>
                                                                         {{item.realName}}&nbsp;{{item.username}}
                                                                     </a>
 
@@ -654,7 +660,7 @@
                                                      style="display: inline-block !important;">
                                                     <!--<input id="in1" type="file" accept="image/*"-->
                                                     <!--onchange="changeImg(this)">-->
-                                                    <!--<img id="img1" src="../../static/images/plus.png">-->
+                                                    <!--<img id="img1" src="../../static/go/plus.png">-->
                                                       <div class="ui fluid image up-img">
                                                         <input id="imgInput" type="file" accept="image/*"
                                                                onchange="changeInput(this)"  multiple="multiple">
@@ -664,7 +670,7 @@
                                                 <!--<div class="ui image up-img" style="display: inline-block !important;">-->
                                                 <!--</div>-->
                                                 <!--<div class="ui image up-img" style="display: inline-block !important;">-->
-                                                <!--<img src="../../static/images/plus.png">-->
+                                                <!--<img src="../../static/go/plus.png">-->
                                                 <!--</div>-->
                                             </div>
 

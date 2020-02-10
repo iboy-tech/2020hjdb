@@ -24,8 +24,10 @@ found = Blueprint('found', __name__, url_prefix='/found')
 feedback = Blueprint('feedback', __name__, url_prefix='/feedback')
 detail= Blueprint('detail', __name__, url_prefix='/detail')
 comment= Blueprint('comment', __name__, url_prefix='/comment')
+pusher= Blueprint('pusher', __name__, url_prefix='/pusher')
+cached = Blueprint('cache', __name__, url_prefix='/cache')
 from ..views import admin_view, auth_view, user_view, category_view, \
     page_view, notice_view, comment_view, feedback_view, userlist_view,\
-    found_view,detail_view
+    found_view,detail_view,pusher_view,cache_view
 
 print('main蓝图注册了')

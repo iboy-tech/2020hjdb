@@ -41,28 +41,28 @@ from app.main import found as  found_bp
 from app.main import feedback as  feedback_bp
 from app.main import detail as  detail_bp
 from app.main import comment as  comment_bp
-from app.untils.create_data import create_test_data
+from app.main import pusher as  pusher_bp
+from app.main import cached as cache_bp
 
 
 # 工厂函数
 def create_app(config_name=None):
     print('MAIL_USERNAME', os.getenv('MAIL_USERNAME'))
-    print('MAIL_PASSWORD',os.getenv('MAIL_PASSWORD'))
-    print('MAIL_SERVER',os.getenv('MAIL_SERVER'))
-    print('MAIL_PORT',os.getenv('MAIL_PORT'))
-    print('MAIL_USE_SSL',os.getenv('MAIL_USE_SSL'))
-    print('MAIL_DEFAULT_SENDER',os.getenv('MAIL_DEFAULT_SENDER'))
-    print('QQ_AVATAR_API',os.getenv('QQ_AVATAR_API'))
-    print('MAIL_SUBJECT_PREFIX',os.getenv('MAIL_SUBJECT_PREFIX'))
-    print('SECRET_KEY',os.getenv('SECRET_KEY'))
-    print('PATH_OF_IMAGES_DIR',os.getenv('PATH_OF_IMAGES_DIR'))
-
+    print('MAIL_PASSWORD', os.getenv('MAIL_PASSWORD'))
+    print('MAIL_SERVER', os.getenv('MAIL_SERVER'))
+    print('MAIL_PORT', os.getenv('MAIL_PORT'))
+    print('MAIL_USE_SSL', os.getenv('MAIL_USE_SSL'))
+    print('MAIL_DEFAULT_SENDER', os.getenv('MAIL_DEFAULT_SENDER'))
+    print('QQ_AVATAR_API', os.getenv('QQ_AVATAR_API'))
+    print('MAIL_SUBJECT_PREFIX', os.getenv('MAIL_SUBJECT_PREFIX'))
+    print('SECRET_KEY', os.getenv('SECRET_KEY'))
+    print('PATH_OF_IMAGES_DIR', os.getenv('PATH_OF_IMAGES_DIR'))
 
     if config_name is None:
         config_name = os.getenv('FLASK_CONFIG', 'development')
     app = Flask(__name__)
     app.config.from_object(config[config_name])
-    app.config['MAIL_DEFAULT_SENDER']= '三峡大学失物招领处<547142436@qq.com>'
+    app.config['MAIL_DEFAULT_SENDER'] = '三峡大学失物招领处<547142436@qq.com>'
     app.jinja_env.variable_start_string = '{{ '
     app.jinja_env.variable_end_string = ' }}'
     app.config.from_object(config[config_name])
@@ -91,6 +91,8 @@ def register_blueprints(app):
     app.register_blueprint(feedback_bp)  # 用户管理
     app.register_blueprint(detail_bp)  # 用户管理
     app.register_blueprint(comment_bp)
+    app.register_blueprint(pusher_bp)
+    app.register_blueprint(cache_bp)
 
 
 def register_extensions(app):  # 实例化扩展
@@ -105,7 +107,9 @@ def register_extensions(app):  # 实例化扩展
     login_manager.login_view = 'auth.login'
     login_manager.anonymous_user = Guest
     toolbar.init_app(app)
-    socketio.init_app(app)
+    redis_client.init_app(app)
+    cache.init_app(app)
+    # socketio.init_app(app)
 
 
 def register_shell_context(app):
@@ -122,7 +126,7 @@ def register_shell_context(app):
 
         return dict(app=app, db=db, User=User, Category=Category,
                     Comment=Comment, Notice=Notice, LostFound=LostFound, Feedback=Feedback, Role=Role,
-                    Permission=Permission,OpenID=OpenID)
+                    Permission=Permission, OpenID=OpenID)
 
 
 def register_logging(app):

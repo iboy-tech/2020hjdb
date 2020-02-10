@@ -202,8 +202,9 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                             <td>{{item.qq}}</td>
                             <td>{{item.lastLogin}}</td>
                             <td>
-                                <span v-if="item.status=='正常'" class="label-success label">{{item.status}}</span>
-                                <span v-else class="label-danger label">{{item.status}}</span>
+                                <span v-if="item.status=='2'" class="label-success label">正常</span>
+                                <span v-else-if="item.status=='1'" class="label-warning label">未认证</span>
+                                <span v-else class="label-danger label">已冻结</span>
                             </td>
                             <td>
                                 <div class="btn-group">
@@ -214,13 +215,16 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                                     <ul class="dropdown-menu">
                                         <li><a @click="resetPassword(item.userId)">重置密码</a></li>
                                         <!--<li role="separator" class="divider"></li>-->
-                                        <li v-if="item.status=='正常'"><a @click="freezeUser(item.userId)">冻结账号</a></li>
+                                        <li v-if="item.status=='2'"><a @click="freezeUser(item.userId)">冻结账号</a></li>
                                         <!--<li role="separator" class="divider"></li>-->
-                                        <li v-else><a @click="unfreezeUser(item.userId)">解冻账号</a></li>
+                                        <li v-else-if="item.status=='0'"><a @click="unfreezeUser(item.userId)">解冻账号</a></li>
+                                        <li v-else-if="item.status=='1'"><a @click="unfreezeUser(item.userId)">发送认证邮件</a></li>
                                         <!--<li role="separator" class="divider"></li>-->
-                                        <li v-if="item.kind<2"><a @click="setAsManager(item.userId, 1)">添加为管理员</a></li>
-                                        <li v-else><a @click="setAsManager(item.userId, 0)">移除该管理员</a></li>
+                                        <li v-if="user.kind==3">
+                                        <li v-if="item.kind==1"><a @click="setAsManager(item.userId, 1)">添加为管理员</a></li>
+                                        <li v-else-if="item.kind==2"><a @click="setAsManager(item.userId, 0)">移除该管理员</a></li>
                                         <!--<li><a href="#"></a></li>-->
+                                        </li>
                                     </ul>
                                 </div>
                             </td>

@@ -26,10 +26,10 @@ def index():
     if request.method == 'GET':
         return render_template('detail.html')
     else:
-        print('查找详情', type(request.json))
+        # print('查找详情', type(request.json))
         id = request.args.get('id')
         # req = request.json
-        print('我是详情ID', id)
+        # print('我是详情ID', id)
         lost = LostFound.query.get(int(id))
         if lost is not None:
             user = User.query.get(lost.user_id)
@@ -50,7 +50,7 @@ def index():
                     "location": lost.location,
                     "title": lost.title,
                     "about": lost.about,
-                    "images": imglist,
+                    "go": imglist,
                     "category": (Category.query.get(lost.category_id)).name,
                     "lookCount": lost.look_count,
                     "status": lost.status,

@@ -10,13 +10,14 @@
 """
 # from flask_mail_sendgrid import MailSendGrid
 from flask_bootstrap import Bootstrap
-from flask_login import LoginManager
-from flask_moment import Moment
-from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
 from flask_debugtoolbar import DebugToolbarExtension
+from flask_login import LoginManager
 from flask_mail import Mail
-from flask_socketio import  SocketIO
+from flask_migrate import Migrate
+from flask_moment import Moment
+from flask_redis import FlaskRedis
+from flask_sqlalchemy import SQLAlchemy
+from flask_caching import Cache
 
 bootstrap = Bootstrap()
 # mail = MailSendGrid()
@@ -26,7 +27,8 @@ moment = Moment()
 db = SQLAlchemy()
 login_manager = LoginManager()
 toolbar = DebugToolbarExtension()
-socketio=SocketIO()
+redis_client = FlaskRedis()
+cache=Cache()
 
 
 

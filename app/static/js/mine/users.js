@@ -2,7 +2,7 @@ var app = new Vue({
     el: "#app",
     data: {
         imgPrefix: staticUrl,
-        schoolIcon: './images/icon-school.png',
+        schoolIcon: './go/icon-school.png',
         // item:'',
         user: getSession("user") ? JSON.parse(getSession('user')) : {},
         search: {

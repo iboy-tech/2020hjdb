@@ -26,4 +26,4 @@ class Notice(db.Model):
 
     # 返回一个具有可读性的字符串模型  方便调试
     def __repr__(self):
-        return '<TNotice %r>' % self.title
+        return '<Notice %r>' % self.title

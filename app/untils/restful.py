@@ -22,7 +22,7 @@ class HttpCode(object):
 
 def RestfulResult(success, code, msg, data, ext=None):
     data = json.dumps({'success': success, 'code': code, 'msg': msg, 'data': data, 'ext': ext}, cls=DateEncoder)
-    print("生成消息类", str(data))
+    # print("生成消息类", str(data))
     return data
 
 

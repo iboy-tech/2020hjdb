@@ -41,6 +41,21 @@ class BaseConfig:
     MAIL_USE_SSL = True
     MAIL_USERNAME = os.getenv('MAIL_USERNAME')
     MAIL_PASSWORD = os.getenv('MAIL_PASSWORD')
+    REDIS_URL = 'redis://127.0.0.1:6379/1'
+    SESSION_TYPE = "redis"  # 指定 session 保存到 redis 中
+    CACHE_REDIS_URL='redis://127.0.0.1:6379/0'#缓存
+    SESSION_REDIS='redis://127.0.0.1:6379/2'#session缓存
+    PERMANENT_SESSION_LIFETIME = 24 * 60 * 60 # session 的有效期，单位是秒
+    QR_CODE_VALID_TIME=300#微信二维码过期时间10分钟
+    QR_CODE_SUFFIX='-pusher_post_data'
+    SESSION_KEY_PREFIX='flask'
+
+    # REDIS_DB_URL = {
+    #     'host': '127.0.0.1',
+    #     'port': 6379,
+    #     'password': '',
+    #     'db': 0
+    # }
 
     # MAIL_DEFAULT_SENDER = ('三峡大学失物招领处', MAIL_USERNAME)
 
@@ -52,6 +67,7 @@ class BaseConfig:
 # 开发环境的子类配置
 class DevelopmentConfig(BaseConfig):
     DEBUG = True
+    CACHE_NO_NULL_WARNING=True#关闭缓存警告信息
     # MAIL_SERVER = 'smtp.ym.163.com'
     #     # MAIL_PORT = '465'
     #     # MAIL_USE_TLS = True
@@ -71,6 +87,7 @@ class TestingConfig(BaseConfig):
 
 # 生产环境的配置
 class ProductionConfig(BaseConfig):
+    CACHE_TYPE = 'redis' #生产环境下开启redis缓存
     SQLALCHEMY_DATABASE_URI = 'mysql://root:root@127.0.0.1/swzl'
 
 

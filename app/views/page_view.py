@@ -42,7 +42,7 @@ def index():
                     "location": "欣苑",
                     "title": "手机掉了",
                     "about": "手机掉了啊啊啊详情",
-                    "images": ["upload_8124810867403574170.jpg"],
+                    "go": ["upload_8124810867403574170.jpg"],
                     "category": "手机",
                     "lookCount": 13,
                     "commentCount": 1
@@ -59,7 +59,7 @@ def index():
                     "location": "西苑食堂",
                     "title": "苹果手机",
                     "about": "手机掉了",
-                    "images": ["upload_3284452982529621166.jpg"],
+                    "go": ["upload_3284452982529621166.jpg"],
                     "category": "手机",
                     "lookCount": 20,
                     "commentCount": 0
@@ -76,7 +76,7 @@ def index():
                     "location": "东苑",
                     "title": "我的校园卡掉了",
                     "about": "大概在东苑到图书馆的小路上",
-                    "images": ["upload_2180137498044705888.jpg"],
+                    "go": ["upload_2180137498044705888.jpg"],
                     "category": "校园卡",
                     "lookCount": 1016,
                     "commentCount": 1
@@ -98,7 +98,7 @@ def index():
                     "location": "欣苑",
                     "title": "手机掉了",
                     "about": "手机掉了啊啊啊详情",
-                    "images": ["upload_8124810867403574170.jpg"],
+                    "go": ["upload_8124810867403574170.jpg"],
                     "category": "手机",
                     "lookCount": 13,
                     "commentCount": 1
@@ -115,7 +115,7 @@ def index():
                     "location": "西苑食堂",
                     "title": "苹果手机",
                     "about": "手机掉了",
-                    "images": ["upload_3284452982529621166.jpg"],
+                    "go": ["upload_3284452982529621166.jpg"],
                     "category": "手机",
                     "lookCount": 20,
                     "commentCount": 0
@@ -132,7 +132,7 @@ def index():
                     "location": "东苑",
                     "title": "我的校园卡掉了",
                     "about": "大概在东苑到图书馆的小路上",
-                    "images": ["upload_2180137498044705888.jpg"],
+                    "go": ["upload_2180137498044705888.jpg"],
                     "category": "校园卡",
                     "lookCount": 1016,
                     "commentCount": 1

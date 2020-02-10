@@ -19,7 +19,7 @@ var app = new Vue({
         },
         item: {
            id: null,
-                icon: "./images/icon.jpg",
+                icon: "./go/icon.jpg",
                 kind: 0,
                 username: "201520180508",
                 userId: "000000000001",
@@ -39,7 +39,7 @@ var app = new Vue({
         comments: [
             /* {
                  id: "00000000000001",
-                 icon: "./images/icon.png",
+                 icon: "./go/icon.png",
                  username: "201520180508",
                  time: "2019-04-16 09:27:10",
                  content: "我觉得很对"
@@ -59,13 +59,13 @@ var app = new Vue({
             list: [
                 /*  {
                       id: "00000000000000001",
-                      icon: "./images/icon.jpg",
+                      icon: "./go/icon.jpg",
                       kind: 0,
                       username: "201520180508",
                       time: "2019-04-16 09:27:10",
                       location: "研一的门口",
                       title: "丢了一只篮球",
-                      images: ["./images/icon.jpg"],
+                      go: ["./go/icon.jpg"],
                       category: "电子数码",
                       lookCount: 12,
                       commentCount: 2,

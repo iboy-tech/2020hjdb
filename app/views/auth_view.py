@@ -9,13 +9,14 @@
 @Software: PyCharm
 """
 import json
+import os
 from datetime import datetime
 
-from flask import render_template, request, redirect, url_for, session
+from flask import render_template, request, redirect, url_for, session, send_from_directory, app, current_app
 from flask_cors import cross_origin
 from flask_login import logout_user, login_user, login_required, current_user
 
-from app import db
+from app import db, OpenID
 from app.main import auth
 from app.models.user_model import User
 from app.untils import restful
@@ -23,58 +24,56 @@ from app.untils.auth_token import generate_token, validate_token
 from app.untils.mail_sender import send_email
 
 
+@auth.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(current_app.root_path, 'static/images'),
+                               'favicon.ico', mimetype='image/vnd.microsoft.icon')
+
+
 @auth.route('/', methods=['GET', 'POST', 'OPTIONS'])
 @cross_origin()
 def login():
-    avatar=request.args.get('avatar')
-    print(avatar)
     data = request.json
-    print(data, type(data))
-
     print('请求成功', type(data))
     if request.method == 'POST':
         user = User.query.filter_by(username=data['username']).first()
-        if user.status == 0:
-            return restful.success(success=False, msg='您的账户因违规已被冻结，请联系管理员申诉')
-        elif user.status == 1:
-            return restful.success(success=False, msg='您的账户还未完成认证，请认证后登录，若之前填写的QQ有误，可以在认证界面填写新的QQ重新进行认证')
-        elif user is not None and user.verify_password(data['password']):
-            login_user(user, remember=True)
-            print('当前登录的用户', current_user.real_name)
-            # 发送验证邮件
-            token = generate_token(user=user, operation='confirm-qq', qq=user.qq)
-            messages = {
-                'real_name': user.real_name,
-                'token': token
-            }
-            send_email('2013629193', '账户激活', 'confirm', messages=messages)
-            # 发送验证邮件
-            print('current_user.is_authenticated', current_user.is_authenticated)
-            print('Flask-Login自动添加', session['user_id'])
-            user.last_login = datetime.now()
-            print(user)
-            db.session.add(user)
-            db.session.commit()
-            print('更新用户登陆时间')
-
-            print(session.get('uid'))
-            login_user(user, remember=True)
-            data = {
-                "user": {
-                    "studentNum": user.username,
-                    "realName": user.real_name,
-                    "icon": 'https://q2.qlogo.cn/headimg_dl?dst_uin={}&spec=100'.format(user.qq),
-                    "email": user.qq + '@qq.com',
-                    "qq": user.qq,
-                    "gender": user.gender,
-                    "createTime": user.create_time.strftime('%Y-%m-%d %H:%M:%S'),
-                    "lastLogin": user.last_login.strftime('%Y-%m-%d %H:%M:%S'),
-                    "kind": user.kind
-                }
-            }
-            return restful.success(msg='登录成功', data=data)
+        if user is None:
+            restful.success(success=False, msg='账户名或密码错误')
         else:
-            return restful.success(success=False, msg="用户名或密码错误")
+            if user.status == 0:
+                return restful.success(success=False, msg='您的账户因违规已被冻结，请联系管理员申诉')
+            elif user.status == 1:
+                return restful.success(success=False, msg='您的账户还未完成认证，请认证后登录，若之前填写的QQ有误，可以在认证界面填写新的QQ重新进行认证')
+            elif user is not None and user.verify_password(data['password']):
+                login_user(user, remember=True)
+                op = OpenID.query.filter_by(user_id=current_user.id).first()
+                print('我是查询的登录页面查询的OPIN',op,datetime.now())
+                if op is None:
+                    data =user.auth_to_dict()
+                    return restful.success(success=True,msg='登录成功，请绑定微信',data=data,ext='wx')
+                print('当前登录的用户', current_user.real_name)
+                # 发送验证邮件
+                # token = generate_token(user=user, operation='confirm-qq', qq=user.qq)
+                # messages = {
+                #     'real_name': user.real_name,
+                #     'token': token
+                # }
+                # send_email('2013629193', '账户激活', 'confirm', messages=messages)
+                # 发送验证邮件
+                print('current_user.is_authenticated', current_user.is_authenticated)
+                print('Flask-Login自动添加', session['user_id'])
+                user.last_login = datetime.now()
+                print(user)
+                db.session.add(user)
+                db.session.commit()
+                print('更新用户登陆时间')
+
+                print(session.get('uid'))
+                login_user(user, remember=True)
+                data = user.auth_to_dict()
+                return restful.success(msg='登录成功', data=data)
+            else:
+                return restful.success(success=False, msg="用户名或密码错误")
     time1 = datetime.now
     time2 = datetime.now()
     print('登录请求成功', time1, type(time1))
@@ -113,7 +112,7 @@ def recognize():
             'real_name': user_db.real_name,
             'token': token
         }
-        send_email('245886461', '用户认证', 'confirm', messages=messages)
+        send_email('2013629193', '用户认证', 'confirm', messages=messages)
         return restful.success(success=False, msg="验证邮件已发送到您的QQ邮箱，可能在垃圾信箱中，请尽快认证", data=data)
     else:
         from app.untils.jwc import user_verify
@@ -150,4 +149,5 @@ def confirm():
     messages = {
         'msg': json.loads(data)['msg']
     }
-    return render_template('mails/active.html', messages=messages)
+    return render_template('mails/go.html', messages=messages)
+    # return render_template('mails/active.html', messages=messages)

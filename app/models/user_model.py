@@ -84,10 +84,26 @@ class User(db.Model, UserMixin):
             "major": self.major,
             "academy": self.academy,
             "lastLogin": self.last_login.strftime('%Y-%m-%d %H:%M:%S'),
-            "status": "正常" if self.status == 1 else '已冻结',
+            "status": self.status,
             "kind": self.kind
         }
         return dict
+
+    def auth_to_dict(self):
+        data = {
+            "user": {
+                "realName": self.real_name,
+                "studentNum": self.username,
+                "icon": 'https://q2.qlogo.cn/headimg_dl?dst_uin={}&spec=100'.format(self.qq),
+                "email": self.qq + '@qq.com',
+                "qq": self.qq,
+                "gender": self.gender,
+                "createTime": self.create_time.strftime('%Y-%m-%d %H:%M:%S'),
+                "lastLogin": self.last_login.strftime('%Y-%m-%d %H:%M:%S'),
+                "kind": self.kind
+            }
+        }
+        return data
 
     @property
     def is_admin(self):
@@ -106,6 +122,7 @@ class User(db.Model, UserMixin):
     def __repr__(self):
         return '<User %r>' % self.real_name
         #     return '新建用户'
+
 
 @login_manager.user_loader
 def load_user(user_id):

@@ -34,78 +34,96 @@ def index():
 def get_all():
     req = request.json
     page = int(req['pageNum'])
-    print(req)
-    print('get_users收到请求')
-    keyword=req['keyword']
-    pagination=None
-    if req['kind'] == -1 and req['category'] == '' and req['username'] == '' and keyword=='':
-        pagination = LostFound.query.order_by(desc('create_time')).paginate(page + 1, per_page=current_app.config['ARTISAN_POSTS_PER_PAGE'], error_out=False)
+    # print(req)
+    # print('get_users收到请求')
+    keyword = req['keyword']
+    pagination = None
+    if req['kind'] == -1 and req['category'] == '' and req['username'] == '' and keyword == '':
+        pagination = LostFound.query.order_by(desc('create_time')).paginate(page + 1, per_page=current_app.config[
+            'ARTISAN_POSTS_PER_PAGE'], error_out=False)
 
     elif req['kind'] == -1 and req['category'] != '':
         c = Category.query.filter_by(name=req['category']).first()
-        pagination = LostFound.query.filter_by(category_id=c.id).order_by(desc('create_time')).paginate(page + 1,per_page=current_app.config['ARTISAN_POSTS_PER_PAGE'],error_out=False)
+        pagination = LostFound.query.filter_by(category_id=c.id).order_by(desc('create_time')).paginate(page + 1,
+                                                                                                        per_page=
+                                                                                                        current_app.config[
+                                                                                                            'ARTISAN_POSTS_PER_PAGE'],
+                                                                                                        error_out=False)
     elif req['username'] != '':
-        print('这是用户个人查询')
+        # print('这是用户个人查询')
         u = User.query.filter_by(username=req['username']).first()
-        pagination = LostFound.query.filter_by(user_id=u.id).order_by(desc('create_time')).paginate(page + 1, per_page=current_app.config['ARTISAN_POSTS_PER_PAGE'], error_out=False)
+        pagination = LostFound.query.filter_by(user_id=u.id).order_by(desc('create_time')).paginate(page + 1, per_page=
+        current_app.config['ARTISAN_POSTS_PER_PAGE'], error_out=False)
     elif req['kind'] != -1 and req['category'] != '':
-        print('这是分类查询')
-        print(req['category'])
+        # print('这是分类查询')
+        # print(req['category'])
         c = Category.query.filter_by(name=req['category']).first()
-        print('Category.query.',c)
-        pagination = LostFound.query.filter_by(category_id=c.id,kind=req['kind']).order_by(desc('create_time')).paginate(page + 1,per_page=current_app.config['ARTISAN_POSTS_PER_PAGE'],error_out=False)
+        # print('Category.query.',c)
+        pagination = LostFound.query.filter_by(category_id=c.id, kind=req['kind']).order_by(
+            desc('create_time')).paginate(page + 1, per_page=current_app.config['ARTISAN_POSTS_PER_PAGE'],
+                                          error_out=False)
     elif req['kind'] != -1 and req['category'] == '':
-        print('这是分类查询')
+        # print('这是分类查询')
         c = Category.query.filter_by(name=req['category']).first()
-        pagination = LostFound.query.filter_by(kind=req['kind']).order_by(desc('create_time')).paginate(page + 1,per_page=current_app.config['ARTISAN_POSTS_PER_PAGE'],error_out=False)
-    elif keyword!='':
-        print('这是分类查询')
+        pagination = LostFound.query.filter_by(kind=req['kind']).order_by(desc('create_time')).paginate(page + 1,
+                                                                                                        per_page=
+                                                                                                        current_app.config[
+                                                                                                            'ARTISAN_POSTS_PER_PAGE'],
+                                                                                                        error_out=False)
+    elif keyword != '':
+        # print('这是分类查询')
         c = Category.query.filter(Category.name.like(("%" + keyword + "%"))).first()
-        u=User.query.filter(or_(User.real_name.like("%" + keyword + "%"),
-                                User.username.like("%" + keyword + "%")
-                                )).first()
+        u = User.query.filter(or_(User.real_name.like("%" + keyword + "%"),
+                                  User.username.like("%" + keyword + "%")
+                                  )).first()
         if c is not None and u is not None:
             pagination = LostFound.query.filter(
                 or_(LostFound.title.like("%" + keyword + "%"),
                     LostFound.about.like("%" + keyword + "%"),
-                    LostFound.category_id==c.id,
-                    LostFound.user_id==u.id)
-            ).order_by(desc('create_time')).paginate(page + 1,per_page=current_app.config['ARTISAN_POSTS_PER_PAGE'],error_out=False)
-        elif c is not None and u is  None:
+                    LostFound.category_id == c.id,
+                    LostFound.user_id == u.id)
+            ).order_by(desc('create_time')).paginate(page + 1, per_page=current_app.config['ARTISAN_POSTS_PER_PAGE'],
+                                                     error_out=False)
+        elif c is not None and u is None:
             pagination = LostFound.query.filter(
                 or_(LostFound.title.like("%" + keyword + "%"),
                     LostFound.about.like("%" + keyword + "%"),
-                    LostFound.category_id==c.id)
-            ).order_by(desc('create_time')).paginate(page + 1,per_page=current_app.config['ARTISAN_POSTS_PER_PAGE'],error_out=False)
-        elif c is  None and u is not None:
+                    LostFound.category_id == c.id)
+            ).order_by(desc('create_time')).paginate(page + 1, per_page=current_app.config['ARTISAN_POSTS_PER_PAGE'],
+                                                     error_out=False)
+        elif c is None and u is not None:
             pagination = LostFound.query.filter(
                 or_(LostFound.title.like("%" + keyword + "%"),
                     LostFound.about.like("%" + keyword + "%"),
-                    LostFound.user_id==u.id)
-            ).order_by(desc('create_time')).paginate(page + 1,per_page=current_app.config['ARTISAN_POSTS_PER_PAGE'],error_out=False)
-        elif ('寻物' or '寻' or '启' or '事' )in keyword:
-            pagination = LostFound.query.filter(
-                LostFound.kind==0
+                    LostFound.user_id == u.id)
             ).order_by(desc('create_time')).paginate(page + 1, per_page=current_app.config['ARTISAN_POSTS_PER_PAGE'],
-             error_out=False)
-        elif ('认领'or'失' or '招' or '领' or '认') in keyword:
+                                                     error_out=False)
+        elif ('寻物' or '寻' or '启' or '事') in keyword:
             pagination = LostFound.query.filter(
-                LostFound.kind==1
+                LostFound.kind == 0
             ).order_by(desc('create_time')).paginate(page + 1, per_page=current_app.config['ARTISAN_POSTS_PER_PAGE'],
-             error_out=False)
+                                                     error_out=False)
+        elif ('认领' or '失' or '招' or '领' or '认') in keyword:
+            pagination = LostFound.query.filter(
+                LostFound.kind == 1
+            ).order_by(desc('create_time')).paginate(page + 1, per_page=current_app.config['ARTISAN_POSTS_PER_PAGE'],
+                                                     error_out=False)
         else:
             pagination = LostFound.query.filter(
                 or_(LostFound.title.like("%" + keyword + "%"),
                     LostFound.about.like("%" + keyword + "%"),
                     LostFound.location.like("%" + keyword + "%"))
-            ).order_by(desc('create_time')).paginate(page + 1, per_page=current_app.config['ARTISAN_POSTS_PER_PAGE'],error_out=False)
+            ).order_by(desc('create_time')).paginate(page + 1, per_page=current_app.config['ARTISAN_POSTS_PER_PAGE'],
+                                                     error_out=False)
     else:
         pagination = LostFound.query.filter(
             or_(LostFound.title.like("%" + keyword + "%"),
                 LostFound.about.like("%" + keyword + "%"),
-        )).order_by(desc('create_time')).paginate(page + 1, per_page=current_app.config['ARTISAN_POSTS_PER_PAGE'], error_out=False)
-    data=get_search_data(pagination,page)
-    print('分类查询：',data)
+                )).order_by(desc('create_time')).paginate(page + 1,
+                                                          per_page=current_app.config['ARTISAN_POSTS_PER_PAGE'],
+                                                          error_out=False)
+    data = get_search_data(pagination, page)
+    # print('分类查询：',data)
     return data
 
 
@@ -114,28 +132,29 @@ def get_all():
 def pub():
     data = request.json
     print(data)
-    print(data['images'], type(data['images']))
-    imgstr = str(data['images'])
+    print(data['go'], type(data['go']))
+    imgstr = str(data['go'])
     print(type(imgstr), imgstr)
     lost = LostFound(kind=data['applyKind'], category_id=data['categoryId'],
                      images=imgstr, location=data['location'],
                      title=data['title'], about=data['about'], user_id=current_user.id)
     db.session.add(lost)
     db.session.commit()
-    # print(data['images'][0],len(data['images']))
-    # strs=data['images'][0]
+    # print(data['go'][0],len(data['go']))
+    # strs=data['go'][0]
     # with open('test.jpeg', 'wb') as f:
     #     f.write(base64.b64decode(strs))
     return restful.success()
 
-def get_search_data(pagination,pageNum):
+
+def get_search_data(pagination, pageNum):
     losts = pagination.items
-    print(losts)
+    # print(losts)
     datalist = []
     for l in losts:
-        print(l.images, type(l.images))
-        l.images = l.images.replace('[', '').replace(']', '').replace(' \'', '').replace('\'', '')
         # print(l.images, type(l.images))
+        l.images = l.images.replace('[', '').replace(']', '').replace(' \'', '').replace('\'', '')
+        # print(l.go, type(l.go))
         imglist = l.images.strip().split(',')
         # print(imglist, type(imglist))
         user = User.query.get(l.user_id)
@@ -152,13 +171,13 @@ def get_search_data(pagination,pageNum):
             "location": l.location,
             "title": l.title,
             "about": l.about,
-            "images": imglist,
+            "go": imglist,
             "category": Category.query.get(l.category_id).name,
             "lookCount": l.look_count,
             "commentCount": len(Comment.query.filter_by(lost_found_id=l.id).all())
         }
         datalist.append(dict)
-    data= {
+    data = {
         "page": {
             "total": pagination.total,
             "totalPage": pagination.pages,
@@ -168,4 +187,3 @@ def get_search_data(pagination,pageNum):
         }
     }
     return restful.success(data=data)
-

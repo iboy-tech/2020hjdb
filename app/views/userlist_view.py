@@ -13,7 +13,7 @@ from flask import render_template, request, current_app
 from flask_login import current_user, login_required
 from sqlalchemy import or_
 
-from app import db
+from app import db, cache
 from app.decorators import super_admin_required, admin_required
 from app.main import userlist
 from app.models.user_model import User
@@ -28,6 +28,7 @@ def index():
 
 
 @userlist.route('/getall', methods=['POST'], strict_slashes=False)
+# @cache.cached(timeout=10 * 60)#缓存10分钟 默认为300s
 @login_required
 @admin_required
 def get_all():
@@ -98,9 +99,12 @@ def get_all():
 @admin_required
 def user_freeze_or_unfreeze():
     req = request.args.get('userId')
-    u = User.query.get(int(req))
-    u.status = 1 if u.status == 0 else 0
-    db.session.commit()
+    u = User.query.get_or_404(int(req))
+    if u.status==1:
+        return restful.success(success=False,msg='该账户尚未认证，暂时无法冻结')
+    if u.status==2:
+        u.status = 0
+        db.session.commit()
     print('要给用户发送提醒邮件')
     from app.untils.mail_sender import send_email
     messages = {
@@ -137,14 +141,13 @@ def set_or_cancle_admin():
     print('发送邮件')
     return restful.success()
 
-
+@cache.memoize()#根据参数设置缓存
 def search(pagination, page):
     global data
     users = pagination.items
     # users = User.query.order_by(desc('kind')).all()
-    print(users)
+    # print(users)
     list = []
-    cnt = len(users)
     for u in users:
         dict =u.to_dict()
         list.append(dict)

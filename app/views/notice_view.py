@@ -37,14 +37,11 @@ def get_all():
     notices = Notice.query.order_by(desc('fix_top'),desc('create_time')).limit(10)
     cnt = len(Notice.query.all())
     print('cnt:',cnt)
-    print('notices:',notices)
-    list=[]
-    for n in notices:
-        dict=n.to_dict()
-        list.append(dict)
-        data={
-            "list": list
-        }
+    # print('notices:',notices)
+    list=[n.to_dict() for n in notices ]
+    data={
+        "list": list
+    }
     return restful.success(data=data)
 
 
@@ -53,7 +50,7 @@ def get_all():
 @admin_required
 def notice_add():
     req = request.json
-    print(req)
+    # print(req)
     n = Notice(title=req['title'].replace('<','&lt;').replace('>','&gt;'), content=req['content'].replace('<','&lt;').replace('>','&gt;'), fix_top=1 if req['fixTop'] == True else 0)
     db.session.add(n)
     db.session.commit()

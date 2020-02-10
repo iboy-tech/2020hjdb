@@ -95,7 +95,7 @@ def upgrade():
     sa.Column('category_id', sa.Integer(), nullable=False),
     sa.Column('about', sa.String(length=1024), nullable=False),
     sa.Column('title', sa.String(length=128), nullable=False),
-    sa.Column('images', sa.Text(), nullable=True),
+    sa.Column('go', sa.Text(), nullable=True),
     sa.Column('user_id', sa.Integer(), nullable=False),
     sa.Column('claimant_id', sa.Integer(), nullable=True),
     sa.Column('create_time', sa.DateTime(), nullable=False),

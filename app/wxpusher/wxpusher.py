@@ -17,7 +17,7 @@ BASEURL = 'http://wxpusher.zjiecode.com/api'
 
 class WxPusher():
     """WxPusher Python Client."""
-    default_token = os.getenv()
+    default_token = os.getenv('WX_PUSHER_TOKEN')
 
     @classmethod
     def send_message(cls, content, uids, token=None, **kwargs):
@@ -40,7 +40,7 @@ class WxPusher():
         return requests.get(url).json()
 
     @classmethod
-    def create_qrcode(cls, extra, valid_time=1800, token=None):
+    def create_qrcode(cls, extra, valid_time=300, token=None):#二维码有效期默认30min
         """Create qrcode with extra callback information."""
         payload = {
             'appToken': cls.get_token(token),

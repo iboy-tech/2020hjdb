@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>微信绑定</title>
+    <style>
+        #code{
+            width: 300px;
+            height: 300px;
+            margin: 100px auto 0;
+            background: url("{{ data.url }}") no-repeat;
+            background-size: cover;
+        }
+    </style>
+    <script src="../../static/js/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/socket.io.min.js') }}"></script>
+</head>
+<body style="">
+<div id="code">
+
+</div>
+<h1 id="notice" style="text-align: center;"><span>绑定微信，接受通知！</span></h1>
+<script>
+    $(document).ready(function () {
+        const url = "http://" + document.domain + ':' + location.port;
+        console.log(url);
+        const socket = io(url);
+        socket.emit('server');//触发通信
+        socket.on('server', function (data) {
+            console.log(data);
+                if(data['success']=='true'){
+                    $("#notice").text(data['data']['msg']);
+                    $("#code").css( "background" ,"url("+data['data']['head']+")").css("background-size","cover").css("background-repeat","no-repeat");
+                    $("#notice").css("color","#41B146");
+                     setTimeout(function(){//5秒之后执行
+                         location.href="{{ url_for('user.index', _external=True) }} ";
+                 }, 2000);
+             }
+              else{
+                  $("#notice").text(data['data']['msg']);
+                  /**
+                   setTimeout(function(){//5秒之后执行
+                          $("#notice").text(data['data']['msg']);
+                 }, 2000); */
+              }
+
+        });
+
+        /**
+         setInterval(function () {//间隔5秒执行一次
+           socket.emit('connect', {'msg': '你获取了数据吗？'})
+         },2000);
+
+         function tel(){
+                  socket.on('connect',function (data) {
+                 console.log('监听服务端connect'+data)
+                 if(data!=undefined){
+                       console.log('服务器发来的数据'+data['msg']);
+                 }
+            });
+         }
+         */
+    });
+</script>
+</body>
+</html>

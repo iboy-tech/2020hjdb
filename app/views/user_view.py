@@ -22,6 +22,7 @@ from app.untils.auth_token import generate_token
 from app.untils.mail_sender import send_email
 
 
+@user.route('/index.html', methods=['POST', 'OPTIONS', 'GET'])
 @user.route('/', methods=['POST', 'OPTIONS', 'GET'])
 @cross_origin()
 @login_required
@@ -66,6 +67,7 @@ def get_message():
             }
     return restful.success(data=data)
 
+
 @user.route('/setQQ', methods=['POST'])
 @login_required
 @cross_origin()
@@ -81,6 +83,7 @@ def set_QQ():
     }
     send_email(new_qq, 'QQ更改', 'changeQQ', messages=messages)
     return restful.success(success=True, msg="验证邮件已发送到您的新的QQ邮箱，可能在垃圾信箱中，确认成功才可更改")
+
 
 @user.route('/setPassword', methods=['POST'])
 @login_required
@@ -151,7 +154,7 @@ def claim():
         l = LostFound.query.get(int(req))
         if l is not None and (l.user_id != current_user.id) and l.kind == 1:
             l.status = 1
-            l.claim_id=current_user.id
+            l.claim_id = current_user.id
             db.session.add(l)
             db.session.commit()
             return restful.success(msg='认领成功')

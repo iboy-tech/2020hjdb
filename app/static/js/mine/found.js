@@ -2,7 +2,7 @@ var app = new Vue({
     el: "#app",
     data: {
         imgPrefix: staticUrl,
-        schoolIcon: './images/icon-school.png',
+        schoolIcon: './go/icon-school.png',
         user: getSession("user") ? JSON.parse(getSession('user')) : {},
         result: {
             search: {//tab0
@@ -18,7 +18,7 @@ var app = new Vue({
             list: [
                 /*  {
                       id: "00000000000000001",
-                      icon: "./images/icon.jpg",
+                      icon: "./go/icon.jpg",
                       kind: 0,
                       status: 1,
                       username: "201520180508",
@@ -26,7 +26,7 @@ var app = new Vue({
                       time: "2019-04-16 09:27:10",
                       location: "研一的门口",
                       title: "丢了一只篮球",
-                      images: ["./images/icon.jpg"],
+                      go: ["./go/icon.jpg"],
                       category: "电子数码",
                       lookCount: 12,
                       commentCount: 2,
