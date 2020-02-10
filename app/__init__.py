@@ -41,7 +41,7 @@ from app.main import found as  found_bp
 from app.main import feedback as  feedback_bp
 from app.main import detail as  detail_bp
 from app.main import comment as  comment_bp
-from app.main import pusher as  pusher_bp
+from app.main import oauth as  pusher_bp
 from app.main import cached as cache_bp
 
 

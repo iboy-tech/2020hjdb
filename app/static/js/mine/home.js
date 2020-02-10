@@ -172,6 +172,7 @@ var app = new Vue({
                 btn: ['确定', '取消'] //按钮
             }, function () {
                 removeComment(id);
+                layer.close();
             }, function () {
             });
         },
@@ -377,16 +378,15 @@ function setPassword(data) {
 }
 
 //删除招领信息
-function deletePub(data) {
+function deletePub(id) {
     $.ajax({
-        url: baseUrl + "/user/removeLost",
+        url: baseUrl + "/user/removeLost?id="+id,
         method: "POST",
-        data: JSON.stringify(data),
         success: function (res, status) {
             console.log(res);
             if (status == "success") {
                 if (res.success) {
-                    layer.closeAll();
+                    showOK(res.msg);
                 } else {
                     showAlertError(res.msg)
                 }
@@ -431,7 +431,7 @@ function removeComment(id) {
         success: function (res) {
             console.log(res);
                 if (res.success) {
-                    // showOK(res.msg);
+                    showOK(res.msg);
                     getMessages(app);
                 } else {
                     showAlertError(res.msg)

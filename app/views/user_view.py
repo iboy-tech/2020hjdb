@@ -8,12 +8,12 @@
 @Description : 
 @Software: PyCharm
 """
-from flask import render_template, request, g, current_app, session, redirect, url_for
+from flask import render_template, request
 from flask_cors import cross_origin
 from flask_login import current_user, login_required
 
 from app import db
-from app.main import user, auth
+from app.main import user
 from app.models.comment_model import Comment
 from app.models.lostfound_model import LostFound
 from app.models.user_model import User
@@ -140,7 +140,6 @@ def del_Lost():
             return restful.success(msg='删除成功')
         else:
             return restful.params_error()
-
 
 @user.route('/claim', methods=['POST'])
 @login_required
