@@ -1,0 +1,256 @@
+<!--
+Author: W3layouts
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+-->
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>管理控制台</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="keywords" content="Novus Admin Panel Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template,
+SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design"/>
+    <script type="application/x-javascript"> addEventListener("load", function () {
+        setTimeout(hideURLbar, 0);
+    }, false);
+
+    function hideURLbar() {
+        window.scrollTo(0, 1);
+    } </script>
+    <!-- Bootstrap Core CSS -->
+    <link href="../../static/css/bootstrap.css" rel='stylesheet' type='text/css'/>
+    <!-- Custom CSS -->
+    <link href="../../static/css/style.css" rel='stylesheet' type='text/css'/>
+    <!-- font CSS -->
+    <!-- font-awesome icons -->
+    <link href="../../static/css/font-awesome.css" rel="stylesheet">
+    <!-- //font-awesome icons -->
+    <!-- js-->
+    <script src="../../static/js/jquery-1.11.1.min.js"></script>
+    <script src="../../static/js/modernizr.custom.js"></script>
+    <!--webfonts-->
+    <!--//webfonts-->
+    <!--animate-->
+    <link href="../../static/css/animate.css" rel="stylesheet" type="text/css" media="all">
+    <script src="../../static/js/wow.min.js"></script>
+    <script>
+        new WOW().init();
+    </script>
+    <!--//end-animate-->
+    <!-- chart -->
+    <script src="../../static/js/Chart.js"></script>
+    <!-- //chart -->
+    <!--Calender-->
+    <!--<link rel="stylesheet" href="css/clndr.css" type="text/css" />-->
+    <script src="../../static/js/underscore-min.js" type="text/javascript"></script>
+    <script src="../../static/js/moment-2.2.1.js" type="text/javascript"></script>
+    <!--<script src="js/clndr.js" type="text/javascript"></script>-->
+    <script src="../../static/js/site.js" type="text/javascript"></script>
+    <!--End Calender-->
+    <!-- Metis Menu -->
+    <script src="../../static/js/metisMenu.min.js"></script>
+    <script src="../../static/js/custom.js"></script>
+    <link href="../../static/css/custom.css" rel="stylesheet">
+    <!--//Metis Menu -->
+    <style>
+
+    </style>
+</head>
+<body class="cbp-spmenu-push">
+<div class="main-content" id="app">
+    <!--left-fixed -navigation-->
+    <div class=" sidebar" role="navigation">
+        <div class="navbar-collapse">
+            <nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-left" id="cbp-spmenu-s1">
+                <ul class="nav" id="side-menu">
+                    <li>
+                        <a href="/admin" class="active"><i class="fa fa-bar-chart nav_icon"></i>数据统计</a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-list-ul nav_icon"></i>招领管理<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level collapse">
+                            <li>
+                                <a href="/found">招领启事</a>
+                            </li>
+                            <li>
+                                <a href="/category">类别管理
+                                    <!--<span class="nav-badge-btm">8</span>-->
+                                </a>
+                            </li>
+                        </ul>
+                        <!-- /nav-second-level -->
+                    </li>
+                    <li>
+                        <a href="/userlist"><i class="fa fa-users nav_icon"></i>用户管理</a>
+                    </li>
+                    <!--<li>-->
+                        <!--<a href="campus.html"><i class="fa fa-university nav_icon"></i>校区管理</a>-->
+                    <!--</li>-->
+                    <li>
+                        <a href="/notice"><i class="fa fa-rss nav_icon"></i>&nbsp;公告管理</a>
+                    </li>
+                    <li>
+                        <a href="/user"><i class="fa fa-university nav_icon"></i>用户主页</a>
+                    </li>
+                    <li>
+                        <a href="/feedback"><i class="fa fa-envelope nav_icon"></i>反馈管理
+                        </a>
+                    </li>
+
+                </ul>
+                <!-- //sidebar-collapse -->
+            </nav>
+        </div>
+    </div>
+    <!--left-fixed -navigation-->
+    <!-- header-starts -->
+    <div class="sticky-header header-section" id="app">
+        <div class="header-left">
+            <!--toggle button start-->
+            <button id="showLeftPush"><i class="fa fa-bars"></i></button>
+            <!--toggle button end-->
+            <!--logo -->
+            <div class="logo">
+                <a href="/chart">
+                    <h1>校园失物招领系统</h1>
+                    <span>管理控制台</span>
+                </a>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <div class="header-right">
+            <div class="profile_details">
+                <ul>
+                    <li class="dropdown profile_details_drop">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                            <div class="profile_img">
+									<span class="prfil-img">
+										<img :src="user.icon"
+                                             style="max-width: 50px; max-height: 50px;">
+									</span>
+                                <div class="user-name">
+                                    <p v-if="user.kind==2 ">{{"管理员 "+user.realName}}</p>
+                                    <p v-else="user.kind==3 ">{{"超级管理员 "+user.realName}}</p>
+                                    <span>{{user.studentNum}}</span>
+                                </div>
+                                <i class="fa fa-angle-down lnr"></i>
+                                <i class="fa fa-angle-up lnr"></i>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                        <ul class="dropdown-menu drp-mnu">
+                            <!--<li><a ><i class="fa fa-cog"></i> Settings</a></li>-->
+                            <!--<li><a ><i class="fa fa-user"></i> Profile</a></li>-->
+                            <li><a @click="logout"><i class="fa fa-sign-out"></i>退出</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <!-- //header-ends -->
+    <!-- main content start-->
+    <div id="page-wrapper">
+        <div class="main-page">
+            <div class="row-one">
+                <div class="col-md-3 widget">
+                    <div class="stats-left ">
+                        <h5>{{"今日失物："+content.lost[0]}}</h5>
+                        <h4>{{"总计："+content.lost[1]}}</h4>
+                    </div>
+                    <div class="stats-right">
+                        <label>{{"+"+content.lost[0]}}</label>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="col-md-3 widget states-mdl">
+                    <div class="stats-left" style="background-color: #e94e02;">
+                        <h5>{{"今日拾物："+content.found[0]}}</h5>
+                        <h4>{{"总计："+content.found[1]}}</h4>
+                    </div>
+                    <div class="stats-right" style="background-color: #d14a00;">
+                        <label>{{"+"+content.found[0]}}</label>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="col-md-3 widget states-last">
+                    <div class="stats-left" style="background-color: #3dab53">
+                        <h5>{{"今日寻回："+content.solve[0]}}</h5>
+                        <h4>{{"总计："+content.solve[1]}}</h4>
+                    </div>
+                    <div class="stats-right" style="background-color: #1d9b13">
+                        <label>{{"+"+content.found[0]}}</label>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="charts">
+                <div class="col-md-4 charts-grids widget">
+                    <h4 class="title">近期数据</h4>
+                    <canvas id="bar1" height="300" width="400"></canvas>
+                </div>
+                <div class="col-md-4 charts-grids widget states-mdl">
+                    <h4 class="title">近期趋势</h4>
+                    <canvas id="line1" height="300" width="400"></canvas>
+                </div>
+                <div class="col-md-4 charts-grids widget">
+                    <h4 class="title">事件比例</h4>
+                    <canvas id="pie1" height="300" width="400"></canvas>
+                </div>
+                <div class="clearfix"></div>
+
+
+            </div>
+            <div class="charts">
+                <div class="col-md-4 charts-grids widget">
+                    <h4 class="title">用户总量</h4>
+                    <canvas id="line2" height="300" width="400"></canvas>
+                </div>
+                <div class="col-md-4 charts-grids widget  states-mdl">
+                    <h4 class="title">活跃用户</h4>
+                    <canvas id="line3" height="300" width="400"></canvas>
+                </div>
+                <div class="col-md-4 charts-grids widget">
+                    <h4 class="title">性别比例</h4>
+                    <canvas id="pie2" height="300" width="400"></canvas>
+                </div>
+                <div class="clearfix"></div>
+                <script>
+
+
+                </script>
+
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+    <!--footer-->
+    <div class="footer">
+        <p>&copy;校园失物招领网站系统 | <a href="http://www.ctgu.edu.cn/" target="_blank">CTGU</a></p>    </div>
+    <!--//footer-->
+</div>
+<!-- Classie -->
+<script src="../../static/js/classie.js"></script>
+<script>
+
+
+
+</script>
+<!--scrolling js-->
+<script src="../../static/js/jquery.nicescroll.js"></script>
+<script src="../../static/js/scripts.js"></script>
+<!--//scrolling js-->
+<!-- Bootstrap Core JavaScript -->
+<script src="../../static/js/bootstrap.js"></script>
+<script src="../../static/js/vue.js"></script>
+<script src="../../static/js/layer.js"></script>
+<script src="../../static/js/mine/common.js"></script>
+<script src="../../static/js/mine/data.js"></script>
+
+</body>
+</html>

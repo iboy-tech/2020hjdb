@@ -38,7 +38,7 @@
 #
 # @app.route('/',methods=['GET'])
 # def index():
-#     return  render_template("admin.html")
+#     return  render_template("chart.html")
 #
 # @app.route('/set_industry',methods=['POST'])
 # def set_industry():

@@ -14,7 +14,7 @@ from flask import Blueprint
 # 蓝本的名字和蓝本所在的包或模块。和程序一样，大多数情况下第二个参数使用 Python 的
 # __name__ 变量即可。
 
-admin = Blueprint('admin', __name__, url_prefix='/admin')
+chart = Blueprint('chart', __name__, url_prefix='/chart')
 auth = Blueprint('auth', __name__)
 user = Blueprint('user', __name__, url_prefix='/user')
 category = Blueprint('category', __name__, url_prefix='/category')

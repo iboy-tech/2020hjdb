@@ -28,7 +28,7 @@ def index():
     return render_template('userlist.html')
 
 
-@userlist.route('/getall', methods=['POST'], strict_slashes=False)
+@userlist.route('/getall', methods=['POST','GET'], strict_slashes=False)
 # @cache.cached(timeout=10 * 60)#缓存10分钟 默认为300s
 @login_required
 @admin_required

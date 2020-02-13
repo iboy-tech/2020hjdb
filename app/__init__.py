@@ -43,7 +43,7 @@ from app.main import category as category_bp
 from app.main import page as page_bp
 from app.main import user as user_bp
 from app.main import auth as auth_bp
-from app.main import admin as admin_bp
+from app.main import chart as admin_bp
 
 # 工厂函数
 def create_app(config_name=None):

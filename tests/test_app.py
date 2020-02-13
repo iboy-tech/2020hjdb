@@ -28,7 +28,7 @@
 #     if form.validate_on_submit():
 #         name = form.name.data
 #     form.name.data = ''
-#     return render_template('admin.html', form=form, name=name)
+#     return render_template('chart.html', form=form, name=name)
 if __name__=='__main__':
     # manage.run()
     print(11//10,11/10,13//10,23//10)
