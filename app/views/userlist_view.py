@@ -28,7 +28,7 @@ def index():
     return render_template('userlist.html')
 
 
-@userlist.route('/getall', methods=['POST','GET'], strict_slashes=False)
+@userlist.route('/getall', methods=['POST', 'GET'], strict_slashes=False)
 # @cache.cached(timeout=10 * 60)#缓存10分钟 默认为300s
 @login_required
 @admin_required
@@ -47,37 +47,48 @@ def get_all():
         if keyword == '男':
             pagination = User.query.filter(
                 User.gender == 0).order_by(User.kind.desc(), User.status).paginate(page + 1,
-                per_page=current_app.config['ARTISAN_POSTS_PER_PAGE'],error_out=False)
+                                                                                   per_page=current_app.config[
+                                                                                       'ARTISAN_POSTS_PER_PAGE'],
+                                                                                   error_out=False)
             data = search(pagination, page)
             return data
         elif keyword == '女':
             pagination = User.query.filter(
                 User.gender == 1).order_by(User.kind.desc(), User.status).paginate(page + 1
-                ,per_page=current_app.config['ARTISAN_POSTS_PER_PAGE'],error_out=False)
+                                                                                   , per_page=current_app.config[
+                    'ARTISAN_POSTS_PER_PAGE'], error_out=False)
             data = search(pagination, page)
             return data
         elif '正常' in keyword:
             pagination = User.query.filter(
                 User.status == 1).order_by(User.kind.desc(), User.status).paginate(page + 1,
-                per_page=current_app.config['ARTISAN_POSTS_PER_PAGE'],error_out=False)
+                                                                                   per_page=current_app.config[
+                                                                                       'ARTISAN_POSTS_PER_PAGE'],
+                                                                                   error_out=False)
             data = search(pagination, page)
             return data
         elif '冻结' in keyword:
             pagination = User.query.filter(
                 User.status == 0).order_by(User.kind.desc(), User.status).paginate(page + 1,
-                per_page=current_app.config['ARTISAN_POSTS_PER_PAGE'],error_out=False)
+                                                                                   per_page=current_app.config[
+                                                                                       'ARTISAN_POSTS_PER_PAGE'],
+                                                                                   error_out=False)
             data = search(pagination, page)
             return data
         elif '认证' in keyword:
             pagination = User.query.filter(
                 User.status == 2).order_by(User.kind.desc(), User.status).paginate(page + 1,
-                per_page=current_app.config['ARTISAN_POSTS_PER_PAGE'],error_out=False)
+                                                                                   per_page=current_app.config[
+                                                                                       'ARTISAN_POSTS_PER_PAGE'],
+                                                                                   error_out=False)
             data = search(pagination, page)
             return data
         elif '管理' in keyword:
             pagination = User.query.filter(
                 User.kind >= 2).order_by(User.kind.desc(), User.status).paginate(page + 1,
-                per_page=current_app.config['ARTISAN_POSTS_PER_PAGE'], error_out=False)
+                                                                                 per_page=current_app.config[
+                                                                                     'ARTISAN_POSTS_PER_PAGE'],
+                                                                                 error_out=False)
             data = search(pagination, page)
             return data
         else:
@@ -101,9 +112,9 @@ def get_all():
 def user_freeze_or_unfreeze():
     req = request.args.get('userId')
     u = User.query.get_or_404(int(req))
-    if u.status==1:
-        return restful.success(success=False,msg='该账户尚未认证，暂时无法冻结')
-    elif u.status==2:
+    if u.status == 1:
+        return restful.success(success=False, msg='该账户尚未认证，暂时无法冻结')
+    elif u.status == 2:
         u.status = 0
         messages = {
             'realName': u.real_name,
@@ -111,7 +122,7 @@ def user_freeze_or_unfreeze():
             'handlerEmail': current_user.qq + '@qq.com',
         }
         send_email('849764742', '账户冻结通知', 'userFreeze', messages)
-    elif u.status==0:
+    elif u.status == 0:
         u.status = 2
         messages = {
             'realName': u.real_name,
@@ -135,8 +146,8 @@ def reset_pssword():
     db.session.commit()
     print('发送邮件')
     messages = {
-        'username':u.username,
-        'password':'123456',
+        'username': u.username,
+        'password': '123456',
         'realName': u.real_name,
         'handlerName': current_user.real_name,
         'handlerEmail': current_user.qq + '@qq.com',
@@ -157,7 +168,8 @@ def set_or_cancle_admin():
     print('发送邮件')
     return restful.success()
 
-@cache.memoize()#根据参数设置缓存
+
+@cache.memoize()  # 根据参数设置缓存
 def search(pagination, page):
     global data
     users = pagination.items
@@ -165,9 +177,9 @@ def search(pagination, page):
     # print(users)
     list = []
     for u in users:
-        dict =u.to_dict()
+        dict = u.to_dict()
         list.append(dict)
-        data={
+        data = {
             "page": {
                 "total": pagination.total,
                 "totalPage": pagination.pages,
@@ -185,7 +197,7 @@ def search(pagination, page):
 def get_userinfo():
     id = int(request.args.get('userId'))
     u = User.query.get_or_404(id)
-    data= {
-        "user":u.to_dict()
+    data = {
+        "user": u.to_dict()
     }
     return restful.success(data=data)

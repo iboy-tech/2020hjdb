@@ -195,12 +195,12 @@ var app = new Vue({
             this.tab4.categoryIndex = index;
         },
         submitPub() {
-            if (!this.title) {
-            showAlertError('请输入标题!')
+            if (this.title=="") {
+            showAlertError('请输入标题!');
             return ;
         }
-            if (!this.about) {
-            showAlertError('请输入详情!')
+            if (this.about="") {
+            showAlertError('请输入详情!');
             return ;
         }
             if (this.tab4.categoryIndex < 0) {
