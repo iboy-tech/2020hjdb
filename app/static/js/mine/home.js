@@ -7,7 +7,7 @@ var app = new Vue({
         category: getCategory() || [],
         userIcon: "http://localhost/static/icon/user_icon.png",
         api:'https://api.uomg.com/api/qq.talk?qq=',
-        // imgPrefix: staticUrl,
+        imgPrefix: staticUrl,
         tab: [
             {
                 search: {//tab0
@@ -66,10 +66,11 @@ var app = new Vue({
             applyKind: 0,
             categoryIndex: -1,
             categoryId:13,
-            title: "",
-            about: "",
-            location: null,
+            title: " ",
+            about: " ",
+            location: " ",
             images: [],//srcList
+            info:""
         },
         notice: [
             {
@@ -93,6 +94,16 @@ var app = new Vue({
         }
     },
     methods: {
+        share(){
+            console.log(location.href);
+            //捕获页
+            layer.open({
+                type: 1,
+                //shade: true,
+                title: "保存或扫描二维码", //不显示标题
+                content: $('#shareDiv') //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
+            });
+        },
         showAllNotice(b) {
             this.noticeAll = b;
         },
@@ -184,6 +195,14 @@ var app = new Vue({
             this.tab4.categoryIndex = index;
         },
         submitPub() {
+            if (!this.title) {
+            showAlertError('请输入标题!')
+            return ;
+        }
+            if (!this.about) {
+            showAlertError('请输入详情!')
+            return ;
+        }
             if (this.tab4.categoryIndex < 0) {
                 showAlertError("请选择物品类别！")
                 return;
@@ -520,6 +539,7 @@ function setIcon(icon) {
         }
     });
 }
+/**
 
 //选择上传图片
 function changeInput(obj) {
@@ -530,40 +550,12 @@ function changeInput(obj) {
     // alert('执行了file_upload')
     let reader = new FileReader();
 
-    //读取文件过程方法
-    /* reader.onloadstart = function (e) {
-         console.log("开始读取....");
-     }
-     reader.onprogress = function (e) {
-         console.log("正在读取中....");
-     }
-     reader.onabort = function (e) {
-         console.log("中断读取....");
-     }
-     reader.onerror = function (e) {
-         console.log("读取异常....");
-     }*/
     reader.onload = function () {
         //console.log("成功读取....");
 
-        //var img = document.getElementById("image1");
-        //img.src = e.target.result;
-        // app.tab4.go.push(e.target.result);
-        //console.log(img.src)
-        //或者 img.src = this.result;  //e.target == this
          let imageData = new FormData();
                 imageData.append("file", 'multipart');
                 imageData.append("Filedata", file);
-        //         imageData.append('smfile', file);
-        // imageData.append('ssl', true);
-
-                // this.$http.post("https://api.uomg.com/api/image.sogou", imageData ,
-                // {
-                //     emulateJSON: true
-
-                // }).then(result => {
-                //         console.log(result.body);
-                // });
 console.log("我是传给后台的id：" + imageData);
     var ajax;
     ajax = new XMLHttpRequest();
@@ -590,8 +582,79 @@ console.log("我是传给后台的id：" + imageData);
     // ajax.setRequestHeader("Content-Type", "application/json");
     ajax.send(imageData);
     }
+    reader.readAsDataURL(file)
+}
+**/
+//选择上传图片
+function changeInput(obj) {
+    console.log('change img')
+    console.log(obj);
+    let file = obj.files[0];
+
+    //console.log(file);
+    console.log("file.size = " +file.size);  //file.size 单位为byte
+    var size = file.size / 1024;
+      if(size>3000){
+      showAlertError('您上传的图片大小超过3M，请尝试压缩图片，或上传所拍照片的截图');
+      return;
+      }
+    let reader = new FileReader();
+
+    //读取文件过程方法
+    /* reader.onloadstart = function (e) {
+         console.log("开始读取....");
+     }
+     reader.onprogress = function (e) {
+         console.log("正在读取中....");
+     }
+     reader.onabort = function (e) {
+         console.log("中断读取....");
+     }
+     reader.onerror = function (e) {
+         console.log("读取异常....");
+     }*/
+    reader.onload = function (e) {
+        //console.log("成功读取....");
+
+        //var img = document.getElementById("image1");
+        //img.src = e.target.result;
+        app.tab4.images.push(e.target.result);
+        //console.log(img.src)
+        //或者 img.src = this.result;  //e.target == this
+    }
 
     reader.readAsDataURL(file)
+}
+
+//发布启事
+function pubLostFound(data) {
+    console.log(data);
+    $.ajax({
+        url: baseUrl + "/user/pub",
+        data: JSON.stringify(data),
+        method: "POST",
+        success: function (res, status) {
+            console.log(res);
+            if (status == "success") {
+                if (res.success) {
+                    showOK("发布成功！");
+                    app.tab4 = {
+                        applyKind: 0,
+                        categoryIndex: -1,
+                        title: "",
+                        about: "",
+                        location: null,
+                        images: [],//srcList
+                    };
+                } else {
+                    showAlertError(res.msg)
+                }
+            } else {
+                console.log(res);
+                alert(res)
+            }
+        }
+    });
 }
 
 //发布启事
@@ -698,5 +761,15 @@ $('select.dropdown')
 //         alert("you are in the bottom");
 //     }
 // });
+
+$(function () {
+    let id = getUrlParam("id");
+    if (!id) {
+        // showAlertError("缺少请求参数！");
+    } else {
+        getDetail(id, app);
+    }
+    var qrcode = new QRCode(document.getElementById("imgDiv"), location.href);
+});
 
 

@@ -19,6 +19,7 @@ from app.main import feedback
 from app.models.feedback_model import Feedback
 from app.models.user_model import User
 from app.untils import restful
+from app.untils.mail_sender import send_email
 
 
 @feedback.route('/', methods=['GET', 'POST', 'OPTIONS'], strict_slashes=False)
@@ -63,11 +64,10 @@ def get_all():
 
 @feedback.route('/add', methods=['GET', 'POST', 'OPTIONS'], strict_slashes=False)
 @login_required
-@admin_required
 def feedback_add():
     req = request.json
     print('req', req)
-    f = Feedback(subject=req['subject'].replace('<','&lt;').replace('>','&gt;'), content=req['content'].replace('<','&lt;').replace('>','&gt;'), user_id=current_user.id)
+    f = Feedback(subject=req['subject'].replace('/(<（[^>]+）>)/script',''), content=req['content'].replace('<','&lt;').replace('>','&gt;'), user_id=current_user.id)
     db.session.add(f)
     db.session.commit()
     return restful.success()
@@ -95,9 +95,22 @@ def feedback_replay():
     f=Feedback.query.get(id)
     f.handler_id=current_user.id
     f.status=1
-    f.handler_time=datetime.now
+    f.handler_time=datetime.now()
+    u=User.query.get(f.user_id)
     f.answer=req['content']
     db.session.commit()
+    messages = {
+        'subject':f.subject,
+        'content':f.content,
+        'createTime':f.create_time.strftime('%Y-%m-%d %H:%M:%S'),
+        'realName': u.real_name,
+        'answer':req['content'],
+        'handlerTime':datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+        'handlerName': current_user.real_name,
+        'handlerEmail': current_user.qq + '@qq.com',
+    }
+    send_email('849764742', '反馈回复', 'feedbackReply', messages)
+    print('要给用户发送提醒邮件')
     return restful.success()
 
 
@@ -109,7 +122,7 @@ def feedback_mark():
     print('request.args.get(\'id\')',req)
     f=Feedback.query.get(int(req))
     f.status=1
-    f.handler_time=datetime.now
+    f.handler_time=datetime.now()
     f.handler_id=current_user.id
     db.session.commit()
     return restful.success()

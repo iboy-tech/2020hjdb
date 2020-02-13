@@ -18,16 +18,16 @@ var app = new Vue({
             ]
         },
         item: {
-           id: null,
-                icon: "./go/icon.jpg",
-                kind: 0,
-                username: "201520180508",
-                userId: "000000000001",
+                id: null,
+                // icon: "./ima/icon.jpg",
+                kind: 1,
+                username: "2018111111",
+                userId: "1",
                 time: "2019-04-16 09:27:10",
                 location: "欣苑",
                 title: "饭卡掉了",
                 about: "救救孩子",
-                images: ["https://ae01.alicdn.com/kf/Hbb9f7e45f0c5451b8ce7c1489b376360p.jpg"],
+                images: [],
                 category: "校园卡",
                 lookCount: 12,
                 status: 1,
@@ -91,7 +91,7 @@ var app = new Vue({
             let i = 0;
             let t = this.item.images.length;
             for (; i < t; i++) {
-                let src = this.item.images[i];
+                let src = app.imgPrefix+this.item.images[i];
                 let d = {"src":src};
                 this.images.data.push(d);
             }

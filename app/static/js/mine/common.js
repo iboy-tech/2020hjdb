@@ -3,7 +3,7 @@
 // const staticUrl = "http://127.0.0.1:5000/static/";
 //请求前缀
 const baseUrl = "http://iboy.f3322.net:8888";
-const staticUrl = "http://iboy.f3322.net:8888/static/";
+const staticUrl = "http://iboy.f3322.net:8888/static/upload/";
 
 //全局设置ajax
 $.ajaxSetup({

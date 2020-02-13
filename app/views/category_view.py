@@ -46,9 +46,13 @@ def add_category():
     print(current_user)
     if Category.query.filter_by(name=req['name']).first() is None:
         c = Category(name=req['name'], about=req['about'])
-        db.session.add(c)
-        db.session.commit()
-        return restful.success()
+        try:
+            db.session.add(c)
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            return restful.success(success=False, msg=str(e))
+    return restful.success()
     return restful.success(success=False,msg="类别身份证已存在")
 
 
@@ -56,7 +60,6 @@ def add_category():
 @login_required
 @super_admin_required
 def delete_category():
-    req = request.json
     req = request.args.get('name')
     print('delete_category', req)
     temp = Category.query.filter_by(name=req).first()

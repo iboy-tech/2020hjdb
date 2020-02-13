@@ -8,17 +8,15 @@
 @Description : 顶级文件夹中的 manage.py 文件用于启动程序
 @Software: PyCharm
 """
-import json
 import os
 from datetime import datetime
 from threading import Lock
-
 
 from dotenv import load_dotenv, find_dotenv
 from flask_login import current_user
 from flask_socketio import emit, SocketIO
 
-from app import create_app, OpenID, db, redis_client
+from app import create_app, OpenID, redis_client
 
 async_mode = 'eventlet'
 
@@ -71,14 +69,16 @@ def server():
             else:
                 res = {
                     'success': 'false',
-                    'data': {'msg': '二维码还有 '+str(redis_client.ttl(key))+'s 失效'}
+                    'data': {'msg': '二维码还有 '+str(redis_client.ttl(key))+'s 失效',
+                             'bg':'1'
+                             }
                 }
                 print('background_thread我是查询结果', res)
                 socketio.emit('server', res)
         else:
             res = {
                 'success': 'false',
-                'data': {'msg':'二维码已过期，请刷新页面重新绑定'}
+                'data': {'msg':'二维码已过期，请刷新页面重新绑定','bg':'0'}
             }
             print('background_thread我是查询结果', res)
             socketio.emit('server', res)
@@ -100,9 +100,7 @@ def connect():
 @socketio.on('disconnect')
 def disconnect():
     print('用户离开了', datetime.now())
-    """
-    python app.py  --host=0.0.0.0 --port=8888 --no-reload
-    """
+
 
 
 def background_thread():
@@ -128,5 +126,8 @@ def background_thread():
 
 
 if __name__ == '__main__':
+    """
+    python app.py  --host=0.0.0.0 --port=8888 --no-reload
+    """
     print(os.getenv('SECRET_KEY'))
     socketio.run(app=app, host='0.0.0.0', port=8888)

@@ -18,6 +18,7 @@ from app.decorators import super_admin_required, admin_required
 from app.main import userlist
 from app.models.user_model import User
 from app.untils import restful
+from app.untils.mail_sender import send_email
 
 
 @userlist.route('/', methods=['POST', 'GET', 'OPTIONS'], strict_slashes=False)
@@ -102,18 +103,24 @@ def user_freeze_or_unfreeze():
     u = User.query.get_or_404(int(req))
     if u.status==1:
         return restful.success(success=False,msg='该账户尚未认证，暂时无法冻结')
-    if u.status==2:
+    elif u.status==2:
         u.status = 0
-        db.session.commit()
+        messages = {
+            'realName': u.real_name,
+            'handlerName': current_user.real_name,
+            'handlerEmail': current_user.qq + '@qq.com',
+        }
+        send_email('849764742', '账户冻结通知', 'userFreeze', messages)
+    elif u.status==0:
+        u.status = 2
+        messages = {
+            'realName': u.real_name,
+            'handlerName': current_user.real_name,
+            'handlerEmail': current_user.qq + '@qq.com',
+        }
+        send_email('849764742', '账户恢复通知', 'userunFreeze', messages)
     print('要给用户发送提醒邮件')
-    from app.untils.mail_sender import send_email
-    messages = {
-        'realName': u.real_name,
-        'handlerName': current_user.real_name,
-        'handlerEmail': current_user.qq + '@qq.com',
-        'appName': '三峡大学失物招领处'
-    }
-    send_email('547142436', '账户冻结通知', 'userFreeze', messages)
+    db.session.commit()
     return restful.success()
 
 
@@ -127,6 +134,15 @@ def reset_pssword():
     u.password = '123456'
     db.session.commit()
     print('发送邮件')
+    messages = {
+        'username':u.username,
+        'password':'123456',
+        'realName': u.real_name,
+        'handlerName': current_user.real_name,
+        'handlerEmail': current_user.qq + '@qq.com',
+    }
+    send_email('849764742', '密码重置提醒', 'resetPassword', messages)
+    print('要给用户发送提醒邮件')
     return restful.success()
 
 

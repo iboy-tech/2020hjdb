@@ -18,6 +18,8 @@ from flask_moment import Moment
 from flask_redis import FlaskRedis
 from flask_sqlalchemy import SQLAlchemy
 from flask_caching import Cache
+from flask_mongoengine import MongoEngine
+
 
 bootstrap = Bootstrap()
 # mail = MailSendGrid()
@@ -29,6 +31,8 @@ login_manager = LoginManager()
 toolbar = DebugToolbarExtension()
 redis_client = FlaskRedis()
 cache=Cache()
+mongo_client=MongoEngine()
+
 
 
 

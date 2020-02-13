@@ -27,23 +27,23 @@ from app.config import config  # 导入存储配置的字典
 from .models.open_model import OpenID
 from .models.role_model import Role
 from .models.user_model import Guest, User
+from .untils.create_data import create_test_data
 
 login_manager.session_protection = 'basic'
 
-from app.main import admin as admin_bp
-from app.main import auth as auth_bp
-from app.main import user as user_bp
-from app.main import page as page_bp
-from app.main import category as category_bp
-from app.main import notice as notice_bp
-from app.main import userlist as  userlist_bp
-from app.main import found as  found_bp
-from app.main import feedback as  feedback_bp
-from app.main import detail as  detail_bp
-from app.main import comment as  comment_bp
-from app.main import oauth as  pusher_bp
 from app.main import cached as cache_bp
-
+from app.main import oauth as pusher_bp
+from app.main import comment as comment_bp
+from app.main import detail as detail_bp
+from app.main import feedback as feedback_bp
+from app.main import found as found_bp
+from app.main import userlist as userlist_bp
+from app.main import notice as notice_bp
+from app.main import category as category_bp
+from app.main import page as page_bp
+from app.main import user as user_bp
+from app.main import auth as auth_bp
+from app.main import admin as admin_bp
 
 # 工厂函数
 def create_app(config_name=None):
@@ -109,6 +109,7 @@ def register_extensions(app):  # 实例化扩展
     toolbar.init_app(app)
     redis_client.init_app(app)
     cache.init_app(app)
+    mongo_client.init_app(app)
     # socketio.init_app(app)
 
 
@@ -124,16 +125,29 @@ def register_shell_context(app):
         from app.models.comment_model import Comment
         from app.models.category_model import Category
 
-        return dict(app=app, db=db, User=User, Category=Category,
-                    Comment=Comment, Notice=Notice, LostFound=LostFound, Feedback=Feedback, Role=Role,
-                    Permission=Permission, OpenID=OpenID)
+        return dict(
+            app=app,
+            db=db,
+            User=User,
+            Category=Category,
+            Comment=Comment,
+            Notice=Notice,
+            LostFound=LostFound,
+            Feedback=Feedback,
+            Role=Role,
+            Permission=Permission,
+            OpenID=OpenID)
 
 
 def register_logging(app):
     app.logger.setLevel(logging.INFO)
-    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    formatter = logging.Formatter(
+        '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     # 日志超过10MB会被覆盖
-    file_handler = RotatingFileHandler('logs/app.log', maxBytes=10 * 1024 * 1024, backupCount=10)
+    file_handler = RotatingFileHandler(
+        'logs/app.log',
+        maxBytes=10 * 1024 * 1024,
+        backupCount=10)
     file_handler.setFormatter(formatter)
     file_handler.setLevel(logging.INFO)
 
@@ -203,4 +217,5 @@ def register_errors(app):
 
     @app.errorhandler(CSRFError)
     def handle_csrf_error(e):
-        return render_template('errors/400.html', description=e.description), 400
+        return render_template(
+            'errors/400.html', description=e.description), 400

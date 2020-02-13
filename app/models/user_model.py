@@ -36,7 +36,7 @@ class User(db.Model, UserMixin):
     status = db.Column(db.Integer, nullable=False, server_default=text('1'), info='用户状态01')
     create_time = db.Column(db.DateTime, default=datetime.now, info='时间')
     last_login = db.Column(db.DateTime, default=datetime.now, info='最后登录时间')
-    lost_founds = db.relationship('LostFound', backref='t_lost_founds', lazy="select")  # 关联评论表
+    lost_founds = db.relationship('LostFound', backref='t_lost_founds', lazy="select")  # 关联失物招领表
     comments = db.relationship('Comment', backref='t_comment', lazy="select")  # 关联评论表
 
     # @property是让这个更简洁

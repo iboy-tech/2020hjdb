@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body style="padding: 0;margin: 0;">
+<!-- 以上HTML内容并没多大意义，邮件本体是以下表格 -->
+<!-- 内置样式表：在有些邮件客户端中可能会被删除-开始 -->
+<style type="text/css">
+    table {
+        font-family: 'Microsoft YaHei', Arial, sans-serif;
+        font-size: 1rem;
+        color: #283e5e;
+    }
+
+    .default_text {
+        margin-left: 2px;
+        margin-right: 2px;
+        background-color: #f5edcd;
+        color: #949412;
+        cursor: pointer;
+    }
+
+    .default_text:hover {
+        background-color: #f5e3a3;
+    }
+
+    h1 {
+        line-height: 50px;
+        color: #386fb7;
+        font-size: 22px;
+        font-weight: bold;
+    }
+
+    h2 {
+        line-height: 40px;
+        color: #ffa207;
+        font-size: 20px;
+        font-weight: bold;
+        display: block;
+        background-color: rgba(228, 228, 228, 0.24);
+        border-left: 5px solid #ffa207;
+        padding-left: 20px;
+    }
+
+    h3 {
+        line-height: 30px;
+        color: #051b3c;
+        font-size: 18px;
+        font-weight: bold;
+        border-bottom: 1px dotted #e1e1e1
+    }
+
+    h4 {
+        line-height: 20px;
+        color: #9a9a9a;
+        font-size: 16px;
+        font-weight: bold;
+    }
+</style>
+<!-- 内置样式表-结束 -->
+<table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #fafafa;" id="bodyTable">
+    <!-- 整体布局 #bodyTable -->
+    <tr>
+        <td style="padding: 30px 0 10px 0;">
+            <table align="center" border="0" cellpadding="0" cellspacing="0" width="775"
+                   style="margin: 10px auto 10px; border-radius: 5px;border-collapse: collapse;">
+                <tbody>
+                <tr>
+                    <td><img src="https://ae01.alicdn.com/kf/H0e11d007c7a0467b9b6fa92299762f10N.png" style="display:block;"></td>
+                </tr>
+                <tr>
+                    <td style="background: url('https://s2.ax1x.com/2020/01/29/1QRGQA.png') repeat-y;">
+                        <table align="left" cellpadding="0" cellspacing="0"
+                               style="margin-left:10px; width:755px; border-collapse: collapse;">
+                            <tbody>
+                            <tr>
+                                <td style="width: 755px;padding: 20px;">
+<!--                                      <h1>您好！{{ messages.real_name }}</h1>-->
+                                    <h2> 失物认领通知：</h2>
+<!--                                     <h3>编辑器中的标签初始化：</h3>
+                                    <h4>B标签</h4>
+                                    <P>字体加粗的B标签，使用后<b>加粗字体</b></P> -->
+                                    <!-- <h3>邮件示范</h3> -->
+                                    <p style="margin: 0; line-height:37px; color: #737373; font-size: 16px; ">
+                                       亲爱的 {{ messages.found_user+' 同学' }} ,您好！</p>
+                                    <p style="margin: 0; line-height:37px; color: #737373; font-size: 16px; ">
+                                    您捡到的物品已经被认领了！</p>
+                                   <p style="margin: 0; line-height:37px; color: #737373; font-size: 16px; ">
+                                       认领者信息如下：</p>
+                                      <p style="margin: 0; line-height:37px; color: #737373; font-size: 16px; ">
+                                       失主姓名：{{ messages.lost_user }}</p>
+                                      <p style="margin: 0; line-height:37px; color: #737373; font-size: 16px; ">
+                                       联系QQ：{{ messages.connect_way }}</p>
+                                      <p style="margin: 0; line-height:37px; color: #737373; font-size: 16px; ">
+                                       领取时间：{{ messages.pub_time }}</p>
+							<p style="margin: 0; line-height:37px; color: #737373; font-size: 16px; ">
+                                        详情链接：{{ messages.url }}</p> 
+                                   <p style="margin: 0; line-height:37px; color: #737373; font-size: 16px; ">
+                                       失主会尽快与您联系，您也可以主动去联系失主！</p>
+                                      <p style="margin: 0; line-height:37px; color: #737373; font-size: 16px; ">
+                                     请注意核对认领者身份！如有问题，可进群联系管理员获得帮助</p>
+                      <p style="margin: 0; line-height:37px; color: #737373; font-size: 16px; ">
+                                       感谢您的支持，祝您生活愉快，学习进步！</p>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td><img src="https://ae01.alicdn.com/kf/Hea2d33434aec4e8d939e95271ccd2f174.png" style="display:block;"></td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td style="padding: 0;">
+            <table align="center" cellpadding="0" cellspacing="0"
+                   style="margin-bottom: 50px; width: 755px; border-collapse: collapse; ">
+                <tbody>
+                <tr>
+                    <td align="left"><a
+                            href="#"
+                            target="_blank"><img alt="" src="https://ae01.alicdn.com/kf/H976f392839a84fd9a6d7a5111f47e4d0S.png" border="0"
+                                                 style="height: 30px;"> </a></td>
+                    <td align="left" style="width:340px; margin-left:10px; "><span
+                            style="font-size:12px; color: #bac1cb;"><span
+                            style="font-weight:bold;margin-left:10px;font-size:12px;color: #0a0a0a3d;">三峡大学失物招领中心</span><a
+                            href="https://jq.qq.com/?_wv=1027&k=5ZkVgT9"
+                            target="_blank" style="margin-right:10px; font-size:12px; color: #bac1cb;text-decoration:none;line-height:8px;display: inline-block;"><img alt="联系我们" src="https://ae01.alicdn.com/kf/Hbacbfdfa51194f0eae5bacd5370f5b07m.png" border="0" style="width: 26px; height: 21px;">QQ群:251860759</a></span>
+                    </td>
+                    <td align="center" style="width:340px; margin-left:10px; font-size:12px; color: #bac1cb;"><span
+                            style="margin-right:-50px; font-size:12px; color: #bac1cb;">(说明：此邮件是系统发出，请不要直接回复该邮件)</span>
+                    </td>
+                    <td align="right"><a
+                            href="http://wpa.qq.com/msgrd?v=3&amp;uin=547142436&amp;site=qq&amp;menu=yes"
+                            target="_blank"></a></td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+</table>
+<!-- 以下HTML内容并没多大意义，邮件本体是以上表格 -->
+</body>
+</html>

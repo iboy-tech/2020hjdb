@@ -35,7 +35,7 @@
 </head>
 <body>
 <!-- <h1>creative <span>m</span><span>u</span><span>l</span><span>t</span><span>i</span> forms</h1> -->
-<h1>校园失物招领网站系统</h1>
+<h1>校园失物招领管理系统</h1>
 
 <div class="w3l-form" id="app">
     <div class="w3l-grids-from2">
@@ -68,7 +68,7 @@
         <div class="clear"></div>
     </div>
     <footer>
-        &copy;校园失物招领网站系统 | <a href="http://www.ctgu.edu.cn/" target="_blank">CTGU</a>
+        &copy;校园失物招领系统 | <a href="http://www.ctgu.edu.cn/" target="_blank">CTGU</a>
     </footer>
 </div>
 <!--<script src="https://cdn.bootcss.com/toastr.js/latest/toastr.min.js"></script>-->
@@ -104,7 +104,7 @@
                     return false;
                 }
                 else{
-                     var reg=/^[1-9][0-9]{5,11}$/;;
+                     var reg=/^[1-9][0-9]{4,11}$/;;
                      if(!reg.test(qq)) {
                          showAlertError('QQ号格式错误');
                          return false;
@@ -122,7 +122,7 @@
                                     if(me.tabIndex==0){
                                         saveSession("user", res.data.user);
                                         if(res.ext=='wx'){
-                                             location.replace("/pusher/wx");
+                                             location.replace("/oauth/wx.html");
                                         }
                                         else if (res.data.user.kind >= 2) {
                                             location.replace("/admin");
@@ -135,7 +135,7 @@
                                     me.user.code = "";
                                 }
                             else {
-                                showAlertError(res.msg);
+                                showInfo(res.msg);
                                 me.user.code = "";
                             }
                             me.newCode();

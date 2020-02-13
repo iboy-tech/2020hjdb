@@ -28,8 +28,8 @@ def send_async_email(app,msg):
 
 def send_email(to, subject, template, messages):
     app = current_app._get_current_object()
-    msg = Message(app.config['MAIL_SUBJECT_PREFIX'] + subject,
-                  sender=app.config['MAIL_DEFAULT_SENDER'], recipients=[to+'@qq.com'])
+    print('我是默认发件人',app.config['MAIL_DEFAULT_SENDER'])
+    msg = Message( app.config['MAIL_SUBJECT_PREFIX']+subject, recipients=[to+'@qq.com'])
     # msg.body = render_template(template + '.txt', **kwargs)
     msg.html = render_template('mails/'+template + '.html', messages=messages)
     # 动态模板使用

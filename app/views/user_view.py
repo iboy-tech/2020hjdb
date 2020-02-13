@@ -8,11 +8,14 @@
 @Description : 
 @Software: PyCharm
 """
+from datetime import datetime
+
 from flask import render_template, request
 from flask_cors import cross_origin
 from flask_login import current_user, login_required
+from .found_view import send_message_by_pusher
 
-from app import db
+from app import db, OpenID
 from app.main import user
 from app.models.comment_model import Comment
 from app.models.lostfound_model import LostFound
@@ -128,7 +131,7 @@ def del_Lost():
     refer = request.referrer
     print(refer)
     req = request.args.get('id')
-    print('删除评论：', req, type(req))
+    print('删除帖子：', req, type(req))
     if not req:
         return restful.params_error()
     else:
@@ -141,27 +144,65 @@ def del_Lost():
         else:
             return restful.params_error()
 
+
 @user.route('/claim', methods=['POST'])
 @login_required
 @cross_origin()
 def claim():
     req = request.args.get('id')
-    print('删除评论：', req, type(req))
+    print(req, type(req))
     if not req:
         return restful.params_error()
     else:
         l = LostFound.query.get(int(req))
-        if l is not None and (l.user_id != current_user.id) and l.kind == 1:
+        # 寻物
+        if l is not None and (l.user_id != current_user.id) and l.kind == 0:
             l.status = 1
-            l.claim_id = current_user.id
+            l.claimant_id = current_user.id
             db.session.add(l)
             db.session.commit()
-            return restful.success(msg='认领成功')
-        elif l is not None and (l.user_id != current_user.id) and l.kind == 0:
+            lost_user = User.query.filter_by(id=l.user_id).first()
+            print('通过失物正向查询失主', lost_user)
+            # 改变状态，有人找到了要通知失主
+            dict = {
+                'lost_user': lost_user.real_name,
+                'found_user': current_user.real_name,
+                'connect_way': current_user.qq,
+                'pub_time': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+                'pub_content': l.about,
+                'pub_location': l.location,
+                'url': 'http://iboy.f3322.net:8888/detail?id=' + str(l.id)
+            }
+            op = OpenID.query.filter_by(user_id=lost_user.id).first()
+            if op is not None:
+                print('发送消息')
+                uids = [op.wx_id]
+                send_message_by_pusher(dict, uids)
+                send_email('3247788937', '失物找回通知', 'noticeLost', messages=dict)
+            return restful.success(msg='上报成功,您的联系方式已发送给失主')
+        # 招领
+        elif l is not None and (l.user_id != current_user.id) and l.kind == 1:
             l.status = 1
-            l.claim_id = current_user.id
+            l.claimant_id = current_user.id
             db.session.add(l)
             db.session.commit()
-            return restful.success(msg='上报成功')
+            found_user = User.query.filter_by(user_id=l.user_id).first()
+            # 改变状态，有人找到了要通知失主
+            dict = {
+                'lost_user': current_user.real_name,
+                'found_user': found_user.real_name,
+                'connect_way': current_user.qq,
+                'pub_time': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+                'pub_content': l.about,
+                'pub_location': l.location,
+                'url': 'http://iboy.f3322.net:8888/detail?id=' + str(l.id)
+            }
+            op = OpenID.query.filter_by(user_id=found_user.id).first()
+            if op is not None:
+                print('发送消息')
+                uids = [op.wx_id]
+                send_message_by_pusher(dict, uids)
+                send_email('849764742', '失物认领通知', 'noticeFound', messages=dict)
+            return restful.success(msg='认领成功,您的联系方式已发送给失主')
         else:
             return restful.params_error()

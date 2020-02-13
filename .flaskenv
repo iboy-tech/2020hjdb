@@ -8,5 +8,7 @@ PIPENV_DONT_LOAD_ENV = 1
 #FlASK_CONFIG = production
 DEBUG_TB_INTERCEPT_REDIRECTS  =  False
 DEBUG_TB_INTERCEPT_REDIRECTS  =  False
-PATH_OF_IMAGES_DIR = 'app/static/upload'
+PATH_OF_UPLOAD = 'app/static/upload/'
+WEB_SITE_URL='http://iboy.f3322.net:8888/'
+
 

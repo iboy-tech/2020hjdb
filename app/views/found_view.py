@@ -9,18 +9,23 @@
 @Software: PyCharm
 """
 import base64
+import os
+from datetime import datetime
 
 from flask import render_template, request, current_app
 from flask_login import current_user, login_required
 from sqlalchemy import desc, or_
+from app.untils.mail_sender import send_email
 
-from app import db
+from app import db, OpenID
 from app.main import found
 from app.models.category_model import Category
 from app.models.comment_model import Comment
 from app.models.lostfound_model import LostFound
 from app.models.user_model import User
 from app.untils import restful
+from app.wxpusher import WxPusher
+import uuid
 
 
 @found.route('/', methods=['GET', 'POST'], strict_slashes=False)
@@ -127,24 +132,83 @@ def get_all():
     return data
 
 
+def change_bs4_to_png(imglist):
+    files = []
+    for img in imglist:
+        bas4_code = img.split(',')
+        filename = uuid.uuid4().hex + '.png'
+        files.append(filename)
+        with open(os.getenv('PATH_OF_UPLOAD') + filename, 'wb') as f:
+            f.write(base64.b64decode(bas4_code[1]))
+    print(files, '我是文件名')
+    return str(files)
+
+
 @found.route('/pub', methods=['GET', 'POST', 'OPTIONS'], strict_slashes=False)
 @login_required
 def pub():
     data = request.json
-    print(data)
-    print(data['go'], type(data['go']))
-    imgstr = str(data['go'])
-    print(type(imgstr), imgstr)
+    # print(data)
+    # print(data['images'], type(data['images']))
+
+    imgstr = str(data['images'])
+    print(type(data['images']), len(data['images']))
+    # strs = data['images'][0]
+    imgstr = ''
+    if len(data['images']) != 0:
+        imgstr = change_bs4_to_png(data['images'])
+    info = data['info']
+    # print(type(imgstr), imgstr)
+    print(data['location'])
     lost = LostFound(kind=data['applyKind'], category_id=data['categoryId'],
-                     images=imgstr, location=data['location'],
-                     title=data['title'], about=data['about'], user_id=current_user.id)
-    db.session.add(lost)
-    db.session.commit()
-    # print(data['go'][0],len(data['go']))
-    # strs=data['go'][0]
-    # with open('test.jpeg', 'wb') as f:
-    #     f.write(base64.b64decode(strs))
+                     images=imgstr, location=data['location'].replace('/(<（[^>]+）>)/script', ''),
+                     title=data['title'].replace('/(<（[^>]+）>)/script', ''),
+                     about=data['about'].replace('/(<（[^>]+）>)/script', ''), user_id=current_user.id)
+    try:
+        db.session.add(lost)
+        db.session.commit()
+        print('帖子的ID')
+    except Exception as e:
+        db.session.rollback()
+        return restful.params_error(msg=str(e))
+    if info != '':
+        lost_users = User.query.filter(or_(User.username == info, User.real_name == info))
+        if not lost_users:
+            print('失主没有注册')
+        else:
+            print('可能的失主', lost_users)
+            print('有人捡到您的东西了')
+            print('微信公众号和邮件通知失主')
+            for u in lost_users:
+                print(u)
+                dict = {
+                    'lost_user': u.real_name,
+                    'found_user': current_user.real_name,
+                    'connect_way': current_user.qq,
+                    'pub_time': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+                    # 'pub_title': data['about'],
+                    'pub_content': lost.about,
+                    'pub_location': lost.location,
+                    'url': 'http://iboy.f3322.net:8888/detail?id=' + str(lost.id)
+                }
+                op = OpenID.query.filter_by(user_id=u.id).first()
+                if op is not None:
+                    print('发送消息')
+                    uids = [op.wx_id]
+                    send_message_by_pusher(dict, uids)
+                    send_email('849764742', '失物找回通知', 'foundNotice', messages=dict)
+                    html = render_template('mails/WXNotice.html', messages=dict)
+                    WxPusher.send_message(content=html, uids=uids, content_type=2)
+
     return restful.success()
+
+
+def send_message_by_pusher(msg, uid):
+    content = """
+    """
+    WxPusher.send_message(content=str(msg), uids=uid)
+    # html=render_template('mails/WXNotice.html', messages=messages)
+    # WxPusher.send_message(content=str(msg), uids=uid,content_type=2)
 
 
 def get_search_data(pagination, pageNum):
@@ -152,10 +216,11 @@ def get_search_data(pagination, pageNum):
     # print(losts)
     datalist = []
     for l in losts:
-        # print(l.images, type(l.images))
-        l.images = l.images.replace('[', '').replace(']', '').replace(' \'', '').replace('\'', '')
-        # print(l.go, type(l.go))
-        imglist = l.images.strip().split(',')
+        if l.images == "":
+            imglist = []
+        else:
+            l.images = l.images.replace('[', '').replace(']', '').replace(' \'', '').replace('\'', '')
+            imglist = l.images.strip().split(',')
         # print(imglist, type(imglist))
         user = User.query.get(l.user_id)
         dict = {
@@ -171,7 +236,7 @@ def get_search_data(pagination, pageNum):
             "location": l.location,
             "title": l.title,
             "about": l.about,
-            "go": imglist,
+            "images": imglist,
             "category": Category.query.get(l.category_id).name,
             "lookCount": l.look_count,
             "commentCount": len(Comment.query.filter_by(lost_found_id=l.id).all())

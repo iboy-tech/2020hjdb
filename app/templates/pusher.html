@@ -38,6 +38,9 @@
              }
               else{
                   $("#notice").text(data['data']['msg']);
+                  if (data['data']['bg']=='0'){
+                      $("#code").css( "background" ,"url(https://ae01.alicdn.com/kf/H750e159a0e144e5cb3a063a9901215f1m.jpg)").css("background-size","cover").css("background-repeat","no-repeat");
+                  }
                   /**
                    setTimeout(function(){//5秒之后执行
                           $("#notice").text(data['data']['msg']);

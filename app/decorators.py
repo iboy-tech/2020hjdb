@@ -10,6 +10,7 @@
 """
 from functools import wraps
 
+from flask import render_template
 from flask_login import current_user
 
 
@@ -18,7 +19,7 @@ def permission_required(permission_name):
         @wraps(func)
         def decorator_function(*args, **kwargs):
             print('验证权限')
-            if not current_user.can(permission_name):
+            if not current_user.can(permission_name) and current_user.kind!=1:
                 data = {
                     "success": False,
                     "code": 403,
@@ -29,6 +30,11 @@ def permission_required(permission_name):
                     "ext": None
                 }
                 return data
+            elif  not current_user.can(permission_name) and current_user.kind==1:
+                messages = {
+                    'msg':'非法访问'
+                }
+                return render_template('mails/go.html', messages=messages)
             return func(*args, **kwargs)
 
         return decorator_function

@@ -194,6 +194,8 @@
                                     </span>
                                     <span href="#" class="item" :class="{active: tabIndex == 4}"
                                           @click="changeTab(4)">发布</span>
+
+
                                 </div>
 
                             </div>
@@ -277,7 +279,6 @@
                                                                         <div class="date">{{item.time}}&nbsp;&nbsp;
                                                                             <i v-if="item.location"
                                                                                class="map marker alternate icon"></i>
-                                                                            <!--<span class="text-over">{{item.location}}</span>-->
                                                                             <span>{{item.location}}</span>
                                                                         </div>
 
@@ -292,11 +293,11 @@
                                                              class="extra multi-image">
                                                             <div class="multimgs">
                                                                 <div class="multimgs">
-                                                                    <div class="wrapper single-wrapper"
+                                                                    <div  v-if="item.images.length>0" class="wrapper single-wrapper"
                                                                          v-for="src in item.images">
                                                                         <a>
                                                                             <img @click="jumpDetail(item.id)"
-                                                                                 :src="src" :key="src"
+                                                                                 :src="imgPrefix+src" :key="src"
                                                                                  style="max-width: 160px; height: auto;">
                                                                         </a>
                                                                     </div>
@@ -318,11 +319,11 @@
                                                             <a class="reply" @click="jumpDetail(item.id)">
                                                                 <i class="comment outline icon"></i> <span>{{item.commentCount}}</span>
                                                             </a>
-                                                            <span class="share">
-                                                                <i class="external icon"></i> <span
-                                                                    data-tweet-ref-count=""
-                                                                    data-tweet-id="19932613">转发</span>
-                                                            </span>
+                                                            <a class="share" @click="share">
+                                                                <i class="external icon"></i>
+                                                                <span data-tweet-ref-count></span>
+                                                                转发
+                                                            </a>
                                                             <a class="view" @click="jumpDetail(item.id)">查看详情</a>
                                                             <!--<div class="right">-->
                                                             <!--<a class="ban" ban-report="" data-id="19932613"-->
@@ -386,9 +387,7 @@
 
                                                                     <div class="extra">
                                                                         <div class="date">{{item.time}}&nbsp;&nbsp;
-                                                                            <i v-if="item.location"
-                                                                               class="map marker alternate icon"></i>
-                                                                            <!--<span class="text-over">{{item.location}}</span>-->
+                                                                            <i v-if="item.location" class="map marker alternate icon"></i>
                                                                             <span>{{item.location}}</span>
                                                                         </div>
 
@@ -407,7 +406,7 @@
                                                                          v-for="src in item.images">
                                                                         <a>
                                                                             <img @click="jumpDetail(item.id)"
-                                                                                 :src="src" :key="src"
+                                                                                 :src="imgPrefix+src" :key="src"
                                                                                  style="max-width: 160px; height: auto;">
                                                                         </a>
                                                                     </div>
@@ -419,7 +418,7 @@
                                                                 <span class="ui horizontal label"
                                                                       href="#">{{item.category}}</span>
                                                             </div>
-                                                        </div>
+                                                 zz       </div>
                                                         <div class="meta">
                                                             <a class="like" @click="jumpDetail(item.id)">
                                                                 <i class="eye icon"></i>
@@ -489,7 +488,7 @@
                                                                         <div class="date">{{item.time}}&nbsp;&nbsp;
                                                                             <i v-if="item.location"
                                                                                class="map marker alternate icon"></i>
-                                                                            <!--<span class="text-over">{{item.location}}</span>-->
+
                                                                             <span>{{item.location}}</span>
                                                                         </div>
 
@@ -507,7 +506,7 @@
                                                                      v-for="src in item.images">
                                                                     <a>
                                                                         <img @click="jumpDetail(item.id)"
-                                                                             :src="src" :key="src"
+                                                                             :src="imgPrefix+src" :key="src"
                                                                              style="max-width: 160px; height: auto;">
                                                                     </a>
                                                                 </div>
@@ -685,6 +684,10 @@
                                                 <label>地点：</label>
                                                 <input type="text" v-model="tab4.location" placeholder="选填">
                                             </div>
+                                            <div class="field" v-if="tab4.applyKind==1">
+                                                <label>附属信息(选填一项,没有不填)：<span style="color:red;font-weight: bold; ">*</span></label>
+                                                <input type="text" v-model="tab4.info" placeholder="请填写物品上的学号或姓名,若物品上述信息，请不要填写(适用物品类别：学生证，校园卡，身份证等)">
+                                            </div>
                                             <div class="field" style="text-align: center;">
                                                 <button @click="submitPub" class="ui button green" type="submit">提交
                                                 </button>
@@ -708,10 +711,10 @@
                                 <div v-else class="page-load-status" :style="{display: tabIndex==0?'block':'none'}">
                                     <p class="infinite-scroll-last">没有更多内容</p>
                                 </div>
-                                <!-- <p class="pagination">
+                                <p class="pagination">
                                      <a class="pagination__next" style="display: none"
                                         href="">下一页</a>
-                                 </p>-->
+                                 </p>
                             </div>
                         </div>
                     </div>
@@ -766,13 +769,10 @@
         </div>
     </div>
 
-{#    <!--修改头像-->#}
-{#    <div class="ui fluid image up-img" style="display: none; width: 24vw; height: 24vw !important; padding: 2vw;"#}
-{#         id="iconDiv">#}
-{#        <input id="iconInput" type="file" accept="image/*"#}
-{#               onchange="changeIcon(this)">#}
-{#        <img :src="icon" style="width: 20vw; height: 20vw;">#}
-{#    </div>#}
+<div style="display: none; padding: 10px;" id="shareDiv">
+    <div id="imgDiv">
+    </div>
+</div>
 
 </div>
 
@@ -780,5 +780,6 @@
 <script src="../../static/js/mine/common.js"></script>
 <script src="../../static/js/semantic.min.js"></script>
 <script src="../../static/js/mine/home.js"></script>
+<script src="../../static/js/qrcode.js"></script>
 </body>
 </html>

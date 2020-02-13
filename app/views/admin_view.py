@@ -8,7 +8,7 @@
 @Description : 
 @Software: PyCharm
 """
-from flask import render_template, request
+from flask import render_template
 from flask_login import login_required
 
 from app.decorators import admin_required

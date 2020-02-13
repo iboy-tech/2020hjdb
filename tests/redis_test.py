@@ -18,6 +18,7 @@ def test():
     redis_client.set('name', '杨豪')
     print(redis_client.get('name'))
 
+
 class RedisTestCase(unittest.TestCase):
     # 创建测试环境
     def setUp(self):

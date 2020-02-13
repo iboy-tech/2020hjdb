@@ -62,7 +62,6 @@
                                                 <div class="date">{{item.time}}&nbsp;&nbsp;
                                                     <i v-if="item.location"
                                                        class="map marker alternate icon"></i>
-                                                    <!--<span class="text-over">{{item.location}}</span>-->
                                                     <span>{{item.location}}</span>
                                                 </div>
                                             </div>
@@ -82,9 +81,7 @@
                                 <div class="extra multi-image" v-if="item.images && item.images.length > 0">
                                     <div data-multi-image-raw="list" class="multimgs" style="display: flex;">
                                         <div v-for="(src, index) in item.images" class="wrapper multing-wrapper">
-                                            <img
-                                                    :src="src" :key="src" @click="viewImages(index)"
-                                                    style="max-width: 160px; height: auto;">
+                                            <img :src="imgPrefix+src" :key="imgPrefix+src" @click="viewImages(index)" style="max-width: 160px; height: auto;">
                                         </div>
                                     </div>
                                 </div>
@@ -99,12 +96,7 @@
                                 <div class="meta">
 
                                     <a class="reply" href="#comments"><i class="comment outline icon"></i>
-{#                               改动         <span#}
-{#                                            data-tweet-reply-count>{{comments.length || 0}}</span>#}
-{#                                        评论</a>#}
-                                                                                <span
-                                            data-tweet-reply-count>{{comments.length}}</span>
-                                        评论</a>
+                                        <span data-tweet-reply-count>{{comments.length || 0}}</span> 评论</a>
                                     <a class="share" @click="share">
                                         <i class="external icon"></i>
                                         <span data-tweet-ref-count></span>
@@ -157,7 +149,6 @@
                     <!--comment-->
                     <h3 class="ui header" id="comments">评论</h3>
                     <div class="" id="tweetCommentForm">
-                        <!--<div class="ui form tweet-form" :class="{loading: commentPublishLoading}">-->
                         <div class="ui form tweet-form">
                             <div class="field">
                     <textarea v-model="comment" rows="4" placeholder="我有话要说"
@@ -167,19 +158,13 @@
                             <div class="field foot-bar">
                                 <div class="ui horizontal link small list toolbox">
                                 </div>
-                                <!--<div class="count"></div>-->
-                                <!--<div class="ui mini checkbox pub-tweet-checkbox">-->
-                                <!--<input id="pubTweet" type="checkbox" class="hidden" v-model="isPubTweet">-->
-                                <!--<label for="pubTweet">在动态中显示</label>-->
-                                <!--</div>-->
+
                                 <button :class="{disabled:  !item.id || comment.length<=  0}"
                                         class="ui primary right floated small button" @click="pubComment">发布评论
                                 </button>
                             </div>
                         </div>
-                        <!--<div class="ui mini message hidden" :class="tipMessage.className"-->
-                        <!--:style="{display: tipMessage.show ? 'block' : 'none'}"><span v-html="tipMessage.content">-->
-                        <!--</div>-->
+
                     </div>
 
 
@@ -278,21 +263,13 @@
 
                                     <div class="extra multi-image" data-optlog-id="19929938">
                                         <div class="multimgs">
-                                            <div class="wrapper single-wrapper" v-for="src in item.images">
+                                            <div   class="wrapper single-wrapper"   v-for="src in item.images">
                                                 <a>
-                                                    <img :src="src" :key="src" @click="jumpDetail(item.id)"
+                                                    <img :src="imgPrefix+src" :key="src" @click="jumpDetail(item.id)"
                                                          data-max-width="160" data-max-height="160" alt="图片">>
                                                 </a>
                                             </div>
 
-                                            <!--   <div class="wrapper single-wrapper" data-multi-image-raw="item">
-                                                   <a @click="jumpDetail(item.id)">
-                                                       <img :src="src" :key="src"
-                                                            data-max-width="160" data-max-height="160" alt="图片">
-                                                   </a>
-                                               </div>-->
-                                        </div>
-                                    </div>
                                     <div class="ui horizontal list">
                                         <div class="item">
                                             <span class="ui horizontal label">{{item.category}}</span>
@@ -305,8 +282,11 @@
                                         </a>
                                         <a class="reply"><i class="comment outline icon"></i>
                                             <span>{{item.commentCount}}</span> 评论</a>
-                                        <a class="share"><i class="external icon"></i>
-                                            转发</a>
+                                        <a class="share" @click="share">
+                                        <i class="external icon"></i>
+                                        <span data-tweet-ref-count></span>
+                                        转发
+                                    </a>
                                     </div>
                                 </div>
                             </div>
@@ -332,9 +312,12 @@
         </div>
     </div>
 </div>
+
 <div style="display: none; padding: 10px;" id="shareDiv">
     <div id="imgDiv">
     </div>
+</div>
+</div>
 </div>
 
 <script src="../../static/js/semantic.min.js"></script>
@@ -342,6 +325,7 @@
 <script src="../../static/js/layer.js"></script>
 <script src="../../static/js/mine/detail.js"></script>
 <script src="../../static/js/qrcode.js"></script>
+
 </body>
 </html>
 <!-- Generated by oschina (init:0[ms],page:34[ms],ip:223.104.10.126) //-->

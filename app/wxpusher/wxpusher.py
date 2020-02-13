@@ -21,6 +21,8 @@ class WxPusher():
 
     @classmethod
     def send_message(cls, content, uids, token=None, **kwargs):
+        print('这是环境变量中的token', cls.default_token)
+        print('这是要发送的内容和对象', content, uids)
         """Send Message."""
         payload = {
             'appToken': cls.get_token(token),
@@ -40,7 +42,7 @@ class WxPusher():
         return requests.get(url).json()
 
     @classmethod
-    def create_qrcode(cls, extra, valid_time=300, token=None):#二维码有效期默认30min
+    def create_qrcode(cls, extra, valid_time=300, token=None):  # 二维码有效期默认30min
         """Create qrcode with extra callback information."""
         payload = {
             'appToken': cls.get_token(token),

@@ -17,16 +17,16 @@ var app = new Vue({
             total: 0,
             list: [
                 /*  {
-                      id: "00000000000000001",
+                      id: "01",
                       icon: "./go/icon.jpg",
                       kind: 0,
                       status: 1,
-                      username: "201520180508",
+                      username: "2018111111",
                       realName: "Alice",
                       time: "2019-04-16 09:27:10",
-                      location: "研一的门口",
+                      location: "欣苑的门口",
                       title: "丢了一只篮球",
-                      go: ["./go/icon.jpg"],
+                      images: ["./go/icon.jpg"],
                       category: "电子数码",
                       lookCount: 12,
                       commentCount: 2,
@@ -76,11 +76,7 @@ var app = new Vue({
             layer.confirm('确定要删除码？', {
                 btn: ['确定', '取消'] //按钮
             }, function () {
-                deletePub({
-                    idList: [
-                        id
-                    ]
-                });
+                deletePub(id);
             }, function () {
 
             });
@@ -121,7 +117,7 @@ $(function () {
     //console.log(app.user);
     pageLostFound(app.result.search, app.result, false);
 
-    var menuLeft = document.getElementById('cbp-spmenu-s1'),
+    let menuLeft = document.getElementById('cbp-spmenu-s1'),
         showLeftPush = document.getElementById('showLeftPush'),
         body = document.body;
 
@@ -194,15 +190,16 @@ function getUserInfo(userId, app){
 }
 
 //删除招领信息
-function deletePub(data) {
+function deletePub(id) {
     $.ajax({
-        url: baseUrl + "/user/removeLost",
+        url: baseUrl + "/user/removeLost?id="+id,
         method: "POST",
-        data: JSON.stringify(data),
+        // data: JSON.stringify(data),
         success: function (res, status) {
             console.log(res);
             if (status == "success") {
                 if (res.success) {
+                    showOK(res.msg);
                     pageLostFound(app.result.search, app.result, false);
                 } else {
                     showAlertError(res.msg)

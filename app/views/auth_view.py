@@ -5,7 +5,7 @@
 @Time    : 2020/1/19 21:21
 @Author  : iBoy
 @Email   : iboy@iboy.tech
-@Description : 
+@Description :
 @Software: PyCharm
 """
 import json
@@ -22,12 +22,27 @@ from app.models.user_model import User
 from app.untils import restful
 from app.untils.auth_token import generate_token, validate_token
 from app.untils.mail_sender import send_email
+import re
 
 
 @auth.route('/favicon.ico')
 def favicon():
-    return send_from_directory(os.path.join(current_app.root_path, 'static/images'),
-                               'favicon.ico', mimetype='image/vnd.microsoft.icon')
+    return send_from_directory(
+        os.path.join(
+            current_app.root_path,
+            'static/images'),
+        'favicon.ico',
+        mimetype='image/vnd.microsoft.icon')
+
+
+def checkQQ(str):
+    # 正则表达式
+    pattern = r"qq:[1-9]\d{4,10}"
+    res = re.findall(pattern, str, re.I)
+    if not res:
+        return True
+    else:
+        return False
 
 
 @auth.route('/', methods=['GET', 'POST', 'OPTIONS'])
@@ -41,16 +56,20 @@ def login():
             restful.success(success=False, msg='账户名或密码错误')
         else:
             if user.status == 0:
-                return restful.success(success=False, msg='您的账户因违规已被冻结，请联系管理员申诉')
+                return restful.success(
+                    success=False, msg='您的账户因违规已被冻结，请联系管理员申诉')
             elif user.status == 1:
-                return restful.success(success=False, msg='您的账户还未完成认证，请认证后登录，若之前填写的QQ有误，可以在认证界面填写新的QQ重新进行认证')
+                return restful.success(
+                    success=False,
+                    msg='您的账户还未完成认证，请认证后登录，若之前填写的QQ有误，可以在认证界面填写新的QQ重新进行认证')
             elif user is not None and user.verify_password(data['password']):
                 login_user(user, remember=True)
                 op = OpenID.query.filter_by(user_id=current_user.id).first()
-                print('我是查询的登录页面查询的OPIN',op,datetime.now())
+                print('我是查询的登录页面查询的OPIN', op, datetime.now())
                 if op is None:
-                    data =user.auth_to_dict()
-                    return restful.success(success=True,msg='登录成功，请绑定微信',data=data,ext='wx')
+                    data = user.auth_to_dict()
+                    return restful.success(
+                        success=True, msg='登录成功，请绑定微信', data=data, ext='wx')
                 print('当前登录的用户', current_user.real_name)
                 # 发送验证邮件
                 # token = generate_token(user=user, operation='confirm-qq', qq=user.qq)
@@ -58,9 +77,11 @@ def login():
                 #     'real_name': user.real_name,
                 #     'token': token
                 # }
-                # send_email('2013629193', '账户激活', 'confirm', messages=messages)
+                # send_email('849764742', '账户激活', 'confirm', messages=messages)
                 # 发送验证邮件
-                print('current_user.is_authenticated', current_user.is_authenticated)
+                print(
+                    'current_user.is_authenticated',
+                    current_user.is_authenticated)
                 print('Flask-Login自动添加', session['user_id'])
                 user.last_login = datetime.now()
                 print(user)
@@ -98,46 +119,69 @@ def recognize():
     usr = data['username']
     pwd = data['password']
     qq = data['qq']
-    # code=data['code']
-    user_db = User.query.filter_by(username=data['username']).first()
-    if user_db is not None and user_db.status > 1:
-        data = {"user": {}}
-        return restful.success(success=False, msg="您的账户已认证，请直接登录", data=data)
-    elif user_db.status == 1:
-        user_db.qq = qq
-        db.session.commit()
-        # 发送验证邮件
-        token = generate_token(user=user_db, operation='confirm-qq', qq=user_db.qq)
-        messages = {
-            'real_name': user_db.real_name,
-            'token': token
-        }
-        send_email('2013629193', '用户认证', 'confirm', messages=messages)
-        return restful.success(success=False, msg="验证邮件已发送到您的QQ邮箱，可能在垃圾信箱中，请尽快认证", data=data)
-    else:
-        from app.untils.jwc import user_verify
-        user_jwc = user_verify(usr, pwd)
-        if user_jwc is not None:
-            print(user_jwc, '验证成功')
-            user = User(username=user_jwc['username'], password=pwd, real_name=user_jwc['real_name'],
-                        academy=user_jwc['academy'], class_name=user_jwc['class_name'], major=user_jwc['major'],
-                        qq=qq, gender=user_jwc['gender'])
-            print(user)
-            # g.user=u
-            db.session.add(user)
+    if checkQQ(qq):
+        user_db = User.query.filter_by(username=data['username']).first()
+        if user_db is not None and user_db.status > 1:
+            data = {"user": {}}
+            return restful.success(
+                success=False, msg="您的账户已认证，请直接登录", data=data)
+        elif user_db is not None and user_db.status == 0:
+            data = {"user": {}}
+            return restful.success(
+                success=False,
+                msg="您的账户已被冻结，请联系管理员申诉",
+                data=data)
+        elif user_db is not None and user_db.status == 1:  # 重发验证邮件
+            user_db.qq = qq
             db.session.commit()
             # 发送验证邮件
-            token = generate_token(user=user, operation='confirm-qq', qq=user.qq)
+            token = generate_token(
+                user=user_db,
+                operation='confirm-qq',
+                qq=user_db.qq)
             messages = {
-                'real_name': user.real_name,
+                'real_name': user_db.real_name,
                 'token': token
             }
-            send_email(user.qq, 'confirm', messages=messages)
-            # 发送验证邮件
-            data = restful.success(success=False, msg='验证邮件已发送到您的QQ邮箱，可能在垃圾信箱中，请尽快认证', data=data)
+            send_email('849764742', '身份认证', 'confirm', messages=messages)
+            return restful.success(
+                success=False,
+                msg="验证邮件已发送到您的QQ邮箱，可能在垃圾信箱中，请尽快认证",
+                data=data)
         else:
-            data = restful.success(success=False, msg="您的用户名或密码有误，请重新尝试")
-        return data
+            from app.untils.jwc import user_verify
+            user_jwc = user_verify(usr, pwd)
+            if user_jwc is not None:
+                print(user_jwc, '验证成功')
+                user = User(
+                    username=user_jwc['username'],
+                    password=pwd,
+                    real_name=user_jwc['real_name'],
+                    academy=user_jwc['academy'],
+                    class_name=user_jwc['class_name'],
+                    major=user_jwc['major'],
+                    qq=qq,
+                    gender=user_jwc['gender'])
+                print(user)
+                # g.user=u
+                db.session.add(user)
+                db.session.commit()
+                # 发送验证邮件
+                token = generate_token(
+                    user=user, operation='confirm-qq', qq=user.qq)
+                messages = {
+                    'real_name': user.real_name,
+                    'token': token
+                }
+                send_email(user.qq, '身份认证', 'confirm', messages=messages)
+                # 发送验证邮件
+                data = restful.success(
+                    success=False,
+                    msg='验证邮件已发送到您的QQ邮箱，可能在垃圾信箱中，请尽快认证',
+                    data=data)
+    else:
+        return restful.success(success=False, msg='QQ号格式不正确', data=data)
+    return data
 
 
 @auth.route('/confirm', methods=['GET'])

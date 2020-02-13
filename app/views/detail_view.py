@@ -33,11 +33,15 @@ def index():
         lost = LostFound.query.get(int(id))
         if lost is not None:
             user = User.query.get(lost.user_id)
-            lost.images = lost.images.replace('[', '').replace(']', '').replace(' \'', '').replace('\'', '')
+            if  lost.images=="":
+                imglist=[]
+            else:
+                lost.images = lost.images.replace('[', '').replace(']', '').replace(' \'', '').replace('\'', '')
+                imglist = lost.images.strip().split(',')
             lost.look_count = lost.look_count + 1
             db.session.add(lost)
             db.session.commit()
-            imglist = lost.images.strip().split(',')
+
             data = {
                 "item": {
                     "id": lost.id,
@@ -50,7 +54,7 @@ def index():
                     "location": lost.location,
                     "title": lost.title,
                     "about": lost.about,
-                    "go": imglist,
+                    "images": imglist,
                     "category": (Category.query.get(lost.category_id)).name,
                     "lookCount": lost.look_count,
                     "status": lost.status,
