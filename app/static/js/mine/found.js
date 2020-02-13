@@ -21,6 +21,7 @@ var app = new Vue({
                       icon: "./go/icon.jpg",
                       kind: 0,
                       status: 1,
+                      ustatus:2
                       username: "2018111111",
                       realName: "Alice",
                       time: "2019-04-16 09:27:10",
@@ -36,14 +37,14 @@ var app = new Vue({
         userInfo: {
             userId: "001",
             name: "Alice",
-            username: "201520180508",
+            username: "201811128",
             gender: "male",
             qq: "",
             classNum: "1521805",
             major: "soft making",
             academy: "soft academy",
             lastLogin: "2019-4-20 13:00",
-            status: "正常"
+            status: 2
         }
     },
     computed: {
@@ -52,15 +53,24 @@ var app = new Vue({
         }
     },
     methods: {
-        freezeUser(userId){
-            layer.confirm('冻结后该用户将无法再登录系统，确定要冻结码？', {
+        freezeUser(userId,flag){
+            if (flag==1){
+                layer.confirm('冻结后该用户将无法再登录系统，确定要冻结码？', {
                 btn: ['确定', '取消'] //按钮
             }, function () {
-                freezeUser(userId)
+                freezeUser(userId,flag)
             }, function () {
-
             });
-        },
+            }
+            else{
+                layer.confirm('取消冻结后用户可正常登录系统，你确定要取消吗？', {
+                btn: ['确定', '取消'] //按钮
+            }, function () {
+                freezeUser(userId,flag)
+            }, function () {
+            });
+            }
+            },
         seeInfo(userId){
             console.log(userId);
             getUserInfo(userId, this);
@@ -108,8 +118,8 @@ var app = new Vue({
 
             });
         }
-
     }
+
 });
 
 $(function () {
@@ -136,9 +146,9 @@ $(function () {
     }
 });
 //冻结用户
-function freezeUser(userId){
+function freezeUser(userId,flag){
     $.ajax({
-        url: baseUrl + "/admin/freezeUser?userId=" + userId,
+        url: baseUrl + "/userlist/freeze?userId=" + userId,
         method: "POST",
         //data: JSON.stringify(data),
         success: function (res, status) {

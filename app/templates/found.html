@@ -201,11 +201,8 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                                     </button>
                                     <ul class="dropdown-menu">
                                         <li><a @click="seeInfo(item.userId)">查看信息</a></li>
-                                        <!--<li role="separator" class="divider"></li>-->
-                                        <!--<li role="separator" class="divider"></li>-->
-                                        <!--<li><a href="#">发送邮件</a></li>-->
-                                        <li><a @click="freezeUser(item.userId)">冻结账号</a></li>
-                                        <!--<li><a href="#"></a></li>-->
+                                        <li v-if="item.ustatus==2"><a  @click="freezeUser(item.userId,1)">冻结账号</a></li>
+                                        <li v-if="item.ustatus==0"><a @click="freezeUser(item.userId,0)">解冻账号</a></li>
                                     </ul>
                                 </div>
                             </td>
@@ -229,37 +226,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                                 </button>
                             </td>
                         </tr>
-                        <!--<tr>
-                            <th scope="row">2</th>
-                            &lt;!&ndash;<td>&ndash;&gt;
-                                &lt;!&ndash;<span class="label label-info">广兰校区</span>&ndash;&gt;
-                            &lt;!&ndash;</td>&ndash;&gt;
-                            <td><span class="label label-info">电子数码</span></td>
-                            <td><a>丢失华为P30Pro一部,丢失华为P30Pro一部,丢失华为P30Pro一部丢失华为P30Pro一部,丢失华为P30Pro一部</a></td>
-                            <td><span class="label label-default">2019-04-13 16:48:55</span></td>
-                            <td><span class="label label-primary">认领中</span></td>
-                            <td>
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-default btn-xs dropdown-toggle"
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        赵海&nbsp;<span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="#">查看信息</a></li>
-                                        &lt;!&ndash;<li role="separator" class="divider"></li>&ndash;&gt;
-                                        &lt;!&ndash;<li role="separator" class="divider"></li>&ndash;&gt;
-                                        <li><a href="#">发送邮件</a></li>
-                                        <li><a href="#">冻结账号</a></li>
-                                        &lt;!&ndash;<li><a href="#"></a></li>&ndash;&gt;
-                                    </ul>
-                                </div>
-                            </td>
-                            <td>
-                                <button type="button" class="btn btn-danger btn-xs">
-                                    <span class="glyphicon glyphicon-trash"></span>
-                                </button>
-                            </td>
-                        </tr>-->
+
                         </tbody>
                     </table>
                     <p v-if="result.list.length == 0" class="text-center">无内容</p>
@@ -271,22 +238,16 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                     <nav style="float: right;">
                         <ul class="pagination">
                             <li><a @click="toPage(0)">首页</a></li>
-                            <li :class="{disabled: result.search.pageNum==0}">
-                                <a @click="toPage(result.search.pageNum-1)" aria-label="Previous">
-                                    <span aria-hidden="true">«</span>
-                                </a>
+                            <li :class="{disabled:  result.search.pageNum==0}">
+                                <a @click="toPage( result.search.pageNum-1)" aria-label="Previous">
+                                    <span aria-hidden="true">«</span></a>
                             </li>
-                            <!--<li class="active"><a>1</a></li>-->
                             <li v-for="num in result.totalPage" :class="{active: num==currentPage}">
                                 <a @click="toPage(num-1)">{{num}}</a>
                             </li>
-                            <!--<li><a href="#">3</a></li>-->
-                            <!--<li><a href="#">4</a></li>-->
-                            <!--<li><a href="#">5</a></li>-->
-                            <li :class="{disabled: result.search.pageNum>=result.totalPage-1}">
-                                <a @click="toPage(result.search.pageNum+1)" aria-label="Next"><span
-                                        aria-hidden="true">»</span>
-                                </a>
+                            <li :class="{disabled:  result.search.pageNum>=result.totalPage -1}">
+                                <a @click="toPage( result.search.pageNum+1)"
+                                   aria-label="Next"><span aria-hidden="true">»</span></a>
                             </li>
                             <li><a @click="toPage(result.totalPage-1)">末页</a></li>
                         </ul>
@@ -295,7 +256,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                 <div class="col-md-5">
                     <div class="input-group" style="margin: 20px 10px;">
                         <span class="input-group-addon" id="sizing-addon1">共{{result.total}}条，每页</span>
-                        <input type="text" class="form-control" v-model="result.search.pageSize">
+                        <input type="text" class="form-control" v-model=" result.search.pageSize">
                         <span class="input-group-addon" id="sizing-addon2">条，第</span>
                         <input type="text" class="form-control" :value="currentPage" id="pgNum">
                         <span class="input-group-addon" id="sizing-addon3">/{{result.totalPage}}页</span>

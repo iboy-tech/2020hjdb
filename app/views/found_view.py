@@ -239,7 +239,8 @@ def get_search_data(pagination, pageNum):
             "images": imglist,
             "category": Category.query.get(l.category_id).name,
             "lookCount": l.look_count,
-            "commentCount": len(Comment.query.filter_by(lost_found_id=l.id).all())
+            "commentCount": len(Comment.query.filter_by(lost_found_id=l.id).all()),
+            "ustatus":user.status
         }
         datalist.append(dict)
     data = {
