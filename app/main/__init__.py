@@ -29,6 +29,6 @@ oauth = Blueprint('oauth', __name__, url_prefix='/oauth')
 cached = Blueprint('cache', __name__, url_prefix='/cache')
 
 
-from ..views import admin_view, auth_view, user_view, category_view, page_view, notice_view, comment_view, \
+from ..views import chart_view, auth_view, user_view, category_view, page_view, notice_view, comment_view, \
     feedback_view, userlist_view, found_view, detail_view, oauth_view, cache_view
 print('main蓝图注册了')
