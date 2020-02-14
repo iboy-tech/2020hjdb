@@ -14,7 +14,7 @@ from flask import render_template
 from flask_login import login_required
 
 from app import db, User
-from app.decorators import admin_required, wechat_required
+from app.decorators import admin_required
 from app.main import chart
 from app.models.lostfound_model import LostFound
 from app.untils import restful

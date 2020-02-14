@@ -14,7 +14,7 @@ from flask import render_template, request
 from flask_login import current_user, login_required
 
 from app import db
-from app.decorators import admin_required, super_admin_required, wechat_required
+from app.decorators import admin_required
 from app.main import feedback
 from app.models.feedback_model import Feedback
 from app.models.user_model import User

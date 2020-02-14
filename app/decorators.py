@@ -53,7 +53,7 @@ def super_admin_required(func):
 
     # :param func: 其实就是要装饰的函数
 
-
+"""
 def wechat_required(func=None, param=None):
 # def wechat_required(func, *args, **kwargs):
     # def dercorator(func):
@@ -69,5 +69,5 @@ def wechat_required(func=None, param=None):
         return func(*args, **kwargs)  # 通过
 
     return func_wx
-
+"""
 # return dercorator

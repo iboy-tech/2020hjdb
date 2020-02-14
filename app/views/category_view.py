@@ -12,7 +12,7 @@ from flask import request, render_template, session
 from flask_login import current_user, login_required
 
 from app import db
-from app.decorators import admin_required, super_admin_required, wechat_required
+from app.decorators import admin_required, super_admin_required
 from app.main import category
 from app.models.category_model import Category
 from app.untils import restful

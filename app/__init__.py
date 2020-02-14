@@ -74,7 +74,7 @@ def create_app(config_name=None):
     register_errors(app)  # 注册错误处理函数
     register_shell_context(app)  # 注册shell上下文处理函数
     register_commands(app)  # 注册自定义shell命令
-
+    register_interceptor(app)  # 拦截器
     CORS(app, supports_credentials=True, resources=r'/*')  # 允许所有域名跨域
 
     # config[config_name].init_app(app)
@@ -95,7 +95,7 @@ def register_blueprints(app):
     app.register_blueprint(comment_bp)
     app.register_blueprint(pusher_bp)
     app.register_blueprint(cache_bp)
-    register_interceptor(app)  # 拦截器
+
 
 
 def register_extensions(app):  # 实例化扩展
@@ -225,23 +225,24 @@ def register_errors(app):
 
 
 def register_interceptor(app):
-    @app.before_request
-    def before_request():
-        ip = request.remote_addr
-        url = request.url
-        print(ip),
-        print(url)
-        """
-        if  'auth' in request.url_rule.endpoint:
-            return None
-        print("endpoint", request.url_rule.endpoint)
-        if current_user.is_authenticated:
-            op = OpenID.query.filter_by(user_id= current_user.id).first()
-            print('判断用户是否关注公众号', )
-            print(op)
-            if op is None:
-                # messages = {
-                #     'msg': '请完成微信绑定'
-                # }
-                return redirect(url_for('oauth.index')),301
-        """
+    pass
+    # @app.before_request
+    # def before_request():
+    #     ip = request.remote_addr
+    #     url = request.url
+    #     print(ip),
+    #     print(url)
+    """
+    if  'auth' in request.url_rule.endpoint:
+        return None
+    print("endpoint", request.url_rule.endpoint)
+    if current_user.is_authenticated:
+        op = OpenID.query.filter_by(user_id= current_user.id).first()
+        print('判断用户是否关注公众号', )
+        print(op)
+        if op is None:
+            # messages = {
+            #     'msg': '请完成微信绑定'
+            # }
+            return redirect(url_for('oauth.index')),301
+    """
