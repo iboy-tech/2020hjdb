@@ -56,8 +56,6 @@ class BaseConfig:
         'username': 'root',
         'password': '123456'
     }
-    CELERY_BROKER_URL = 'redis://localhost:6379'
-    CELERY_RESULT_BACKEND = 'redis://localhost:6379'
 
     # REDIS_DB_URL = {
     #     'host': '127.0.0.1',
@@ -65,7 +63,7 @@ class BaseConfig:
     #     'password': '',
     #     'db': 0
     # }
-    MAIL_DEFAULT_SENDER = ("三峡大学失物招领处",os.getenv('MAIL_USERNAME'))
+    MAIL_DEFAULT_SENDER = ("三峡大学失物招领处", os.getenv('MAIL_USERNAME'))
 
     @staticmethod
     def init_app(app):

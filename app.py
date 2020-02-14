@@ -24,6 +24,8 @@ load_dotenv(find_dotenv('.env'))
 load_dotenv(find_dotenv('.flaskenv'))
 
 app = create_app(os.getenv('FlASK_CONFIG') or 'default')
+# app.app_context().push()
+
 app.config['SECRET_KEY'] = 'adsdad&*^%^$%#afcsefvdzcssef1212'
 
 socketio = SocketIO(app=app, async_mode=async_mode, cors_allowed_origins="*")
@@ -42,12 +44,12 @@ def server():
     #         thread = socketio.start_background_task(background_thread)
     key = str(current_user.id) + '-pusher-post-data'
     redis_client.set(key, 'null')  # 把数据存入redis
-    redis_client.expire(key,180)
+    redis_client.expire(key, 180)
     while True:
         op = redis_client.get(key)
         print('我是redis中的数据类型', op, type(op))
         if op is not None:
-            op=op.decode()
+            op = op.decode()
             print('当前用户姓名', current_user.real_name)
             # op = OpenID.query.filter_by(user_id=current_user.id).first()
             # db.session.remove()
@@ -58,9 +60,9 @@ def server():
                 print('循环查询OpenID', datetime.now(), op)
                 res = {
                     'success': 'true',
-                    'data': {'msg':'绑定成功！即将回到主页',
-                             'head':data['userHeadImg'].replace('http','https')
-                    }
+                    'data': {'msg': '绑定成功！即将回到主页',
+                             'head': data['userHeadImg'].replace('http', 'https')
+                             }
                 }
                 print('background_thread我是查询结果', res)
                 emit('server', res)
@@ -69,8 +71,8 @@ def server():
             else:
                 res = {
                     'success': 'false',
-                    'data': {'msg': '二维码还有 '+str(redis_client.ttl(key))+'s 失效',
-                             'bg':'1'
+                    'data': {'msg': '二维码还有 ' + str(redis_client.ttl(key)) + 's 失效',
+                             'bg': '1'
                              }
                 }
                 print('background_thread我是查询结果', res)
@@ -78,7 +80,7 @@ def server():
         else:
             res = {
                 'success': 'false',
-                'data': {'msg':'二维码已过期，请刷新页面重新绑定','bg':'0'}
+                'data': {'msg': '二维码已过期，请刷新页面重新绑定', 'bg': '0'}
             }
             print('background_thread我是查询结果', res)
             socketio.emit('server', res)
@@ -100,7 +102,6 @@ def connect():
 @socketio.on('disconnect')
 def disconnect():
     print('用户离开了', datetime.now())
-
 
 
 def background_thread():
@@ -127,7 +128,11 @@ def background_thread():
 
 if __name__ == '__main__':
     """
+    启动 Web server:
+    https://www.jianshu.com/p/cdee367b77d3
     python app.py  --host=0.0.0.0 --port=8888 --no-reload
+    启动 Celery worker:
+    celery worker -A app.celery -l  INFO  -n ctgu@celeryd -E --loglevel=info  
     """
     print(os.getenv('SECRET_KEY'))
     socketio.run(app=app, host='0.0.0.0', port=8888)

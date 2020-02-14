@@ -110,7 +110,7 @@ def feedback_replay():
         'handlerName': current_user.real_name,
         'handlerEmail': current_user.qq + '@qq.com',
     }
-    send_email('849764742', '反馈回复', 'feedbackReply', messages)
+    send_email.apply_async(args=('849764742', '反馈回复', 'feedbackReply', messages))
     print('要给用户发送提醒邮件')
     return restful.success()
 

@@ -25,6 +25,7 @@ from app.models.lostfound_model import LostFound
 from app.models.user_model import User
 from app.untils import restful
 from app.wxpusher import WxPusher
+from app.untils.tinify_tool import tinypng
 import uuid
 
 
@@ -138,9 +139,13 @@ def change_bs4_to_png(imglist):
         bas4_code = img.split(',')
         filename = uuid.uuid4().hex + '.png'
         files.append(filename)
-        with open(os.getenv('PATH_OF_UPLOAD') + filename, 'wb') as f:
+        with open(os.path.join(os.getenv('PATH_OF_UPLOAD'),filename), 'wb') as f:
             f.write(base64.b64decode(bas4_code[1]))
+    if files:
+        print('对上传图片进行异步压缩')
+        tinypng.apply_async(args=(files))
     print(files, '我是文件名')
+
     return str(files)
 
 
@@ -196,7 +201,7 @@ def pub():
                     print('发送消息')
                     uids = [op.wx_id]
                     send_message_by_pusher(dict, uids)
-                    send_email('849764742', '失物找回通知', 'foundNotice', messages=dict)
+                    send_email.delay('849764742', '失物找回通知', 'foundNotice', messages=dict)
                     html = render_template('mails/WXNotice.html', messages=dict)
                     WxPusher.send_message(content=html, uids=uids, content_type=2)
 

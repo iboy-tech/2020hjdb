@@ -8,24 +8,24 @@
 @Description : 电子邮件支持
 @Software: PyCharm
 """
-from threading import Thread
-
+# from threading import Thread
+from celery_once import QueueOnce
 from flask import current_app, render_template
 from flask_mail import Message
 # from flask_mail_sendgrid import Message
 
-from app import mail
+from app import mail, celery
 
 
-def send_async_email(app,msg):
-    with app.app_context():
-        print('异步发送邮件调用了', msg)
-        mail.send(msg)
+# def send_async_email(app,msg):
+#     with app.app_context():
+#         print('异步发送邮件调用了', msg)
+#         mail.send(msg)
         # print(response.status_code)
         # print(response.body)
         # print(response.headers)
 
-
+@celery.task(base=QueueOnce)
 def send_email(to, subject, template, messages):
     app = current_app._get_current_object()
     print('我是默认发件人',app.config['MAIL_DEFAULT_SENDER'])
@@ -33,11 +33,12 @@ def send_email(to, subject, template, messages):
     # msg.body = render_template(template + '.txt', **kwargs)
     msg.html = render_template('mails/'+template + '.html', messages=messages)
     # 动态模板使用
+    mail.send(msg)
     # msg.template_id = 'my-template-id'
     # msg.dynamic_template_data = {'first_name': 'John', 'last_name': 'Doe'}
     # msg.add_filter
 
-    thr = Thread(target=send_async_email, args=[app,msg])
-    thr.start()
+    # thr = Thread(target=send_async_email, args=[app,msg])
+    # thr.start()
     print('发送邮件调用了',messages)
-    return thr
+    # return thr

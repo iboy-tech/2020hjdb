@@ -77,7 +77,7 @@ def login():
                 #     'real_name': user.real_name,
                 #     'token': token
                 # }
-                # send_email('849764742', '账户激活', 'confirm', messages=messages)
+                # send_email.delay('849764742', '账户激活', 'confirm', messages=messages)
                 # 发送验证邮件
                 print(
                     'current_user.is_authenticated',
@@ -143,7 +143,7 @@ def recognize():
                 'real_name': user_db.real_name,
                 'token': token
             }
-            send_email('849764742', '身份认证', 'confirm', messages=messages)
+            send_email.apply_async(args=('849764742', '身份认证', 'confirm', messages))
             return restful.success(
                 success=False,
                 msg="验证邮件已发送到您的QQ邮箱，可能在垃圾信箱中，请尽快认证",
@@ -173,7 +173,7 @@ def recognize():
                     'real_name': user.real_name,
                     'token': token
                 }
-                send_email(user.qq, '身份认证', 'confirm', messages=messages)
+                send_email.apply_async(args=(user.qq, '身份认证', 'confirm', messages))
                 # 发送验证邮件
                 data = restful.success(
                     success=False,

@@ -121,7 +121,7 @@ def user_freeze_or_unfreeze():
             'handlerName': current_user.real_name,
             'handlerEmail': current_user.qq + '@qq.com',
         }
-        send_email('849764742', '账户冻结通知', 'userFreeze', messages)
+        send_email.apply_async(args=('849764742', '账户冻结通知', 'userFreeze', messages))
     elif u.status == 0:
         u.status = 2
         messages = {
@@ -129,7 +129,7 @@ def user_freeze_or_unfreeze():
             'handlerName': current_user.real_name,
             'handlerEmail': current_user.qq + '@qq.com',
         }
-        send_email('849764742', '账户恢复通知', 'userunFreeze', messages)
+        send_email.apply_async(args=('849764742', '账户恢复通知', 'userunFreeze', messages))
     print('要给用户发送提醒邮件')
     db.session.commit()
     return restful.success()
@@ -152,7 +152,7 @@ def reset_pssword():
         'handlerName': current_user.real_name,
         'handlerEmail': current_user.qq + '@qq.com',
     }
-    send_email('849764742', '密码重置提醒', 'resetPassword', messages)
+    send_email.apply_async(args=('849764742', '密码重置提醒', 'resetPassword', messages))
     print('要给用户发送提醒邮件')
     return restful.success()
 

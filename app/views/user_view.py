@@ -8,8 +8,10 @@
 @Description : 
 @Software: PyCharm
 """
+import os
 from datetime import datetime
 
+from celery_once import QueueOnce
 from flask import render_template, request
 from flask_cors import cross_origin
 from flask_login import current_user, login_required
@@ -23,6 +25,7 @@ from app.models.user_model import User
 from app.untils import restful
 from app.untils.auth_token import generate_token
 from app.untils.mail_sender import send_email
+from app import celery
 
 
 @user.route('/index.html', methods=['POST', 'OPTIONS', 'GET'])
@@ -136,8 +139,11 @@ def del_Lost():
         return restful.params_error()
     else:
         l = LostFound.query.get(int(req))
-        if l is not None and (
-                l.user_id == current_user.id or current_user.kind >= 2):
+        if l is not None and (l.user_id == current_user.id or current_user.kind >= 2):
+            if l.images != "":
+                l.images = l.images.replace('[', '').replace(']', '').replace(' \'', '').replace('\'', '')
+                imglist = l.images.strip().split(',')
+                remove_imglist.dely(imglist)
             db.session.delete(l)
             db.session.commit()
             return restful.success(msg='删除成功')
@@ -178,7 +184,7 @@ def claim():
                 print('发送消息')
                 uids = [op.wx_id]
                 send_message_by_pusher(dict, uids)
-                send_email('3247788937', '失物找回通知', 'noticeLost', messages=dict)
+                send_email.delay('3247788937', '失物找回通知', 'noticeLost', messages=dict)
             return restful.success(msg='上报成功,您的联系方式已发送给失主')
         # 招领
         elif l is not None and (l.user_id != current_user.id) and l.kind == 1:
@@ -202,7 +208,19 @@ def claim():
                 print('发送消息')
                 uids = [op.wx_id]
                 send_message_by_pusher(dict, uids)
-                send_email('849764742', '失物认领通知', 'noticeFound', messages=dict)
+                send_email.delay('849764742', '失物认领通知', 'noticeFound', messages=dict)
             return restful.success(msg='认领成功,您的联系方式已发送给失主')
         else:
             return restful.params_error()
+
+
+@celery.task(base=QueueOnce)
+def remove_imglist(imgs):
+    print('获取执行结果',os.getenv('CELERY_RESULT_BACKEND'))
+    for img in imgs:
+        file = os.getenv('PATH_OF_UPLOAD')+img
+        print('要删除的文件',file)
+        try:
+            os.remove(file)
+        except Exception as e:
+            print('删除文件', str(e))

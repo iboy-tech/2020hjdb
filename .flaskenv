@@ -11,3 +11,4 @@ DEBUG_TB_INTERCEPT_REDIRECTS  =  False
 PATH_OF_UPLOAD = 'app/static/upload/'
 
 
+

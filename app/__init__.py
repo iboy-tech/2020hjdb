@@ -8,21 +8,22 @@
 @Description : 构造文件
 @Software: PyCharm
 """
-import os
 import logging
+import os
 from logging.handlers import RotatingFileHandler, SMTPHandler
 
 import click
-from flask import Flask, render_template, request, session, redirect, url_for
-from flask_login import current_user
-from flask_wtf.csrf import CSRFError
-
-from .extensions import *
+from celery_once import QueueOnce
+from flask import Flask, render_template, request
 from flask_cors import CORS
+from flask_wtf.csrf import CSRFError
 
 # .表示当前路径
 from app.config import config  # 导入存储配置的字典
+from app.config import BaseConfig
+from . import celeryconfig
 
+from .extensions import *
 #  会记录客户端 IP
 # 地址和浏览器的用户代理信息，如果发现异动就登出用户
 from .models.open_model import OpenID
@@ -75,9 +76,8 @@ def create_app(config_name=None):
     register_shell_context(app)  # 注册shell上下文处理函数
     register_commands(app)  # 注册自定义shell命令
     register_interceptor(app)  # 拦截器
+    register_celery(app)  # 异步队列
     CORS(app, supports_credentials=True, resources=r'/*')  # 允许所有域名跨域
-
-    # config[config_name].init_app(app)
     return app
 
 
@@ -97,7 +97,6 @@ def register_blueprints(app):
     app.register_blueprint(cache_bp)
 
 
-
 def register_extensions(app):  # 实例化扩展
     print('注册扩展')
     migrate.init_app(app, db)
@@ -113,7 +112,6 @@ def register_extensions(app):  # 实例化扩展
     redis_client.init_app(app)
     cache.init_app(app)
     mongo_client.init_app(app)
-    # socketio.init_app(app)
 
 
 def register_shell_context(app):
@@ -140,6 +138,32 @@ def register_shell_context(app):
             Role=Role,
             Permission=Permission,
             OpenID=OpenID)
+
+
+# 注册异步队列
+def register_celery(app):
+    celery.config_from_object(celeryconfig)
+    celery.conf.update(app.config)
+
+    class ContextTask(celery.Task):
+        def __call__(self, *args, **kwargs):
+            with app.app_context():
+                return self.run(*args, **kwargs)
+
+    celery.Task = ContextTask
+
+"""
+    # 一般之前的配置没有这个，需要添加上
+    celery.conf.ONCE = {
+        'backend': 'celery_once.backends.Redis',
+        'settings': {
+            'url': 'redis://localhost:6379/2',
+            'default_timeout': 60 * 60
+        }
+    }
+    """
+    # Attach to celery object for easy access.
+
 
 
 def register_logging(app):
