@@ -105,3 +105,5 @@ venv.bak/
 
 
 app/templates/upload/
+!/.env
+!/total.xlsx

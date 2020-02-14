@@ -14,7 +14,7 @@ from flask import render_template
 from flask_login import login_required
 
 from app import db, User
-from app.decorators import admin_required
+from app.decorators import admin_required, wechat_required
 from app.main import chart
 from app.models.lostfound_model import LostFound
 from app.untils import restful
@@ -96,7 +96,7 @@ def get_data():
         'solve': [today_solve, total_solve],
         # //近期数据
         # 'barChartData1': {
-        # 'labels1':  ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+        'dayLabels':  mylist[6],
         # //柱状图
         # 'data1': [[1111, 70, 55, 20, 45, 0, 60], [65, 59, 90, 81, 56, 0, 40], [65, 1, 90, 81, 56, 1, 300]],
         'data1': [mylist[0], mylist[1],mylist[2]],
@@ -154,15 +154,16 @@ def get_week_data():
     print('last_sunday', last_sunday)
     today = datetime.date.today()
     print('today', today)
-    time_len = (today - last_sunday.date()).days  # 获取当前与上周相差的天数
-    print("time——len", time_len)
+    # time_len = (today - last_sunday.date()).days  # 获取当前与上周相差的天数
+    # print("time——len", time_len)
     # list1 = [], list2 = [], list3 = [], list4 = []
-    mylist=[[],[],[],[],[],[]]
+    mylist=[[],[],[],[],[],[],[]]
+    seven_day_ago=today - datetime.timedelta(days=7)
     # datetime.timedelta(days=1)加上一个天数
-    for i in range(1, time_len + 1):
+    for i in range(1, 8):
         print(i)
-        day = (last_sunday + datetime.timedelta(days=i)).date()
-        print("我是查询的时间",day)
+        day = seven_day_ago + datetime.timedelta(days=i)
+        print("我是七天前查询的时间",day)
         today_lost = LostFound.query.filter(db.cast(LostFound.create_time, db.DATE) == day, LostFound.kind == 0).count()
         mylist[0].append(today_lost)
         today_found = LostFound.query.filter(db.cast(LostFound.create_time, db.DATE) == day,
@@ -171,12 +172,13 @@ def get_week_data():
         today_solve = LostFound.query.filter(db.cast(LostFound.create_time, db.DATE) == day,
                                              LostFound.status == 1).count()
         mylist[2].append(today_solve)
-        today_user = User.query.filter(db.cast(User.create_time, db.DATE) == day).count()
+        today_user = User.query.filter(db.cast(User.create_time, db.DATE) <= day).count()
         mylist[3].append(today_user)
         active_boy = User.query.filter(db.cast(User.last_login, db.DATE) == day, User.gender ==0).count()
         mylist[4].append(active_boy)
         active_girl=User.query.filter(db.cast(User.last_login, db.DATE) == day,User.gender==1).count()
         mylist[5].append(active_girl)
+        mylist[6].append(day.strftime('%m/%d'))
 
     # print(list1,list2,list3,list4)
     print('每周的结果',mylist)

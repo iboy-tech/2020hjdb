@@ -21,6 +21,12 @@ def get_current_monday():
     return monday - datetime.timedelta(days=1)#上一个周的周日
 
 if __name__=='__main__':
+    str='2020-01-01'
+    today = datetime.date.today()
+    day = (today - datetime.timedelta(days=0))
+    print("我是查询的时间", day)
+    mydate=datetime.datetime.strptime(str,'%Y-%m-%d')
+    print((mydate-datetime.timedelta(days=1)).strftime('%m/%d'))
     print("周一日期",get_current_monday())
     print("周一日期" ,get_current_monday().date())
     print(datetime.date.today())

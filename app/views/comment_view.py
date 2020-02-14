@@ -14,6 +14,7 @@ from flask_login import current_user, login_required
 from sqlalchemy import desc
 
 from app import db
+from app.decorators import wechat_required
 from app.main import comment
 from app.models.comment_model import Comment
 from app.models.user_model import User

@@ -13,13 +13,15 @@ from functools import wraps
 from flask import render_template
 from flask_login import current_user
 
+from app import OpenID
+
 
 def permission_required(permission_name):
     def dercorator(func):
         @wraps(func)
         def decorator_function(*args, **kwargs):
             print('验证权限')
-            if not current_user.can(permission_name) and current_user.kind!=1:
+            if not current_user.can(permission_name) and current_user.kind != 1:
                 data = {
                     "success": False,
                     "code": 403,
@@ -30,9 +32,9 @@ def permission_required(permission_name):
                     "ext": None
                 }
                 return data
-            elif  not current_user.can(permission_name) and current_user.kind==1:
+            elif not current_user.can(permission_name) and current_user.kind == 1:
                 messages = {
-                    'msg':'非法访问'
+                    'msg': '非法访问'
                 }
                 return render_template('mails/go.html', messages=messages)
             return func(*args, **kwargs)
@@ -48,3 +50,24 @@ def admin_required(func):
 
 def super_admin_required(func):
     return permission_required('SUPER_ADMIN')(func)
+
+    # :param func: 其实就是要装饰的函数
+
+
+def wechat_required(func=None, param=None):
+# def wechat_required(func, *args, **kwargs):
+    # def dercorator(func):
+    @wraps(func)
+    def func_wx(*args, **kwargs):
+        op = OpenID.query.filter(OpenID.user_id == current_user.id)
+        print('判断用户是否关注公众号', )
+        if op is None:
+            messages = {
+                'msg': '请完成微信绑定'
+            }
+            return render_template('mails/go.html', messages=messages)
+        return func(*args, **kwargs)  # 通过
+
+    return func_wx
+
+# return dercorator

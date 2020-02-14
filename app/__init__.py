@@ -13,7 +13,8 @@ import logging
 from logging.handlers import RotatingFileHandler, SMTPHandler
 
 import click
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, session, redirect, url_for
+from flask_login import current_user
 from flask_wtf.csrf import CSRFError
 
 from .extensions import *
@@ -44,6 +45,7 @@ from app.main import page as page_bp
 from app.main import user as user_bp
 from app.main import auth as auth_bp
 from app.main import chart as admin_bp
+
 
 # 工厂函数
 def create_app(config_name=None):
@@ -93,6 +95,7 @@ def register_blueprints(app):
     app.register_blueprint(comment_bp)
     app.register_blueprint(pusher_bp)
     app.register_blueprint(cache_bp)
+    register_interceptor(app)  # 拦截器
 
 
 def register_extensions(app):  # 实例化扩展
@@ -219,3 +222,26 @@ def register_errors(app):
     def handle_csrf_error(e):
         return render_template(
             'errors/400.html', description=e.description), 400
+
+
+def register_interceptor(app):
+    @app.before_request
+    def before_request():
+        ip = request.remote_addr
+        url = request.url
+        print(ip),
+        print(url)
+        """
+        if  'auth' in request.url_rule.endpoint:
+            return None
+        print("endpoint", request.url_rule.endpoint)
+        if current_user.is_authenticated:
+            op = OpenID.query.filter_by(user_id= current_user.id).first()
+            print('判断用户是否关注公众号', )
+            print(op)
+            if op is None:
+                # messages = {
+                #     'msg': '请完成微信绑定'
+                # }
+                return redirect(url_for('oauth.index')),301
+        """

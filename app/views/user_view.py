@@ -23,6 +23,7 @@ from app.models.user_model import User
 from app.untils import restful
 from app.untils.auth_token import generate_token
 from app.untils.mail_sender import send_email
+from ..decorators import wechat_required
 
 
 @user.route('/index.html', methods=['POST', 'OPTIONS', 'GET'])

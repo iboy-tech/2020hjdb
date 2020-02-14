@@ -208,8 +208,9 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                 </div>
                 <div class="clearfix"></div>
                 <script>
+                    //近期数据
                     var barChartData1 = {
-                        labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+                        labels: {{ data.dayLabels }},
                         datasets: [
                             {
                                 fillColor: "#4F52BA",
@@ -235,9 +236,10 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                         ]
 
                     };
+                    //近期趋势
                     var lineChartData1 = {
-                        {#labels:{{ data.labels2 }},#}
-                        labels:  ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+                        labels:{{ data.dayLabels }},
+                        {#labels:  ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],#}
                         datasets: [
                             {
                                 fillColor: "rgba(79, 82, 186, 0.9)",
@@ -266,6 +268,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                         ]
 
                     };
+                    //失物，拾取，解决占比
                     var pieData1 = [
                         {
                             value: {{ data.data3[0] }},
@@ -309,9 +312,10 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                 </div>
                 <div class="clearfix"></div>
                 <script>
+                    //用户数量
                     var lineChartData2 = {
                         {#labels:  ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],#}
-                        labels:  ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+                        labels:  {{ data.dayLabels }},
                         datasets: [
                             {
                                 fillColor: "#2673ec",
@@ -322,10 +326,10 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                             }
                         ]
                     };
-
+                    //活跃用户
                     var lineChartData3 = {
-                        {#labels:{{ data.lables5 }},#}
-                        labels:  ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+                        labels:{{ data.dayLabels }},
+                        {#labels:  ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],#}
                         datasets: [
                             {
                                 fillColor: "#00b5ad",
@@ -345,7 +349,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                         ]
 
                     };
-
+                //性别比例
                     var pieData2 = [
                         {
                             value:  {{ data.data6[0] }},
