@@ -19,9 +19,9 @@ from flask_login import logout_user, login_user, login_required, current_user
 from app import db, OpenID
 from app.main import auth
 from app.models.user_model import User
-from app.untils import restful
-from app.untils.auth_token import generate_token, validate_token
-from app.untils.mail_sender import send_email
+from app.utils import restful
+from app.utils.auth_token import generate_token, validate_token
+from app.utils.mail_sender import send_email
 import re
 
 
@@ -149,7 +149,7 @@ def recognize():
                 msg="验证邮件已发送到您的QQ邮箱，可能在垃圾信箱中，请尽快认证",
                 data=data)
         else:
-            from app.untils.jwc import user_verify
+            from app.utils.jwc import user_verify
             user_jwc = user_verify(usr, pwd)
             if user_jwc is not None:
                 print(user_jwc, '验证成功')

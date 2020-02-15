@@ -18,8 +18,8 @@ from app.decorators import admin_required
 from app.main import feedback
 from app.models.feedback_model import Feedback
 from app.models.user_model import User
-from app.untils import restful
-from app.untils.mail_sender import send_email
+from app.utils import restful
+from app.utils.mail_sender import send_email
 
 
 @feedback.route('/', methods=['GET', 'POST', 'OPTIONS'], strict_slashes=False)

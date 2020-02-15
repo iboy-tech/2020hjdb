@@ -21,10 +21,10 @@ from app.main import user
 from app.models.comment_model import Comment
 from app.models.lostfound_model import LostFound
 from app.models.user_model import User
-from app.untils import restful
-from app.untils.auth_token import generate_token
-from app.untils.mail_sender import send_email
-from app import celery
+from app.utils import restful
+from app.utils.auth_token import generate_token
+from app.utils.mail_sender import send_email
+from celery_app import celery
 
 
 @user.route('/index.html', methods=['POST', 'OPTIONS', 'GET'])
@@ -142,7 +142,7 @@ def del_Lost():
             if l.images != "":
                 l.images = l.images.replace('[', '').replace(']', '').replace(' \'', '').replace('\'', '')
                 imglist = l.images.strip().split(',')
-                remove_imglist.dely(imglist)
+                remove_imglist.apply_async(args=[imglist])
             db.session.delete(l)
             db.session.commit()
             return restful.success(msg='删除成功')
@@ -213,7 +213,7 @@ def claim():
             return restful.params_error()
 
 
-@celery.task(name="task3", time_limit=10)
+@celery.task(time_limit=10)
 def remove_imglist(imgs):
     print('获取执行结果',os.getenv('CELERY_RESULT_BACKEND'))
     for img in imgs:

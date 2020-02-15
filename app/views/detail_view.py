@@ -16,7 +16,7 @@ from app.main import detail
 from app.models.category_model import Category
 from app.models.lostfound_model import LostFound
 from app.models.user_model import User
-from app.untils import restful
+from app.utils import restful
 
 
 @detail.route('/', methods=['GET', 'POST', 'OPTIONS'], strict_slashes=False)

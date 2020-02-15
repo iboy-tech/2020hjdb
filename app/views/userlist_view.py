@@ -18,8 +18,8 @@ from app import db, cache
 from app.decorators import super_admin_required, admin_required
 from app.main import userlist
 from app.models.user_model import User
-from app.untils import restful
-from app.untils.mail_sender import send_email
+from app.utils import restful
+from app.utils.mail_sender import send_email
 
 
 @userlist.route('/', methods=['POST', 'GET', 'OPTIONS'], strict_slashes=False)
@@ -122,7 +122,7 @@ def user_freeze_or_unfreeze():
             'handlerName': current_user.real_name,
             'handlerEmail': current_user.qq + '@qq.com',
         }
-        app.untils.mail_sender.send_email.delay('849764742', '账户冻结通知', 'userFreeze', messages)
+        send_email.apply_async(args=['849764742', '账户冻结通知', 'userFreeze', messages])
     elif u.status == 0:
         u.status = 2
         messages = {

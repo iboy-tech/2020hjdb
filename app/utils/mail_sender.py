@@ -13,7 +13,8 @@ from flask import current_app, render_template
 from flask_mail import Message
 # from flask_mail_sendgrid import Message
 
-from app import mail, celery
+from app import mail
+from celery_app import celery
 
 
 # def send_async_email(app,msg):
@@ -24,7 +25,7 @@ from app import mail, celery
         # print(response.body)
         # print(response.headers)
 
-@celery.task(name="app.untils.mail_sender.send_email", time_limit=10)
+@celery.task(time_limit=10)
 def send_email(to, subject, template, messages):
     app = current_app._get_current_object()
     print('我是默认发件人',app.config['MAIL_DEFAULT_SENDER'])
@@ -32,6 +33,7 @@ def send_email(to, subject, template, messages):
     # msg.body = render_template(template + '.txt', **kwargs)
     msg.html = render_template('mails/'+template + '.html', messages=messages)
     # 动态模板使用
+    print('邮件的消息',msg)
     mail.send(msg)
     # msg.template_id = 'my-template-id'
     # msg.dynamic_template_data = {'first_name': 'John', 'last_name': 'Doe'}

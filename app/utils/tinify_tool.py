@@ -8,24 +8,27 @@
 @Description : 
 @Software: PyCharm
 """
-import os
-from datetime import datetime
+
 
 # -*- coding：utf-8 -*-
-import tinify
+
 
 # https://temp-mail.org/zh/接码免费申请apikey
+from datetime import datetime
 
-from app import celery
+from celery_app import celery
 
-key = 'mmnYWFKXVlkxsKtFbdx17FSqFj5YhWq0'  # 登录后去主页就可以查看到key
-tinify.key = key
-path = os.getenv('PATH_OF_UPLOAD')
 
 
 # 图片异步压缩队列
-@celery.task(name="task2", time_limit=10)
+@celery.task(time_limit=10)
 def tinypng(files):
+    import os
+    import tinify
+    from datetime import datetime
+    key = 'mmnYWFKXVlkxsKtFbdx17FSqFj5YhWq0'  # 登录后去主页就可以查看到key
+    tinify.key = key
+    path = os.getenv('PATH_OF_UPLOAD')
     start_time = datetime.now()
     for file in files:
         file = os.path.join(path, file)

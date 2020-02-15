@@ -20,7 +20,7 @@ from flask_wtf.csrf import CSRFError
 # .表示当前路径
 from app.config import config  # 导入存储配置的字典
 from app.config import BaseConfig
-from . import celeryconfig
+from celery_app import celery
 
 from .extensions import *
 #  会记录客户端 IP
@@ -28,7 +28,7 @@ from .extensions import *
 from .models.open_model import OpenID
 from .models.role_model import Role
 from .models.user_model import Guest, User
-from .untils.create_data import create_test_data
+from .utils.create_data import create_test_data
 
 login_manager.session_protection = 'basic'
 
@@ -75,7 +75,7 @@ def create_app(config_name=None):
     register_shell_context(app)  # 注册shell上下文处理函数
     register_commands(app)  # 注册自定义shell命令
     register_interceptor(app)  # 拦截器
-    register_celery(app)  # 异步队列
+    # register_celery(app)  # 异步队列
     CORS(app, supports_credentials=True, resources=r'/*')  # 允许所有域名跨域
     return app
 
@@ -140,16 +140,15 @@ def register_shell_context(app):
 
 
 # 注册异步队列
-def register_celery(app):
-    celery.config_from_object('app.celeryconfig')
-    celery.conf.update(app.config)
-
+def create_celery(app):
     class ContextTask(celery.Task):
         def __call__(self, *args, **kwargs):
             with app.app_context():
                 return self.run(*args, **kwargs)
-
+   # 将app_context 包含在celery.Task中，这样让其他的Flask扩展也能正常使用
     celery.Task = ContextTask
+    return celery
+
 
 """
     # 一般之前的配置没有这个，需要添加上

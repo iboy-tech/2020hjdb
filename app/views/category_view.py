@@ -15,7 +15,7 @@ from app import db
 from app.decorators import admin_required, super_admin_required
 from app.main import category
 from app.models.category_model import Category
-from app.untils import restful
+from app.utils import restful
 
 
 @category.route('/', methods=['GET', 'POST', 'OPTIONS'], strict_slashes=False)

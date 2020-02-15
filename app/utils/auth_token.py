@@ -14,7 +14,7 @@ from itsdangerous import TimedJSONWebSignatureSerializer  as Serializer, Signatu
 
 # 生成邮箱验证TOKEN
 from app import db, User
-from app.untils import restful
+from app.utils import restful
 
 
 def generate_token(user, operation, expire_in=172800, **kwargs):

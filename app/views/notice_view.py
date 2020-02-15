@@ -16,7 +16,7 @@ from app import db
 from app.decorators import admin_required
 from app.main import notice
 from app.models.notice_model import Notice
-from app.untils import restful
+from app.utils import restful
 
 
 @notice.route('/', methods=['GET', 'POST', 'OPTIONS'], strict_slashes=False)

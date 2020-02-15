@@ -1,7 +1,7 @@
 # -*- coding:UTF-8 -*-
 # !/usr/bin/python
 """
-@File    : config.py
+@File    : celeryconfig.py
 @Time    : 2020/1/10 16:30
 @Author  : iBoy
 @Email   : iboy@iboy.tech

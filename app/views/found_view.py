@@ -15,7 +15,7 @@ from datetime import datetime
 from flask import render_template, request, current_app
 from flask_login import current_user, login_required
 from sqlalchemy import desc, or_
-from app.untils.mail_sender import send_email
+from app.utils.mail_sender import send_email
 
 from app import db, OpenID
 from app.main import found
@@ -23,9 +23,9 @@ from app.models.category_model import Category
 from app.models.comment_model import Comment
 from app.models.lostfound_model import LostFound
 from app.models.user_model import User
-from app.untils import restful
+from app.utils import restful
 from app.wxpusher import WxPusher
-from app.untils.tinify_tool import tinypng
+from app.utils.tinify_tool import tinypng
 import uuid
 
 
@@ -143,7 +143,7 @@ def change_bs4_to_png(imglist):
             f.write(base64.b64decode(bas4_code[1]))
     if files:
         print('对上传图片进行异步压缩')
-        tinypng.apply_async(args=(files))
+        tinypng.delay(files)
     print(files, '我是文件名')
 
     return str(files)

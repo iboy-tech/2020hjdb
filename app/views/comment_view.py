@@ -17,7 +17,7 @@ from app import db
 from app.main import comment
 from app.models.comment_model import Comment
 from app.models.user_model import User
-from app.untils import restful
+from app.utils import restful
 
 
 @comment.route('/', methods=['GET', 'POST', 'OPTIONS'],strict_slashes=False)

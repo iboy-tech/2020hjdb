@@ -11,12 +11,16 @@
 import os
 from datetime import datetime
 from threading import Lock
+os.environ.setdefault('FORKED_BY_MULTIPROCESSING', '1')
 
 from dotenv import load_dotenv, find_dotenv
 from flask_login import current_user
 from flask_socketio import emit, SocketIO
 
-from app import create_app, OpenID, redis_client
+from app import create_app,create_celery, OpenID, redis_client
+# import eventlet
+#
+# eventlet.monkey_patch(socket=True,os=True)
 
 async_mode = 'eventlet'
 
@@ -24,7 +28,7 @@ load_dotenv(find_dotenv('.env'))
 load_dotenv(find_dotenv('.flaskenv'))
 
 app = create_app(os.getenv('FlASK_CONFIG') or 'default')
-app.app_context().push()
+celery = create_celery(app)
 
 app.config['SECRET_KEY'] = 'adsdad&*^%^$%#afcsefvdzcssef1212'
 
@@ -130,13 +134,23 @@ if __name__ == '__main__':
     """
     启动 Web server:
     https://www.jianshu.com/p/cdee367b77d3
-    python app.py  --host=0.0.0.0 --port=8888 --no-reload
+    python run.py  --host=0.0.0.0 --port=8888 --no-reload
     启动 Celery worker:
     celery worker -A app.celery -l  INFO  -n ctgu@celeryd -E --loglevel=info  
-    celery worker -A app.untils.mail_sender.celery -l  INFO  -n ctgu@celeryd -E --loglevel=info 
-    celery worker -A app.untils.tinify_tool.celery -l  INFO  
+    celery worker -A app.utils.mail_sender.celery -l  INFO  -n ctgu@celeryd -E --loglevel=info 
+    celery worker -A app.utils.tinify_tool.celery -l  INFO  
     celery worker -A app.views.user_view.celery -l  INFO 
     celery flower --address=127.0.0.1 --port=55555
    celery worker -A app.extensions.celery -l  INFO  
+   celery worker -A run.celery -l  INFO -E -P eventlet
+   celery worker -A run.celery --loglevel=info --pool=eventlet  -E
+   celery beat -A run.celery -l info
+
+
+
+
+   celery worker -A celery_app.celery -l  INFO -E -P eventlet
+   celery -A webapp.main.tasks worker -l info -f celery.log --pool=eventlet
+
     """
-    socketio.run(app=app, host='0.0.0.0', port=8888)
+    socketio.run(app=app, host='0.0.0.0', message_queue='redis://localhost:6379/2',port=8888)
