@@ -9,7 +9,6 @@
 @Software: PyCharm
 """
 # from threading import Thread
-from celery_once import QueueOnce
 from flask import current_app, render_template
 from flask_mail import Message
 # from flask_mail_sendgrid import Message
@@ -25,7 +24,7 @@ from app import mail, celery
         # print(response.body)
         # print(response.headers)
 
-@celery.task(base=QueueOnce)
+@celery.task(name="app.untils.mail_sender.send_email", time_limit=10)
 def send_email(to, subject, template, messages):
     app = current_app._get_current_object()
     print('我是默认发件人',app.config['MAIL_DEFAULT_SENDER'])

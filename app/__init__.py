@@ -13,7 +13,6 @@ import os
 from logging.handlers import RotatingFileHandler, SMTPHandler
 
 import click
-from celery_once import QueueOnce
 from flask import Flask, render_template, request
 from flask_cors import CORS
 from flask_wtf.csrf import CSRFError
@@ -142,7 +141,7 @@ def register_shell_context(app):
 
 # 注册异步队列
 def register_celery(app):
-    celery.config_from_object(celeryconfig)
+    celery.config_from_object('app.celeryconfig')
     celery.conf.update(app.config)
 
     class ContextTask(celery.Task):

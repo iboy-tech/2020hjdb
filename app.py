@@ -24,7 +24,7 @@ load_dotenv(find_dotenv('.env'))
 load_dotenv(find_dotenv('.flaskenv'))
 
 app = create_app(os.getenv('FlASK_CONFIG') or 'default')
-# app.app_context().push()
+app.app_context().push()
 
 app.config['SECRET_KEY'] = 'adsdad&*^%^$%#afcsefvdzcssef1212'
 
@@ -133,6 +133,10 @@ if __name__ == '__main__':
     python app.py  --host=0.0.0.0 --port=8888 --no-reload
     启动 Celery worker:
     celery worker -A app.celery -l  INFO  -n ctgu@celeryd -E --loglevel=info  
+    celery worker -A app.untils.mail_sender.celery -l  INFO  -n ctgu@celeryd -E --loglevel=info 
+    celery worker -A app.untils.tinify_tool.celery -l  INFO  
+    celery worker -A app.views.user_view.celery -l  INFO 
+    celery flower --address=127.0.0.1 --port=55555
+   celery worker -A app.extensions.celery -l  INFO  
     """
-    print(os.getenv('SECRET_KEY'))
     socketio.run(app=app, host='0.0.0.0', port=8888)

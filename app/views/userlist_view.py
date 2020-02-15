@@ -13,6 +13,7 @@ from flask import render_template, request, current_app
 from flask_login import current_user, login_required
 from sqlalchemy import or_
 
+import app
 from app import db, cache
 from app.decorators import super_admin_required, admin_required
 from app.main import userlist
@@ -121,7 +122,7 @@ def user_freeze_or_unfreeze():
             'handlerName': current_user.real_name,
             'handlerEmail': current_user.qq + '@qq.com',
         }
-        send_email.apply_async(args=('849764742', '账户冻结通知', 'userFreeze', messages))
+        app.untils.mail_sender.send_email.delay('849764742', '账户冻结通知', 'userFreeze', messages)
     elif u.status == 0:
         u.status = 2
         messages = {
@@ -129,7 +130,7 @@ def user_freeze_or_unfreeze():
             'handlerName': current_user.real_name,
             'handlerEmail': current_user.qq + '@qq.com',
         }
-        send_email.apply_async(args=('849764742', '账户恢复通知', 'userunFreeze', messages))
+    send_email.delay('849764742', '账户恢复通知', 'userunFreeze', messages)
     print('要给用户发送提醒邮件')
     db.session.commit()
     return restful.success()

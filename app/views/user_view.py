@@ -11,7 +11,6 @@
 import os
 from datetime import datetime
 
-from celery_once import QueueOnce
 from flask import render_template, request
 from flask_cors import cross_origin
 from flask_login import current_user, login_required
@@ -214,7 +213,7 @@ def claim():
             return restful.params_error()
 
 
-@celery.task(base=QueueOnce)
+@celery.task(name="task3", time_limit=10)
 def remove_imglist(imgs):
     print('获取执行结果',os.getenv('CELERY_RESULT_BACKEND'))
     for img in imgs:

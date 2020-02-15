@@ -39,7 +39,6 @@ Celery 客户端: 用于发布后台作业。当与 Flask 一起工作的时候�
 Celery workers: 这些是运行后台作业的进程。Celery 支持本地和远程的 workers，因此你就可以在 Flask 服务器上启动一个单独的 worker，随后随着你的应用需求的增加而新增更多的 workers。
 消息代理: 客户端通过消息队列和 workers 进行通信，Celery 支持多种方式来实现这些队列。最常用的代理就是 RabbitMQ 和 Redis。
 """
-celery = Celery()
 celery = Celery('tasks', backend=result_backend,broker=broker_url)
 
 

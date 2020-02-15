@@ -15,7 +15,6 @@ from datetime import datetime
 import tinify
 
 # https://temp-mail.org/zh/接码免费申请apikey
-from celery_once import QueueOnce
 
 from app import celery
 
@@ -25,7 +24,7 @@ path = os.getenv('PATH_OF_UPLOAD')
 
 
 # 图片异步压缩队列
-@celery.task(base=QueueOnce)
+@celery.task(name="task2", time_limit=10)
 def tinypng(files):
     start_time = datetime.now()
     for file in files:
