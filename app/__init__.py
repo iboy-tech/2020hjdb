@@ -20,7 +20,7 @@ from flask_wtf.csrf import CSRFError
 # .表示当前路径
 from app.config import config  # 导入存储配置的字典
 from app.config import BaseConfig
-from celery_app import celery
+from tasks import celery
 
 from .extensions import *
 #  会记录客户端 IP
@@ -145,7 +145,6 @@ def create_celery(app):
         def __call__(self, *args, **kwargs):
             with app.app_context():
                 return self.run(*args, **kwargs)
-   # 将app_context 包含在celery.Task中，这样让其他的Flask扩展也能正常使用
     celery.Task = ContextTask
     return celery
 
@@ -160,8 +159,9 @@ def create_celery(app):
         }
     }
     """
-    # Attach to celery object for easy access.
 
+
+# Attach to celery object for easy access.
 
 
 def register_logging(app):

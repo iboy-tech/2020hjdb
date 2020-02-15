@@ -24,7 +24,7 @@ from app.models.user_model import User
 from app.utils import restful
 from app.utils.auth_token import generate_token
 from app.utils.mail_sender import send_email
-from celery_app import celery
+from tasks import celery
 
 
 @user.route('/index.html', methods=['POST', 'OPTIONS', 'GET'])
@@ -142,7 +142,7 @@ def del_Lost():
             if l.images != "":
                 l.images = l.images.replace('[', '').replace(']', '').replace(' \'', '').replace('\'', '')
                 imglist = l.images.strip().split(',')
-                remove_imglist.apply_async(args=[imglist])
+                remove_imglist.delay(imglist)
             db.session.delete(l)
             db.session.commit()
             return restful.success(msg='删除成功')

@@ -5,7 +5,7 @@
 @Time    : 2020/2/7 13:07
 @Author  : iBoy
 @Email   : iboy@iboy.tech
-@Description : 
+@Description :
 @Software: PyCharm
 """
 from app.config import Operations

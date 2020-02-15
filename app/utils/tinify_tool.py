@@ -9,29 +9,30 @@
 @Software: PyCharm
 """
 
-
 # -*- coding：utf-8 -*-
 
 
 # https://temp-mail.org/zh/接码免费申请apikey
+from __future__ import absolute_import
+import os
 from datetime import datetime
 
-from celery_app import celery
+import tinify
 
+
+from tasks import celery
 
 
 # 图片异步压缩队列
 @celery.task(time_limit=10)
 def tinypng(files):
-    import os
-    import tinify
-    from datetime import datetime
     key = 'mmnYWFKXVlkxsKtFbdx17FSqFj5YhWq0'  # 登录后去主页就可以查看到key
     tinify.key = key
     path = os.getenv('PATH_OF_UPLOAD')
     start_time = datetime.now()
     for file in files:
-        file = os.path.join(path, file)
+        print(file)
+        file = os.path.join('app/static/upload/', file)
         print('我是压缩函数中图片的路径', file)
         # 图片原始大小
         original_size = os.path.getsize(file) / 1000
@@ -65,7 +66,11 @@ def tinypng(files):
         print('剩余的压缩次数', 500 - compressions_this_month)
     end_time = datetime.now()
     print('压缩用时', end_time - start_time)
-    return 'Compress Finished!'
+    # thr = Thread(target=send_async_email, args=[app,msg])
+    # thr.start()
+    # return thr
+
+    # return 'Compress Finished!'
 
 
 if __name__ == '__main__':

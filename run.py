@@ -8,33 +8,38 @@
 @Description : 顶级文件夹中的 manage.py 文件用于启动程序
 @Software: PyCharm
 """
+from __future__ import absolute_import
+
 import os
 from datetime import datetime
-from threading import Lock
-os.environ.setdefault('FORKED_BY_MULTIPROCESSING', '1')
+
+# os.environ.setdefault('FORKED_BY_MULTIPROCESSING', '1')
 
 from dotenv import load_dotenv, find_dotenv
 from flask_login import current_user
 from flask_socketio import emit, SocketIO
 
-from app import create_app,create_celery, OpenID, redis_client
-# import eventlet
+from app import create_app, create_celery, redis_client
+import eventlet
+
 #
 # eventlet.monkey_patch(socket=True,os=True)
-
+# eventlet.monkey_patch()
+eventlet.monkey_patch(os=True,
+                     select=True,
+                     socket=True,
+                     thread=False,
+                     time=True)
 async_mode = 'eventlet'
-
 load_dotenv(find_dotenv('.env'))
 load_dotenv(find_dotenv('.flaskenv'))
 
 app = create_app(os.getenv('FlASK_CONFIG') or 'default')
-celery = create_celery(app)
 
 app.config['SECRET_KEY'] = 'adsdad&*^%^$%#afcsefvdzcssef1212'
 
 socketio = SocketIO(app=app, async_mode=async_mode, cors_allowed_origins="*")
-thread = None
-thread_lock = Lock()
+celery = create_celery(app)
 
 res = None
 
@@ -103,33 +108,6 @@ def connect():
     #         thread = socketio.start_background_task(background_thread)
 
 
-@socketio.on('disconnect')
-def disconnect():
-    print('用户离开了', datetime.now())
-
-
-def background_thread():
-    """Example of how to send server generated events to clients."""
-    print('background_thread()调用了')
-    while True:
-        # with app.app_context():
-        op = OpenID.query.filter_by(user_id=current_user.id).first()
-        print('循环查询OpenID', datetime.now(), op)
-        if op is not None:
-            res = {
-                'success': 'true',
-                'msg': '绑定成功！即将回到主页'
-            }
-        else:
-            res = {
-                'success': 'false',
-                'msg': '请尽快绑定，二维码即将过期！'
-            }
-        socketio.sleep(2)
-        print('background_thread我是查询结果', res)
-        emit('server', res)
-
-
 if __name__ == '__main__':
     """
     启动 Web server:
@@ -142,15 +120,14 @@ if __name__ == '__main__':
     celery worker -A app.views.user_view.celery -l  INFO 
     celery flower --address=127.0.0.1 --port=55555
    celery worker -A app.extensions.celery -l  INFO  
-   celery worker -A run.celery -l  INFO -E -P eventlet
+   celery worker -A run.celery -l  DEBUG -E -P eventlet
+   gevent
+   celery worker -A run.celery -l  beat
+   celery worker -A manager.celery -l  DEBUG -E -P eventlet
    celery worker -A run.celery --loglevel=info --pool=eventlet  -E
    celery beat -A run.celery -l info
-
-
-
-
-   celery worker -A celery_app.celery -l  INFO -E -P eventlet
+   celery worker -A tasks.celery -l  INFO -E -P eventlet
    celery -A webapp.main.tasks worker -l info -f celery.log --pool=eventlet
 
     """
-    socketio.run(app=app, host='0.0.0.0', message_queue='redis://localhost:6379/2',port=8888)
+    socketio.run(app=app, host='0.0.0.0', port=8888)

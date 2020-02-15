@@ -14,7 +14,7 @@ from flask_mail import Message
 # from flask_mail_sendgrid import Message
 
 from app import mail
-from celery_app import celery
+from tasks import celery
 
 
 # def send_async_email(app,msg):
