@@ -13,7 +13,7 @@ from .config import broker_url,result_backend
 celery = Celery(__name__,
                 broker=broker_url,
                 backend=result_backend,
-                include=['app.views.user_view', 'app.utils.tinify_tool', 'app.utils.mail_sender'],
+                include=['app.views.user_view', 'app.utils.tinify_tool'],
                 )
 celery.config_from_object('tasks.config')
 # celery.conf.update(

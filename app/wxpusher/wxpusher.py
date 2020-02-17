@@ -32,7 +32,7 @@ class WxPusher():
             'uids': uids,
             'url': kwargs.get('url')
         }
-        url = f'{BASEURL}/send/message'
+        url = BASEURL+'/send/message'
         return requests.post(url, json=payload).json()
 
     @classmethod

@@ -64,6 +64,11 @@ def login():
                     msg='您的账户还未完成认证，请认证后登录，若之前填写的QQ有误，可以在认证界面填写新的QQ重新进行认证')
             elif user is not None and user.verify_password(data['password']):
                 login_user(user, remember=True)
+                user.last_login = datetime.now()
+                print(user)
+                db.session.add(user)
+                db.session.commit()
+                print('更新用户登陆时间')
                 op = OpenID.query.filter_by(user_id=current_user.id).first()
                 print('我是查询的登录页面查询的OPIN', op, datetime.now())
                 if op is None:
@@ -83,11 +88,6 @@ def login():
                     'current_user.is_authenticated',
                     current_user.is_authenticated)
                 print('Flask-Login自动添加', session['user_id'])
-                user.last_login = datetime.now()
-                print(user)
-                db.session.add(user)
-                db.session.commit()
-                print('更新用户登陆时间')
 
                 print(session.get('uid'))
                 login_user(user, remember=True)
@@ -143,7 +143,7 @@ def recognize():
                 'real_name': user_db.real_name,
                 'token': token
             }
-            send_email.apply_async(args=('849764742', '身份认证', 'confirm', messages))
+            send_email('849764742', '身份认证', 'confirm', messages)
             return restful.success(
                 success=False,
                 msg="验证邮件已发送到您的QQ邮箱，可能在垃圾信箱中，请尽快认证",
@@ -173,7 +173,7 @@ def recognize():
                     'real_name': user.real_name,
                     'token': token
                 }
-                send_email.apply_async(args=(user.qq, '身份认证', 'confirm', messages))
+                send_email(user.qq, '身份认证', 'confirm', messages)
                 # 发送验证邮件
                 data = restful.success(
                     success=False,

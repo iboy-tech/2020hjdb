@@ -213,17 +213,18 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                                         <span class="glyphicon glyphicon-menu-hamburger"></span>
                                     </button>
                                     <ul class="dropdown-menu">
-                                        <li><a @click="resetPassword(item.userId)">重置密码</a></li>
+                                        <li v-if="item.status=='2' && user.kind> item.kind"><a @click="resetPassword(item.userId)">重置密码</a></li>
                                         <!--<li role="separator" class="divider"></li>-->
-                                        <li v-if="item.status=='2'"><a @click="freezeUser(item.userId)">冻结账号</a></li>
+                                        <li v-if="item.status=='2' && user.kind > item.kind"><a @click="freezeUser(item.userId)">冻结账号</a></li>
                                         <!--<li role="separator" class="divider"></li>-->
-                                        <li v-else-if="item.status=='0'"><a @click="unfreezeUser(item.userId)">解冻账号</a></li>
-                                        <li v-else-if="item.status=='1'"><a @click="unfreezeUser(item.userId)">发送认证邮件</a></li>
+                                        <li v-else-if="item.status=='0' && user.kind > item.kind"><a @click="unfreezeUser(item.userId)">解冻账号</a></li>
+{#                                        <li v-else-if="item.status=='1'"><a @click="unfreezeUser(item.userId)">发送认证邮件</a></li>#}
                                         <!--<li role="separator" class="divider"></li>-->
-                                        <li v-if="user.kind==3">
+                                        <li>
+                                        <span v-if="user.kind==3">
                                         <li v-if="item.kind==1"><a @click="setAsManager(item.userId, 1)">添加为管理员</a></li>
                                         <li v-else-if="item.kind==2"><a @click="setAsManager(item.userId, 0)">移除该管理员</a></li>
-                                        <!--<li><a href="#"></a></li>-->
+                                        </span>
                                         </li>
                                     </ul>
                                 </div>

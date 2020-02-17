@@ -24,6 +24,7 @@ from app.models.comment_model import Comment
 from app.models.lostfound_model import LostFound
 from app.models.user_model import User
 from app.utils import restful
+from app.utils.time_util import get_time_str
 from app.wxpusher import WxPusher
 from app.utils.tinify_tool import tinypng
 import uuid
@@ -43,10 +44,10 @@ def get_all():
     # print(req)
     # print('get_users收到请求')
     keyword = req['keyword']
-    pagination = None
     if req['kind'] == -1 and req['category'] == '' and req['username'] == '' and keyword == '':
         pagination = LostFound.query.order_by(desc('create_time')).paginate(page + 1, per_page=current_app.config[
-            'ARTISAN_POSTS_PER_PAGE'], error_out=False)
+            'ARTISAN_POSTS_PER_PAGE'],
+                                                                            error_out=False)
 
     elif req['kind'] == -1 and req['category'] != '':
         c = Category.query.filter_by(name=req['category']).first()
@@ -139,7 +140,7 @@ def change_bs4_to_png(imglist):
         bas4_code = img.split(',')
         filename = uuid.uuid4().hex + '.png'
         files.append(filename)
-        with open(os.path.join(os.getenv('PATH_OF_UPLOAD'),filename), 'wb') as f:
+        with open(os.path.join(os.getenv('PATH_OF_UPLOAD'), filename), 'wb') as f:
             f.write(base64.b64decode(bas4_code[1]))
     if files:
         print('对上传图片进行异步压缩')
@@ -191,7 +192,6 @@ def pub():
                     'found_user': current_user.real_name,
                     'connect_way': current_user.qq,
                     'pub_time': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-                    # 'pub_title': data['about'],
                     'pub_content': lost.about,
                     'pub_location': lost.location,
                     'url': 'http://iboy.f3322.net:8888/detail?id=' + str(lost.id)
@@ -201,17 +201,18 @@ def pub():
                     print('发送消息')
                     uids = [op.wx_id]
                     send_message_by_pusher(dict, uids)
-                    send_email.delay('849764742', '失物找回通知', 'foundNotice', messages=dict)
-                    html = render_template('mails/WXNotice.html', messages=dict)
-                    WxPusher.send_message(content=html, uids=uids, content_type=2)
+                    send_email('849764742', '失物找回通知', 'foundNotice', messages=dict)
 
     return restful.success()
 
 
 def send_message_by_pusher(msg, uid):
-    content = """
-    """
-    WxPusher.send_message(content=str(msg), uids=uid)
+    print('即将要发送的消息', msg)
+    uid = 'UID_CLkvFs8PCxHFDnfEsyHsksbve07f'
+    content = render_template('msgs/' + 'WXNotice' + '.txt', messages=msg)
+    print(content)
+    msg_id = WxPusher.send_message(content=u''+str(content), uids=uid,content_type=2)
+    print('我是消息的ID', msg_id)
     # html=render_template('mails/WXNotice.html', messages=messages)
     # WxPusher.send_message(content=str(msg), uids=uid,content_type=2)
 
@@ -237,7 +238,8 @@ def get_search_data(pagination, pageNum):
             "userId": l.user_id,
             "username": user.username,
             "realName": user.real_name,
-            "time": l.create_time.strftime('%Y-%m-%d %H:%M:%S'),
+            "time": l.create_time.strftime('%Y-%m-%d %H:%M:%S') if current_user.kind > 1 else get_time_str(
+                l.create_time),
             "location": l.location,
             "title": l.title,
             "about": l.about,
@@ -245,7 +247,7 @@ def get_search_data(pagination, pageNum):
             "category": Category.query.get(l.category_id).name,
             "lookCount": l.look_count,
             "commentCount": len(Comment.query.filter_by(lost_found_id=l.id).all()),
-            "ustatus":user.status
+            "ustatus": user.status
         }
         datalist.append(dict)
     data = {

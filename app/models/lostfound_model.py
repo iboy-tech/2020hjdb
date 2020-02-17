@@ -1,6 +1,5 @@
 # coding: utf-8
 from datetime import datetime
-
 from sqlalchemy import Index, text, desc
 
 from app import db
@@ -26,6 +25,7 @@ class LostFound(db.Model):
     location = db.Column(db.String(512), info='位置')
     look_count = db.Column(db.Integer, nullable=False,server_default=text('0'))
     status = db.Column(db.Integer, nullable=False, info='物品的状态01是否被领取',server_default=text('0'))
+
     # 返回一个具有可读性的字符串模型  方便调试
     def __repr__(self):
         return '<LostFound %r>' % self.title

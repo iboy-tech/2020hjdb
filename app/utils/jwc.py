@@ -116,7 +116,7 @@ def user_verify(xuehao, mima):
             'academy': data[16].text.replace("\n", ""),
             'class_name': data[1].text.replace("\n", ""),
             'major': data[18].text.replace("\n", ""),
-            'gender': 0 if data[8].text == '男' else 1,
+            'gender': 0 if data[8].text == '女' else 1,
         }
         try:
             os.remove('code.jpg')

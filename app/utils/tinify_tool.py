@@ -19,17 +19,16 @@ from datetime import datetime
 
 import tinify
 
-
+key = 'mmnYWFKXVlkxsKtFbdx17FSqFj5YhWq0'  # 登录后去主页就可以查看到key
+tinify.key = key
+path = os.getenv('PATH_OF_UPLOAD')
 from tasks import celery
 
 
 # 图片异步压缩队列
-@celery.task(time_limit=10)
+@celery.task
 def tinypng(files):
-    key = 'mmnYWFKXVlkxsKtFbdx17FSqFj5YhWq0'  # 登录后去主页就可以查看到key
-    tinify.key = key
-    path = os.getenv('PATH_OF_UPLOAD')
-    start_time = datetime.now()
+    start = datetime.now()
     for file in files:
         print(file)
         file = os.path.join('app/static/upload/', file)
@@ -64,8 +63,8 @@ def tinypng(files):
         remove_size = round(original_size - mini_size)
         print('压缩前：', original_size, '压缩后：', mini_size, '减少：', remove_size)
         print('剩余的压缩次数', 500 - compressions_this_month)
-    end_time = datetime.now()
-    print('压缩用时', end_time - start_time)
+    end = datetime.now()
+    print('压缩用时', end- start)
     # thr = Thread(target=send_async_email, args=[app,msg])
     # thr.start()
     # return thr

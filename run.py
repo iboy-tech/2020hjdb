@@ -20,16 +20,8 @@ from flask_login import current_user
 from flask_socketio import emit, SocketIO
 
 from app import create_app, create_celery, redis_client
-import eventlet
 
-#
-# eventlet.monkey_patch(socket=True,os=True)
-# eventlet.monkey_patch()
-eventlet.monkey_patch(os=True,
-                     select=True,
-                     socket=True,
-                     thread=False,
-                     time=True)
+
 async_mode = 'eventlet'
 load_dotenv(find_dotenv('.env'))
 load_dotenv(find_dotenv('.flaskenv'))
@@ -130,4 +122,4 @@ if __name__ == '__main__':
    celery -A webapp.main.tasks worker -l info -f celery.log --pool=eventlet
 
     """
-    socketio.run(app=app, host='0.0.0.0', port=8888)
+    socketio.run(app=app, host='0.0.0.0', port=8888,ssl_context=('cert.pem', 'key.pem'))

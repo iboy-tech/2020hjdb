@@ -183,7 +183,7 @@ def claim():
                 print('发送消息')
                 uids = [op.wx_id]
                 send_message_by_pusher(dict, uids)
-                send_email.delay('3247788937', '失物找回通知', 'noticeLost', messages=dict)
+                send_email('849464742', '失物找回通知', 'noticeLost', messages=dict)
             return restful.success(msg='上报成功,您的联系方式已发送给失主')
         # 招领
         elif l is not None and (l.user_id != current_user.id) and l.kind == 1:
@@ -207,7 +207,7 @@ def claim():
                 print('发送消息')
                 uids = [op.wx_id]
                 send_message_by_pusher(dict, uids)
-                send_email.delay('849764742', '失物认领通知', 'noticeFound', messages=dict)
+                send_email('849764742', '失物认领通知', 'noticeFound', messages=dict)
             return restful.success(msg='认领成功,您的联系方式已发送给失主')
         else:
             return restful.params_error()

@@ -1,0 +1,10 @@
+三峡大学失物招领处：
+亲爱的 {{ messages.lost_user }} 同学,
+系统判断您可能有物品丢失了！
+详情如下：
+时间：{{ messages.pub_time }}
+地点：{{ messages.pub_location }}
+内容：{{ messages.pub_content }}
+联系方式：{{ messages.connect_way }}
+详情链接：{{ messages.url }}
+(请您及时处理,如有疑问，请联系管理员.)

@@ -15,4 +15,4 @@ task_serializer = 'json'
 result_serializer = 'json'
 accept_content = ['json']
 timezone = 'Asia/Shanghai'
-enable_utc = True
+enable_utc = False

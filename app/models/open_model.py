@@ -14,6 +14,7 @@ from app import db
 
 
 class OpenID(db.Model):
+    __tablename__ = 'openid'
     id = db.Column(db.Integer, primary_key=True)
     qq_id = db.Column(db.String(50), unique=True, default=None)
     wx_id = db.Column(db.String(50), unique=True, default=None)
