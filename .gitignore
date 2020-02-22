@@ -1,11 +1,8 @@
-
 # Environments
+.idea
+logs/*
 .env
-.venv
-env/
 venv/
-ENV/
-env.bak/
-venv.bak/
 app/config.py
-.env
+*.xlsx
+total.xlsx
