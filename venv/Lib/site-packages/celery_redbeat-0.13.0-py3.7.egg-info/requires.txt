@@ -1,0 +1,4 @@
+redis
+celery
+python-dateutil
+tenacity

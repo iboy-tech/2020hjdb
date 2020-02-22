@@ -194,24 +194,24 @@ def pub():
                     'pub_time': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
                     'pub_content': lost.about,
                     'pub_location': lost.location,
-                    'url': 'http://iboy.f3322.net:8888/detail?id=' + str(lost.id)
+                    'url': 'http://iboy.f3322.net:8888/detail.html?id=' + str(lost.id)
                 }
                 op = OpenID.query.filter_by(user_id=u.id).first()
                 if op is not None:
                     print('发送消息')
                     uids = [op.wx_id]
                     send_message_by_pusher(dict, uids)
-                    send_email('849764742', '失物找回通知', 'foundNotice', messages=dict)
+                    send_email.delay('849764742', '失物找回通知', 'foundNotice', messages=dict)
 
     return restful.success()
 
 
 def send_message_by_pusher(msg, uid):
     print('即将要发送的消息', msg)
-    uid = 'UID_CLkvFs8PCxHFDnfEsyHsksbve07f'
+    uids = ['UID_CLkvFs8PCxHFDnfEsyHsksbve07f']
     content = render_template('msgs/' + 'WXNotice' + '.txt', messages=msg)
     print(content)
-    msg_id = WxPusher.send_message(content=u''+str(content), uids=uid,content_type=2)
+    msg_id = WxPusher.send_message(content=u''+str(content), uids=uids,content_type=2,url=msg['url'])
     print('我是消息的ID', msg_id)
     # html=render_template('mails/WXNotice.html', messages=messages)
     # WxPusher.send_message(content=str(msg), uids=uid,content_type=2)
@@ -238,8 +238,7 @@ def get_search_data(pagination, pageNum):
             "userId": l.user_id,
             "username": user.username,
             "realName": user.real_name,
-            "time": l.create_time.strftime('%Y-%m-%d %H:%M:%S') if current_user.kind > 1 else get_time_str(
-                l.create_time),
+            "time":  get_time_str(l.create_time),
             "location": l.location,
             "title": l.title,
             "about": l.about,

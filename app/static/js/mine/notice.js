@@ -71,7 +71,7 @@ var app = new Vue({
 });
 function switchFix(id){
     $.ajax({
-        url: baseUrl + "/notice/switch?id=" + id,
+        url: baseUrl + "/notice.html/switch?id=" + id,
         //data: JSON.stringify(data),
         method: "POST",
         success: function (res, status) {
@@ -94,7 +94,7 @@ function switchFix(id){
 //删除通知
 function deleteNotice(id) {
     $.ajax({
-        url: baseUrl + "/notice/delete?id=" + id,
+        url: baseUrl + "/notice.html/delete?id=" + id,
         //data: JSON.stringify(data),
         method: "POST",
         success: function (res, status) {
@@ -118,7 +118,7 @@ function deleteNotice(id) {
 function addNotice(notice) {
     //console.log(data);
     $.ajax({
-        url: baseUrl + "/notice/add",
+        url: baseUrl + "/notice.html/add",
         method: "POST",
         data: JSON.stringify(notice),
         success: function (res, status) {
@@ -147,7 +147,7 @@ function addNotice(notice) {
 //查询通知列表
 function getNoticeList(app) {
     $.ajax({
-        url: baseUrl + "/notice/getall",
+        url: baseUrl + "/notice.html/getall",
         //data: JSON.stringify(data),
         method: "POST",
         success: function (res, status) {

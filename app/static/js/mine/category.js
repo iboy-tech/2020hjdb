@@ -47,7 +47,7 @@ var app = new Vue({
 //删除类别
 function deleteCategory(name) {
     $.ajax({
-        url: baseUrl + "/category/delete?name=" + name,
+        url: baseUrl + "/category.html/delete?name=" + name,
         method: "POST",
         success: function (res, status) {
             console.log(res);
@@ -69,7 +69,7 @@ function deleteCategory(name) {
 //新增类别
 function addCategory(data, app) {
     $.ajax({
-        url: baseUrl + "/category/add",
+        url: baseUrl + "/category.html/add",
         method: "POST",
         data: JSON.stringify(data),
         success: function (res, status) {
@@ -97,7 +97,7 @@ function addCategory(data, app) {
 //获取物品类别list
 function getCategory() {
     $.ajax({
-        url: baseUrl + "/category/getall",
+        url: baseUrl + "/category.html/getall",
         method: "POST",
         success: function (res, status) {
             console.log(res);

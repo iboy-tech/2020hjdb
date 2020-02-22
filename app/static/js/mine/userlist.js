@@ -110,7 +110,7 @@ $(function () {
 //获取用户列表
 function getUserList(data, app, append) {
     $.ajax({
-        url: baseUrl + "/userlist/getall",
+        url: baseUrl + "/userlist.html/getall",
         data: JSON.stringify(data),
         method: "POST",
         success: function (res, status) {
@@ -145,7 +145,7 @@ function getUserList(data, app, append) {
 //重置密码
 function resetPassword(userId) {
     $.ajax({
-        url: baseUrl + "/userlist/resetPassword?userId=" + userId,
+        url: baseUrl + "/userlist.html/resetPassword?userId=" + userId,
         method: "POST",
         //data: JSON.stringify(data),
         beforeSend: function () {
@@ -170,7 +170,7 @@ function resetPassword(userId) {
 //设置/取消用户为管理员
 function setAsAdmin(userId) {
     $.ajax({
-        url: baseUrl + "/userlist/setAsAdmin?userId=" + userId,
+        url: baseUrl + "/userlist.html/setAsAdmin?userId=" + userId,
         method: "POST",
         //data: JSON.stringify(data),
         success: function (res, status) {
@@ -193,7 +193,7 @@ function setAsAdmin(userId) {
 //冻结用户
 function freezeUser(userId) {
     $.ajax({
-        url: baseUrl + "/userlist/freeze?userId=" + userId,
+        url: baseUrl + "/userlist.html/freeze?userId=" + userId,
         method: "POST",
         //data: JSON.stringify(data),
         beforeSend: function () {
@@ -222,7 +222,7 @@ function freezeUser(userId) {
 //解冻用户
 function unfreezeUser(userId) {
     $.ajax({
-        url: baseUrl + "/userlist/freeze?userId=" + userId,
+        url: baseUrl + "/userlist.html/freeze?userId=" + userId,
         method: "POST",
         //data: JSON.stringify(data),
         beforeSend: function () {

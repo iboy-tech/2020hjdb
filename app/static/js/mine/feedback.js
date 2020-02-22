@@ -4,36 +4,7 @@ var app = new Vue({
         imgPrefix: staticUrl,
         schoolIcon: './go/icon-school.png',
         user: getSession("user") ? JSON.parse(getSession('user')) : {},
-        list: [
-            /* {
-                 id: "001",
-                 username: "201520180508",
-                 realName: "蓝色司机",
-                 subject: "I cannot pub",
-                 content: "can any one give me a fix?",
-                 createTime: "2019-04-22 16:25",
-                 status: 0,//0未读，1已读
-                 handlerId: null,
-                 handlerName: null,
-                 handlerEmail: null,
-                 answer: null,
-                 handlerTime: null
-             },*/
-            /* {
-                 id: "002",
-                 username: "201520180508",
-                 realName: "蓝色司机",
-                 subject: "cannot pub",
-                 content: "give me a fix?",
-                 createTime: "2019-04-22 16:25",
-                 status: 1,//0未读，1已读
-                 handlerId: "003",
-                 handlerName: "赵大海",
-                 handlerEmail: "zhdh@google.com",
-                 answer: "ok i fixed it!",
-                 handlerTime: "2019-04-22 17:00"
-             }*/
-        ],
+        list: [],
         reply: {
             id: "",
             content: ""
@@ -109,7 +80,7 @@ $(function () {
 //标记已读反馈
 function deleteFeedback(id) {
     $.ajax({
-        url: baseUrl + "/feedback/delete?id="+id,
+        url: baseUrl + "/feedback.html/delete?id="+id,
         method: "POST",
         //data: JSON.stringify(data),
         success: function (res, status) {
@@ -132,7 +103,7 @@ function deleteFeedback(id) {
 //标记已读反馈
 function markFeedback(id) {
     $.ajax({
-        url: baseUrl + "/feedback/mark?id="+id,
+        url: baseUrl + "/feedback.html/mark?id="+id,
         method: "POST",
         //data: JSON.stringify(data),
         success: function (res, status) {
@@ -156,7 +127,7 @@ function markFeedback(id) {
 //回复反馈
 function replyFeedback(data, app) {
     $.ajax({
-        url: baseUrl + "/feedback/reply",
+        url: baseUrl + "/feedback.html/reply",
         method: "POST",
         data: JSON.stringify(data),
         success: function (res, status) {
@@ -182,7 +153,7 @@ function replyFeedback(data, app) {
 //查询反馈列表
 function getFeedbackList(app) {
     $.ajax({
-        url: baseUrl + "/feedback/getall",
+        url: baseUrl + "/feedback.html/getall",
         //data: JSON.stringify(data),
         method: "POST",
         success: function (res, status) {

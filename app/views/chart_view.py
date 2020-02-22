@@ -24,50 +24,12 @@ print('视图文件加载')
 
 # https://blog.csdn.net/yannanxiu/article/details/53816567
 
-@chart.route('/', methods=['GET', 'POST'])
+@chart.route('/', methods=['GET', 'POST'],strict_slashes=False)
 @login_required
 @admin_required
 def index():
     print('蓝图请求成功！')
-
     data = get_data()
-    # {
-    #     # //数据总览
-    #     # //今日和总计
-    #     'lost': [1, 11],
-    #     'found': [2, 22],
-    #     'solve': [3, 33],
-    #     # //近期数据
-    #     # 'barChartData1': {
-    #     'labels1': ["01/13", "04/14", "04/15", "04/16", "04/17", "04/18", "04/13"],
-    #     # //柱状图
-    #     'data1': [[1111, 70, 55, 20, 45, 0, 60], [65, 59, 90, 81, 56, 0, 40], [65, 1, 90, 81, 56, 1, 300]],
-    #     # },
-    #     # //面积图
-    #     # 'lineChartData1': {
-    #     'labels2': ["Jan", "Feb", "March", "April", "May", "June", "July"],
-    #     'data2': [[22, 31, 2, 40, 555, 65, 68], [1, 31, 2, 40, 55, 0, 68], [1, 1, 39, 1, 55, 65, 68]],
-    #     # },
-    #     # //饼状图
-    #     # 'pieData1': {
-    #     # //拾取，丢失，找到
-    #     'data3': [10, 20, 88],
-    #     # },
-    #     # //用户数量变化图
-    #     # 'lineChartData2': {
-    #     'labels4': ["11/13", "04/14", "04/15", "04/17", "04/17", "04/18", "04/13"],
-    #     'data4': [1, 31, 39, 100, 55, 65, 1],
-    #     # },
-    #     # //用户活跃量
-    #     # 'lineChartData3': {
-    #     'lables5': ["Jan", "Feb", "March", "April", "May", "June", "July"],
-    #     'data5': [[22, 31, 39, 40, 55, 65, 68], [12, 15, 23, 34, 36, 44, 51]],
-    #     # },
-    #     # //性别比例
-    #     # 'pieData2': {
-    #     'data6': [10000, 50000]
-    #     # }
-    # }
     return render_template('chart.html', data=data)
 
 

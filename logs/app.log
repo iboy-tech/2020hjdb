@@ -1,0 +1,644 @@
+2020-02-08 19:44:28,437 - app - WARNING - Flask-SocketIO is Running under Werkzeug, WebSocket is not available.
+2020-02-08 19:51:20,119 - app - WARNING - Flask-SocketIO is Running under Werkzeug, WebSocket is not available.
+2020-02-08 19:56:12,307 - app - WARNING - Flask-SocketIO is Running under Werkzeug, WebSocket is not available.
+2020-02-08 19:58:15,050 - app - WARNING - Flask-SocketIO is Running under Werkzeug, WebSocket is not available.
+2020-02-08 20:03:28,492 - app - WARNING - Flask-SocketIO is Running under Werkzeug, WebSocket is not available.
+2020-02-08 20:04:56,122 - app - WARNING - Flask-SocketIO is Running under Werkzeug, WebSocket is not available.
+2020-02-08 20:05:51,205 - app - WARNING - Flask-SocketIO is Running under Werkzeug, WebSocket is not available.
+2020-02-08 20:09:49,931 - app - WARNING - Flask-SocketIO is Running under Werkzeug, WebSocket is not available.
+2020-02-08 20:12:51,898 - app - WARNING - Flask-SocketIO is Running under Werkzeug, WebSocket is not available.
+2020-02-08 20:14:09,274 - app - WARNING - Flask-SocketIO is Running under Werkzeug, WebSocket is not available.
+2020-02-08 20:14:58,772 - app - WARNING - Flask-SocketIO is Running under Werkzeug, WebSocket is not available.
+2020-02-08 20:15:46,259 - app - WARNING - Flask-SocketIO is Running under Werkzeug, WebSocket is not available.
+2020-02-08 20:17:25,695 - app - WARNING - Flask-SocketIO is Running under Werkzeug, WebSocket is not available.
+2020-02-08 20:19:39,173 - app - WARNING - Flask-SocketIO is Running under Werkzeug, WebSocket is not available.
+2020-02-08 20:30:47,751 - app - WARNING - Flask-SocketIO is Running under Werkzeug, WebSocket is not available.
+2020-02-08 20:32:01,893 - app - WARNING - Flask-SocketIO is Running under Werkzeug, WebSocket is not available.
+2020-02-08 20:33:04,357 - app - WARNING - Flask-SocketIO is Running under Werkzeug, WebSocket is not available.
+2020-02-08 20:46:31,556 - app - WARNING - Flask-SocketIO is Running under Werkzeug, WebSocket is not available.
+2020-02-08 20:47:25,301 - app - WARNING - Flask-SocketIO is Running under Werkzeug, WebSocket is not available.
+2020-02-08 20:49:33,578 - app - WARNING - Flask-SocketIO is Running under Werkzeug, WebSocket is not available.
+2020-02-08 21:41:20,102 - app - WARNING - Flask-SocketIO is Running under Werkzeug, WebSocket is not available.
+2020-02-08 22:16:34,150 - app - WARNING - Flask-SocketIO is Running under Werkzeug, WebSocket is not available.
+2020-02-08 22:41:54,786 - app - WARNING - Flask-SocketIO is Running under Werkzeug, WebSocket is not available.
+2020-02-08 22:43:17,194 - app - WARNING - Flask-SocketIO is Running under Werkzeug, WebSocket is not available.
+2020-02-09 14:24:43,619 - app - WARNING - Flask-SocketIO is Running under Werkzeug, WebSocket is not available.
+2020-02-09 14:50:32,828 - app - WARNING - Flask-SocketIO is Running under Werkzeug, WebSocket is not available.
+2020-02-09 14:55:26,796 - app - WARNING - Flask-SocketIO is Running under Werkzeug, WebSocket is not available.
+2020-02-09 15:21:08,641 - app - ERROR - Exception on /pusher/wx [GET]
+Traceback (most recent call last):
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask\app.py", line 2446, in wsgi_app
+    response = self.full_dispatch_request()
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask\app.py", line 1951, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask_cors\extension.py", line 161, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask\app.py", line 1820, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask\app.py", line 1949, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask\app.py", line 1935, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "O:\Python\Flask-WC\app\views\pusher_view.py", line 63, in open_wx
+    data = (WxPusher.create_qrcode(extra=1))
+  File "O:\Python\Flask-WC\app\wxpusher\wxpusher.py", line 46, in create_qrcode
+    'appToken': cls.get_token(token),
+  File "O:\Python\Flask-WC\app\wxpusher\wxpusher.py", line 69, in get_token
+    raise exceptions.WxPusherNoneTokenException()
+app.wxpusher.exceptions.WxPusherNoneTokenException
+2020-02-09 15:22:28,319 - app - WARNING - Flask-SocketIO is Running under Werkzeug, WebSocket is not available.
+2020-02-09 15:24:38,382 - app - WARNING - Flask-SocketIO is Running under Werkzeug, WebSocket is not available.
+2020-02-09 15:25:20,009 - app - ERROR - Exception on /pusher/wx [GET]
+Traceback (most recent call last):
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask\app.py", line 2446, in wsgi_app
+    response = self.full_dispatch_request()
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask\app.py", line 1951, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask_cors\extension.py", line 161, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask\app.py", line 1820, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask\app.py", line 1949, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask\app.py", line 1935, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "O:\Python\Flask-WC\app\views\pusher_view.py", line 63, in open_wx
+    data = (WxPusher.create_qrcode(extra=1))
+  File "O:\Python\Flask-WC\app\wxpusher\wxpusher.py", line 46, in create_qrcode
+    'appToken': cls.get_token(token),
+  File "O:\Python\Flask-WC\app\wxpusher\wxpusher.py", line 69, in get_token
+    raise exceptions.WxPusherNoneTokenException()
+app.wxpusher.exceptions.WxPusherNoneTokenException
+2020-02-17 14:15:11,020 - app - ERROR - Exception on / [GET]
+Traceback (most recent call last):
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\engine\base.py", line 2276, in _wrap_pool_connect
+    return fn()
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\pool\base.py", line 363, in connect
+    return _ConnectionFairy._checkout(self)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\pool\base.py", line 760, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\pool\base.py", line 492, in checkout
+    rec = pool._do_get()
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\pool\impl.py", line 139, in _do_get
+    self._dec_overflow()
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\util\langhelpers.py", line 68, in __exit__
+    compat.reraise(exc_type, exc_value, exc_tb)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\util\compat.py", line 153, in reraise
+    raise value
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\pool\impl.py", line 136, in _do_get
+    return self._create_connection()
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\pool\base.py", line 308, in _create_connection
+    return _ConnectionRecord(self)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\pool\base.py", line 437, in __init__
+    self.__connect(first_connect_check=True)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\pool\base.py", line 639, in __connect
+    connection = pool._invoke_creator(self)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\engine\strategies.py", line 114, in connect
+    return dialect.connect(*cargs, **cparams)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\engine\default.py", line 482, in connect
+    return self.dbapi.connect(*cargs, **cparams)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\MySQLdb\__init__.py", line 84, in Connect
+    return Connection(*args, **kwargs)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\MySQLdb\connections.py", line 179, in __init__
+    super(Connection, self).__init__(*args, **kwargs2)
+MySQLdb._exceptions.OperationalError: (2002, "Can't connect to MySQL server on '127.0.0.1' (10061)")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask\app.py", line 2446, in wsgi_app
+    response = self.full_dispatch_request()
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask\app.py", line 1951, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask_cors\extension.py", line 161, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask\app.py", line 1820, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask\app.py", line 1949, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask_debugtoolbar\__init__.py", line 125, in dispatch_request
+    return view_func(**req.view_args)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask_cors\decorator.py", line 128, in wrapped_function
+    resp = make_response(f(*args, **kwargs))
+  File "O:\Python\Flask-WC\app\views\auth_view.py", line 102, in login
+    return render_template('login.html')
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask\templating.py", line 136, in render_template
+    ctx.app.update_template_context(context)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask\app.py", line 838, in update_template_context
+    context.update(func())
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask_login\utils.py", line 368, in _user_context_processor
+    return dict(current_user=_get_user())
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask_login\utils.py", line 335, in _get_user
+    current_app.login_manager._load_user()
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask_login\login_manager.py", line 353, in _load_user
+    return self._load_from_cookie(request.cookies[cookie_name])
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask_login\login_manager.py", line 392, in _load_from_cookie
+    self.reload_user()
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask_login\login_manager.py", line 321, in reload_user
+    user = self.user_callback(user_id)
+  File "O:\Python\Flask-WC\app\models\user_model.py", line 129, in load_user
+    return User.query.get(int(user_id))
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\orm\query.py", line 982, in get
+    return self._get_impl(ident, loading.load_on_pk_identity)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\orm\query.py", line 1094, in _get_impl
+    return db_load_fn(self, primary_key_identity)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\orm\loading.py", line 284, in load_on_pk_identity
+    return q.one()
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\orm\query.py", line 3325, in one
+    ret = self.one_or_none()
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\orm\query.py", line 3294, in one_or_none
+    ret = list(self)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\orm\query.py", line 3367, in __iter__
+    return self._execute_and_instances(context)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\orm\query.py", line 3389, in _execute_and_instances
+    querycontext, self._connection_from_session, close_with_result=True
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\orm\query.py", line 3404, in _get_bind_args
+    mapper=self._bind_mapper(), clause=querycontext.statement, **kw
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\orm\query.py", line 3382, in _connection_from_session
+    conn = self.session.connection(**kw)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\orm\session.py", line 1133, in connection
+    execution_options=execution_options,
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\orm\session.py", line 1139, in _connection_for_bind
+    engine, execution_options
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\orm\session.py", line 432, in _connection_for_bind
+    conn = bind._contextual_connect()
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\engine\base.py", line 2242, in _contextual_connect
+    self._wrap_pool_connect(self.pool.connect, None),
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\engine\base.py", line 2280, in _wrap_pool_connect
+    e, dialect, self
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\engine\base.py", line 1547, in _handle_dbapi_exception_noconnection
+    util.raise_from_cause(sqlalchemy_exception, exc_info)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\util\compat.py", line 398, in raise_from_cause
+    reraise(type(exception), exception, tb=exc_tb, cause=cause)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\util\compat.py", line 152, in reraise
+    raise value.with_traceback(tb)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\engine\base.py", line 2276, in _wrap_pool_connect
+    return fn()
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\pool\base.py", line 363, in connect
+    return _ConnectionFairy._checkout(self)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\pool\base.py", line 760, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\pool\base.py", line 492, in checkout
+    rec = pool._do_get()
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\pool\impl.py", line 139, in _do_get
+    self._dec_overflow()
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\util\langhelpers.py", line 68, in __exit__
+    compat.reraise(exc_type, exc_value, exc_tb)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\util\compat.py", line 153, in reraise
+    raise value
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\pool\impl.py", line 136, in _do_get
+    return self._create_connection()
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\pool\base.py", line 308, in _create_connection
+    return _ConnectionRecord(self)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\pool\base.py", line 437, in __init__
+    self.__connect(first_connect_check=True)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\pool\base.py", line 639, in __connect
+    connection = pool._invoke_creator(self)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\engine\strategies.py", line 114, in connect
+    return dialect.connect(*cargs, **cparams)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\engine\default.py", line 482, in connect
+    return self.dbapi.connect(*cargs, **cparams)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\MySQLdb\__init__.py", line 84, in Connect
+    return Connection(*args, **kwargs)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\MySQLdb\connections.py", line 179, in __init__
+    super(Connection, self).__init__(*args, **kwargs2)
+sqlalchemy.exc.OperationalError: (MySQLdb._exceptions.OperationalError) (2002, "Can't connect to MySQL server on '127.0.0.1' (10061)")
+(Background on this error at: http://sqlalche.me/e/e3q8)
+2020-02-17 14:15:11,429 - app - ERROR - Exception on /robots.txt [GET]
+Traceback (most recent call last):
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask\app.py", line 1949, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask_debugtoolbar\__init__.py", line 111, in dispatch_request
+    app.raise_routing_exception(req)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask\app.py", line 1907, in raise_routing_exception
+    raise request.routing_exception
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask\ctx.py", line 350, in match_request
+    result = self.url_adapter.match(return_rule=True)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\werkzeug\routing.py", line 1799, in match
+    raise NotFound()
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\engine\base.py", line 2276, in _wrap_pool_connect
+    return fn()
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\pool\base.py", line 363, in connect
+    return _ConnectionFairy._checkout(self)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\pool\base.py", line 760, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\pool\base.py", line 492, in checkout
+    rec = pool._do_get()
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\pool\impl.py", line 139, in _do_get
+    self._dec_overflow()
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\util\langhelpers.py", line 68, in __exit__
+    compat.reraise(exc_type, exc_value, exc_tb)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\util\compat.py", line 153, in reraise
+    raise value
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\pool\impl.py", line 136, in _do_get
+    return self._create_connection()
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\pool\base.py", line 308, in _create_connection
+    return _ConnectionRecord(self)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\pool\base.py", line 437, in __init__
+    self.__connect(first_connect_check=True)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\pool\base.py", line 639, in __connect
+    connection = pool._invoke_creator(self)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\engine\strategies.py", line 114, in connect
+    return dialect.connect(*cargs, **cparams)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\engine\default.py", line 482, in connect
+    return self.dbapi.connect(*cargs, **cparams)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\MySQLdb\__init__.py", line 84, in Connect
+    return Connection(*args, **kwargs)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\MySQLdb\connections.py", line 179, in __init__
+    super(Connection, self).__init__(*args, **kwargs2)
+MySQLdb._exceptions.OperationalError: (2002, "Can't connect to MySQL server on '127.0.0.1' (10061)")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask\app.py", line 2446, in wsgi_app
+    response = self.full_dispatch_request()
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask\app.py", line 1951, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask_cors\extension.py", line 161, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask\app.py", line 1815, in handle_user_exception
+    return self.handle_http_exception(e)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask\app.py", line 1743, in handle_http_exception
+    return handler(e)
+  File "O:\Python\Flask-WC\app\__init__.py", line 237, in page_not_found
+    return render_template('errors/404.html'), 404
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask\templating.py", line 136, in render_template
+    ctx.app.update_template_context(context)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask\app.py", line 838, in update_template_context
+    context.update(func())
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask_login\utils.py", line 368, in _user_context_processor
+    return dict(current_user=_get_user())
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask_login\utils.py", line 335, in _get_user
+    current_app.login_manager._load_user()
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask_login\login_manager.py", line 353, in _load_user
+    return self._load_from_cookie(request.cookies[cookie_name])
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask_login\login_manager.py", line 392, in _load_from_cookie
+    self.reload_user()
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask_login\login_manager.py", line 321, in reload_user
+    user = self.user_callback(user_id)
+  File "O:\Python\Flask-WC\app\models\user_model.py", line 129, in load_user
+    return User.query.get(int(user_id))
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\orm\query.py", line 982, in get
+    return self._get_impl(ident, loading.load_on_pk_identity)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\orm\query.py", line 1094, in _get_impl
+    return db_load_fn(self, primary_key_identity)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\orm\loading.py", line 284, in load_on_pk_identity
+    return q.one()
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\orm\query.py", line 3325, in one
+    ret = self.one_or_none()
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\orm\query.py", line 3294, in one_or_none
+    ret = list(self)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\orm\query.py", line 3367, in __iter__
+    return self._execute_and_instances(context)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\orm\query.py", line 3389, in _execute_and_instances
+    querycontext, self._connection_from_session, close_with_result=True
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\orm\query.py", line 3404, in _get_bind_args
+    mapper=self._bind_mapper(), clause=querycontext.statement, **kw
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\orm\query.py", line 3382, in _connection_from_session
+    conn = self.session.connection(**kw)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\orm\session.py", line 1133, in connection
+    execution_options=execution_options,
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\orm\session.py", line 1139, in _connection_for_bind
+    engine, execution_options
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\orm\session.py", line 432, in _connection_for_bind
+    conn = bind._contextual_connect()
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\engine\base.py", line 2242, in _contextual_connect
+    self._wrap_pool_connect(self.pool.connect, None),
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\engine\base.py", line 2280, in _wrap_pool_connect
+    e, dialect, self
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\engine\base.py", line 1547, in _handle_dbapi_exception_noconnection
+    util.raise_from_cause(sqlalchemy_exception, exc_info)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\util\compat.py", line 398, in raise_from_cause
+    reraise(type(exception), exception, tb=exc_tb, cause=cause)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\util\compat.py", line 152, in reraise
+    raise value.with_traceback(tb)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\engine\base.py", line 2276, in _wrap_pool_connect
+    return fn()
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\pool\base.py", line 363, in connect
+    return _ConnectionFairy._checkout(self)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\pool\base.py", line 760, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\pool\base.py", line 492, in checkout
+    rec = pool._do_get()
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\pool\impl.py", line 139, in _do_get
+    self._dec_overflow()
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\util\langhelpers.py", line 68, in __exit__
+    compat.reraise(exc_type, exc_value, exc_tb)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\util\compat.py", line 153, in reraise
+    raise value
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\pool\impl.py", line 136, in _do_get
+    return self._create_connection()
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\pool\base.py", line 308, in _create_connection
+    return _ConnectionRecord(self)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\pool\base.py", line 437, in __init__
+    self.__connect(first_connect_check=True)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\pool\base.py", line 639, in __connect
+    connection = pool._invoke_creator(self)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\engine\strategies.py", line 114, in connect
+    return dialect.connect(*cargs, **cparams)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\engine\default.py", line 482, in connect
+    return self.dbapi.connect(*cargs, **cparams)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\MySQLdb\__init__.py", line 84, in Connect
+    return Connection(*args, **kwargs)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\MySQLdb\connections.py", line 179, in __init__
+    super(Connection, self).__init__(*args, **kwargs2)
+sqlalchemy.exc.OperationalError: (MySQLdb._exceptions.OperationalError) (2002, "Can't connect to MySQL server on '127.0.0.1' (10061)")
+(Background on this error at: http://sqlalche.me/e/e3q8)
+2020-02-17 14:15:14,273 - app - ERROR - Exception on / [GET]
+Traceback (most recent call last):
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\engine\base.py", line 2276, in _wrap_pool_connect
+    return fn()
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\pool\base.py", line 363, in connect
+    return _ConnectionFairy._checkout(self)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\pool\base.py", line 760, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\pool\base.py", line 492, in checkout
+    rec = pool._do_get()
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\pool\impl.py", line 139, in _do_get
+    self._dec_overflow()
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\util\langhelpers.py", line 68, in __exit__
+    compat.reraise(exc_type, exc_value, exc_tb)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\util\compat.py", line 153, in reraise
+    raise value
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\pool\impl.py", line 136, in _do_get
+    return self._create_connection()
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\pool\base.py", line 308, in _create_connection
+    return _ConnectionRecord(self)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\pool\base.py", line 437, in __init__
+    self.__connect(first_connect_check=True)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\pool\base.py", line 639, in __connect
+    connection = pool._invoke_creator(self)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\engine\strategies.py", line 114, in connect
+    return dialect.connect(*cargs, **cparams)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\engine\default.py", line 482, in connect
+    return self.dbapi.connect(*cargs, **cparams)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\MySQLdb\__init__.py", line 84, in Connect
+    return Connection(*args, **kwargs)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\MySQLdb\connections.py", line 179, in __init__
+    super(Connection, self).__init__(*args, **kwargs2)
+MySQLdb._exceptions.OperationalError: (2002, "Can't connect to MySQL server on '127.0.0.1' (10061)")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask\app.py", line 2446, in wsgi_app
+    response = self.full_dispatch_request()
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask\app.py", line 1951, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask_cors\extension.py", line 161, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask\app.py", line 1820, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask\app.py", line 1949, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask_debugtoolbar\__init__.py", line 125, in dispatch_request
+    return view_func(**req.view_args)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask_cors\decorator.py", line 128, in wrapped_function
+    resp = make_response(f(*args, **kwargs))
+  File "O:\Python\Flask-WC\app\views\auth_view.py", line 102, in login
+    return render_template('login.html')
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask\templating.py", line 136, in render_template
+    ctx.app.update_template_context(context)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask\app.py", line 838, in update_template_context
+    context.update(func())
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask_login\utils.py", line 368, in _user_context_processor
+    return dict(current_user=_get_user())
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask_login\utils.py", line 335, in _get_user
+    current_app.login_manager._load_user()
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask_login\login_manager.py", line 353, in _load_user
+    return self._load_from_cookie(request.cookies[cookie_name])
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask_login\login_manager.py", line 392, in _load_from_cookie
+    self.reload_user()
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask_login\login_manager.py", line 321, in reload_user
+    user = self.user_callback(user_id)
+  File "O:\Python\Flask-WC\app\models\user_model.py", line 129, in load_user
+    return User.query.get(int(user_id))
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\orm\query.py", line 982, in get
+    return self._get_impl(ident, loading.load_on_pk_identity)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\orm\query.py", line 1094, in _get_impl
+    return db_load_fn(self, primary_key_identity)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\orm\loading.py", line 284, in load_on_pk_identity
+    return q.one()
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\orm\query.py", line 3325, in one
+    ret = self.one_or_none()
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\orm\query.py", line 3294, in one_or_none
+    ret = list(self)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\orm\query.py", line 3367, in __iter__
+    return self._execute_and_instances(context)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\orm\query.py", line 3389, in _execute_and_instances
+    querycontext, self._connection_from_session, close_with_result=True
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\orm\query.py", line 3404, in _get_bind_args
+    mapper=self._bind_mapper(), clause=querycontext.statement, **kw
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\orm\query.py", line 3382, in _connection_from_session
+    conn = self.session.connection(**kw)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\orm\session.py", line 1133, in connection
+    execution_options=execution_options,
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\orm\session.py", line 1139, in _connection_for_bind
+    engine, execution_options
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\orm\session.py", line 432, in _connection_for_bind
+    conn = bind._contextual_connect()
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\engine\base.py", line 2242, in _contextual_connect
+    self._wrap_pool_connect(self.pool.connect, None),
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\engine\base.py", line 2280, in _wrap_pool_connect
+    e, dialect, self
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\engine\base.py", line 1547, in _handle_dbapi_exception_noconnection
+    util.raise_from_cause(sqlalchemy_exception, exc_info)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\util\compat.py", line 398, in raise_from_cause
+    reraise(type(exception), exception, tb=exc_tb, cause=cause)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\util\compat.py", line 152, in reraise
+    raise value.with_traceback(tb)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\engine\base.py", line 2276, in _wrap_pool_connect
+    return fn()
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\pool\base.py", line 363, in connect
+    return _ConnectionFairy._checkout(self)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\pool\base.py", line 760, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\pool\base.py", line 492, in checkout
+    rec = pool._do_get()
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\pool\impl.py", line 139, in _do_get
+    self._dec_overflow()
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\util\langhelpers.py", line 68, in __exit__
+    compat.reraise(exc_type, exc_value, exc_tb)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\util\compat.py", line 153, in reraise
+    raise value
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\pool\impl.py", line 136, in _do_get
+    return self._create_connection()
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\pool\base.py", line 308, in _create_connection
+    return _ConnectionRecord(self)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\pool\base.py", line 437, in __init__
+    self.__connect(first_connect_check=True)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\pool\base.py", line 639, in __connect
+    connection = pool._invoke_creator(self)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\engine\strategies.py", line 114, in connect
+    return dialect.connect(*cargs, **cparams)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\sqlalchemy\engine\default.py", line 482, in connect
+    return self.dbapi.connect(*cargs, **cparams)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\MySQLdb\__init__.py", line 84, in Connect
+    return Connection(*args, **kwargs)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\MySQLdb\connections.py", line 179, in __init__
+    super(Connection, self).__init__(*args, **kwargs2)
+sqlalchemy.exc.OperationalError: (MySQLdb._exceptions.OperationalError) (2002, "Can't connect to MySQL server on '127.0.0.1' (10061)")
+(Background on this error at: http://sqlalche.me/e/e3q8)
+2020-02-17 20:12:00,243 - app - ERROR - Exception on /found.html/getall [POST]
+Traceback (most recent call last):
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask\app.py", line 2446, in wsgi_app
+    response = self.full_dispatch_request()
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask\app.py", line 1951, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask_cors\extension.py", line 161, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask\app.py", line 1820, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask\app.py", line 1949, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask_debugtoolbar\__init__.py", line 125, in dispatch_request
+    return view_func(**req.view_args)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask_login\utils.py", line 261, in decorated_view
+    return func(*args, **kwargs)
+  File "O:\Python\Flask-WC\app\views\found_view.py", line 132, in get_all
+    data = get_search_data(pagination, page)
+  File "O:\Python\Flask-WC\app\views\found_view.py", line 240, in get_search_data
+    "time": l.get_time_str,
+  File "O:\Python\Flask-WC\app\models\lostfound_model.py", line 32, in get_time_str
+    now_utc = time.mktime(datetime.datetime.now().timetuple())
+AttributeError: type object 'datetime.time' has no attribute 'mktime'
+2020-02-17 21:40:19,614 - app - ERROR - Exception on /found.html/getall [POST]
+Traceback (most recent call last):
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask\app.py", line 2446, in wsgi_app
+    response = self.full_dispatch_request()
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask\app.py", line 1951, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask_cors\extension.py", line 161, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask\app.py", line 1820, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask\app.py", line 1949, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask_debugtoolbar\__init__.py", line 125, in dispatch_request
+    return view_func(**req.view_args)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask_login\utils.py", line 261, in decorated_view
+    return func(*args, **kwargs)
+  File "O:\Python\Flask-WC\app\views\found_view.py", line 132, in get_all
+    data = get_search_data(pagination, page)
+  File "O:\Python\Flask-WC\app\views\found_view.py", line 240, in get_search_data
+    "time": l.get_time_str(),
+  File "O:\Python\Flask-WC\app\models\lostfound_model.py", line 31, in get_time_str
+    create_time_utc = time.mktime(self.create_time.timetuple())
+AttributeError: type object 'datetime.time' has no attribute 'mktime'
+2020-02-17 21:41:19,043 - app - ERROR - Exception on /found.html/getall [POST]
+Traceback (most recent call last):
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask\app.py", line 2446, in wsgi_app
+    response = self.full_dispatch_request()
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask\app.py", line 1951, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask_cors\extension.py", line 161, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask\app.py", line 1820, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask\app.py", line 1949, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask_debugtoolbar\__init__.py", line 125, in dispatch_request
+    return view_func(**req.view_args)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask_login\utils.py", line 261, in decorated_view
+    return func(*args, **kwargs)
+  File "O:\Python\Flask-WC\app\views\found_view.py", line 132, in get_all
+    data = get_search_data(pagination, page)
+  File "O:\Python\Flask-WC\app\views\found_view.py", line 240, in get_search_data
+    "time": l.get_time_str(),
+  File "O:\Python\Flask-WC\app\models\lostfound_model.py", line 31, in get_time_str
+    create_time_utc = time.mktime(self.create_time.timetuple())
+AttributeError: type object 'datetime.time' has no attribute 'mktime'
+2020-02-17 22:04:16,382 - app - ERROR - Exception on /found.html/pub [POST]
+Traceback (most recent call last):
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask\app.py", line 2446, in wsgi_app
+    response = self.full_dispatch_request()
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask\app.py", line 1951, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask_cors\extension.py", line 161, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask\app.py", line 1820, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask\app.py", line 1949, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask_debugtoolbar\__init__.py", line 125, in dispatch_request
+    return view_func(**req.view_args)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask_login\utils.py", line 261, in decorated_view
+    return func(*args, **kwargs)
+  File "O:\Python\Flask-WC\app\views\found_view.py", line 204, in pub
+    send_message_by_pusher(dict, uids)
+  File "O:\Python\Flask-WC\app\views\found_view.py", line 215, in send_message_by_pusher
+    render_template('mails/WXNotice.html', messages=dict)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask\templating.py", line 140, in render_template
+    ctx.app,
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask\templating.py", line 120, in _render
+    rv = template.render(context)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\jinja2\asyncsupport.py", line 76, in render
+    return original_render(self, *args, **kwargs)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\jinja2\environment.py", line 1008, in render
+    return self.environment.handle_exception(exc_info, True)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\jinja2\environment.py", line 780, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\jinja2\_compat.py", line 37, in reraise
+    raise value.with_traceback(tb)
+  File "O:\Python\Flask-WC\app\templates\mails\WXNotice.html", line 81, in top-level template code
+    �װ��� {{ messages.lost_user+' ͬѧ' }} ,���ã�</p>
+jinja2.exceptions.UndefinedError: 'type object' has no attribute 'lost_user'
+2020-02-17 22:06:16,134 - app - ERROR - Exception on /found.html/pub [POST]
+Traceback (most recent call last):
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask\app.py", line 2446, in wsgi_app
+    response = self.full_dispatch_request()
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask\app.py", line 1951, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask_cors\extension.py", line 161, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask\app.py", line 1820, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask\app.py", line 1949, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask_debugtoolbar\__init__.py", line 125, in dispatch_request
+    return view_func(**req.view_args)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask_login\utils.py", line 261, in decorated_view
+    return func(*args, **kwargs)
+  File "O:\Python\Flask-WC\app\views\found_view.py", line 204, in pub
+    send_message_by_pusher(dict, uids)
+  File "O:\Python\Flask-WC\app\views\found_view.py", line 216, in send_message_by_pusher
+    render_template('mails/WXNotice.html', messages=dict)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask\templating.py", line 140, in render_template
+    ctx.app,
+  File "O:\Python\Flask-WC\venv\lib\site-packages\flask\templating.py", line 120, in _render
+    rv = template.render(context)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\jinja2\asyncsupport.py", line 76, in render
+    return original_render(self, *args, **kwargs)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\jinja2\environment.py", line 1008, in render
+    return self.environment.handle_exception(exc_info, True)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\jinja2\environment.py", line 780, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "O:\Python\Flask-WC\venv\lib\site-packages\jinja2\_compat.py", line 37, in reraise
+    raise value.with_traceback(tb)
+  File "O:\Python\Flask-WC\app\templates\mails\WXNotice.html", line 81, in top-level template code
+    �װ��� {{ messages.lost_user+' ͬѧ' }} ,���ã�</p>
+jinja2.exceptions.UndefinedError: 'type object' has no attribute 'lost_user'

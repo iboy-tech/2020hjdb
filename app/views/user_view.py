@@ -27,7 +27,6 @@ from app.utils.mail_sender import send_email
 from tasks import celery
 
 
-@user.route('/index.html', methods=['POST', 'OPTIONS', 'GET'])
 @user.route('/', methods=['POST', 'OPTIONS', 'GET'])
 @cross_origin()
 @login_required
@@ -86,7 +85,7 @@ def set_QQ():
         'real_name': user_db.real_name,
         'token': token
     }
-    send_email(new_qq, 'QQ更改', 'changeQQ', messages=messages)
+    send_email.delay(new_qq, 'QQ更改', 'changeQQ', messages=messages)
     return restful.success(success=True, msg="验证邮件已发送到您的新的QQ邮箱，可能在垃圾信箱中，确认成功才可更改")
 
 
@@ -176,14 +175,14 @@ def claim():
                 'pub_time': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
                 'pub_content': l.about,
                 'pub_location': l.location,
-                'url': 'http://iboy.f3322.net:8888/detail?id=' + str(l.id)
+                'url': 'http://iboy.f3322.net:8888/detail.html?id=' + str(l.id)
             }
             op = OpenID.query.filter_by(user_id=lost_user.id).first()
             if op is not None:
                 print('发送消息')
                 uids = [op.wx_id]
                 send_message_by_pusher(dict, uids)
-                send_email('849464742', '失物找回通知', 'noticeLost', messages=dict)
+                send_email.delay('849464742', '失物找回通知', 'noticeLost', messages=dict)
             return restful.success(msg='上报成功,您的联系方式已发送给失主')
         # 招领
         elif l is not None and (l.user_id != current_user.id) and l.kind == 1:
@@ -191,7 +190,7 @@ def claim():
             l.claimant_id = current_user.id
             db.session.add(l)
             db.session.commit()
-            found_user = User.query.filter_by(user_id=l.user_id).first()
+            found_user = User.query.filter_by(id=l.user_id).first()
             # 改变状态，有人找到了要通知失主
             dict = {
                 'lost_user': current_user.real_name,
@@ -200,14 +199,14 @@ def claim():
                 'pub_time': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
                 'pub_content': l.about,
                 'pub_location': l.location,
-                'url': 'http://iboy.f3322.net:8888/detail?id=' + str(l.id)
+                'url': 'http://iboy.f3322.net:8888/detail.html?id=' + str(l.id)
             }
             op = OpenID.query.filter_by(user_id=found_user.id).first()
             if op is not None:
                 print('发送消息')
                 uids = [op.wx_id]
                 send_message_by_pusher(dict, uids)
-                send_email('849764742', '失物认领通知', 'noticeFound', messages=dict)
+                send_email.delay('849764742', '失物认领通知', 'noticeFound', messages=dict)
             return restful.success(msg='认领成功,您的联系方式已发送给失主')
         else:
             return restful.params_error()

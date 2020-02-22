@@ -22,7 +22,6 @@ class Operations:
 # 基类配置
 class BaseConfig:
     PIPENV_DONT_LOAD_ENV = 1
-    FLASK_DEBUG = True
     # MAIL_PORT = int(os.getenv('MAIL_PORT', default=465))
     # MAIL_USE_SSL = True if 'true' == os.getenv('MAIL_USE_SSL') else False
     # MAIL_USE_TLS = True if 'true' == os.getenv('MAIL_USE_TLS') else False
@@ -30,12 +29,10 @@ class BaseConfig:
     SECRET_KEY = 'adsdad&*^%^$%#afcsefvdzcssef1212'
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True  # 每次请求结束后都会自动提交数据库中的变动
     SQLALCHEMY_TRACK_MODIFICATIONS = True
-    SQLALCHEMY_COMMIT_TEARDOWN = True
     DEBUG_TB_INTERCEPT_REDIRECTS = False
     MXA_ATTEMPT_NUMBER = 5
-    ARTISAN_POSTS_PER_PAGE = 120
+    ARTISAN_POSTS_PER_PAGE = 120  # 分页的数量
     MAIL_SUBJECT_PREFIX = '三峡大学失物招领处：'
-    # QQ_AVATAR_API = 'https://q2.qlogo.cn/headimg_dl?dst_uin={}&spec=100'
     MAIL_SERVER = os.getenv('MAIL_SERVER')
     MAIL_PORT = 465
     MAIL_USE_SSL = True
@@ -46,24 +43,25 @@ class BaseConfig:
     CACHE_REDIS_URL = 'redis://127.0.0.1:6379/0'  # 缓存
     SESSION_REDIS = 'redis://127.0.0.1:6379/2'  # session缓存
     PERMANENT_SESSION_LIFETIME = 24 * 60 * 60  # session 的有效期，单位是秒
-    QR_CODE_VALID_TIME = 300  # 微信二维码过期时间10分钟
+    QR_CODE_VALID_TIME = 300  # 微信二维码过期时间5分钟
     QR_CODE_SUFFIX = '-pusher_post_data'
     SESSION_KEY_PREFIX = 'flask'
     MONGODB_SETTINGS = {
-        'db': 'szwl',
+        'db': 'swzl',
         'host': '127.0.0.1',
         'port': 27107,
         'username': 'root',
         'password': '123456'
     }
+    MAIL_USE_SSL =True
+    MAIL_SERVER ='smtp.qq.com'
+    MAIL_PORT  =465
+    SUPER_ADMIN_USERNAME ='2018171109'
+    MAIL_USERNAME ='547142436@qq.com'
+    MAIL_PASSWORD ='xgepfanashsmbffi'
+    MAIL_DEFAULT_SENDER = ("三峡大学失物招领处", '547142436@qq.com')
 
-    # REDIS_DB_URL = {
-    #     'host': '127.0.0.1',
-    #     'port': 6379,
-    #     'password': '',
-    #     'db': 0
-    # }
-    MAIL_DEFAULT_SENDER = ("三峡大学失物招领处", os.getenv('MAIL_USERNAME'))
+	# MAIL_DEFAULT_SENDER = ("三峡大学失物招领处", os.getenv('MAIL_USERNAME'))
 
     @staticmethod
     def init_app(app):
@@ -74,15 +72,8 @@ class BaseConfig:
 class DevelopmentConfig(BaseConfig):
     DEBUG = True
     CACHE_NO_NULL_WARNING = True  # 关闭缓存警告信息
-    # MAIL_SERVER = 'smtp.ym.163.com'
-    #     # MAIL_PORT = '465'
-    #     # MAIL_USE_TLS = True
-    #     # MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
-    #     # MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
-    #     # SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or \
-    #     #                           'sqlite:///' + os.path.join(basedir, 'data-dev.sqlite')
-    QQ_AVATAR_API = 'https://q2.qlogo.cn/headimg_dl?dst_uin={}&spec=100'
     SQLALCHEMY_DATABASE_URI = 'mysql://root:root@127.0.0.1/swzl'
+    print('现在是开发环境数据库', SQLALCHEMY_DATABASE_URI)
 
 
 # 测试环境的子类配置
@@ -94,7 +85,8 @@ class TestingConfig(BaseConfig):
 # 生产环境的配置
 class ProductionConfig(BaseConfig):
     CACHE_TYPE = 'redis'  # 生产环境下开启redis缓存
-    SQLALCHEMY_DATABASE_URI = 'mysql://root:root@127.0.0.1/swzl'
+    SQLALCHEMY_DATABASE_URI = 'mysql://swzl:6hAZDJ876WiGZZ6X@127.0.0.1/swzl'
+    print('现在是生产环境数据库', SQLALCHEMY_DATABASE_URI)
 
 
 # 注册不同的开发环境和默认的开发环境

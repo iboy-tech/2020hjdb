@@ -110,13 +110,14 @@ def user_verify(xuehao, mima):
         resp = s.get('http://210.42.38.26:84/jwc_glxt/Stu_Info/Stu_info.aspx')
         soup = BeautifulSoup(resp.content, 'lxml')
         data = soup.select('.table_bgcolor td')
+        print('我是采集的性别',data[8].text)
         user = {
             'username': data[3].text.replace("\n", ""),
             'real_name': data[5].text.replace("\n", ""),
             'academy': data[16].text.replace("\n", ""),
             'class_name': data[1].text.replace("\n", ""),
             'major': data[18].text.replace("\n", ""),
-            'gender': 0 if data[8].text == '女' else 1,
+            'gender': 0 if data[8].text.replace("\n", "") == '男' else 1,
         }
         try:
             os.remove('code.jpg')

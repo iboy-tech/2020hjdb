@@ -1,0 +1,10 @@
+Metadata-Version: 1.0
+Name: send-email
+Version: 201212
+Summary: A simple send E-Mail script in pure Python
+Home-page: https://github.com/shuge/send_email
+Author: Shuge Lee
+Author-email: shuge.lee@gmail.com
+License: MIT License
+Description: UNKNOWN
+Platform: UNKNOWN

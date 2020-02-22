@@ -49,6 +49,7 @@ from app.main import chart as admin_bp
 
 # 工厂函数
 def create_app(config_name=None):
+    print("当前的环境:",os.getenv('FLASK_ENV'))
     print('MAIL_USERNAME', os.getenv('MAIL_USERNAME'))
     print('MAIL_PASSWORD', os.getenv('MAIL_PASSWORD'))
     print('MAIL_SERVER', os.getenv('MAIL_SERVER'))
@@ -59,15 +60,13 @@ def create_app(config_name=None):
     print('MAIL_SUBJECT_PREFIX', os.getenv('MAIL_SUBJECT_PREFIX'))
     print('SECRET_KEY', os.getenv('SECRET_KEY'))
     print('PATH_OF_IMAGES_DIR', os.getenv('PATH_OF_IMAGES_DIR'))
-
     if config_name is None:
-        config_name = os.getenv('FLASK_CONFIG', 'development')
+        config_name = os.getenv('FLASK_ENV')
     app = Flask(__name__)
     app.config.from_object(config[config_name])
     app.config['MAIL_DEFAULT_SENDER'] = '三峡大学失物招领处<547142436@qq.com>'
     app.jinja_env.variable_start_string = '{{ '
     app.jinja_env.variable_end_string = ' }}'
-    app.config.from_object(config[config_name])
     register_logging(app)  # 注册日志处理器
     register_extensions(app)  # 注册扩展（扩展初始化）
     register_blueprints(app)  # 注册蓝本

@@ -105,7 +105,7 @@ var app = new Vue({
         },
         jumpDetail(id) {
             //跳转详情页面
-            window.open("./detail?id=" + id, "_blank");
+            window.open("./detail.html?id=" + id, "_blank");
         },
         logout() {
             //询问框
@@ -148,7 +148,7 @@ $(function () {
 //冻结用户
 function freezeUser(userId,flag){
     $.ajax({
-        url: baseUrl + "/userlist/freeze?userId=" + userId,
+        url: baseUrl + "/userlist.html/freeze?userId=" + userId,
         method: "POST",
         //data: JSON.stringify(data),
         success: function (res, status) {
@@ -170,7 +170,7 @@ function freezeUser(userId,flag){
 //查询用户信息
 function getUserInfo(userId, app){
     $.ajax({
-        url: baseUrl + "/userlist/userInfo?userId=" + userId,
+        url: baseUrl + "/userlist.html/userInfo?userId=" + userId,
         method: "POST",
         //data: JSON.stringify(data),
         success: function (res, status) {
@@ -202,7 +202,7 @@ function getUserInfo(userId, app){
 //删除招领信息
 function deletePub(id) {
     $.ajax({
-        url: baseUrl + "/user/removeLost?id="+id,
+        url: baseUrl + "/user.html/removeLost?id="+id,
         method: "POST",
         // data: JSON.stringify(data),
         success: function (res, status) {
@@ -227,7 +227,7 @@ function deletePub(id) {
 function pageLostFound(data, result, append) {
     //console.log(data);
     $.ajax({
-        url: baseUrl + "/found/getall",
+        url: baseUrl + "/found.html/getall",
         data: JSON.stringify(data),
         method: "POST",
         success: function (res, status) {

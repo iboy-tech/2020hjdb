@@ -16,3 +16,5 @@ result_serializer = 'json'
 accept_content = ['json']
 timezone = 'Asia/Shanghai'
 enable_utc = False
+# 设置结果的保存时间
+result_expires= 3600

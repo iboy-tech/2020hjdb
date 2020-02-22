@@ -34,7 +34,6 @@
     </style>
 </head>
 <body>
-<!-- <h1>creative <span>m</span><span>u</span><span>l</span><span>t</span><span>i</span> forms</h1> -->
 <h1>校园失物招领管理系统</h1>
 
 <div class="w3l-form" id="app">
@@ -48,7 +47,6 @@
                                 用户登录
                             </div>
                             <div class="tab" :class="{tabActive: tabIndex == 1}" @click="changeTab(1)">身份认证</div>
-                            <!--<div class="tab" :class="{tabActive: tabIndex == 2}" @click="changeTab(2)">账号注册</div>-->
                         </div>
                         <input v-model="user.username" type="text" placeholder="学号" required=""/>
                         <input v-model="user.password" type="password" :placeholder="tabIndex==1?'教务系统密码':'密码'" required=""/>
@@ -125,10 +123,10 @@
                                              location.replace("/oauth/wx.html");
                                         }
                                         else if (res.data.user.kind >= 2) {
-                                            location.replace("/chart");
+                                            location.replace("/chart.html");
                                         }
                                         else if(res.data.user.kind==1){
-                                            location.replace("/user");
+                                            location.replace("/user.html");
                                         }
                                     }
                                     me.user.password = "";

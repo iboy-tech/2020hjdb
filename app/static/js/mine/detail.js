@@ -124,7 +124,7 @@ var app = new Vue({
         },
         jumpDetail(id) {
             //跳转详情页面
-            window.open(baseUrl+"/detail?id=" + id, "_self");
+            window.open(baseUrl+"/detail.html?id=" + id, "_self");
         },
         claim(flag,id){
             if(flag==1){
@@ -161,14 +161,14 @@ $(function () {
 //删除招领信息
 function deletePub(id) {
     $.ajax({
-        url: baseUrl + "/user/removeLost?id="+id,
+        url: baseUrl + "/user.html/removeLost?id="+id,
         method: "POST",
         success: function (res, status) {
             console.log(res);
             if (status == "success") {
                 if (res.success) {
                     // showOK(res.msg);
-                    window.location.href=baseUrl+'/user';
+                    window.location.href=baseUrl+'/user.html';
                 } else {
                     showAlertError(res.msg)
                 }
@@ -184,7 +184,7 @@ function deletePub(id) {
 //查询相关类别
 function pageLostFound(data, result) {
     $.ajax({
-        url: baseUrl + "/found/getall",
+        url: baseUrl + "/found.html/getall",
         data: JSON.stringify(data),
         method: "POST",
         beforeSend: function () {
@@ -265,7 +265,7 @@ function getComments(id, app) {
 function getDetail(id, result) {
     console.log('这是帖子的ID:'+id);
     $.ajax({
-        url: baseUrl + "/detail?id="+id,
+        url: baseUrl + "/detail.html?id="+id,
         // data:id,
         method: "POST",
         success: function (res, status) {
@@ -295,7 +295,7 @@ function getDetail(id, result) {
 //认领物品
 function claimID(id) {
     $.ajax({
-        url: baseUrl + "/user/claim?id=" + id,
+        url: baseUrl + "/user.html/claim?id=" + id,
         method: "POST",
         success: function (res, status) {
             console.log(res);

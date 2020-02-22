@@ -9,7 +9,6 @@
 @Software: PyCharm
 """
 
-# -*- coding：utf-8 -*-
 
 
 # https://temp-mail.org/zh/接码免费申请apikey

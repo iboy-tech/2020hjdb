@@ -50,17 +50,7 @@ var app = new Vue({
             },
             {},
         ],
-        tab3: [
-            /* {
-                 id: "00000000001",
-                 userId: "0002",
-                 icon: null,
-                 username: "2018",
-                 time: "2019-04-17 16:20",
-                 title: "我的小苹果丢了",
-                 content: "你是什么苹果？"
-             }*/
-        ],
+        tab3: [],
         imgTotal: 3,//最多3张图片
         tab4: {
             applyKind: 0,
@@ -223,7 +213,7 @@ var app = new Vue({
         },
         jumpDetail(id) {
             //跳转详情页面
-            window.open(baseUrl+"/detail?id=" + id, "_self");
+            window.open(baseUrl+"detail.html?id=" + id, "_self");
         },
         showFeedback() {
             app.showMenu = false;
@@ -316,7 +306,7 @@ $(function () {
 function setQQ(qq) {
     //console.log(data);
     $.ajax({
-        url: baseUrl + "/user/setQQ?qq=" + qq,
+        url: baseUrl + "/user.html/setQQ?qq=" + qq,
         //data: JSON.stringify(data),
         method: "POST",
         success: function (res, status) {
@@ -342,7 +332,7 @@ function setQQ(qq) {
 function pubFeedback(data) {
     console.log(data);
     $.ajax({
-        url: baseUrl + "/feedback/add",
+        url: baseUrl + "/feedback.html/add",
         data: JSON.stringify(data),
         method: "POST",
         success: function (res, status) {
@@ -370,7 +360,7 @@ function pubFeedback(data) {
 function setPassword(data) {
     console.log(data);
     $.ajax({
-        url: baseUrl + "/user/setPassword",
+        url: baseUrl + "/user.html/setPassword",
         data: JSON.stringify(data),
         method: "POST",
         success: function (res, status) {
@@ -399,7 +389,7 @@ function setPassword(data) {
 //删除招领信息
 function deletePub(id) {
     $.ajax({
-        url: baseUrl + "/user/removeLost?id="+id,
+        url: baseUrl + "/user.html/removeLost?id="+id,
         method: "POST",
         success: function (res, status) {
             console.log(res);
@@ -420,7 +410,7 @@ function deletePub(id) {
 //查询通知列表
 function getNoticeList(app) {
     $.ajax({
-        url: baseUrl + "/notice/getall",
+        url: baseUrl + "/notice.html/getall",
         //data: JSON.stringify(data),
         method: "POST",
         success: function (res, status) {
@@ -445,7 +435,7 @@ function getNoticeList(app) {
 function removeComment(id) {
     console.log("我是要删除的ID:"+id);
     $.ajax({
-        url: baseUrl + "/user/removeComment?id="+id,
+        url: baseUrl + "/user.html/removeComment?id="+id,
         method: "POST",
         success: function (res) {
             console.log(res);
@@ -463,7 +453,7 @@ function removeComment(id) {
 //我的消息(与我发布的信息相关的评论）
 function getMessages(app) {
     $.ajax({
-        url: baseUrl + "/user/messages",
+        url: baseUrl + "/user.html/messages",
         method: "POST",
         success: function (res, status) {
             console.log(res);
@@ -517,7 +507,7 @@ function changeIcon(obj) {
 
 function setIcon(icon) {
     $.ajax({
-        url: baseUrl + "/user/setIcon",
+        url: baseUrl + "/user.html/setIcon",
         data: {icon: icon},
         contentType: "application/x-www-form-urlencoded",
         method: "POST",
@@ -632,7 +622,7 @@ function changeInput(obj) {
 function pubLostFound(data) {
     console.log(data);
     $.ajax({
-        url: baseUrl + "/user/pub",
+        url: baseUrl + "/user.html/pub",
         data: JSON.stringify(data),
         method: "POST",
         success: function (res, status) {
@@ -663,7 +653,7 @@ function pubLostFound(data) {
 function pubLostFound(data) {
     console.log(data);
     $.ajax({
-        url: baseUrl + "/found/pub",
+        url: baseUrl + "/found.html/pub",
         data: JSON.stringify(data),
         method: "POST",
         success: function (res, status) {
@@ -680,7 +670,7 @@ function pubLostFound(data) {
                         location: null,
                         images: [],//srcList
                     };
-                    window.location.href =baseUrl+'/user'
+                    window.location.href =baseUrl+'/user.html'
                     // changeTab(0);
                 } else {
                     showAlertError(res.msg)
@@ -697,7 +687,7 @@ function pubLostFound(data) {
 function pageLostFound(data, result, append) {
     //console.log(data);
     $.ajax({
-        url: baseUrl + "/found/getall",
+        url: baseUrl + "/found.html/getall",
         data: JSON.stringify(data),
         method: "POST",
         success: function (res, status) {
@@ -730,7 +720,7 @@ function pageLostFound(data, result, append) {
 //获取物品类别list
 function getCategory() {
     $.ajax({
-        url: baseUrl + "/category/getall",
+        url: baseUrl + "/category.html/getall",
         method: "POST",
         success: function (res, status) {
             console.log(res);

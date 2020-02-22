@@ -22,7 +22,7 @@
 <h1 id="notice" style="text-align: center;"><span>绑定微信，接受通知！</span></h1>
 <script>
     $(document).ready(function () {
-        const url = "http://" + document.domain + ':' + location.port;
+        const url = "https://" + document.domain + ':' + location.port;
         console.log(url);
         const socket = io(url);
         socket.emit('server');//触发通信

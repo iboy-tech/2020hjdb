@@ -26,7 +26,7 @@ async_mode = 'eventlet'
 load_dotenv(find_dotenv('.env'))
 load_dotenv(find_dotenv('.flaskenv'))
 
-app = create_app(os.getenv('FlASK_CONFIG') or 'default')
+app = create_app(os.getenv('FlASK_ENV') or 'development')
 
 app.config['SECRET_KEY'] = 'adsdad&*^%^$%#afcsefvdzcssef1212'
 
@@ -122,4 +122,4 @@ if __name__ == '__main__':
    celery -A webapp.main.tasks worker -l info -f celery.log --pool=eventlet
 
     """
-    socketio.run(app=app, host='0.0.0.0', port=8888,ssl_context=('cert.pem', 'key.pem'))
+    socketio.run(app=app, host='0.0.0.0',ssl_context=('cert.pem', 'key.pem'))

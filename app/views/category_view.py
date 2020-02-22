@@ -18,7 +18,7 @@ from app.models.category_model import Category
 from app.utils import restful
 
 
-@category.route('/', methods=['GET', 'POST', 'OPTIONS'], strict_slashes=False)
+@category.route('/', methods=['GET'], strict_slashes=False)
 @login_required
 @admin_required
 def index():
