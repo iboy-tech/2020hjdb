@@ -107,3 +107,4 @@ app/config.py
 
 app/templates/upload/
 
+!/.env
