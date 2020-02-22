@@ -18,7 +18,6 @@ chart = Blueprint('chart', __name__, url_prefix='/chart.html')
 auth = Blueprint('auth', __name__)
 user = Blueprint('user', __name__, url_prefix='/user.html')
 category = Blueprint('category', __name__, url_prefix='/category.html')
-page = Blueprint('page', __name__, url_prefix='/page.html')
 notice = Blueprint('notice', __name__, url_prefix='/notice.html')
 userlist = Blueprint('userlist', __name__, url_prefix='/userlist.html')
 found = Blueprint('found', __name__, url_prefix='/found.html')
@@ -29,6 +28,6 @@ oauth = Blueprint('oauth', __name__, url_prefix='/oauth')
 cached = Blueprint('cache', __name__, url_prefix='/cache.html')
 
 
-from ..views import chart_view, auth_view, user_view, category_view, page_view, notice_view, comment_view, \
+from ..views import chart_view, auth_view, user_view, category_view,notice_view, comment_view, \
     feedback_view, userlist_view, found_view, detail_view, oauth_view, cache_view
 print('main蓝图注册了')

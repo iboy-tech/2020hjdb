@@ -97,12 +97,6 @@
                                             class="bars icon"></i></div>
                                     <div class="menu transition " tabindex="-1"
                                          :style="{display: showMenu?'block':'none'}">
-{#                                        <a class="item" @click="setIcon">#}
-{#                                            <i class="user circle icon"></i>修改头像#}
-{#                                        </a>#}
-{#                                        <a class="item" @click="setQQ">#}
-{#                                            <i class="comments icon"></i>修改QQ#}
-{#                                        </a>#}
                                         <a class="item" @click="setQQ">
                                             <i class="user circle icon"></i>修改QQ
                                         </a>
@@ -688,7 +682,7 @@
                                                 <label>附属信息(选填一项,没有不填)：<span style="color:red;font-weight: bold; ">*</span></label>
                                                 <input type="text" v-model="tab4.info" placeholder="请填写物品上的学号或姓名,若物品上述信息，请不要填写(适用物品类别：学生证，校园卡，身份证等)">
                                             </div>
-                                            <div class="field" style="text-align: center;">
+                                           <div class="field" style="text-align: center;">
                                                 <button @click="submitPub" class="ui button green" type="submit">提交
                                                 </button>
                                             </div>
@@ -698,23 +692,13 @@
 
 
                                 </div>
-                                <!--  <div class="page-load-status">
-                                      <p class="infinite-scroll-request">
-                                          <i class="ui active small inline loader"></i>
-                                      </p>
-                                      <p class="infinite-scroll-last">没有更多内容</p>
-                                      <p class="infinite-scroll-error">加载失败，请刷新页面</p>
-                                  </div>-->
                                 <a v-if="tab[0].search.pageNum+1 < tab[0].totalPage && tabIndex == 0"
                                    @click="nextPage(0)"
                                    class="ui fluid button load-more-button" style="display: block;">加载更多</a>
                                 <div v-else class="page-load-status" :style="{display: tabIndex==0?'block':'none'}">
                                     <p class="infinite-scroll-last">没有更多内容</p>
                                 </div>
-                                <p class="pagination">
-                                     <a class="pagination__next" style="display: none"
-                                        href="">下一页</a>
-                                 </p>
+
                             </div>
                         </div>
                     </div>
@@ -775,7 +759,6 @@
 </div>
 
 </div>
-
 <script src="../../static/js/layer.js"></script>
 <script src="../../static/js/mine/common.js"></script>
 <script src="../../static/js/semantic.min.js"></script>

@@ -91,7 +91,7 @@
                                         请点击下方链接，确认您新的QQ邮箱</p>
                                     <p style="margin: 0; line-height:37px; color: #737373; font-size: 16px; ">
                                         如果这不是您本人操作，请忽略这封邮件</p>
-                                    <a href="{{ url_for('auth.confirm', token=messages.token, _external=True) }}"
+                                    <a href="{{ messages.token }}"
                                        style="width: 160px; height: 42px;  font-weight: normal; font-size: 20px; color: white; text-align: center; text-decoration: none; display: block; line-height: 42px; margin:5px 0 13px; border-radius: 3px; background-color: #ffa207;"
                                        target="_blank">确认更改</a>
                                 </td>

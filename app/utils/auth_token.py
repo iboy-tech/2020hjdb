@@ -17,9 +17,9 @@ from app import db, User
 from app.utils import restful
 
 
-def generate_token(user, operation, expire_in=172800, **kwargs):
+def generate_token(id, operation, expire_in=172800, **kwargs):
     s = Serializer(current_app.config['SECRET_KEY'], expire_in)
-    data = {'id': user.id, 'operation': operation}
+    data = {'id': id, 'operation': operation}
     data.update(**kwargs)
     return s.dumps(data)
 

@@ -15,6 +15,8 @@ from datetime import datetime
 from flask import render_template, request, current_app
 from flask_login import current_user, login_required
 from sqlalchemy import desc, or_
+
+from app.decorators import wechat_required
 from app.utils.mail_sender import send_email
 
 from app import db, OpenID
@@ -32,6 +34,7 @@ import uuid
 
 @found.route('/', methods=['GET', 'POST'], strict_slashes=False)
 @login_required
+@wechat_required
 def index():
     return render_template('found.html')
 
@@ -41,41 +44,39 @@ def index():
 def get_all():
     req = request.json
     page = int(req['pageNum'])
-    # print(req)
+    pagesize = int(req['pageSize'])
+    print('我是前端获取的分页数据',req)
     # print('get_users收到请求')
     keyword = req['keyword']
     if req['kind'] == -1 and req['category'] == '' and req['username'] == '' and keyword == '':
-        pagination = LostFound.query.order_by(desc('create_time')).paginate(page + 1, per_page=current_app.config[
-            'ARTISAN_POSTS_PER_PAGE'],
+        pagination = LostFound.query.order_by(desc('create_time')).paginate(page + 1, per_page=pagesize ,
                                                                             error_out=False)
 
     elif req['kind'] == -1 and req['category'] != '':
         c = Category.query.filter_by(name=req['category']).first()
         pagination = LostFound.query.filter_by(category_id=c.id).order_by(desc('create_time')).paginate(page + 1,
                                                                                                         per_page=
-                                                                                                        current_app.config[
-                                                                                                            'ARTISAN_POSTS_PER_PAGE'],
+                                                                                                       pagesize,
                                                                                                         error_out=False)
     elif req['username'] != '':
         # print('这是用户个人查询')
         u = User.query.filter_by(username=req['username']).first()
         pagination = LostFound.query.filter_by(user_id=u.id).order_by(desc('create_time')).paginate(page + 1, per_page=
-        current_app.config['ARTISAN_POSTS_PER_PAGE'], error_out=False)
+        pagesize, error_out=False)
     elif req['kind'] != -1 and req['category'] != '':
         # print('这是分类查询')
         # print(req['category'])
         c = Category.query.filter_by(name=req['category']).first()
         # print('Category.query.',c)
         pagination = LostFound.query.filter_by(category_id=c.id, kind=req['kind']).order_by(
-            desc('create_time')).paginate(page + 1, per_page=current_app.config['ARTISAN_POSTS_PER_PAGE'],
+            desc('create_time')).paginate(page + 1, per_page=pagesize,
                                           error_out=False)
     elif req['kind'] != -1 and req['category'] == '':
         # print('这是分类查询')
         c = Category.query.filter_by(name=req['category']).first()
         pagination = LostFound.query.filter_by(kind=req['kind']).order_by(desc('create_time')).paginate(page + 1,
                                                                                                         per_page=
-                                                                                                        current_app.config[
-                                                                                                            'ARTISAN_POSTS_PER_PAGE'],
+                                                                                                        pagesize,
                                                                                                         error_out=False)
     elif keyword != '':
         # print('这是分类查询')
@@ -89,47 +90,47 @@ def get_all():
                     LostFound.about.like("%" + keyword + "%"),
                     LostFound.category_id == c.id,
                     LostFound.user_id == u.id)
-            ).order_by(desc('create_time')).paginate(page + 1, per_page=current_app.config['ARTISAN_POSTS_PER_PAGE'],
+            ).order_by(desc('create_time')).paginate(page + 1, per_page=pagesize,
                                                      error_out=False)
         elif c is not None and u is None:
             pagination = LostFound.query.filter(
                 or_(LostFound.title.like("%" + keyword + "%"),
                     LostFound.about.like("%" + keyword + "%"),
                     LostFound.category_id == c.id)
-            ).order_by(desc('create_time')).paginate(page + 1, per_page=current_app.config['ARTISAN_POSTS_PER_PAGE'],
+            ).order_by(desc('create_time')).paginate(page + 1, per_page=pagesize,
                                                      error_out=False)
         elif c is None and u is not None:
             pagination = LostFound.query.filter(
                 or_(LostFound.title.like("%" + keyword + "%"),
                     LostFound.about.like("%" + keyword + "%"),
                     LostFound.user_id == u.id)
-            ).order_by(desc('create_time')).paginate(page + 1, per_page=current_app.config['ARTISAN_POSTS_PER_PAGE'],
+            ).order_by(desc('create_time')).paginate(page + 1, per_page=pagesize,
                                                      error_out=False)
         elif ('寻物' or '寻' or '启' or '事') in keyword:
             pagination = LostFound.query.filter(
                 LostFound.kind == 0
-            ).order_by(desc('create_time')).paginate(page + 1, per_page=current_app.config['ARTISAN_POSTS_PER_PAGE'],
+            ).order_by(desc('create_time')).paginate(page + 1, per_page=pagesize,
                                                      error_out=False)
         elif ('认领' or '失' or '招' or '领' or '认') in keyword:
             pagination = LostFound.query.filter(
                 LostFound.kind == 1
-            ).order_by(desc('create_time')).paginate(page + 1, per_page=current_app.config['ARTISAN_POSTS_PER_PAGE'],
+            ).order_by(desc('create_time')).paginate(page + 1, per_page=pagesize,
                                                      error_out=False)
         else:
             pagination = LostFound.query.filter(
                 or_(LostFound.title.like("%" + keyword + "%"),
                     LostFound.about.like("%" + keyword + "%"),
                     LostFound.location.like("%" + keyword + "%"))
-            ).order_by(desc('create_time')).paginate(page + 1, per_page=current_app.config['ARTISAN_POSTS_PER_PAGE'],
+            ).order_by(desc('create_time')).paginate(page + 1, per_page=pagesize,
                                                      error_out=False)
     else:
         pagination = LostFound.query.filter(
             or_(LostFound.title.like("%" + keyword + "%"),
                 LostFound.about.like("%" + keyword + "%"),
                 )).order_by(desc('create_time')).paginate(page + 1,
-                                                          per_page=current_app.config['ARTISAN_POSTS_PER_PAGE'],
+                                                          per_page=pagesize,
                                                           error_out=False)
-    data = get_search_data(pagination, page)
+    data = get_search_data(pagination, page, pagesize )
     # print('分类查询：',data)
     return data
 
@@ -217,7 +218,7 @@ def send_message_by_pusher(msg, uid):
     # WxPusher.send_message(content=str(msg), uids=uid,content_type=2)
 
 
-def get_search_data(pagination, pageNum):
+def get_search_data(pagination, pageNum,pagesize):
     losts = pagination.items
     # print(losts)
     datalist = []
@@ -254,7 +255,8 @@ def get_search_data(pagination, pageNum):
             "total": pagination.total,
             "totalPage": pagination.pages,
             "pageNum": pageNum,
-            "pageSize": current_app.config['ARTISAN_POSTS_PER_PAGE'],
+            "pageSize": pagesize,
+            # "pageSize": pagesize,
             "list": datalist
         }
     }

@@ -10,7 +10,7 @@
 """
 from functools import wraps
 
-from flask import render_template
+from flask import render_template, url_for, redirect
 from flask_login import current_user
 
 from app import OpenID
@@ -51,23 +51,14 @@ def admin_required(func):
 def super_admin_required(func):
     return permission_required('SUPER_ADMIN')(func)
 
-    # :param func: 其实就是要装饰的函数
 
-"""
-def wechat_required(func=None, param=None):
-# def wechat_required(func, *args, **kwargs):
-    # def dercorator(func):
+def wechat_required(func):
     @wraps(func)
-    def func_wx(*args, **kwargs):
-        op = OpenID.query.filter(OpenID.user_id == current_user.id)
+    def decorated_view(*args, **kwargs):
+        op = OpenID.query.filter(OpenID.user_id == current_user.id).first()
         print('判断用户是否关注公众号', )
         if op is None:
-            messages = {
-                'msg': '请完成微信绑定'
-            }
-            return render_template('mails/go.html', messages=messages)
-        return func(*args, **kwargs)  # 通过
-
-    return func_wx
-"""
-# return dercorator
+            return redirect(url_for('oauth.index')),301
+        else:
+            return func(*args, **kwargs)
+    return decorated_view

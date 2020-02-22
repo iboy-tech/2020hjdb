@@ -11,7 +11,7 @@
 import os
 from datetime import datetime
 
-from flask import render_template, request
+from flask import render_template, request, url_for
 from flask_cors import cross_origin
 from flask_login import current_user, login_required
 from .found_view import send_message_by_pusher
@@ -25,11 +25,13 @@ from app.utils import restful
 from app.utils.auth_token import generate_token
 from app.utils.mail_sender import send_email
 from tasks import celery
+from ..decorators import wechat_required
 
 
 @user.route('/', methods=['POST', 'OPTIONS', 'GET'])
 @cross_origin()
 @login_required
+@wechat_required
 def index():
     data = request.json
     print('user页面收到请求', data)
@@ -39,6 +41,7 @@ def index():
 @user.route('/messages', methods=['POST', 'OPTIONS', 'GET'])
 @cross_origin()
 @login_required
+@wechat_required
 def get_message():
     req = request.json
     print('查询消息req', req)
@@ -78,15 +81,17 @@ def get_message():
 def set_QQ():
     print('用户准备更改密码')
     new_qq = request.args.get('qq')
-    print(new_qq)
-    user_db = User.query.get(current_user.id)
-    token = generate_token(user=user_db, operation='change-qq', qq=new_qq)
+    print(new_qq,type(new_qq))
+    if new_qq==current_user.qq:
+        return restful.success(success=False, msg="您的QQ和之前一样，修改失败")
+    token = str(generate_token(id=current_user.id, operation='change-qq', qq=new_qq),encoding = "utf-8")
+    print('我是生成的token',url_for('auth.confirm', token=token, _external=True))
     messages = {
-        'real_name': user_db.real_name,
-        'token': token
+        'real_name': current_user.real_name,
+        'token': url_for('auth.confirm', token=token, _external=True)
     }
-    send_email.delay(new_qq, 'QQ更改', 'changeQQ', messages=messages)
-    return restful.success(success=True, msg="验证邮件已发送到您的新的QQ邮箱，可能在垃圾信箱中，确认成功才可更改")
+    send_email.delay(new_qq,'QQ更改', 'changeQQ',messages)
+    return restful.success(success=True, msg="验证邮件已发送到您的QQ邮箱，请及时确认")
 
 
 @user.route('/setPassword', methods=['POST'])

@@ -12,6 +12,7 @@ from flask import render_template, request
 from flask_login import current_user, login_required
 
 from app import db
+from app.decorators import wechat_required
 from app.main import detail
 from app.models.category_model import Category
 from app.models.lostfound_model import LostFound
@@ -21,6 +22,7 @@ from app.utils import restful
 
 @detail.route('/', methods=['GET', 'POST', 'OPTIONS'], strict_slashes=False)
 @login_required
+@wechat_required
 def index():
     print('这是详情页面request.json', request.json)
     if request.method == 'GET':

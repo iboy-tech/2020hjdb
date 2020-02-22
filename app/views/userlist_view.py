@@ -14,7 +14,7 @@ from flask_login import current_user, login_required
 from sqlalchemy import or_
 
 from app import db, cache
-from app.decorators import super_admin_required, admin_required
+from app.decorators import super_admin_required, admin_required, wechat_required
 from app.main import userlist
 from app.models.user_model import User
 from app.utils import restful
@@ -23,73 +23,70 @@ from app.utils.mail_sender import send_email
 
 @userlist.route('/', methods=['POST', 'GET', 'OPTIONS'], strict_slashes=False)
 @login_required
+@wechat_required
 @admin_required
 def index():
     return render_template('userlist.html')
 
 
 @userlist.route('/getall', methods=['POST', 'GET'], strict_slashes=False)
-@cache.cached(timeout=10 * 60)#缓存10分钟 默认为300s
+@cache.cached(timeout=10 * 60)  # 缓存10分钟 默认为300s
 @login_required
+@wechat_required
 @admin_required
 def get_all():
     req = request.json
     print(req)
     page = int(req['pageNum'])
+    pagesize = int(req['pageSize'])
     keyword = req['keyword']
     if keyword == '':
         print('get_users收到请求')
-        pagination = User.query.order_by(User.kind.desc(), User.status).paginate(page + 1, per_page=current_app.config[
-            'ARTISAN_POSTS_PER_PAGE'], error_out=False)
-        data = search(pagination, page)
+        pagination = User.query.order_by(User.kind.desc(), User.status).paginate(page + 1, per_page=pagesize,
+                                                                                 error_out=False)
+        data = search(pagination, page, pagesize)
         return data
     else:
         if keyword == '男':
             pagination = User.query.filter(
                 User.gender == 0).order_by(User.kind.desc(), User.status).paginate(page + 1,
-                                                                                   per_page=current_app.config[
-                                                                                       'ARTISAN_POSTS_PER_PAGE'],
+                                                                                   per_page=pagesize,
                                                                                    error_out=False)
-            data = search(pagination, page)
+            data = search(pagination, page, pagesize)
             return data
         elif keyword == '女':
             pagination = User.query.filter(
                 User.gender == 1).order_by(User.kind.desc(), User.status).paginate(page + 1
-                                                                                   , per_page=current_app.config[
-                    'ARTISAN_POSTS_PER_PAGE'], error_out=False)
-            data = search(pagination, page)
+                                                                                   , per_page=pagesize, error_out=False)
+            data = search(pagination, page, pagesize)
             return data
         elif '正常' in keyword:
             pagination = User.query.filter(
                 User.status == 1).order_by(User.kind.desc(), User.status).paginate(page + 1,
-                                                                                   per_page=current_app.config[
-                                                                                       'ARTISAN_POSTS_PER_PAGE'],
+                                                                                   per_page=pagesize,
                                                                                    error_out=False)
-            data = search(pagination, page)
+            data = search(pagination, page, pagesize)
             return data
         elif '冻结' in keyword:
             pagination = User.query.filter(
                 User.status == 0).order_by(User.kind.desc(), User.status).paginate(page + 1,
-                                                                                   per_page=current_app.config[
-                                                                                       'ARTISAN_POSTS_PER_PAGE'],
+                                                                                   per_page=pagesize,
                                                                                    error_out=False)
-            data = search(pagination, page)
+            data = search(pagination, page, pagesize)
             return data
         elif '认证' in keyword:
             pagination = User.query.filter(
                 User.status == 2).order_by(User.kind.desc(), User.status).paginate(page + 1,
-                                                                                   per_page=current_app.config[
-                                                                                       'ARTISAN_POSTS_PER_PAGE'],
+                                                                                   per_page=pagesize,
                                                                                    error_out=False)
-            data = search(pagination, page)
+            data = search(pagination, page, pagesize)
             return data
         elif '管理' in keyword:
             pagination = User.query.filter(
                 User.kind >= 2).order_by(User.kind.desc(), User.status).paginate(page + 1,
-                                                                                 per_page=current_app.config[
-                                                                                     'ARTISAN_POSTS_PER_PAGE'],
+                                                                                 per_page=pagesize,
                                                                                  error_out=False)
-            data = search(pagination, page)
+            data = search(pagination, page, pagesize)
             return data
         else:
             pagination = User.query.filter(or_(
@@ -100,9 +97,8 @@ def get_all():
                 User.major.like("%" + keyword + "%"),
                 User.academy.like("%" + keyword + "%"),
                 User.kind.like("%" + keyword + "%"),
-            )).order_by(User.kind.desc(), User.status).paginate(page + 1, per_page=current_app.config[
-                'ARTISAN_POSTS_PER_PAGE'], error_out=False)
-        data = search(pagination, page)
+            )).order_by(User.kind.desc(), User.status).paginate(page + 1, per_page=pagesize, error_out=False)
+        data = search(pagination, page, pagesize)
         return data
 
 
@@ -116,7 +112,7 @@ def user_freeze_or_unfreeze():
         return restful.success(success=False, msg='该账户尚未认证，暂时无法冻结')
     elif current_user.kind <= u.kind:
         return restful.success(success=False, msg='权限不足')
-    elif u.status == 2 :  # 级别高的才能操作
+    elif u.status == 2:  # 级别高的才能操作
         u.status = 0
         messages = {
             'realName': u.real_name,
@@ -124,7 +120,7 @@ def user_freeze_or_unfreeze():
             'handlerEmail': current_user.qq + '@qq.com',
         }
         send_email.delay('849764742', '账户冻结通知', 'userFreeze', messages)
-    elif u.status == 0 :
+    elif u.status == 0:
         u.status = 2
         messages = {
             'realName': u.real_name,
@@ -172,7 +168,7 @@ def set_or_cancle_admin():
 
 
 @cache.memoize()  # 根据参数设置缓存
-def search(pagination, page):
+def search(pagination, page, pagesize):
     global data
     users = pagination.items
     # users = User.query.order_by(desc('kind')).all()
@@ -186,7 +182,7 @@ def search(pagination, page):
                 "total": pagination.total,
                 "totalPage": pagination.pages,
                 "pageNum": page,
-                "pageSize": current_app.config['ARTISAN_POSTS_PER_PAGE'],
+                "pageSize": pagesize,
                 "list": list
             }
         }

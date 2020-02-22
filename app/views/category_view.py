@@ -12,7 +12,7 @@ from flask import request, render_template, session
 from flask_login import current_user, login_required
 
 from app import db
-from app.decorators import admin_required, super_admin_required
+from app.decorators import admin_required, super_admin_required, wechat_required
 from app.main import category
 from app.models.category_model import Category
 from app.utils import restful
@@ -20,6 +20,7 @@ from app.utils import restful
 
 @category.route('/', methods=['GET'], strict_slashes=False)
 @login_required
+@wechat_required
 @admin_required
 def index():
     return render_template('category.html')

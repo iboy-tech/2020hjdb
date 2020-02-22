@@ -16,6 +16,7 @@ from datetime import datetime
 # os.environ.setdefault('FORKED_BY_MULTIPROCESSING', '1')
 
 from dotenv import load_dotenv, find_dotenv
+from flask_cors import CORS
 from flask_login import current_user
 from flask_socketio import emit, SocketIO
 
@@ -23,12 +24,26 @@ from app import create_app, create_celery, redis_client
 
 
 async_mode = 'eventlet'
-load_dotenv(find_dotenv('.env'))
-load_dotenv(find_dotenv('.flaskenv'))
+load_dotenv(find_dotenv('.env'), override=True)
+load_dotenv(find_dotenv('.flaskenv'), override=True)
+
+print('我是run.py中的环境',os.getenv('FlASK_ENV'))
+print("当前的环境:", os.getenv('FLASK_ENV'))
+print('MAIL_USERNAME', os.getenv('MAIL_USERNAME'))
+print('MAIL_PASSWORD', os.getenv('MAIL_PASSWORD'))
+print('MAIL_SERVER', os.getenv('MAIL_SERVER'))
+print('MAIL_PORT', os.getenv('MAIL_PORT'))
+print('MAIL_USE_SSL', os.getenv('MAIL_USE_SSL'))
+print('MAIL_DEFAULT_SENDER', os.getenv('MAIL_DEFAULT_SENDER'))
+print('QQ_AVATAR_API', os.getenv('QQ_AVATAR_API'))
+print('MAIL_SUBJECT_PREFIX', os.getenv('MAIL_SUBJECT_PREFIX'))
+print('SECRET_KEY', os.getenv('SECRET_KEY'))
+print('PATH_OF_IMAGES_DIR', os.getenv('PATH_OF_IMAGES_DIR'))
+
 
 app = create_app(os.getenv('FlASK_ENV') or 'development')
+CORS(app, supports_credentials=True, resources=r'/*')  # 允许所有域名跨域
 
-app.config['SECRET_KEY'] = 'adsdad&*^%^$%#afcsefvdzcssef1212'
 
 socketio = SocketIO(app=app, async_mode=async_mode, cors_allowed_origins="*")
 celery = create_celery(app)
@@ -107,19 +122,9 @@ if __name__ == '__main__':
     python run.py  --host=0.0.0.0 --port=8888 --no-reload
     启动 Celery worker:
     celery worker -A app.celery -l  INFO  -n ctgu@celeryd -E --loglevel=info  
-    celery worker -A app.utils.mail_sender.celery -l  INFO  -n ctgu@celeryd -E --loglevel=info 
-    celery worker -A app.utils.tinify_tool.celery -l  INFO  
-    celery worker -A app.views.user_view.celery -l  INFO 
     celery flower --address=127.0.0.1 --port=55555
-   celery worker -A app.extensions.celery -l  INFO  
    celery worker -A run.celery -l  DEBUG -E -P eventlet
    gevent
-   celery worker -A run.celery -l  beat
-   celery worker -A manager.celery -l  DEBUG -E -P eventlet
    celery worker -A run.celery --loglevel=info --pool=eventlet  -E
-   celery beat -A run.celery -l info
-   celery worker -A tasks.celery -l  INFO -E -P eventlet
-   celery -A webapp.main.tasks worker -l info -f celery.log --pool=eventlet
-
     """
-    socketio.run(app=app, host='0.0.0.0',ssl_context=('cert.pem', 'key.pem'))
+    socketio.run(app=app)

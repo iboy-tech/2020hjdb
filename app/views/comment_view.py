@@ -14,6 +14,7 @@ from flask_login import current_user, login_required
 from sqlalchemy import desc
 
 from app import db
+from app.decorators import wechat_required
 from app.main import comment
 from app.models.comment_model import Comment
 from app.models.user_model import User
@@ -22,6 +23,7 @@ from app.utils import restful
 
 @comment.route('/', methods=['GET', 'POST', 'OPTIONS'],strict_slashes=False)
 @login_required
+@wechat_required
 def index():
     id=request.args.get('id')
     print('评论的ID',id)

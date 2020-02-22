@@ -213,7 +213,7 @@ var app = new Vue({
         },
         jumpDetail(id) {
             //跳转详情页面
-            window.open(baseUrl+"detail.html?id=" + id, "_self");
+            window.open(baseUrl+"/detail.html?id=" + id, "_self");
         },
         showFeedback() {
             app.showMenu = false;

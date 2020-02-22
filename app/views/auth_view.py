@@ -194,4 +194,5 @@ def confirm():
         'msg': json.loads(data)['msg']
     }
     return render_template('mails/go.html', messages=messages)
-    # return render_template('mails/active.html', messages=messages)
+
+

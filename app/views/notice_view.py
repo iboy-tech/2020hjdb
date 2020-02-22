@@ -13,7 +13,7 @@ from flask_login import login_required
 from sqlalchemy import desc
 
 from app import db
-from app.decorators import admin_required
+from app.decorators import admin_required, wechat_required
 from app.main import notice
 from app.models.notice_model import Notice
 from app.utils import restful
@@ -21,6 +21,7 @@ from app.utils import restful
 
 @notice.route('/', methods=['GET', 'POST', 'OPTIONS'], strict_slashes=False)
 @login_required
+@wechat_required
 @admin_required
 def index():
     data = request.json

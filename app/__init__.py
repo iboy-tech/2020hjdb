@@ -14,14 +14,12 @@ from logging.handlers import RotatingFileHandler, SMTPHandler
 
 import click
 from flask import Flask, render_template, request
-from flask_cors import CORS
 from flask_wtf.csrf import CSRFError
 
+from app.config import BaseConfig
 # .表示当前路径
 from app.config import config  # 导入存储配置的字典
-from app.config import BaseConfig
 from tasks import celery
-
 from .extensions import *
 #  会记录客户端 IP
 # 地址和浏览器的用户代理信息，如果发现异动就登出用户
@@ -41,7 +39,6 @@ from app.main import found as found_bp
 from app.main import userlist as userlist_bp
 from app.main import notice as notice_bp
 from app.main import category as category_bp
-from app.main import page as page_bp
 from app.main import user as user_bp
 from app.main import auth as auth_bp
 from app.main import chart as admin_bp
@@ -49,22 +46,10 @@ from app.main import chart as admin_bp
 
 # 工厂函数
 def create_app(config_name=None):
-    print("当前的环境:",os.getenv('FLASK_ENV'))
-    print('MAIL_USERNAME', os.getenv('MAIL_USERNAME'))
-    print('MAIL_PASSWORD', os.getenv('MAIL_PASSWORD'))
-    print('MAIL_SERVER', os.getenv('MAIL_SERVER'))
-    print('MAIL_PORT', os.getenv('MAIL_PORT'))
-    print('MAIL_USE_SSL', os.getenv('MAIL_USE_SSL'))
-    print('MAIL_DEFAULT_SENDER', os.getenv('MAIL_DEFAULT_SENDER'))
-    print('QQ_AVATAR_API', os.getenv('QQ_AVATAR_API'))
-    print('MAIL_SUBJECT_PREFIX', os.getenv('MAIL_SUBJECT_PREFIX'))
-    print('SECRET_KEY', os.getenv('SECRET_KEY'))
-    print('PATH_OF_IMAGES_DIR', os.getenv('PATH_OF_IMAGES_DIR'))
     if config_name is None:
         config_name = os.getenv('FLASK_ENV')
     app = Flask(__name__)
     app.config.from_object(config[config_name])
-    app.config['MAIL_DEFAULT_SENDER'] = '三峡大学失物招领处<547142436@qq.com>'
     app.jinja_env.variable_start_string = '{{ '
     app.jinja_env.variable_end_string = ' }}'
     register_logging(app)  # 注册日志处理器
@@ -74,8 +59,6 @@ def create_app(config_name=None):
     register_shell_context(app)  # 注册shell上下文处理函数
     register_commands(app)  # 注册自定义shell命令
     register_interceptor(app)  # 拦截器
-    # register_celery(app)  # 异步队列
-    CORS(app, supports_credentials=True, resources=r'/*')  # 允许所有域名跨域
     return app
 
 
@@ -83,7 +66,6 @@ def register_blueprints(app):
     app.register_blueprint(admin_bp)  # 管理员
     app.register_blueprint(auth_bp)  # 认证
     app.register_blueprint(user_bp)  # 用户
-    app.register_blueprint(page_bp)  # 分页
     app.register_blueprint(category_bp)  # 分类
     app.register_blueprint(notice_bp)  # 通知
     app.register_blueprint(userlist_bp)  # 用户管理
