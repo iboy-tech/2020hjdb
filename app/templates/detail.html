@@ -6,11 +6,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <meta name="referrer" content="always"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
-    <title>三峡大学失物招领管理系统</title>
-    <link rel="stylesheet" type="text/css" href="../../static/css/semantic.min.css"/>
-    <link type="text/css" rel="stylesheet" href="../../static/css/space.4cb6e48f.css">
-    <script src="../../static/js/jquery.js"></script>
-    <script src="../../static/js/vue.js"></script>
+    <title>三峡大学失物招领中心</title>
+    <link rel="stylesheet" type="text/css" href="../static/css/semantic.min.css"/>
+    <link type="text/css" rel="stylesheet" href="../static/css/space.4cb6e48f.css">
+    <link rel="stylesheet" href="../static/css/share/css/share.min.css">
+    <script src="../static/js/jquery.js"></script>
+    <script src="../static/js/vue.js"></script>
     <style>
         #mainScreen {
             padding-top: 10px;
@@ -28,7 +29,7 @@
             <div class="ui internally stackable grid tweet-detail-page">
                 <div class="eleven wide computer sixteen wide tablet column tweet-detail-wrap">
                     <div class="ui breadcrumb">
-                        <a class="section" href="user.html">所有启事</a>
+                        <a class="section" href="/">所有启事</a>
                         <i class="right chevron icon divider"></i>
                         <div class="active section">详情</div>
                     </div>
@@ -70,21 +71,38 @@
                                     </div>
                                 </div>
 
-                                <div class="extra text">
-                                    {{item.title}}
+                                <div class="extra text" id="share-title">
+                                    {{ item.title }}
                                 </div>
-                                <div class="header">
-                                    {{item.about}}
+                                <div class="header" id="share-description">
+                                    {{ item.about }}
                                 </div>
 
-
-                                <div class="extra multi-image" v-if="item.images && item.images.length > 0">
+{#
+                                <div class="extra multi-image" id="share-images" v-if="item.images && item.images.length > 0">
                                     <div data-multi-image-raw="list" class="multimgs" style="display: flex;">
                                         <div v-for="(src, index) in item.images" class="wrapper multing-wrapper">
                                             <img :src="imgPrefix+src" :key="imgPrefix+src" @click="viewImages(index)" style="max-width: 160px; height: auto;">
                                         </div>
                                     </div>
+                                </div>#}
+
+                             {% if  item.images|length  > 0  %}
+                                <div class="extra multi-image" id="share-images">
+                                <div data-multi-image-raw="list" class="multimgs" style="display: flex;">
+
+                                     {% for imgsrc in item.images %}
+                                    <div class="wrapper multing-wrapper">
+                                        <img src="http://iboy.f3322.net:8888/static/upload/{{ imgsrc }}" key="http://iboy.f3322.net:8888/static/upload/{{ imgsrc }}" @click="viewImages({{  loop.index }})" style="max-width: 160px; height: auto;">
+                                     </div>
+                                {% endfor %}
+
                                 </div>
+                             </div>
+                             {% endif %}
+
+
+
                                 <div class="ui horizontal list">
                                     <div class="item">
                                         <span class="ui horizontal label">{{item.category}}</span>
@@ -102,6 +120,7 @@
                                         <span data-tweet-ref-count></span>
                                         转发
                                     </a>
+
                                     <a v-if="item.isSelf" class="like" @click="deletePub(item.id)">
                                         <i class="trash alternate outline icon"></i>删除
                                     </a>
@@ -185,7 +204,7 @@
 
                                         <div class="date">{{item.time}}</div>
                                     </div>
-                                    <div class="extra text" data-emoji-render>
+                                    <div class="extra text" id="share-title" data-emoji-render>
                                         {{item.content}}
                                     </div>
 {#                                   <div class="meta">#}
@@ -312,20 +331,48 @@
         </div>
     </div>
 </div>
-
 <div style="display: none; padding: 10px;" id="shareDiv">
-    <div id="imgDiv">
+    <div class="social-share" data-mobile-sites="weibo,qq,qzone,wechat"></div>
+    <div id="wechat-qrcode" >
     </div>
 </div>
 </div>
 </div>
 
-<script src="../../static/js/semantic.min.js"></script>
-<script src="../../static/js/mine/common.js"></script>
-<script src="../../static/js/layer.js"></script>
-<script src="../../static/js/mine/detail.js"></script>
-<script src="../../static/js/qrcode.js"></script>
+<style>
+    #wechat-qrcode  img,canvas{
+        margin: 0 auto;
+        margin-left: 21%;
+    }
+    #wechat-qrcode h4{
+            text-align: center;
+    }
+    .layui-layer-title h4{
+        line-height: 42px;
+    }
+    #wechat-qrcode .help{
+        text-align: center;
+        margin-top: 8px;
+    }
+    .share-component{
+        margin: 0 auto;
+        margin-left: 3%;
+    }
+    .wechat-qrcode{
+        margin-top: 10px;
+    }
+    .layui-layer-title {
+        padding: 0 50px 0 40px !important;
+    }
 
+
+</style>
+<script src="../static/js/semantic.min.js"></script>
+<script src="../static/js/mine/common.js"></script>
+<script src="../static/js/layer.js"></script>
+<script src="../static/js/mine/detail.js"></script>
+<script src="../static/js/share/js/social-share.js"></script>
+<script src="../static/js/qrcode.js"></script>
 </body>
 </html>
 <!-- Generated by oschina (init:0[ms],page:34[ms],ip:223.104.10.126) //-->

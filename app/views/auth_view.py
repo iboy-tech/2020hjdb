@@ -18,6 +18,7 @@ from flask_cors import cross_origin
 from flask_login import logout_user, login_user, login_required, current_user
 
 from app import db, OpenID, redis_client, cache
+from app.decorators import wechat_required
 from app.main import auth
 from app.models.user_model import User
 from app.utils import restful
@@ -35,6 +36,17 @@ def favicon():
         mimetype='image/vnd.microsoft.icon')
 
 
+@auth.route('/', methods=['POST', 'OPTIONS', 'GET'])
+@cross_origin()
+@login_required
+@wechat_required
+@cache.cached(timeout=60, query_string=True)  # 缓存10分钟 默认为300s
+def index():
+    data = request.json
+    print('user页面收到请求', data)
+    return render_template('user.html')  # 所有参数都要
+
+
 def checkQQ(str):
     # 正则表达式
     pattern = r"qq:[1-9]\d{4,10}"
@@ -45,12 +57,14 @@ def checkQQ(str):
         return False
 
 
-@auth.route('/', methods=['GET', 'POST', 'OPTIONS'])
+@auth.route('/login', methods=['GET', 'POST', 'OPTIONS'])
 @cross_origin()
 def login():
     data = request.json
+    print("next的值", request.args.get('next'))
     print('请求成功', type(data))
     if request.method == 'POST':
+        print('请求的全路径：', request.full_path, session.get('next'))
         user = User.query.filter_by(username=data['username']).first()
         if user is None:
             restful.success(success=False, msg='账户名或密码错误')
@@ -81,11 +95,12 @@ def login():
                     current_user.is_authenticated)
                 print('Flask-Login自动添加', session['user_id'])
                 print(session.get('uid'))
-                login_user(user, remember=True)
                 data = user.auth_to_dict()
+                if session.get('next') is not None:
+                    print(session.get("next的值"), session['next'])
+                    return restful.success(msg='登录成功', data=data, ext=session.get('next'))
                 return restful.success(msg='登录成功', data=data)
             else:
-                """
                 app = current_app._get_current_object()
                 key = str(user.id) + '-fail-login-times'
                 cnt = redis_client.get(key)
@@ -98,19 +113,20 @@ def login():
                 # redis_client.setrange(key, 0, str(data))  # 把数据存入redis
                 # print('key的过期时间：', os.getenv('QR_CODE_VALID_TIME'))
                 # print('redis中的值', redis_client.get('key'), type(redis_client.get('key')))
-                """
-                # return restful.success(success=False, msg="用户名或密码错误,您还有能尝试" + str(
-                #     app.config['LOGIN_FAIL_TIMES'] - int(eval(redis_client.get(key)))))
+                return restful.success(success=False, msg="用户名或密码错误,您还有能尝试" + str(
+                    app.config['LOGIN_FAIL_TIMES'] - int(eval(redis_client.get(key)))))
+    if request.args.get('next'):
+        session['next'] = request.args.get('next')
     return render_template('login.html')
 
 
-@auth.route('/logout', methods=['GET'])
-@login_required
+@auth.route('/logout', methods=['POST'])
+# @login_required
 def logout():
     print(session.get('uid'))
     print('用户登出成功')
     logout_user()
-    return redirect(url_for('auth.login')), 301
+    return restful.success(success = True,msg = "登出成功")
 
 
 @auth.route('/recognize', methods=['POST', 'OPTIONS', 'GET'])
@@ -197,3 +213,9 @@ def confirm():
         'msg': json.loads(data)['msg']
     }
     return render_template('mails/go.html', messages=messages)
+
+
+@auth.route('/index', methods=['GET'])
+@cross_origin()
+def demo():
+    return render_template('index.html')

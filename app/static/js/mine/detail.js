@@ -2,7 +2,7 @@ var app = new Vue({
     el: "#app",
     data: {
         imgPrefix: staticUrl,
-        userIcon: "http://localhost/static/icon/user_icon.png",
+        // userIcon: "http://localhost/static/icon/user_icon.png",
         comment: "",//发布评论
         images: {
             "title": "", //相册标题
@@ -21,30 +21,22 @@ var app = new Vue({
                 id: null,
                 // icon: "./ima/icon.jpg",
                 kind: 1,
-                username: "2018111111",
-                userId: "1",
-                time: "2019-04-16 09:27:10",
-                location: "欣苑",
-                title: "饭卡掉了",
-                about: "救救孩子",
+                username: "",
+                userId: "",
+                time: "",
+                location: "",
+                title: "",
+                about: "",
                 images: [],
-                category: "校园卡",
+                category: "",
                 lookCount: 12,
                 status: 1,
                 dealTime: null,
                 isSelf: false,
-                email: "547142436@qq.com",
-                QQ: "547142436",
+                email: "",
+                QQ: "",
         },
-        comments: [
-            /* {
-                 id: "00000000000001",
-                 icon: "./go/icon.png",
-                 username: "201520180508",
-                 time: "2019-04-16 09:27:10",
-                 content: "我觉得很对"
-             }*/
-        ],
+        comments: [],
         page: {
             search: {//tab1
                 "kind": -1,
@@ -56,21 +48,7 @@ var app = new Vue({
             },
             totalPage: 0,
             total: 0,
-            list: [
-                /*  {
-                      id: "00000000000000001",
-                      icon: "./go/icon.jpg",
-                      kind: 0,
-                      username: "201520180508",
-                      time: "2019-04-16 09:27:10",
-                      location: "研一的门口",
-                      title: "丢了一只篮球",
-                      go: ["./go/icon.jpg"],
-                      category: "电子数码",
-                      lookCount: 12,
-                      commentCount: 2,
-                  }*/
-            ]
+            list: []
         },
     },
     methods: {
@@ -80,10 +58,20 @@ var app = new Vue({
             layer.open({
                 type: 1,
                 //shade: true,
-                title: "保存或扫描二维码", //不显示标题
+                title: "<h4>微信扫一扫分享</h4>", //不显示标题
                 content: $('#shareDiv') //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
             });
         },
+/*        share(){
+            console.log(location.href);
+            //捕获页
+            layer.open({
+                type: 1,
+                //shade: true,
+                title: "微信扫一扫：分享", //不显示标题
+                content: $('#shareDiv') //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
+            });
+        },*/
         viewImages(index) {
             //相册层
             this.images.data = [];
@@ -155,13 +143,13 @@ $(function () {
     } else {
         getDetail(id, app);
     }
-    var qrcode = new QRCode(document.getElementById("imgDiv"), location.href);
+    // var qrcode = new QRCode(document.getElementById("imgDiv"), location.href);
 });
 
 //删除招领信息
 function deletePub(id) {
     $.ajax({
-        url: baseUrl + "/user.html/removeLost?id="+id,
+        url: baseUrl + "/found.html/delete?id="+id,
         method: "POST",
         success: function (res, status) {
             console.log(res);
@@ -217,6 +205,8 @@ function pubComment(data, app) {
         method: "POST",
         success: function (res, status) {
             console.log(res);
+            console.log(res);
+            console.log(typeof(res.ext),res.ext,res.ext==null);
             if (status == "success") {
                 if (res.success) {
                     showOK("发布成功！");
@@ -245,7 +235,7 @@ function getComments(id, app) {
         url: baseUrl + "/comment?id=" + id,
         method: "POST",
         success: function (res, status) {
-            console.log(res);
+
             if (status == "success") {
                 if (res.success) {
                     //console.log(result.item);
@@ -268,6 +258,7 @@ function getDetail(id, result) {
         url: baseUrl + "/detail.html?id="+id,
         // data:id,
         method: "POST",
+        // async : false,
         success: function (res, status) {
             console.log(res);
             if (status == "success") {

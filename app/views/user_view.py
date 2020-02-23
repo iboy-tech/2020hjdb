@@ -8,35 +8,21 @@
 @Description : 
 @Software: PyCharm
 """
-import os
 from datetime import datetime
 
 from flask import render_template, request, url_for
 from flask_cors import cross_origin
 from flask_login import current_user, login_required
-from .found_view import send_message_by_pusher
 
 from app import db, OpenID, cache
 from app.main import user
-from app.models.comment_model import Comment
 from app.models.lostfound_model import LostFound
 from app.models.user_model import User
 from app.utils import restful
 from app.utils.auth_token import generate_token
 from app.utils.mail_sender import send_email
-from tasks import celery
+from .found_view import send_message_by_pusher
 from ..decorators import wechat_required
-
-
-@user.route('/', methods=['POST', 'OPTIONS', 'GET'])
-@cross_origin()
-@login_required
-@wechat_required
-@cache.cached(timeout=60,query_string=True)  # 缓存10分钟 默认为300s
-def index():
-    data = request.json
-    print('user页面收到请求', data)
-    return render_template('user.html')  # 所有参数都要
 
 
 @user.route('/messages', methods=['POST', 'OPTIONS', 'GET'])
@@ -82,16 +68,16 @@ def get_message():
 def set_QQ():
     print('用户准备更改密码')
     new_qq = request.args.get('qq')
-    print(new_qq,type(new_qq))
-    if new_qq==current_user.qq:
+    print(new_qq, type(new_qq))
+    if new_qq == current_user.qq:
         return restful.success(success=False, msg="您的QQ和之前一样，修改失败")
-    token = str(generate_token(id=current_user.id, operation='change-qq', qq=new_qq),encoding = "utf-8")
-    print('我是生成的token',url_for('auth.confirm', token=token, _external=True))
+    token = str(generate_token(id=current_user.id, operation='change-qq', qq=new_qq), encoding="utf-8")
+    print('我是生成的token', url_for('auth.confirm', token=token, _external=True))
     messages = {
         'real_name': current_user.real_name,
         'token': url_for('auth.confirm', token=token, _external=True)
     }
-    send_email.delay(new_qq,'QQ更改', 'changeQQ',messages)
+    send_email.delay(new_qq, 'QQ更改', 'changeQQ', messages)
     return restful.success(success=True, msg="验证邮件已发送到您的QQ邮箱，请及时确认")
 
 
@@ -108,51 +94,6 @@ def set_password():
         db.session.commit()
         return restful.success()
     return restful.success(success=False, msg="您输入的密码有误")
-
-
-@user.route('/removeComment', methods=['POST'])
-@login_required
-@cross_origin()
-def del_comment():
-    refer = request.referrer
-    print(refer)
-    req = request.args.get('id')
-    print('删除评论：', req, type(req))
-    if not req:
-        return restful.params_error()
-    else:
-        c = Comment.query.get(int(req))
-        if c is not None and (
-                LostFound.query.get(c.lost_found_id).user_id == current_user.id or current_user.kind >= 2):
-            db.session.delete(c)
-            db.session.commit()
-            return restful.success(msg='删除成功')
-        else:
-            return restful.params_error()
-
-
-@user.route('/removeLost', methods=['POST'])
-@login_required
-@cross_origin()
-def del_Lost():
-    refer = request.referrer
-    print(refer)
-    req = request.args.get('id')
-    print('删除帖子：', req, type(req))
-    if not req:
-        return restful.params_error()
-    else:
-        l = LostFound.query.get(int(req))
-        if l is not None and (l.user_id == current_user.id or current_user.kind >= 2):
-            if l.images != "":
-                l.images = l.images.replace('[', '').replace(']', '').replace(' \'', '').replace('\'', '')
-                imglist = l.images.strip().split(',')
-                remove_imglist.delay(imglist)
-            db.session.delete(l)
-            db.session.commit()
-            return restful.success(msg='删除成功')
-        else:
-            return restful.params_error()
 
 
 @user.route('/claim', methods=['POST'])
@@ -216,15 +157,3 @@ def claim():
             return restful.success(msg='认领成功,您的联系方式已发送给失主')
         else:
             return restful.params_error()
-
-
-@celery.task(time_limit=10)
-def remove_imglist(imgs):
-    print('获取执行结果',os.getenv('CELERY_RESULT_BACKEND'))
-    for img in imgs:
-        file = os.getenv('PATH_OF_UPLOAD')+img
-        print('要删除的文件',file)
-        try:
-            os.remove(file)
-        except Exception as e:
-            print('删除文件', str(e))

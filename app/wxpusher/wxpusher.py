@@ -38,7 +38,7 @@ class WxPusher():
     @classmethod
     def query_message(cls, message_id):
         """Query message status."""
-        url = f'{BASEURL}/send/query/{message_id}'
+        url = BASEURL+'/send/query/{message_id}'
         return requests.get(url).json()
 
     @classmethod
@@ -49,7 +49,7 @@ class WxPusher():
             'extra': extra,
             'validTime': valid_time
         }
-        url = f'{BASEURL}/fun/create/qrcode'
+        url = BASEURL+'/fun/create/qrcode'
         return requests.post(url, json=payload).json()
 
     @classmethod
@@ -60,7 +60,7 @@ class WxPusher():
             'page': page,
             'pageSize': page_size
         }
-        url = f'{BASEURL}/fun/wxuser'
+        url = BASEURL+'/fun/wxuser'
         return requests.get(url, params=payload).json()
 
     @classmethod

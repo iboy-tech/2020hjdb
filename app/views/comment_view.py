@@ -10,6 +10,7 @@
 """
 
 from flask import request
+from flask_cors import cross_origin
 from flask_login import current_user, login_required
 from sqlalchemy import desc
 
@@ -17,6 +18,7 @@ from app import db
 from app.decorators import wechat_required
 from app.main import comment
 from app.models.comment_model import Comment
+from app.models.lostfound_model import LostFound
 from app.models.user_model import User
 from app.utils import restful
 
@@ -61,7 +63,22 @@ def index():
             return restful.success(data=data)
 
 
-@comment.route('/delete', methods=['GET', 'POST', 'OPTIONS'],strict_slashes=False)
+@comment.route('/delete', methods=['POST'])
 @login_required
+@cross_origin()
 def delete_comment():
-    pass
+    refer = request.referrer
+    print(refer)
+    req = request.args.get('id')
+    print('删除评论：', req, type(req))
+    if not req:
+        return restful.params_error()
+    else:
+        c = Comment.query.get(int(req))
+        if c is not None and (
+                LostFound.query.get(c.lost_found_id).user_id == current_user.id or current_user.kind >= 2):
+            db.session.delete(c)
+            db.session.commit()
+            return restful.success(msg='删除成功')
+        else:
+            return restful.params_error()

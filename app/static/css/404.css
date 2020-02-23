@@ -20,7 +20,7 @@ body{background: #d2f5f1}
 .tipInfo .in p span a{color:#e94c3c;margin: 0 10px}
 .tipInfo .in .desc{overflow: hidden;font-size: 14px;color: #2b2b2b;padding: 0 10%}
 .tipInfo .in .desc h3{font-weight: normal;padding: 20px 0 5px 0}
-.tipInfo .in .desc li{background: url("../../../static/images/go/404/dot.png") no-repeat left center;margin-left: 5px;padding: 5px 0;padding-left: 8px;*padding-left: 20px;}
+.tipInfo .in .desc li{background: url("../../static/images/go/404/dot.png") no-repeat left center;margin-left: 5px;padding: 5px 0;padding-left: 8px;*padding-left: 20px;}
 @-webkit-keyframes cloudLarge{0%{right: -140px;}
     100%{right: 118%;}}
 @-moz-keyframes cloudLarge{0%{right: -140px;}

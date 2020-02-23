@@ -17,7 +17,6 @@ from app import db, User
 from app.decorators import admin_required, wechat_required
 from app.main import chart
 from app.models.lostfound_model import LostFound
-from app.utils import restful
 
 print('视图文件加载')
 

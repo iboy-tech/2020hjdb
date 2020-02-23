@@ -13,6 +13,7 @@ import os
 from datetime import datetime
 
 from flask import render_template, request, current_app
+from flask_cors import cross_origin
 from flask_login import current_user, login_required
 from sqlalchemy import desc, or_
 
@@ -31,6 +32,8 @@ from app.wxpusher import WxPusher
 from app.utils.tinify_tool import tinypng
 import uuid
 
+from tasks import celery
+
 
 @found.route('/', methods=['GET', 'POST'], strict_slashes=False)
 @login_required
@@ -41,23 +44,23 @@ def index():
 
 @found.route('/getall', methods=['POST'], strict_slashes=False)
 @login_required
-@cache.cached(timeout=10 * 60,query_string=True,key_prefix='found-getall')  # 缓存10分钟 默认为300s
+# @cache.cached(timeout=10 * 60, query_string=True, key_prefix='found-getall')  # 缓存10分钟 默认为300s
 def get_all():
     req = request.json
     page = int(req['pageNum'])
     pagesize = int(req['pageSize'])
-    print('我是前端获取的分页数据',req)
+    print('我是前端获取的分页数据', req)
     # print('get_users收到请求')
     keyword = req['keyword']
     if req['kind'] == -1 and req['category'] == '' and req['username'] == '' and keyword == '':
-        pagination = LostFound.query.order_by(desc('create_time')).paginate(page + 1, per_page=pagesize ,
+        pagination = LostFound.query.order_by(desc('create_time')).paginate(page + 1, per_page=pagesize,
                                                                             error_out=False)
 
     elif req['kind'] == -1 and req['category'] != '':
         c = Category.query.filter_by(name=req['category']).first()
         pagination = LostFound.query.filter_by(category_id=c.id).order_by(desc('create_time')).paginate(page + 1,
                                                                                                         per_page=
-                                                                                                       pagesize,
+                                                                                                        pagesize,
                                                                                                         error_out=False)
     elif req['username'] != '':
         # print('这是用户个人查询')
@@ -131,7 +134,7 @@ def get_all():
                 )).order_by(desc('create_time')).paginate(page + 1,
                                                           per_page=pagesize,
                                                           error_out=False)
-    data = get_search_data(pagination, page, pagesize )
+    data = get_search_data(pagination, page, pagesize)
     # print('分类查询：',data)
     return data
 
@@ -204,7 +207,7 @@ def pub():
                     uids = [op.wx_id]
                     send_message_by_pusher(dict, uids)
                     send_email.delay('849764742', '失物找回通知', 'foundNotice', messages=dict)
-    cache.delete('found-getall')#删除缓存
+    cache.delete('found-getall')  # 删除缓存
     return restful.success()
 
 
@@ -213,13 +216,13 @@ def send_message_by_pusher(msg, uid):
     uids = ['UID_CLkvFs8PCxHFDnfEsyHsksbve07f']
     content = render_template('msgs/' + 'WXNotice' + '.txt', messages=msg)
     print(content)
-    msg_id = WxPusher.send_message(content=u''+str(content), uids=uids,content_type=2,url=msg['url'])
+    msg_id = WxPusher.send_message(content=u'' + str(content), uids=uids, content_type=2, url=msg['url'])
     print('我是消息的ID', msg_id)
     # html=render_template('mails/WXNotice.html', messages=messages)
     # WxPusher.send_message(content=str(msg), uids=uid,content_type=2)
 
 
-def get_search_data(pagination, pageNum,pagesize):
+def get_search_data(pagination, pageNum, pagesize):
     losts = pagination.items
     # print(losts)
     datalist = []
@@ -240,7 +243,7 @@ def get_search_data(pagination, pageNum,pagesize):
             "userId": l.user_id,
             "username": user.username,
             "realName": user.real_name,
-            "time":  get_time_str(l.create_time),
+            "time": get_time_str(l.create_time),
             "location": l.location,
             "title": l.title,
             "about": l.about,
@@ -257,8 +260,43 @@ def get_search_data(pagination, pageNum,pagesize):
             "totalPage": pagination.pages,
             "pageNum": pageNum,
             "pageSize": pagesize,
-            # "pageSize": pagesize,
             "list": datalist
         }
     }
     return restful.success(data=data)
+
+
+@found.route('/delete', methods=['POST'])
+@login_required
+@cross_origin()
+def delete_Lost():
+    refer = request.referrer
+    print(refer)
+    req = request.args.get('id')
+    print('删除帖子：', req, type(req))
+    if not req:
+        return restful.params_error()
+    else:
+        l = LostFound.query.get(int(req))
+        if l is not None and (l.user_id == current_user.id or current_user.kind >= 2):
+            if l.images != "":
+                l.images = l.images.replace('[', '').replace(']', '').replace(' \'', '').replace('\'', '')
+                imglist = l.images.strip().split(',')
+                remove_imglist.delay(imglist)
+            db.session.delete(l)
+            db.session.commit()
+            return restful.success(msg='删除成功')
+        else:
+            return restful.params_error()
+
+
+@celery.task(time_limit=10)
+def remove_imglist(imgs):
+    print('获取执行结果', os.getenv('CELERY_RESULT_BACKEND'))
+    for img in imgs:
+        file = os.getenv('PATH_OF_UPLOAD') + img
+        print('要删除的文件', file)
+        try:
+            os.remove(file)
+        except Exception as e:
+            print('删除文件', str(e))

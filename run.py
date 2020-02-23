@@ -127,4 +127,4 @@ if __name__ == '__main__':
    gevent
    celery worker -A run.celery --loglevel=info --pool=eventlet  -E
     """
-    socketio.run(app=app)
+    socketio.run(app=app,host ='0.0.0.0',port ='8888')

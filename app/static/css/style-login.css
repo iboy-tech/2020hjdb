@@ -28,11 +28,10 @@ nav.horizontal ul li{ display: inline-block;}/* horizontal menu */
 img{max-width:100%;}
 /*end reset*/
 body{
-	background:url(../images/bg.jpg) no-repeat 0px 0px;
-	background-size: cover;
-	background-position: 50% 50%;
-	background-attachment: fixed;
-	padding: 0 3em;
+	/*background:url(../images/bg.jpg) no-repeat 0px 0px;*/
+    background-size: cover;
+    background: url(https://ae01.alicdn.com/kf/Hd1dbebb257aa430ebea9c8a3cde8a795W.jpg) no-repeat fixed 50% 50%;
+    padding: 0 3em;
 }
 span{
 	color: #d28520;

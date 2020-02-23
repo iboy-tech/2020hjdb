@@ -7,12 +7,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>用户登陆</title>
+    <title>三峡大学失物招领中心</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <link href="../../static/css/style-login.css" rel="stylesheet" type="text/css" media="all"/><!--stylesheet-css-->
-    <script src="../../static/js/vue.js"></script>
-    <script src="../../static/js/jquery.js"></script>
+    <link href="../static/css/style-login.css" rel="stylesheet" type="text/css" media="all"/><!--stylesheet-css-->
+    <script src="../static/js/vue.js"></script>
+    <script src="../static/js/jquery.js"></script>
     <style>
         .tabContainer {
             display: flex;
@@ -72,8 +72,8 @@
 <!--<script src="https://cdn.bootcss.com/toastr.js/latest/toastr.min.js"></script>-->
 <!--<link href="https://cdn.bootcss.com/toastr.js/latest/toastr.min.css" rel="stylesheet">-->
 
-<script src="../../static/js/layer.js"></script>
-<script src="../../static/js/mine/common.js"></script>
+<script src="../static/js/layer.js"></script>
+<script src="../static/js/mine/common.js"></script>
 <script>
 
     var app = new Vue({
@@ -111,7 +111,7 @@
                 }
 
                 $.ajax({
-                    url: baseUrl + (me.tabIndex == 0 ? "/" : "/recognize"),
+                    url: baseUrl + (me.tabIndex == 0 ? "/login" : "/recognize"),
                     method: "POST",
                     data: JSON.stringify(this.user),
                     success: function (res) {
@@ -121,6 +121,9 @@
                                         saveSession("user", res.data.user);
                                         if(res.ext=='wx'){
                                              location.replace("/oauth/wx.html");
+                                        }
+                                        else if (res.ext!==null) {
+                                            window.location=baseUrl+unescape(res.ext);
                                         }
                                         else if (res.data.user.kind >= 2) {
                                             location.replace("/chart.html");

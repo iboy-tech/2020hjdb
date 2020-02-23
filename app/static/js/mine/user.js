@@ -84,16 +84,6 @@ var app = new Vue({
         }
     },
     methods: {
-        share(){
-            console.log(location.href);
-            //捕获页
-            layer.open({
-                type: 1,
-                //shade: true,
-                title: "保存或扫描二维码", //不显示标题
-                content: $('#shareDiv') //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
-            });
-        },
         showAllNotice(b) {
             this.noticeAll = b;
         },
@@ -162,8 +152,19 @@ var app = new Vue({
             layer.confirm('确定要退出吗？', {
                 btn: ['确定', '取消'] //按钮
             }, function () {
-                deleteSession("user");
-                window.location.replace("/logout");
+                // deleteSession("user");
+                // window.location.replace("/logout");
+                    $.ajax({
+        url: baseUrl + "/logout" ,
+        //data: JSON.stringify(data),
+        method: "POST",
+        success: function (res) {
+            if (res.success){
+                 console.log(res);
+                window.location=baseUrl+'/login';
+            }
+        }
+    });
             }, function () {
             });
         },
@@ -389,7 +390,7 @@ function setPassword(data) {
 //删除招领信息
 function deletePub(id) {
     $.ajax({
-        url: baseUrl + "/user.html/removeLost?id="+id,
+        url: baseUrl + "/found.html/delete?id="+id,
         method: "POST",
         success: function (res, status) {
             console.log(res);
@@ -435,7 +436,7 @@ function getNoticeList(app) {
 function removeComment(id) {
     console.log("我是要删除的ID:"+id);
     $.ajax({
-        url: baseUrl + "/user.html/removeComment?id="+id,
+        url: baseUrl + "/comment/delete?id="+id,
         method: "POST",
         success: function (res) {
             console.log(res);
@@ -670,7 +671,7 @@ function pubLostFound(data) {
                         location: null,
                         images: [],//srcList
                     };
-                    window.location.href =baseUrl+'/user.html'
+                    window.location.href =baseUrl
                     // changeTab(0);
                 } else {
                     showAlertError(res.msg)
@@ -761,7 +762,7 @@ $(function () {
     } else {
         getDetail(id, app);
     }
-    var qrcode = new QRCode(document.getElementById("imgDiv"), location.href);
+    // var qrcode = new QRCode(document.getElementById("imgDiv"), location.href);
 });
 
 

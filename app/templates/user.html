@@ -6,16 +6,17 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <meta name="referrer" content="always"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
-    <title>系统主页</title>
-    <link rel="stylesheet" type="text/css" href="../../static/css/semantic.min.css"/>
-    <link type="text/css" rel="stylesheet" href="../../static/css/space.4cb6e48f.css">
-    <script src="../../static/js/jquery.js"></script>
-    <script src="../../static/js/vue.js"></script>
+    <title>三峡大学失物招领中心</title>
+    <link rel="stylesheet" type="text/css" href="../static/css/semantic.min.css"/>
+    <link type="text/css" rel="stylesheet" href="../static/css/space.4cb6e48f.css">
+    <link rel="stylesheet" href="../static/css/share/css/share.min.css">
+    <script src="../static/js/jquery.js"></script>
+    <script src="../static/js/vue.js"></script>
     <style>
         .up-img {
             border: 1px solid #dddddd;
             height: 110px !important;
-            /*background: url("../../static/go/plus.png") no-repeat center center;*/
+            /*background: url("../static/go/plus.png") no-repeat center center;*/
         }
 
         .up-img input {
@@ -313,11 +314,7 @@
                                                             <a class="reply" @click="jumpDetail(item.id)">
                                                                 <i class="comment outline icon"></i> <span>{{item.commentCount}}</span>
                                                             </a>
-                                                            <a class="share" @click="share">
-                                                                <i class="external icon"></i>
-                                                                <span data-tweet-ref-count></span>
-                                                                转发
-                                                            </a>
+
                                                             <a class="view" @click="jumpDetail(item.id)">查看详情</a>
                                                             <!--<div class="right">-->
                                                             <!--<a class="ban" ban-report="" data-id="19932613"-->
@@ -333,7 +330,7 @@
                                         </block>
                                         <div v-else class="ui basic segment article-list">
                                             <div class="ui center aligned basic segment">
-                                                <img src="../../static/images/empty.png">
+                                                <img src="../static/images/empty.png">
                                                 <h4 class="ui sub header grey">无内容</h4>
                                             </div>
                                         </div>
@@ -427,6 +424,7 @@
                                                                     data-tweet-ref-count=""
                                                                     data-tweet-id="19932613">转发</span>
                                                             </span>
+
                                                             <a class="view" @click="jumpDetail(item.id)">查看详情</a>
                                                             <!--<div class="right">-->
                                                             <!--<a class="ban" ban-report="" data-id="19932613"-->
@@ -442,7 +440,7 @@
                                         </block>
                                         <div v-else class="ui basic segment article-list">
                                             <div class="ui center aligned basic segment">
-                                                <img src="../../static/images/empty.png">
+                                                <img src="../static/images/empty.png">
                                                 <h4 class="ui sub header grey">无内容</h4>
                                             </div>
                                         </div>
@@ -523,6 +521,7 @@
                                                                 <i class="external icon"></i>
                                                                 <span>转发</span>
                                                             </span>
+
                                                             <a class="like" @click="deletePub(item.id)">
                                                                 <i class="trash alternate outline icon"></i>删除
                                                             </a>
@@ -541,7 +540,7 @@
                                         </block>
                                         <div v-else class="ui basic segment article-list">
                                             <div class="ui center aligned basic segment">
-                                                <img src="../../static/images/empty.png">
+                                                <img src="../static/images/empty.png">
                                                 <h4 class="ui sub header grey">无内容</h4>
                                             </div>
                                         </div>
@@ -563,7 +562,7 @@
 
                                                     </div>
                                                     <div class="description summary" data-emoji-render="">
-                                                        评论了：<a class="user" :href="'detail?id='+item.lostFoundId">{{item.title}}</a>
+                                                        评论了：<a class="user" :href="'detail.html?id='+item.lostFoundId">{{item.title}}</a>
                                                     </div>
                                                     <div class="extra referer">
                                                         <div class="referer-wrapper">
@@ -586,7 +585,7 @@
                                             </div>
                                             <div v-if="tab3 && tab3.length == 0" class="ui basic segment article-list">
                                                 <div class="ui center aligned basic segment">
-                                                    <img src="../../static/images/empty.png">
+                                                    <img src="../static/images/empty.png">
                                                     <h4 class="ui sub header grey">无内容</h4>
                                                 </div>
                                             </div>
@@ -653,17 +652,17 @@
                                                      style="display: inline-block !important;">
                                                     <!--<input id="in1" type="file" accept="image/*"-->
                                                     <!--onchange="changeImg(this)">-->
-                                                    <!--<img id="img1" src="../../static/go/plus.png">-->
+                                                    <!--<img id="img1" src="../static/go/plus.png">-->
                                                       <div class="ui fluid image up-img">
                                                         <input id="imgInput" type="file" accept="image/*"
                                                                onchange="changeInput(this)"  multiple="multiple">
-                                                        <img src="../../static/images/plus.png">
+                                                        <img src="../static/images/plus.png">
                                                     </div>
                                                 </div>
                                                 <!--<div class="ui image up-img" style="display: inline-block !important;">-->
                                                 <!--</div>-->
                                                 <!--<div class="ui image up-img" style="display: inline-block !important;">-->
-                                                <!--<img src="../../static/go/plus.png">-->
+                                                <!--<img src="../static/go/plus.png">-->
                                                 <!--</div>-->
                                             </div>
 
@@ -753,16 +752,12 @@
         </div>
     </div>
 
-<div style="display: none; padding: 10px;" id="shareDiv">
-    <div id="imgDiv">
-    </div>
-</div>
+
 
 </div>
-<script src="../../static/js/layer.js"></script>
-<script src="../../static/js/mine/common.js"></script>
-<script src="../../static/js/semantic.min.js"></script>
-<script src="../../static/js/mine/user.js"></script>
-<script src="../../static/js/qrcode.js"></script>
+<script src="../static/js/layer.js"></script>
+<script src="../static/js/mine/common.js"></script>
+<script src="../static/js/semantic.min.js"></script>
+<script src="../static/js/mine/user.js"></script>
 </body>
 </html>

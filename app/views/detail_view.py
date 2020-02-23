@@ -20,23 +20,38 @@ from app.models.user_model import User
 from app.utils import restful
 
 
+# @detail.route("/?id=<int:lost_id>",defaults = {"lost_id":1})
 @detail.route('/', methods=['GET', 'POST', 'OPTIONS'], strict_slashes=False)
 @login_required
 @wechat_required
 def index():
+    print('我是前端的ID')
     print('这是详情页面request.json', request.json)
     if request.method == 'GET':
-        return render_template('detail.html')
+        print("我是获取的ID",request.args.get('id'))
+        id=request.args.get('id')
+        lost = LostFound.query.get_or_404(int(id))
+        if lost.images == "":
+            imglist = []
+        else:
+            lost.images = lost.images.replace('[', '').replace(']', '').replace(' \'', '').replace('\'', '')
+            imglist = lost.images.strip().split(',')
+        item={
+            "images": imglist,
+            "title": lost.title,
+            "about": lost.about,
+        }
+        return render_template('detail.html',item=item)
     else:
         # print('查找详情', type(request.json))
         id = request.args.get('id')
         # req = request.json
         # print('我是详情ID', id)
-        lost = LostFound.query.get(int(id))
+        lost = LostFound.query.get_or_404(int(id))
         if lost is not None:
-            user = User.query.get(lost.user_id)
-            if  lost.images=="":
-                imglist=[]
+            user = User.query.get_or_404(lost.user_id)
+            if lost.images == "":
+                imglist = []
             else:
                 lost.images = lost.images.replace('[', '').replace(']', '').replace(' \'', '').replace('\'', '')
                 imglist = lost.images.strip().split(',')
@@ -67,4 +82,3 @@ def index():
                 }
             }
             return restful.success(data=data)
-

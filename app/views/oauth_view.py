@@ -27,7 +27,7 @@ def index():
     if current_user.is_authenticated and request.method == 'GET':
         op = OpenID.query.filter_by(user_id=current_user.id).first()
         if op is not None:
-            return redirect(url_for('user.index')), 301
+            return redirect(url_for('auth.index')), 301
         data = (WxPusher.create_qrcode(extra=current_user.id, valid_time=180))
         # print(type(data), data)
         if data['success']:
