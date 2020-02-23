@@ -16,7 +16,7 @@ from flask_cors import cross_origin
 from flask_login import current_user, login_required
 from .found_view import send_message_by_pusher
 
-from app import db, OpenID
+from app import db, OpenID, cache
 from app.main import user
 from app.models.comment_model import Comment
 from app.models.lostfound_model import LostFound
@@ -32,6 +32,7 @@ from ..decorators import wechat_required
 @cross_origin()
 @login_required
 @wechat_required
+@cache.cached(timeout=60,query_string=True)  # 缓存10分钟 默认为300s
 def index():
     data = request.json
     print('user页面收到请求', data)

@@ -9,7 +9,7 @@
 @Software: PyCharm
 """
 
-from flask import render_template, request, current_app
+from flask import render_template, request
 from flask_login import current_user, login_required
 from sqlalchemy import or_
 
@@ -30,10 +30,10 @@ def index():
 
 
 @userlist.route('/getall', methods=['POST', 'GET'], strict_slashes=False)
-@cache.cached(timeout=10 * 60)  # 缓存10分钟 默认为300s
 @login_required
 @wechat_required
 @admin_required
+@cache.cached(timeout=10 * 60,query_string=True,key_prefix='user-getall')  # 缓存10分钟 默认为300s
 def get_all():
     req = request.json
     print(req)
@@ -167,7 +167,7 @@ def set_or_cancle_admin():
     return restful.success()
 
 
-@cache.memoize()  # 根据参数设置缓存
+# @cache.memoize(timeout=50)  # 根据参数设置缓存
 def search(pagination, page, pagesize):
     global data
     users = pagination.items

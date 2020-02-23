@@ -19,7 +19,7 @@ from sqlalchemy import desc, or_
 from app.decorators import wechat_required
 from app.utils.mail_sender import send_email
 
-from app import db, OpenID
+from app import db, OpenID, cache
 from app.main import found
 from app.models.category_model import Category
 from app.models.comment_model import Comment
@@ -41,6 +41,7 @@ def index():
 
 @found.route('/getall', methods=['POST'], strict_slashes=False)
 @login_required
+@cache.cached(timeout=10 * 60,query_string=True,key_prefix='found-getall')  # 缓存10分钟 默认为300s
 def get_all():
     req = request.json
     page = int(req['pageNum'])
@@ -203,7 +204,7 @@ def pub():
                     uids = [op.wx_id]
                     send_message_by_pusher(dict, uids)
                     send_email.delay('849764742', '失物找回通知', 'foundNotice', messages=dict)
-
+    cache.delete('found-getall')#删除缓存
     return restful.success()
 
 

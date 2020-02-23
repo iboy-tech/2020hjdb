@@ -17,7 +17,7 @@ from flask import render_template, request, redirect, url_for, session, send_fro
 from flask_cors import cross_origin
 from flask_login import logout_user, login_user, login_required, current_user
 
-from app import db, OpenID
+from app import db, OpenID, redis_client, cache
 from app.main import auth
 from app.models.user_model import User
 from app.utils import restful
@@ -76,29 +76,31 @@ def login():
                     return restful.success(
                         success=True, msg='登录成功，请绑定微信', data=data, ext='wx')
                 print('当前登录的用户', current_user.real_name)
-                # 发送验证邮件
-                # token = generate_token(user=user, operation='confirm-qq', qq=user.qq)
-                # messages = {
-                #     'real_name': user.real_name,
-                #     'token': token
-                # }
-                # send_email.delay('849764742', '账户激活', 'confirm', messages=messages)
-                # 发送验证邮件
                 print(
                     'current_user.is_authenticated',
                     current_user.is_authenticated)
                 print('Flask-Login自动添加', session['user_id'])
-
                 print(session.get('uid'))
                 login_user(user, remember=True)
                 data = user.auth_to_dict()
                 return restful.success(msg='登录成功', data=data)
             else:
-                return restful.success(success=False, msg="用户名或密码错误")
-    time1 = datetime.now
-    time2 = datetime.now()
-    print('登录请求成功', time1, type(time1))
-    print('登录请求成功', time2, type(time2))
+                """
+                app = current_app._get_current_object()
+                key = str(user.id) + '-fail-login-times'
+                cnt = redis_client.get(key)
+                if cnt != None:
+                    redis_client.setrange(key, 0, str(data))
+                else:
+                    redis_client.incr(key)  # 把数据存入redis
+                    redis_client.expire(key, 60 * 60)
+                    print('登录错误的次数', redis_client.get(key), type(redis_client.get(key)))
+                # redis_client.setrange(key, 0, str(data))  # 把数据存入redis
+                # print('key的过期时间：', os.getenv('QR_CODE_VALID_TIME'))
+                # print('redis中的值', redis_client.get('key'), type(redis_client.get('key')))
+                """
+                # return restful.success(success=False, msg="用户名或密码错误,您还有能尝试" + str(
+                #     app.config['LOGIN_FAIL_TIMES'] - int(eval(redis_client.get(key)))))
     return render_template('login.html')
 
 
@@ -143,6 +145,7 @@ def recognize():
                 'real_name': user_db.real_name,
                 'token': token
             }
+            cache.delete('user-getall')  # 删除缓存
             send_email.delay('849764742', '身份认证', 'confirm', messages)
             return restful.success(
                 success=False,
@@ -194,5 +197,3 @@ def confirm():
         'msg': json.loads(data)['msg']
     }
     return render_template('mails/go.html', messages=messages)
-
-
