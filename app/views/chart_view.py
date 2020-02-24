@@ -15,7 +15,7 @@ from flask_login import login_required
 
 from app import db, User
 from app.decorators import admin_required, wechat_required
-from app.page import chart
+from app.page import chart, auth
 from app.models.lostfound_model import LostFound
 
 print('视图文件加载')
@@ -24,10 +24,11 @@ print('视图文件加载')
 # https://blog.csdn.net/yannanxiu/article/details/53816567
 
 @chart.route('/', methods=['GET', 'POST'],strict_slashes=False)
+@auth.route('/admin')
 @login_required
 @wechat_required
 @admin_required
-def index():
+def index_page():
     print('蓝图请求成功！')
     data = get_data()
     return render_template('chart.html', data=data)
@@ -41,7 +42,7 @@ def get_data():
     # founds_today = LostFound.query.filter(db.cast(LostFound.create_time, db.DATE) == today, LostFound.kind == 1).all()
     today_lost = LostFound.query.filter(db.cast(LostFound.create_time, db.DATE) == today, LostFound.kind == 0).count()
     today_found = LostFound.query.filter(db.cast(LostFound.create_time, db.DATE) == today, LostFound.kind == 1).count()
-    today_solve = LostFound.query.filter(db.cast(LostFound.create_time, db.DATE) == today,
+    today_solve = LostFound.query.filter(db.cast(LostFound.deal_time, db.DATE) == today,
                                          LostFound.status == 1).count()
     total_lost = LostFound.query.filter(LostFound.kind == 0).count()
     total_found = LostFound.query.filter(LostFound.kind == 1).count()

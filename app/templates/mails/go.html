@@ -40,6 +40,7 @@
             }
         </script>
     </head>
+    {% autoescape false %}
     <body>
         <div class="mianBox">
             <img src="../static/images/go/yun0.png" alt="" class="yun yun0" />
@@ -50,18 +51,23 @@
             <div class="tipInfo">
                 <div class="in">
                     <div class="textThis">
+                        {% if messages.success==False %}
                         <h2>{{ messages.msg }}</h2>
-                        <p><span>页面自动<a id="href" href="{{ url_for('auth.index', _external=True) }}">跳转</a></span><span>等待<b id="wait">6</b>秒</span></p>
+                        {% else %}
+                        <h2 style="color: #61cc52;">{{ messages.msg }}</h2>
+                        {% endif %}
+
+                        <p><span>页面自动<a id="href" href="{{ url_for('auth.index', _external=True) }}">跳转</a></span><span>等待<b id="wait">5</b>秒</span></p>
                         <script type="text/javascript">                            (function() {
                                 var wait = document.getElementById('wait'), href = document.getElementById('href').href;
                                 var interval = setInterval(function() {
                                     var time = --wait.innerHTML;
-                                    if (time < = 0) {
+                                    if (time <=0) {
                                         location.href = href;
                                         clearInterval(interval);
                                     }
-                                    ;
-                                }, 1000);
+                                }, 1000)
+                                ;
                             })();
                         </script>
                     </div>
@@ -69,4 +75,5 @@
             </div>
         </div>
     </body>
+{% endautoescape %}
 </html>

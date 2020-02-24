@@ -109,6 +109,7 @@ def claim():
         # 寻物
         if l is not None and (l.user_id != current_user.id) and l.kind == 0:
             l.status = 1
+            l.deal_time=datetime.now()
             l.claimant_id = current_user.id
             db.session.add(l)
             db.session.commit()

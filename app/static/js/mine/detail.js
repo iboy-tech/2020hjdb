@@ -71,28 +71,10 @@ var app = new Vue({
                 content: $('#shareDiv') //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
             });
         },*/
-        viewImages(index) {
-            //相册层
-            this.images.data = [];
-            this.images.start = index;
-            let i = 0;
-            let t = this.item.images.length;
-            for (; i < t; i++) {
-                let src = app.imgPrefix+this.item.images[i];
-                let d = {"src":src};
-                this.images.data.push(d);
-            }
-            console.log(this.images);
-
-            layer.photos({
-                photos: this.images,//格式见API文档手册页
-                anim: 5 //0-6的选择，指定弹出图片动画类型，默认随机
-            });
-        },
-        pubComment() {
+        pubComment(id) {
             console.log(this.comment);
             let data = {
-                "targetId": this.item.id,
+                "targetId": id,
                 "content": this.comment
             };
             console.log(data);
@@ -140,7 +122,7 @@ $(function () {
     if (!id) {
         showAlertError("缺少请求参数！");
     } else {
-        getDetail(id, app);
+        getDetail(id);
     }
     // var qrcode = new QRCode(document.getElementById("imgDiv"), location.href);
 });
@@ -214,7 +196,7 @@ function pubComment(data, app) {
                     console.log('把评论框清空')
                     console.log('我是传给详情的ID:'+app.item.id)
                     console.log(""+data.targetId )
-                    getDetail(app.item.id, app);
+                    getDetail(data);
                     console.log('评论完成之后刷新')
                 } else {
                     showAlertError(res.msg)
@@ -228,13 +210,12 @@ function pubComment(data, app) {
 }
 
 //获得启事评论列表
-function getComments(id, app) {
-    //console.log(data);
+function getComments(data, app) {
+    console.log("评论有BUG：",data);
     $.ajax({
-        url: baseUrl + "/comment?id=" + id,
+        url: baseUrl + "/comment?id=" + window.location.search.split("id=")[1],
         method: "POST",
         success: function (res, status) {
-
             if (status == "success") {
                 if (res.success) {
                     //console.log(result.item);
@@ -250,8 +231,47 @@ function getComments(id, app) {
     });
 }
 
+function viewImages1(index) {
+    console.log('我是相册下标'+index)
+            //相册层
+            // this.images.data = [];
+            var images=[];
+            var start = index;
+            // let i = 0;
+            // let t = $("#share-images img").length;
+            // for (; i < t; i++) {
+            //     let src = app.imgPrefix+this.item.images[i];
+            //     let d = {"src":src};
+            //     this.images.data.push(d);
+            // }
+            $("#share-images img").each(function(){
+                var url = $(this).attr("src");
+                images.push(url);
+            });
+            app.images.data=images;
+            console.log(images);
+            layer.photos({
+                photos: images,//格式见API文档手册页
+                anim: 5 //0-6的选择，指定弹出图片动画类型，默认随机
+            });
+        }
+        function viewImages(index) {
+            //相册层
+            app.images.data = [];
+            app.images.start = index;
+            $("#share-images img").each(function(){
+                var url = $(this).attr("src");
+               let d= {"src": url}
+                app.images.data.push(d);
+            });
+            console.log(app.images);
+            layer.photos({
+                photos: app.images,//格式见API文档手册页
+                anim: 5 //0-6的选择，指定弹出图片动画类型，默认随机
+            });
+        }
 //获得启事详情
-function getDetail(id, result) {
+function getDetail(id) {
     console.log('这是帖子的ID:'+id);
     $.ajax({
         url: baseUrl + "/detail.html?id="+id,
@@ -263,12 +283,12 @@ function getDetail(id, result) {
             if (status == "success") {
                 if (res.success) {
                     //console.log(result.item);
-                    result.item = res.data.item;
+                    // result.item = res.data.item;
                     //console.log(result.item);
-                    app.page.search.category = res.data.item.category;
+                    app.page.search.category = $("#search-category").text();
                     console.log(app.page.search);
                     if (getSession('user')) {
-                        getComments(result.item.id, app);
+                        getComments(id, app);
                         pageLostFound(app.page.search, app.page);
                     }
                 } else {
@@ -292,7 +312,7 @@ function claimID(id) {
             if (status == "success") {
                 if (res.success) {
                     showOK(res.msg);
-                    getDetail(id, app);
+                    window.location=baseUrl+"/detail.html?id="+id;
                 } else {
                     showAlertError(res.msg)
                 }

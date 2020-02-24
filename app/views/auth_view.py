@@ -209,7 +209,8 @@ def confirm():
     print(token)
     data = validate_token(token)
     messages = {
-        'msg': json.loads(data)['msg']
+        'msg': json.loads(data)['msg']+'!',
+        'success':True
     }
     return render_template('mails/go.html', messages=messages)
 

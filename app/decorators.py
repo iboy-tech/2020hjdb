@@ -34,7 +34,8 @@ def permission_required(permission_name):
                 return data
             elif not current_user.can(permission_name) and current_user.kind == 1:
                 messages = {
-                    'msg': '非法访问'
+                    'success':False,
+                    'msg': '非法访问,已记录!'
                 }
                 return render_template('mails/go.html', messages=messages)
             return func(*args, **kwargs)
