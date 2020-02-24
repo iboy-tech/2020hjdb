@@ -1,7 +1,7 @@
 FLASK_RUN_HOST = 0.0.0.0
 FLASK_RUN_PORT = 8888
-FLASK_ENV  = development
-#FLASK_ENV = production
+#FLASK_ENV  = development
+FLASK_ENV = production
 FLASK_DEBUG = False
 PIPENV_DONT_LOAD_ENV = 1
 DEBUG_TB_INTERCEPT_REDIRECTS  =  False

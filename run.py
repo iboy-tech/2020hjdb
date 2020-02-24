@@ -115,8 +115,8 @@ if __name__ == '__main__':
     https://www.jianshu.com/p/cdee367b77d3
     python run.py  --host=0.0.0.0 --port=8888 --no-reload
     启动 Celery worker:
-    gunicorn -c config.py run:app   -k eventlet
-   celery worker -A run.celery -l  DEBUG -E -P eventlet
+    nohup gunicorn -c config.py run:app   -k eventlet &> log.log
+   celery multi start  celery worker -A run.celery -l  DEBUG -E -P eventlet
    celery worker -A run.celery --loglevel=info --pool=eventlet  -E
     """
     socketio.run(app=app,host ='0.0.0.0',port ='8888')

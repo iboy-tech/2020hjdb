@@ -1,9 +1,6 @@
 //请求前缀
-// const baseUrl = "http://127.0.0.1:5000";
-// const staticUrl = "http://127.0.0.1:5000/static/";
-//请求前缀
-const baseUrl = "http://iboy.f3322.net:8888";
-const staticUrl = "http://iboy.f3322.net:8888/static/upload/";
+const baseUrl = "https://swzl.iboy.tech";
+const staticUrl = "https://swzl.iboy.tech/static/upload/";
 
 //全局设置ajax
 $.ajaxSetup({
@@ -21,7 +18,7 @@ $.ajaxSetup({
         console.log(status);
         console.log(e);
         console.log("ajax error ----------------------------- end");
-        alert("请求发生错误：\n" + this.url);
+        // alert("请求发生错误：\n" + this.url);
     },
     complete: function () {
     }

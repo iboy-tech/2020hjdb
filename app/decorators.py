@@ -21,7 +21,14 @@ def permission_required(permission_name):
         @wraps(func)
         def decorator_function(*args, **kwargs):
             print('验证权限')
-            if not current_user.can(permission_name) and current_user.kind != 1:
+            if not current_user.can(permission_name) and current_user.kind == 1:
+                messages = {
+                    'success':False,
+                    'msg': '非法访问,已记录!'
+                }
+                return render_template('mails/go.html', messages=messages)
+
+            elif not current_user.can(permission_name):
                 data = {
                     "success": False,
                     "code": 403,
@@ -32,12 +39,6 @@ def permission_required(permission_name):
                     "ext": None
                 }
                 return data
-            elif not current_user.can(permission_name) and current_user.kind == 1:
-                messages = {
-                    'success':False,
-                    'msg': '非法访问,已记录!'
-                }
-                return render_template('mails/go.html', messages=messages)
             return func(*args, **kwargs)
 
         return decorator_function
