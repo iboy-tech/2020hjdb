@@ -81,7 +81,7 @@ ENABLE_USER_SITE = None
 
 # for distutils.commands.install
 # These values are initialized by the getuserbase() and getusersitepackages()
-# functions, through the main() function when Python starts.
+# functions, through the page() function when Python starts.
 USER_SITE = "/usr/local/lib/python3.5/dist-packages"
 USER_BASE = "/usr/local/python3.5/bin/python3.5"
 

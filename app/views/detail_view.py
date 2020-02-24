@@ -13,7 +13,7 @@ from flask_login import current_user, login_required
 
 from app import db
 from app.decorators import wechat_required
-from app.main import detail
+from app.page import detail
 from app.models.category_model import Category
 from app.models.lostfound_model import LostFound
 from app.models.user_model import User

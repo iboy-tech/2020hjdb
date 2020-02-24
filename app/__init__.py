@@ -28,20 +28,20 @@ from .models.role_model import Role
 from .models.user_model import Guest, User
 from .utils.create_data import create_test_data
 
-login_manager.session_protection = 'basic'
+login_manager.session_protection = 'strong'
 
-from app.main import cached as cache_bp
-from app.main import oauth as pusher_bp
-from app.main import comment as comment_bp
-from app.main import detail as detail_bp
-from app.main import feedback as feedback_bp
-from app.main import found as found_bp
-from app.main import userlist as userlist_bp
-from app.main import notice as notice_bp
-from app.main import category as category_bp
-from app.main import user as user_bp
-from app.main import auth as auth_bp
-from app.main import chart as admin_bp
+from app.page import cached as cache_bp
+from app.page import oauth as pusher_bp
+from app.page import comment as comment_bp
+from app.page import detail as detail_bp
+from app.page import feedback as feedback_bp
+from app.page import found as found_bp
+from app.page import userlist as userlist_bp
+from app.page import notice as notice_bp
+from app.page import category as category_bp
+from app.page import user as user_bp
+from app.page import auth as auth_bp
+from app.page import chart as admin_bp
 
 
 # 工厂函数
@@ -80,15 +80,15 @@ def register_blueprints(app):
 def register_extensions(app):  # 实例化扩展
     print('注册扩展')
     migrate.init_app(app, db)
-    bootstrap.init_app(app)
+    # bootstrap.init_app(app)
     mail.init_app(app)  # 发送邮件
-    moment.init_app(app)
+    # moment.init_app(app)
     db.init_app(app)
     login_manager.init_app(app)
     login_manager.login_message = '你必须登陆后才能访问该页面'
     login_manager.login_view = 'auth.login'
     login_manager.anonymous_user = Guest
-    toolbar.init_app(app)
+    # toolbar.init_app(app)
     redis_client.init_app(app)
     cache.init_app(app)
     mongo_client.init_app(app)
@@ -128,7 +128,6 @@ def create_celery(app):
                 return self.run(*args, **kwargs)
     celery.Task = ContextTask
     return celery
-
 
 """
     # 一般之前的配置没有这个，需要添加上

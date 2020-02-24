@@ -19,7 +19,7 @@ from flask_login import logout_user, login_user, login_required, current_user
 
 from app import db, OpenID, redis_client, cache
 from app.decorators import wechat_required
-from app.main import auth
+from app.page import auth
 from app.models.user_model import User
 from app.utils import restful
 from app.utils.auth_token import generate_token, validate_token
@@ -121,7 +121,6 @@ def login():
 
 
 @auth.route('/logout', methods=['POST'])
-# @login_required
 def logout():
     print(session.get('uid'))
     print('用户登出成功')

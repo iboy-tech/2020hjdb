@@ -41,5 +41,5 @@ def create_test_data():
 #     # list.append(user)
 # db.session.add_all(list)
 # db.session.commit()
-if __name__ == 'main':
+if __name__ == 'page':
     create_test_data()

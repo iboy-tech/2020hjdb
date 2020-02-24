@@ -2,7 +2,7 @@ var app = new Vue({
     el: "#app",
     data: {
         imgPrefix: staticUrl,
-        // userIcon: "http://localhost/static/icon/user_icon.png",
+        userIcon: "https://ae01.alicdn.com/kf/U89b7be7d8d234a38b9a4b0d4258de362X.jpg",
         comment: "",//发布评论
         images: {
             "title": "", //相册标题
@@ -19,7 +19,7 @@ var app = new Vue({
         },
         item: {
                 id: null,
-                // icon: "./ima/icon.jpg",
+                icon: "https://ae01.alicdn.com/kf/U89b7be7d8d234a38b9a4b0d4258de362X.jpg",
                 kind: 1,
                 username: "",
                 userId: "",
@@ -53,7 +53,6 @@ var app = new Vue({
     },
     methods: {
         share(){
-            console.log(location.href);
             //捕获页
             layer.open({
                 type: 1,

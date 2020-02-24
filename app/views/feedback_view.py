@@ -15,7 +15,7 @@ from flask_login import current_user, login_required
 
 from app import db
 from app.decorators import admin_required, wechat_required
-from app.main import feedback
+from app.page import feedback
 from app.models.feedback_model import Feedback
 from app.models.user_model import User
 from app.utils import restful

@@ -14,6 +14,10 @@
     <script src="../static/js/vue.js"></script>
     <script src="../static/js/jquery.js"></script>
     <style>
+        body{
+            margin-top: 8vh;
+        }
+
         .tabContainer {
             display: flex;
             margin-bottom: 1em;
@@ -65,10 +69,11 @@
         </div>
         <div class="clear"></div>
     </div>
+
+</div>
     <footer>
         &copy;校园失物招领系统 | <a href="http://www.ctgu.edu.cn/" target="_blank">CTGU</a>
     </footer>
-</div>
 <!--<script src="https://cdn.bootcss.com/toastr.js/latest/toastr.min.js"></script>-->
 <!--<link href="https://cdn.bootcss.com/toastr.js/latest/toastr.min.css" rel="stylesheet">-->
 
@@ -95,6 +100,21 @@
             },
             submit: function () {
                 let me = this;
+                if(me.tabIndex==1){
+                    layer.open({
+                    title:['请阅读隐私协议', 'font-size:18px;'],
+                    content: '隐私政策',
+                    style: 'background-color:#09C1FF; color:#fff; border:none;',
+                    btn: ['同意', '取消'],
+                        yes: function(){
+                            layer.open({content: '你点了确认', time: 1});
+                        }, no: function(){
+                            layer.open({content: '你选择了取消', time: 1});
+                        },
+                     shadeClose: false,
+                    });
+
+                }
                 var qq=me.user.qq;
                 if(me.tabIndex == 1){
                     if(qq.length==0){
@@ -120,7 +140,7 @@
                                     if(me.tabIndex==0){
                                         saveSession("user", res.data.user);
                                         if(res.ext=='wx'){
-                                             location.replace("/oauth/wx.html");
+                                              window.location=baseUrl+"/oauth/wx.html";
                                         }
                                         else if (res.ext!==null) {
                                             window.location=baseUrl+unescape(res.ext);
@@ -154,7 +174,6 @@
         $(window).resize(function () {
             $("#codeImg").css("height", $("#vcode").outerHeight() + 'px');
         });
-        {#app.schools = get(baseUrl + "/public/schools");#}
     });
 
 

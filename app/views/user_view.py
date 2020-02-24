@@ -15,7 +15,7 @@ from flask_cors import cross_origin
 from flask_login import current_user, login_required
 
 from app import db, OpenID, cache
-from app.main import user
+from app.page import user
 from app.models.lostfound_model import LostFound
 from app.models.user_model import User
 from app.utils import restful

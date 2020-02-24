@@ -14,7 +14,7 @@ from sqlalchemy import desc
 
 from app import db
 from app.decorators import admin_required, wechat_required
-from app.main import notice
+from app.page import notice
 from app.models.notice_model import Notice
 from app.utils import restful
 

@@ -11,7 +11,7 @@ $.ajaxSetup({
     contentType: "application/json;charset=UTF-8",
     xhrFields: {"withCredentials": true},//携带cookie
     beforeSend: function () {
-        //showLoading();
+        // showLoading();
     },
     error: function (req, status, e) {
         hideLoading();
@@ -24,7 +24,6 @@ $.ajaxSetup({
         alert("请求发生错误：\n" + this.url);
     },
     complete: function () {
-        hideLoading();
     }
 });
 
@@ -38,6 +37,12 @@ function cleanObj(obj, key) {
     }
 }
 
+function isAnonymous() {
+    if(sessionStorage.getItem("user") ==null){
+            showAlertError('登录状态已失效，请重新登录');
+            setTimeout(function() {  window.location=baseUrl +'/login'; }, 3000);  //5秒后将会调用执行remind()函数
+    }
+}
 //是否可用LocalStorage
 function canUseLocal() {
     if (!window.localStorage) {

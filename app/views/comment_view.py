@@ -16,7 +16,7 @@ from sqlalchemy import desc
 
 from app import db
 from app.decorators import wechat_required
-from app.main import comment
+from app.page import comment
 from app.models.comment_model import Comment
 from app.models.lostfound_model import LostFound
 from app.models.user_model import User

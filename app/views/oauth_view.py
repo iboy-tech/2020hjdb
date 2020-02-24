@@ -14,8 +14,8 @@ from flask import render_template, request, redirect, url_for
 from flask_login import login_required, current_user
 
 from app import db, OpenID, redis_client
-from app.main import oauth
-from app.wxpusher import WxPusher
+from app.page import oauth
+from app.utils.wxpusher import WxPusher
 
 
 @oauth.route('/wx.html', methods=['GET'], strict_slashes=False)

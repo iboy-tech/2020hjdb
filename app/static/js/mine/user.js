@@ -76,7 +76,7 @@ var app = new Vue({
             subject: "",
             content: "",
         },
-        icon: "",
+        icon: "https://ae01.alicdn.com/kf/U89b7be7d8d234a38b9a4b0d4258de362X.jpg",
         password: {
             oldPassword: "",
             newPassword: "",

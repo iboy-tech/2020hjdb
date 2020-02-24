@@ -824,7 +824,7 @@ ul.dropdown-menu.drp-mnu li {
 	text-decoration:underline;
 }
 /*---//footer---*/
-/*---main-content-start---*/
+/*---page-content-start---*/
 .widget {
     width: 32%;
     border: 1px solid #F5F1F1;
@@ -1055,7 +1055,7 @@ h4.title {
     padding: 1em 1.5em 1.5em;
 }
 /*--//calender --*/
-/*---//main-content---*/
+/*---//page-content---*/
 /*-- media --*/
 h3.title1 {
     font-size: 2em;

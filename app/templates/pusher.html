@@ -34,7 +34,7 @@
                     $("#notice").css("color","#41B146");
                      setTimeout(function(){//5秒之后执行
                          location.href="{{ url_for('auth.index', _external=True) }} ";
-                 }, 2000);
+                 }, 4000);
              }
               else{
                   $("#notice").text(data['data']['msg']);
@@ -63,7 +63,10 @@
             });
          }
          */
+        //判断是否登录
+        isAnonymous();
     });
+
 </script>
 </body>
 </html>

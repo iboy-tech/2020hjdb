@@ -28,20 +28,14 @@ load_dotenv(find_dotenv('.env'), override=True)
 load_dotenv(find_dotenv('.flaskenv'), override=True)
 
 print('我是run.py中的环境',os.getenv('FlASK_ENV'))
-print("当前的环境:", os.getenv('FLASK_ENV'))
 print('MAIL_USERNAME', os.getenv('MAIL_USERNAME'))
 print('MAIL_PASSWORD', os.getenv('MAIL_PASSWORD'))
-print('MAIL_SERVER', os.getenv('MAIL_SERVER'))
-print('MAIL_PORT', os.getenv('MAIL_PORT'))
-print('MAIL_USE_SSL', os.getenv('MAIL_USE_SSL'))
-print('MAIL_DEFAULT_SENDER', os.getenv('MAIL_DEFAULT_SENDER'))
-print('QQ_AVATAR_API', os.getenv('QQ_AVATAR_API'))
-print('MAIL_SUBJECT_PREFIX', os.getenv('MAIL_SUBJECT_PREFIX'))
 print('SECRET_KEY', os.getenv('SECRET_KEY'))
 print('PATH_OF_IMAGES_DIR', os.getenv('PATH_OF_IMAGES_DIR'))
+print('MAIL_SENDGRID_API_KEY',os.getenv('MAIL_SENDGRID_API_KEY'))
 
 
-app = create_app(os.getenv('FlASK_ENV') or 'development')
+app = create_app(os.getenv('FlASK_ENV') or 'production')
 CORS(app, supports_credentials=True, resources=r'/*')  # 允许所有域名跨域
 
 
@@ -121,10 +115,8 @@ if __name__ == '__main__':
     https://www.jianshu.com/p/cdee367b77d3
     python run.py  --host=0.0.0.0 --port=8888 --no-reload
     启动 Celery worker:
-    celery worker -A app.celery -l  INFO  -n ctgu@celeryd -E --loglevel=info  
-    celery flower --address=127.0.0.1 --port=55555
+    gunicorn -c config.py run:app   -k eventlet
    celery worker -A run.celery -l  DEBUG -E -P eventlet
-   gevent
    celery worker -A run.celery --loglevel=info --pool=eventlet  -E
     """
     socketio.run(app=app,host ='0.0.0.0',port ='8888')

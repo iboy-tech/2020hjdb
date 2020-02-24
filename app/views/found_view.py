@@ -12,7 +12,7 @@ import base64
 import os
 from datetime import datetime
 
-from flask import render_template, request, current_app
+from flask import render_template, request
 from flask_cors import cross_origin
 from flask_login import current_user, login_required
 from sqlalchemy import desc, or_
@@ -21,14 +21,14 @@ from app.decorators import wechat_required
 from app.utils.mail_sender import send_email
 
 from app import db, OpenID, cache
-from app.main import found
+from app.page import found
 from app.models.category_model import Category
 from app.models.comment_model import Comment
 from app.models.lostfound_model import LostFound
 from app.models.user_model import User
 from app.utils import restful
 from app.utils.time_util import get_time_str
-from app.wxpusher import WxPusher
+from app.utils.wxpusher import WxPusher
 from app.utils.tinify_tool import tinypng
 import uuid
 

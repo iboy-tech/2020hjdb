@@ -15,7 +15,7 @@ from sqlalchemy import or_
 
 from app import db, cache
 from app.decorators import super_admin_required, admin_required, wechat_required
-from app.main import userlist
+from app.page import userlist
 from app.models.user_model import User
 from app.utils import restful
 from app.utils.mail_sender import send_email
@@ -33,7 +33,7 @@ def index():
 @login_required
 @wechat_required
 @admin_required
-@cache.cached(timeout=10 * 60,query_string=True,key_prefix='user-getall')  # 缓存10分钟 默认为300s
+#@cache.cached(timeout=10 * 60,query_string=True,key_prefix='user-getall')  # 缓存10分钟 默认为300s
 def get_all():
     req = request.json
     print(req)

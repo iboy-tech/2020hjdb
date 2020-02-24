@@ -109,15 +109,25 @@ var app = new Vue({
         },
         logout() {
             //询问框
-            layer.confirm('确定要退出码？', {
+            layer.confirm('确定要退出吗？', {
                 btn: ['确定', '取消'] //按钮
             }, function () {
-                deleteSession("user");
-                window.location.replace("/logout");
-            }, function () {
+                // deleteSession("user");
+                // window.location.replace("/logout");
+                    $.ajax({
+        url: baseUrl + "/logout" ,
+        //data: JSON.stringify(data),
+        method: "POST",
+        success: function (res) {
+            if (res.success){
+                 console.log(res);
+                window.location=baseUrl+'/login';
+            }
+        }
+    });}, function () {
 
             });
-        }
+        },
     }
 
 });

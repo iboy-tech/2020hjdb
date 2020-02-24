@@ -10,7 +10,7 @@
 """
 from flask import flash, redirect, url_for
 
-from app.main import cached
+from app.page import cached
 from app import cache
 
 
