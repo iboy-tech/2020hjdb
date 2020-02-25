@@ -33,6 +33,7 @@ print('MAIL_PASSWORD', os.getenv('MAIL_PASSWORD'))
 print('SECRET_KEY', os.getenv('SECRET_KEY'))
 print('PATH_OF_IMAGES_DIR', os.getenv('PATH_OF_IMAGES_DIR'))
 print('MAIL_SENDGRID_API_KEY',os.getenv('MAIL_SENDGRID_API_KEY'))
+print('我是站点的地址',os.getenv('SITE_URL'))
 
 
 app = create_app(os.getenv('FlASK_ENV') or 'production')
@@ -115,8 +116,10 @@ if __name__ == '__main__':
     https://www.jianshu.com/p/cdee367b77d3
     python run.py  --host=0.0.0.0 --port=8888 --no-reload
     启动 Celery worker:
-    nohup gunicorn -c config.py run:app   -k eventlet &> log.log
+    nohup gunicorn -c config.py run:app   &> log.log
    celery multi start  celery worker -A run.celery -l  DEBUG -E -P eventlet
-   celery worker -A run.celery --loglevel=info --pool=eventlet  -E
+   ps auxww | grep 'celery worker'
+   celery worker -A run.celery --loglevel=debug --pool=eventlet  -E
+   重启celery multi restart 1 --pidfile=%n.pid
     """
     socketio.run(app=app,host ='0.0.0.0',port ='8888')

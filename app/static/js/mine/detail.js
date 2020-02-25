@@ -82,7 +82,7 @@ var app = new Vue({
         },
         deletePub(id) {
             console.log(id);
-            layer.confirm('确定要删除码？', {
+            layer.confirm('确定要删除吗？', {
                 btn: ['确定', '取消'] //按钮
             }, function () {
                 deletePub(id);
@@ -137,13 +137,13 @@ function deletePub(id) {
             if (status == "success") {
                 if (res.success) {
                     // showOK(res.msg);
-                    window.location.href=baseUrl+'/user.html';
+                    window.location.href=baseUrl+'/';
                 } else {
                     showAlertError(res.msg)
                 }
             } else {
                 console.log(res);
-                alert(res)
+                showAlertError(res)
             }
         }
     });
@@ -172,7 +172,7 @@ function pageLostFound(data, result) {
                 }
             } else {
                 console.log(res);
-                alert(res)
+                showAlertError(res)
             }
         }
     });
@@ -203,7 +203,7 @@ function pubComment(data, app) {
                 }
             } else {
                 console.log(res);
-                alert(res)
+                showAlertError(res)
             }
         }
     });
@@ -225,7 +225,7 @@ function getComments(data, app) {
                 }
             } else {
                 console.log(res);
-                alert(res)
+                showAlertError(res)
             }
         }
     });
@@ -296,7 +296,7 @@ function getDetail(id) {
                 }
             } else {
                 console.log(res);
-                alert(res)
+                showAlertError(res)
             }
         }
     });
@@ -313,12 +313,10 @@ function claimID(id) {
                 if (res.success) {
                     showOK(res.msg);
                     window.location=baseUrl+"/detail.html?id="+id;
-                } else {
-                    showAlertError(res.msg)
                 }
             } else {
                 console.log(res);
-                alert(res)
+                showAlertError(res)
             }
         }
     });

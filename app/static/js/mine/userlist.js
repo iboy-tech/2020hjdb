@@ -147,7 +147,7 @@ function getUserList(data, app, append) {
                 }
             } else {
                 console.log(res);
-                alert(res)
+                showAlertError(res)
             }
         }
     });
@@ -172,7 +172,7 @@ function resetPassword(userId) {
                 }
             } else {
                 console.log(res);
-                alert(res)
+                showAlertError(res)
             }
         }
     });
@@ -195,7 +195,7 @@ function setAsAdmin(userId) {
                 }
             } else {
                 console.log(res);
-                alert(res)
+                showAlertError(res)
             }
         }
     });
@@ -221,7 +221,7 @@ function freezeUser(userId) {
                 }
             } else {
                 console.log(res);
-                alert(res)
+                showAlertError(res)
             }
         },
         complete: function () {
@@ -250,7 +250,7 @@ function unfreezeUser(userId) {
                 }
             } else {
                 console.log(res);
-                alert(res)
+                showAlertError(res)
             }
         },
         complete: function () {

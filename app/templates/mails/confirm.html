@@ -78,7 +78,7 @@
                             <tr>
                                 <td style="width: 755px;padding: 20px;">
 <!--                                      <h1>您好！{{ messages.real_name }}</h1>-->
-                                    <h2> 用户认证：</h2>
+                                    <h2 style="line-height: 40px;color: #ffa207;font-size: 20px;font-weight: bold;display: block;background-color: rgba(228, 228, 228, 0.24);border-left: 5px solid #ffa207;padding-left: 20px;"> 用户认证：</h2>
 <!--                                     <h3>编辑器中的标签初始化：</h3>
                                     <h4>B标签</h4>
                                     <P>字体加粗的B标签，使用后<b>加粗字体</b></P> -->
@@ -91,9 +91,7 @@
                                         请点击下方链接，确认您的QQ邮箱</p>
                                     <p style="margin: 0; line-height:37px; color: #737373; font-size: 16px; ">
                                         如果这不是您本人操作，请忽略这封邮件</p>
-                                    <a href="{{ url_for('auth.confirm', token=messages.token, _external=True) }}"
-                                       style="width: 160px; height: 42px;  font-weight: normal; font-size: 20px; color: white; text-align: center; text-decoration: none; display: block; line-height: 42px; margin:5px 0 13px; border-radius: 3px; background-color: #ffa207;"
-                                       target="_blank">确认注册</a>
+                                    <a href="{{ messages.token }}" style="width: 160px; height: 42px;  font-weight: normal; font-size: 20px; color: white; text-align: center; text-decoration: none; display: block; line-height: 42px; margin:5px 0 13px; border-radius: 3px; background-color: #ffa207;" target="_blank">确认注册</a>
                                 </td>
                             </tr>
                             </tbody>

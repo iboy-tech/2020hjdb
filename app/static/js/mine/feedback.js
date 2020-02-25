@@ -104,7 +104,7 @@ function deleteFeedback(id) {
                 }
             } else {
                 console.log(res);
-                alert(res)
+                showAlertError(res)
             }
         }
     });
@@ -127,7 +127,7 @@ function markFeedback(id) {
                 }
             } else {
                 console.log(res);
-                alert(res)
+                showAlertError(res)
             }
         }
     });
@@ -154,7 +154,7 @@ function replyFeedback(data, app) {
                 }
             } else {
                 console.log(res);
-                alert(res)
+                showAlertError(res)
             }
         }
     });
@@ -176,7 +176,7 @@ function getFeedbackList(app) {
                 }
             } else {
                 console.log(res);
-                alert(res)
+                showAlertError(res)
             }
         }
     });

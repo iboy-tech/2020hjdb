@@ -29,7 +29,7 @@ var app = new Vue({
                     "keyword": "",
                     "username": "",
                     "pageNum": 0,
-                    "pageSize": 10
+                    "pageSize": 15
                 },
                 totalPage: 0,
                 total: 0,
@@ -42,7 +42,7 @@ var app = new Vue({
                     "keyword": "",
                     "username": (getSession("user") ? JSON.parse(getSession('user')) : {}).studentNum,
                     "pageNum": 0,
-                    "pageSize": 10
+                    "pageSize": 15
                 },
                 totalPage: 0,
                 total: 0,
@@ -155,14 +155,14 @@ var app = new Vue({
                 // deleteSession("user");
                 // window.location.replace("/logout");
                     $.ajax({
-        url: baseUrl + "/logout" ,
-        //data: JSON.stringify(data),
-        method: "POST",
-        success: function (res) {
-            if (res.success){
-                 console.log(res);
-                window.location=baseUrl+'/login';
-            }
+                    url: baseUrl + "/logout" ,
+                    //data: JSON.stringify(data),
+                    method: "POST",
+                    success: function (res) {
+                        if (res.success){
+                             console.log(res);
+                            window.location=baseUrl+'/login';
+                     }
         }
     });
             }, function () {
@@ -186,11 +186,11 @@ var app = new Vue({
             this.tab4.categoryIndex = index;
         },
         submitPub() {
-            if (this.title=="") {
+            if (this.tab4.title==" ") {
             showAlertError('请输入标题!');
             return ;
         }
-            if (this.about="") {
+            if (this.tab4.about==" ") {
             showAlertError('请输入详情!');
             return ;
         }
@@ -202,6 +202,8 @@ var app = new Vue({
             data.categoryId = this.category[data.categoryIndex < 0 ? 0 : data.categoryIndex].categoryId;
             console.log(data);
             pubLostFound(data);
+            $("button[type='submit']").attr('disabled','disabled');
+
             //console.log(this.tab4);
         },
         changeImg() {
@@ -227,6 +229,10 @@ var app = new Vue({
                 content: $('#editorDiv') //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
                 , yes: function () {
                     console.log(app.feedback);
+                    if(app.feedback.subject==" " || app.feedback.content==" "){
+                        showAlertError('请填写全部内容!');
+                            return ;
+                    }
                     pubFeedback(app.feedback);
                 }, cancel: function () {
 
@@ -323,7 +329,7 @@ function setQQ(qq) {
                 }
             } else {
                 console.log(res);
-                alert(res)
+                showAlertError(res)
             }
         }
     });
@@ -351,13 +357,13 @@ function pubFeedback(data) {
                 }
             } else {
                 console.log(res);
-                alert(res)
+                showAlertError(res)
             }
         }
     });
 }
 
-//修改密吗
+//修改密码
 function setPassword(data) {
     console.log(data);
     $.ajax({
@@ -366,7 +372,7 @@ function setPassword(data) {
         method: "POST",
         success: function (res, status) {
             console.log(res);
-            if (status == "success") {
+
                 if (res.success) {
                     layer.closeAll();
                     showOK();
@@ -375,14 +381,20 @@ function setPassword(data) {
                         newPassword: "",
                         confirmPassword: ""
                     }
-                    window.location.href=baseUrl+"/logout";
+                    $.ajax({
+                    url: baseUrl + "/logout" ,
+                    //data: JSON.stringify(data),
+                    method: "POST",
+                    success: function (res) {
+                        if (res.success){
+                             console.log(res);
+                            window.location=baseUrl+'/login';
+                        }
+                    }
+                  });
                 } else {
                     showAlertError(res.msg)
                 }
-            } else {
-                console.log(res);
-                alert(res)
-            }
         }
     });
 }
@@ -402,7 +414,7 @@ function deletePub(id) {
                 }
             } else {
                 console.log(res);
-                alert(res)
+                showAlertError(res)
             }
         }
     });
@@ -415,7 +427,7 @@ function getNoticeList(app) {
         //data: JSON.stringify(data),
         method: "POST",
         success: function (res, status) {
-            // alert(res)
+            // showAlertError(res)
             // alert(status)
             console.log(res);
             if (status == "success") {
@@ -426,7 +438,7 @@ function getNoticeList(app) {
                 }
             } else {
                 console.log(res);
-                alert(res)
+                showAlertError(res)
             }
         }
     });
@@ -466,7 +478,7 @@ function getMessages(app) {
                 }
             } else {
                 console.log(res);
-                alert(res)
+                showAlertError(res)
             }
         }
     });
@@ -525,7 +537,7 @@ function setIcon(icon) {
                 }
             } else {
                 console.log(res);
-                alert(res)
+                showAlertError(res)
             }
         }
     });
@@ -644,7 +656,7 @@ function pubLostFound(data) {
                 }
             } else {
                 console.log(res);
-                alert(res)
+                showAlertError(res)
             }
         }
     });
@@ -678,7 +690,7 @@ function pubLostFound(data) {
                 }
             } else {
                 console.log(res);
-                alert(res)
+                showAlertError(res)
             }
         }
     });
@@ -712,7 +724,7 @@ function pageLostFound(data, result, append) {
                 }
             } else {
                 console.log(res);
-                alert(res)
+                showAlertError(res)
             }
         }
     });
@@ -733,7 +745,7 @@ function getCategory() {
                 }
             } else {
                 console.log(res);
-                alert(res)
+                showAlertError(res)
             }
         }
     });

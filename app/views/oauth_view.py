@@ -35,7 +35,8 @@ def index():
             # print('user_id', data['extra'])
             # print('qr_code', data['url'])
             data = {
-                'url': data['url']
+                'url': data['url'],
+                'site':os.getenv('SITE_URL')
             }
             return render_template('pusher.html', data=data)
     elif request.method == 'GET' and current_user.is_authenticated == False:

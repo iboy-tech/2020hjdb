@@ -69,7 +69,7 @@ function deleteCategory(name) {
                 }
             } else {
                 console.log(res);
-                alert(res)
+                showAlertError(res)
             }
         }
     });
@@ -97,7 +97,7 @@ function addCategory(data, app) {
                 }
             } else {
                 console.log(res);
-                alert(res)
+                showAlertError(res)
             }
         }
     });
@@ -118,7 +118,7 @@ function getCategory() {
                 }
             } else {
                 console.log(res);
-                alert(res)
+                showAlertError(res)
             }
         }
     });

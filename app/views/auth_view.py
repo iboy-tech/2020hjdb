@@ -40,7 +40,7 @@ def favicon():
 @cross_origin()
 @login_required
 @wechat_required
-@cache.cached(timeout=60, query_string=True)  # 缓存10分钟 默认为300s
+# @cache.cached(timeout=60, query_string=True)  # 缓存10分钟 默认为300s
 def index():
     data = request.json
     print('user页面收到请求', data)
@@ -101,20 +101,22 @@ def login():
                     return restful.success(msg='登录成功', data=data, ext=session.get('next'))
                 return restful.success(msg='登录成功', data=data)
             else:
-                app = current_app._get_current_object()
-                key = str(user.id) + '-fail-login-times'
-                cnt = redis_client.get(key)
-                if cnt != None:
-                    redis_client.setrange(key, 0, str(data))
-                else:
-                    redis_client.incr(key)  # 把数据存入redis
-                    redis_client.expire(key, 60 * 60)
-                    print('登录错误的次数', redis_client.get(key), type(redis_client.get(key)))
-                # redis_client.setrange(key, 0, str(data))  # 把数据存入redis
-                # print('key的过期时间：', os.getenv('QR_CODE_VALID_TIME'))
-                # print('redis中的值', redis_client.get('key'), type(redis_client.get('key')))
-                return restful.success(success=False, msg="用户名或密码错误,您还有能尝试" + str(
-                    app.config['LOGIN_FAIL_TIMES'] - int(eval(redis_client.get(key)))))
+
+                # app = current_app._get_current_object()
+                # key = str(user.id) + '-fail-login-times'
+                # cnt = redis_client.get(key)
+                # if cnt != None:
+                #     redis_client.setrange(key, 0, str(data))
+                # else:
+                #     redis_client.incr(key)  # 把数据存入redis
+                #     redis_client.expire(key, 60 * 60)
+                #     print('登录错误的次数', redis_client.get(key), type(redis_client.get(key)))
+                # # redis_client.setrange(key, 0, str(data))  # 把数据存入redis
+                # # print('key的过期时间：', os.getenv('QR_CODE_VALID_TIME'))
+                # # print('redis中的值', redis_client.get('key'), type(redis_client.get('key')))
+                # return restful.success(success=False, msg="用户名或密码错误,您还有能尝试" + str(
+                #     app.config['LOGIN_FAIL_TIMES'] - int(eval(redis_client.get(key))))
+                return restful.success(success=False, msg="用户名或密码错误,您还有能尝试")
     if request.args.get('next'):
         session['next'] = request.args.get('next')
     return render_template('login.html')
@@ -125,7 +127,7 @@ def logout():
     print(session.get('uid'))
     print('用户登出成功')
     logout_user()
-    return restful.success(success = True,msg = "登出成功")
+    return restful.success(success=True, msg="登出成功")
 
 
 @auth.route('/recognize', methods=['POST', 'OPTIONS', 'GET'])
@@ -140,8 +142,7 @@ def recognize():
         user_db = User.query.filter_by(username=data['username']).first()
         if user_db is not None and user_db.status > 1:
             data = {"user": {}}
-            return restful.success(
-                success=False, msg="您的账户已认证，请直接登录", data=data)
+            return restful.success(success=False, msg="您的账户已认证，请直接登录", data=data)
         elif user_db is not None and user_db.status == 0:
             data = {"user": {}}
             return restful.success(
@@ -152,16 +153,13 @@ def recognize():
             user_db.qq = qq
             db.session.commit()
             # 发送验证邮件
-            token = generate_token(
-                user=user_db,
-                operation='confirm-qq',
-                qq=user_db.qq)
+            token = str(generate_token(id=user_db.id, operation='confirm-qq', qq=user_db.qq), encoding="utf-8")
             messages = {
                 'real_name': user_db.real_name,
-                'token': token
+                'token': url_for('auth.confirm', token=token, _external=True)
             }
             cache.delete('user-getall')  # 删除缓存
-            send_email.delay('849764742', '身份认证', 'confirm', messages)
+            send_email.delay(qq, '身份认证', 'confirm', messages)
             return restful.success(
                 success=False,
                 msg="验证邮件已发送到您的QQ邮箱，可能在垃圾信箱中，请尽快认证",
@@ -185,12 +183,12 @@ def recognize():
                 db.session.add(user)
                 db.session.commit()
                 # 发送验证邮件
-                token = generate_token(
-                    user=user, operation='confirm-qq', qq=user.qq)
+                token = str(generate_token(id=user.id, operation='confirm-qq', qq=user.qq),encoding="utf-8")
                 messages = {
                     'real_name': user.real_name,
-                    'token': token
+                    'token': url_for('auth.confirm', token=token, _external=True)
                 }
+                print('我是生成的认证链接',messages)
                 send_email.delay(user.qq, '身份认证', 'confirm', messages)
                 # 发送验证邮件
                 data = restful.success(
@@ -209,8 +207,8 @@ def confirm():
     print(token)
     data = validate_token(token)
     messages = {
-        'msg': json.loads(data)['msg']+'!',
-        'success':True
+        'msg': json.loads(data)['msg'],
+        'success': True
     }
     return render_template('mails/go.html', messages=messages)
 

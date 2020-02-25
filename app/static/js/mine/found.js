@@ -83,7 +83,7 @@ var app = new Vue({
         },
         deletePub(id) {
             console.log(id);
-            layer.confirm('确定要删除码？', {
+            layer.confirm('确定要删除吗？', {
                 btn: ['确定', '取消'] //按钮
             }, function () {
                 deletePub(id);
@@ -171,7 +171,7 @@ function freezeUser(userId,flag){
                 }
             } else {
                 console.log(res);
-                alert(res)
+                showAlertError(res)
             }
         }
     });
@@ -203,7 +203,7 @@ function getUserInfo(userId, app){
                 }
             } else {
                 console.log(res);
-                alert(res)
+                showAlertError(res)
             }
         }
     });
@@ -212,7 +212,7 @@ function getUserInfo(userId, app){
 //删除招领信息
 function deletePub(id) {
     $.ajax({
-        url: baseUrl + "/user.html/removeLost?id="+id,
+        url: baseUrl + "/found.html/delete?id="+id,
         method: "POST",
         // data: JSON.stringify(data),
         success: function (res, status) {
@@ -226,7 +226,7 @@ function deletePub(id) {
                 }
             } else {
                 console.log(res);
-                alert(res)
+                showAlertError(res)
             }
         }
     });
@@ -261,7 +261,7 @@ function pageLostFound(data, result, append) {
                 }
             } else {
                 console.log(res);
-                alert(res)
+                showAlertError(res)
             }
         }
     });

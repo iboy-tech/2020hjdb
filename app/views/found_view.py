@@ -162,7 +162,6 @@ def pub():
     # print(data)
     # print(data['images'], type(data['images']))
 
-    imgstr = str(data['images'])
     print(type(data['images']), len(data['images']))
     # strs = data['images'][0]
     imgstr = ''
@@ -177,7 +176,6 @@ def pub():
                      about=data['about'].replace('/(<（[^>]+）>)/script', ''), user_id=current_user.id)
     try:
         db.session.add(lost)
-        db.session.commit()
         print('帖子的ID')
     except Exception as e:
         db.session.rollback()
@@ -199,24 +197,32 @@ def pub():
                     'pub_time': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
                     'pub_content': lost.about,
                     'pub_location': lost.location,
-                    'url': 'http://iboy.f3322.net:8888/detail.html?id=' + str(lost.id)
+                    'url': os.getenv('SITE_URL') + 'detail.html?id=' + str(lost.id)
                 }
                 op = OpenID.query.filter_by(user_id=u.id).first()
                 if op is not None:
                     print('发送消息')
                     uids = [op.wx_id]
-                    send_message_by_pusher(dict, uids)
-                    send_email.delay('849764742', '失物找回通知', 'foundNotice', messages=dict)
-    cache.delete('found-getall')  # 删除缓存
+                    send_message_by_pusher.delay(dict, uids,3)
+                    send_email.delay(u.qq, '失物找回通知', 'foundNotice', messages=dict)
+    # cache.delete('found-getall')  # 删除缓存
+    db.session.commit()
     return restful.success()
 
-
-def send_message_by_pusher(msg, uid):
+@celery.task
+def send_message_by_pusher(msg, uid, kind):
     print('即将要发送的消息', msg)
-    uids = ['UID_CLkvFs8PCxHFDnfEsyHsksbve07f']
-    content = render_template('msgs/' + 'WXNotice' + '.txt', messages=msg)
+    # uids = ['UID_CLkvFs8PCxHFDnfEsyHsksbve07f']
+    if kind == 0:  # 寻物
+        content = render_template('msgs/' + 'WXLostNotice' + '.txt', messages=msg)
+    elif kind == 1:  # 招领
+        content = render_template('msgs/' + 'WXFoundNotice' + '.txt', messages=msg)
+    elif kind == 2:
+        content = render_template('msgs/' + 'WXDeleteNotice' + '.txt', messages=msg)
+    elif kind == 3:
+        content = render_template('msgs/' + 'WXNotice' + '.txt', messages=msg)
     print(content)
-    msg_id = WxPusher.send_message(content=u'' + str(content), uids=uids, content_type=2, url=msg['url'])
+    msg_id = WxPusher.send_message(content=u'' + str(content), uids=uid, content_type=2, url=msg['url'])
     print('我是消息的ID', msg_id)
     # html=render_template('mails/WXNotice.html', messages=messages)
     # WxPusher.send_message(content=str(msg), uids=uid,content_type=2)
@@ -269,7 +275,7 @@ def get_search_data(pagination, pageNum, pagesize):
 @found.route('/delete', methods=['POST'])
 @login_required
 @cross_origin()
-def delete_Lost():
+def delete_lost():
     refer = request.referrer
     print(refer)
     req = request.args.get('id')
@@ -277,17 +283,55 @@ def delete_Lost():
     if not req:
         return restful.params_error()
     else:
-        l = LostFound.query.get(int(req))
+        l = LostFound.query.get_or_404(int(req))
         if l is not None and (l.user_id == current_user.id or current_user.kind >= 2):
             if l.images != "":
                 l.images = l.images.replace('[', '').replace(']', '').replace(' \'', '').replace('\'', '')
                 imglist = l.images.strip().split(',')
                 remove_imglist.delay(imglist)
+            # if current_user.kind > 1 and l.user_id != current_user.id:
+            #     u = User.query.get_or_404(l.user_id)
+            #     op = OpenID.query.filter_by(user_id=u.id).first_or_404()
+            #     if op is not None:
+            #         dict = {
+            #             'post_user': u.real_name,
+            #             'post_title': l.title,
+            #             'post_content': l.about,
+            #             'handle_time': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+            #             'qq_group': '878579883',
+            #             'url':os.getenv("SITE_URL")
+            #         }
+            #         print('删除帖子要发送的消息', dict)
+            #         print('管理员删帖发送消息')
+            #         uids = [op.wx_id]
+            #         send_message_by_pusher.delay(msg=dict, uid=uids, kind=2)
+            delete_post_notice.delay(current_user.kind,current_user.id,l)
             db.session.delete(l)
             db.session.commit()
+            db.session.close()
             return restful.success(msg='删除成功')
         else:
             return restful.params_error()
+
+
+@celery.task  # 删除帖子给用户发送通知
+def delete_post_notice(kind,id,l):
+    if kind > 1 and l.user_id != id:
+        u = User.query.get_or_404(l.user_id)
+        op = OpenID.query.filter_by(user_id=u.id).first_or_404()
+        if op is not None:
+            dict = {
+                'post_user': u.real_name,
+                'post_title': l.title,
+                'post_content': l.about,
+                'handle_time': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+                'qq_group': '878579883',
+                'url':os.getenv('SITE_URL')
+            }
+            print('删除帖子要发送的消息', dict)
+            print('管理员删帖发送消息')
+            uids = [op.wx_id]
+            send_message_by_pusher.delay(msg=dict, uid=uids, kind=2)
 
 
 @celery.task(time_limit=10)

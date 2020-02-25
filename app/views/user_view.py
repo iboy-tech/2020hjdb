@@ -8,6 +8,7 @@
 @Description : 
 @Software: PyCharm
 """
+import os
 from datetime import datetime
 
 from flask import render_template, request, url_for
@@ -123,18 +124,19 @@ def claim():
                 'pub_time': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
                 'pub_content': l.about,
                 'pub_location': l.location,
-                'url': 'http://iboy.f3322.net:8888/detail.html?id=' + str(l.id)
+                'url': os.getenv('SITE_URL')+'detail.html?id=' + str(l.id)
             }
             op = OpenID.query.filter_by(user_id=lost_user.id).first()
             if op is not None:
                 print('发送消息')
                 uids = [op.wx_id]
-                send_message_by_pusher(dict, uids)
-                send_email.delay('849464742', '失物找回通知', 'noticeLost', messages=dict)
+                send_message_by_pusher(dict, uids,0)
+                send_email.delay(lost_user.qq, '失物找回通知', 'noticeLost', messages=dict)
             return restful.success(msg='上报成功,您的联系方式已发送给失主')
         # 招领
         elif l is not None and (l.user_id != current_user.id) and l.kind == 1:
             l.status = 1
+            l.deal_time=datetime.now()
             l.claimant_id = current_user.id
             db.session.add(l)
             db.session.commit()
@@ -147,14 +149,14 @@ def claim():
                 'pub_time': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
                 'pub_content': l.about,
                 'pub_location': l.location,
-                'url': 'http://iboy.f3322.net:8888/detail.html?id=' + str(l.id)
+                'url': os.getenv('SITE_URL')+'detail.html?id=' + str(l.id)
             }
             op = OpenID.query.filter_by(user_id=found_user.id).first()
             if op is not None:
                 print('发送消息')
                 uids = [op.wx_id]
-                send_message_by_pusher(dict, uids)
-                send_email.delay('849764742', '失物认领通知', 'noticeFound', messages=dict)
+                send_message_by_pusher(dict, uids,1)
+                send_email.delay(found_user.qq, '失物认领通知', 'noticeFound', messages=dict)
             return restful.success(msg='认领成功,您的联系方式已发送给失主')
         else:
             return restful.params_error()

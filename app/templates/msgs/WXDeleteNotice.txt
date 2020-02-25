@@ -1,0 +1,10 @@
+三峡大学失物招领处
+发帖删除通知：
+亲爱的 {{ messages.post_user }} 同学,
+您发布的帖子已被管理员删除！
+详情如下：
+标题：{{ messages.post_title }}
+内容：{{ messages.post_content }}
+处理时间：{{ messages.handle_time }}
+QQ群：{{ messages.qq_group }}
+(如果您的问题还没解决，您可以再次发帖，如果我们有帮助到您，希望你加入我们，让失物回家.)

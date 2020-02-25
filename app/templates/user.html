@@ -105,6 +105,10 @@
                                         <a class="item" @click="setPassword">
                                             <i class="lock alternate icon"></i>修改密码
                                         </a>
+
+                                         <a class="item" v-if="user.kind>1" href="/admin">
+                                            <i class="shield alternate icon"></i>进入后台
+                                        </a>
                                         <a class="item" @click="showFeedback">
                                             <i class="envelope icon"></i>反馈
                                         </a>
