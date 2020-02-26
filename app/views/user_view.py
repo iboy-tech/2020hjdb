@@ -10,15 +10,16 @@
 """
 import os
 from datetime import datetime
+from random import randint
 
-from flask import render_template, request, url_for
+from flask import request, url_for
 from flask_cors import cross_origin
 from flask_login import current_user, login_required
 
-from app import db, OpenID, cache
-from app.page import user
+from app import db, OpenID
 from app.models.lostfound_model import LostFound
 from app.models.user_model import User
+from app.page import user
 from app.utils import restful
 from app.utils.auth_token import generate_token
 from app.utils.mail_sender import send_email
@@ -78,7 +79,7 @@ def set_QQ():
         'real_name': current_user.real_name,
         'token': url_for('auth.confirm', token=token, _external=True)
     }
-    send_email.delay(new_qq, 'QQ更改', 'changeQQ', messages)
+    send_email.apply_async(args=(new_qq, 'QQ更改', 'changeQQ', messages),countdown=randint(1, 30))
     return restful.success(success=True, msg="验证邮件已发送到您的QQ邮箱，请及时确认")
 
 
@@ -131,7 +132,7 @@ def claim():
                 print('发送消息')
                 uids = [op.wx_id]
                 send_message_by_pusher(dict, uids,0)
-                send_email.delay(lost_user.qq, '失物找回通知', 'noticeLost', messages=dict)
+                send_email.apply_async(args=(lost_user.qq, '失物找回通知', 'noticeLost', dict), countdown=randint(1, 30))
             return restful.success(msg='上报成功,您的联系方式已发送给失主')
         # 招领
         elif l is not None and (l.user_id != current_user.id) and l.kind == 1:
@@ -156,7 +157,7 @@ def claim():
                 print('发送消息')
                 uids = [op.wx_id]
                 send_message_by_pusher(dict, uids,1)
-                send_email.delay(found_user.qq, '失物认领通知', 'noticeFound', messages=dict)
+                send_email.apply_async(args=(found_user.qq, '失物认领通知', 'noticeFound', dict), countdown=randint(1, 30))
             return restful.success(msg='认领成功,您的联系方式已发送给失主')
         else:
             return restful.params_error()

@@ -8,15 +8,17 @@
 @Description : 
 @Software: PyCharm
 """
+import os
+from random import random, randint
 
 from flask import render_template, request
 from flask_login import current_user, login_required
 from sqlalchemy import or_
 
-from app import db, cache
+from app import db
 from app.decorators import super_admin_required, admin_required, wechat_required
-from app.page import userlist
 from app.models.user_model import User
+from app.page import userlist
 from app.utils import restful
 from app.utils.mail_sender import send_email
 
@@ -119,7 +121,7 @@ def user_freeze_or_unfreeze():
             'handlerName': current_user.real_name,
             'handlerEmail': current_user.qq + '@qq.com',
         }
-        send_email.delay(u.qq, '账户冻结通知', 'userFreeze', messages)
+        send_email.apply_async(args=(u.qq, '账户冻结通知', 'userFreeze', messages), countdown=randint(1, 30))
     elif u.status == 0:
         u.status = 2
         messages = {
@@ -127,7 +129,7 @@ def user_freeze_or_unfreeze():
             'handlerName': current_user.real_name,
             'handlerEmail': current_user.qq + '@qq.com',
         }
-        send_email.delay(u.qq, '账户恢复通知', 'userunFreeze', messages)
+        send_email.apply_async(args=(u.qq, '账户恢复通知', 'userunFreeze', messages), countdown=randint(1, 30))
     print('要给用户发送提醒邮件')
     db.session.commit()
     return restful.success()
@@ -150,7 +152,7 @@ def reset_pssword():
         'handlerName': current_user.real_name,
         'handlerEmail': current_user.qq + '@qq.com',
     }
-    send_email.delay(u.qq, '密码重置提醒', 'resetPassword', messages)
+    send_email.apply_async(args=(u.qq, '密码重置提醒', 'resetPassword', messages), countdown=randint(1, 30))
     print('要给用户发送提醒邮件')
     return restful.success()
 

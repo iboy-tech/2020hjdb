@@ -11,23 +11,25 @@
 import base64
 import os
 from datetime import datetime
+from random import randint
 
 from flask import render_template, request
 from flask_cors import cross_origin
 from flask_login import current_user, login_required
 from sqlalchemy import desc, or_
 
+from app.config import PostConfig
 from app.decorators import wechat_required
 from app.utils.mail_sender import send_email
 
-from app import db, OpenID, cache
+from app import db, OpenID, cache, redis_client
 from app.page import found
 from app.models.category_model import Category
 from app.models.comment_model import Comment
 from app.models.lostfound_model import LostFound
 from app.models.user_model import User
 from app.utils import restful
-from app.utils.time_util import get_time_str
+from app.utils.time_util import get_time_str, get_action_time
 from app.utils.wxpusher import WxPusher
 from app.utils.tinify_tool import tinypng
 import uuid
@@ -49,6 +51,13 @@ def get_all():
     req = request.json
     page = int(req['pageNum'])
     pagesize = int(req['pageSize'])
+    if current_user.kind>1:
+        totalpage=db.session.query(LostFound).count()
+        mid=totalpage//10
+        print('总的页数',totalpage,mid)
+        if pagesize < mid:
+            pagesize=mid
+
     print('我是前端获取的分页数据', req)
     # print('get_users收到请求')
     keyword = req['keyword']
@@ -203,11 +212,12 @@ def pub():
                 if op is not None:
                     print('发送消息')
                     uids = [op.wx_id]
-                    send_message_by_pusher.delay(dict, uids,3)
-                    send_email.delay(u.qq, '失物找回通知', 'foundNotice', messages=dict)
+                    send_message_by_pusher.delay(dict, uids, 3)
+                    send_email.apply_async(args=(u.qq, '失物找回通知', 'foundNotice', dict), countdown=randint(1, 30))
     # cache.delete('found-getall')  # 删除缓存
     db.session.commit()
     return restful.success()
+
 
 @celery.task
 def send_message_by_pusher(msg, uid, kind):
@@ -240,6 +250,11 @@ def get_search_data(pagination, pageNum, pagesize):
             imglist = l.images.strip().split(',')
         # print(imglist, type(imglist))
         user = User.query.get(l.user_id)
+        view_count=redis_client.get(str(l.id) + PostConfig.POST_REDIS_PREFIX)
+        if view_count is None:
+            look_count=0
+        else:
+            look_count=int(bytes.decode(view_count))
         dict = {
             "id": l.id,
             "icon": 'https://q2.qlogo.cn/headimg_dl?dst_uin={}&spec=100'.format(user.qq),
@@ -255,7 +270,7 @@ def get_search_data(pagination, pageNum, pagesize):
             "about": l.about,
             "images": imglist,
             "category": Category.query.get(l.category_id).name,
-            "lookCount": l.look_count,
+            "lookCount":look_count ,
             "commentCount": len(Comment.query.filter_by(lost_found_id=l.id).all()),
             "ustatus": user.status
         }
@@ -289,23 +304,7 @@ def delete_lost():
                 l.images = l.images.replace('[', '').replace(']', '').replace(' \'', '').replace('\'', '')
                 imglist = l.images.strip().split(',')
                 remove_imglist.delay(imglist)
-            # if current_user.kind > 1 and l.user_id != current_user.id:
-            #     u = User.query.get_or_404(l.user_id)
-            #     op = OpenID.query.filter_by(user_id=u.id).first_or_404()
-            #     if op is not None:
-            #         dict = {
-            #             'post_user': u.real_name,
-            #             'post_title': l.title,
-            #             'post_content': l.about,
-            #             'handle_time': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-            #             'qq_group': '878579883',
-            #             'url':os.getenv("SITE_URL")
-            #         }
-            #         print('删除帖子要发送的消息', dict)
-            #         print('管理员删帖发送消息')
-            #         uids = [op.wx_id]
-            #         send_message_by_pusher.delay(msg=dict, uid=uids, kind=2)
-            delete_post_notice.delay(current_user.kind,current_user.id,l)
+            delete_post_notice.delay(current_user.kind, current_user.id, l)
             db.session.delete(l)
             db.session.commit()
             db.session.close()
@@ -315,7 +314,7 @@ def delete_lost():
 
 
 @celery.task  # 删除帖子给用户发送通知
-def delete_post_notice(kind,id,l):
+def delete_post_notice(kind, id, l):
     if kind > 1 and l.user_id != id:
         u = User.query.get_or_404(l.user_id)
         op = OpenID.query.filter_by(user_id=u.id).first_or_404()
@@ -326,7 +325,7 @@ def delete_post_notice(kind,id,l):
                 'post_content': l.about,
                 'handle_time': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
                 'qq_group': '878579883',
-                'url':os.getenv('SITE_URL')
+                'url': os.getenv('SITE_URL')
             }
             print('删除帖子要发送的消息', dict)
             print('管理员删帖发送消息')

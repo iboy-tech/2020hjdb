@@ -598,8 +598,8 @@ function changeInput(obj) {
     console.log("file.size = " +file.size);  //file.size 单位为byte
     var size = file.size / 1024;
 
-    if(size>3000){
-      showAlertError('您上传的图片大小超过3M，请尝试压缩图片，或上传所拍照片的截图');
+    if(size>2000){
+      showAlertError('您上传的图片大小超过2M，请尝试压缩图片，或上传所拍照片的截图');
       return;
       }
 

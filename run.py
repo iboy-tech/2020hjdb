@@ -120,6 +120,10 @@ if __name__ == '__main__':
    celery multi start  celery worker -A run.celery -l  DEBUG -E -P eventlet
    ps auxww | grep 'celery worker'
    celery worker -A run.celery --loglevel=debug --pool=eventlet  -E
+   ln -s /usr/local/python3/bin/celery /usr/bin/celery
+  
+   ln -s  /usr/local/bin/celery /usr/bin/celery
+   export C_FORCE_ROOT="True"
    重启celery multi restart 1 --pidfile=%n.pid
     """
     socketio.run(app=app,host ='0.0.0.0',port ='8888')

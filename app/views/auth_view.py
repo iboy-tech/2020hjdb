@@ -12,6 +12,7 @@ import json
 import os
 import re
 from datetime import datetime
+from random import randint
 
 from flask import render_template, request, redirect, url_for, session, send_from_directory, current_app
 from flask_cors import cross_origin
@@ -24,6 +25,7 @@ from app.models.user_model import User
 from app.utils import restful
 from app.utils.auth_token import generate_token, validate_token
 from app.utils.mail_sender import send_email
+from app.config import LoginConfig
 
 
 @auth.route('/favicon.ico')
@@ -67,8 +69,17 @@ def login():
         print('请求的全路径：', request.full_path, session.get('next'))
         user = User.query.filter_by(username=data['username']).first()
         if user is None:
-            restful.success(success=False, msg='账户名或密码错误')
+            restful.success(success=False, msg='请认证后登录')
         else:
+            # 密码错误次数判断
+            key = user.username + LoginConfig.LOGIN_REDIS_PREFIX
+            cnt = redis_client.get(key)
+            if cnt is not None:
+                cntint = int(bytes.decode(cnt))
+                print('我是登录错误的次数', cntint)
+                if cntint >= LoginConfig.LOGIN_ERROR_MAX_TIMES:
+                    return restful.success(success=False, msg='您输入密码的错误次数过多,请1小时后再试')
+            # 用户状态判断
             if user.status == 0:
                 return restful.success(
                     success=False, msg='您的账户因违规已被冻结，请联系管理员申诉')
@@ -100,23 +111,29 @@ def login():
                     print(session.get("next的值"), session['next'])
                     return restful.success(msg='登录成功', data=data, ext=session.get('next'))
                 return restful.success(msg='登录成功', data=data)
-            else:
+            # 状态判断完毕
 
-                # app = current_app._get_current_object()
-                # key = str(user.id) + '-fail-login-times'
-                # cnt = redis_client.get(key)
-                # if cnt != None:
-                #     redis_client.setrange(key, 0, str(data))
-                # else:
-                #     redis_client.incr(key)  # 把数据存入redis
-                #     redis_client.expire(key, 60 * 60)
-                #     print('登录错误的次数', redis_client.get(key), type(redis_client.get(key)))
-                # # redis_client.setrange(key, 0, str(data))  # 把数据存入redis
-                # # print('key的过期时间：', os.getenv('QR_CODE_VALID_TIME'))
-                # # print('redis中的值', redis_client.get('key'), type(redis_client.get('key')))
-                # return restful.success(success=False, msg="用户名或密码错误,您还有能尝试" + str(
-                #     app.config['LOGIN_FAIL_TIMES'] - int(eval(redis_client.get(key))))
-                return restful.success(success=False, msg="用户名或密码错误,您还有能尝试")
+            # 用户存在但是密码错误
+            elif user.kind == 1:
+                key = user.username + LoginConfig.LOGIN_REDIS_PREFIX
+                cnt = redis_client.get(key)
+                if cnt is not None:
+                    redis_client.incr(key)
+                    cnt = int(bytes.decode(redis_client.get(key)))
+                    print('计算登录错误的次数', cnt, type(cnt))
+                    res = LoginConfig.LOGIN_ERROR_MAX_TIMES - cnt
+                    if res == 0:
+                        return restful.success(success=False, msg="您的已被冻结，请1小时后重试")
+                    else:
+                        return restful.success(success=False, msg="用户名或密码错误,您还能尝试 %s 次" % str(res))
+                else:
+                    redis_client.incr(key)  # 把数据存入redis
+                    redis_client.expire(key, LoginConfig.LOGIN_FAIL_KEY_EXPIRED)
+                    return restful.success(success=False,
+                                           msg="用户名或密码错误,您还能尝试 %s 次" % str(LoginConfig.LOGIN_ERROR_MAX_TIMES - 1))
+            else:
+                return restful.success(success=False,msg="用户名或密码错误")
+
     if request.args.get('next'):
         session['next'] = request.args.get('next')
     return render_template('login.html')
@@ -159,7 +176,7 @@ def recognize():
                 'token': url_for('auth.confirm', token=token, _external=True)
             }
             cache.delete('user-getall')  # 删除缓存
-            send_email.delay(qq, '身份认证', 'confirm', messages)
+            send_email.apply_async(args=(qq, '身份认证', 'confirm', messages), countdown=randint(1, 30))
             return restful.success(
                 success=False,
                 msg="验证邮件已发送到您的QQ邮箱，可能在垃圾信箱中，请尽快认证",
@@ -183,13 +200,13 @@ def recognize():
                 db.session.add(user)
                 db.session.commit()
                 # 发送验证邮件
-                token = str(generate_token(id=user.id, operation='confirm-qq', qq=user.qq),encoding="utf-8")
+                token = str(generate_token(id=user.id, operation='confirm-qq', qq=user.qq), encoding="utf-8")
                 messages = {
                     'real_name': user.real_name,
                     'token': url_for('auth.confirm', token=token, _external=True)
                 }
-                print('我是生成的认证链接',messages)
-                send_email.delay(user.qq, '身份认证', 'confirm', messages)
+                print('我是生成的认证链接', messages)
+                send_email.apply_async(args=(user.qq, '身份认证', 'confirm', messages), countdown=randint(1, 30))
                 # 发送验证邮件
                 data = restful.success(
                     success=False,

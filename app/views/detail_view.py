@@ -13,7 +13,8 @@ import os
 from flask import render_template, request
 from flask_login import current_user, login_required
 
-from app import db
+from app import db, redis_client
+from app.config import PostConfig
 from app.decorators import wechat_required
 from app.page import detail
 from app.models.category_model import Category
@@ -35,17 +36,22 @@ def index():
         try:
             lost = LostFound.query.get_or_404(int(id))
         except:
-            return restful.success(success=False,msg='警告,非法注入，后台已记录')
+            return restful.success(success=False, msg='警告,非法注入，后台已记录')
         if lost is not None:
+            key = str(lost.id)+ PostConfig.POST_REDIS_PREFIX
+            redis_client.incr(key)
+            intcnt = int(bytes.decode(redis_client.get(key)))
+            if intcnt - lost.look_count >= PostConfig.REDIS_MAX_VIEW:  # 超过一定程度吧浏览量存入数据库
+                lost.look_count = lost.look_count + (intcnt-lost.look_count)
+                db.session.add(lost)
+                db.session.commit()
             user = User.query.get_or_404(lost.user_id)
             if lost.images == "":
                 imglist = []
             else:
                 lost.images = lost.images.replace('[', '').replace(']', '').replace(' \'', '').replace('\'', '')
                 imglist = lost.images.strip().split(',')
-            lost.look_count = lost.look_count + 1
-            db.session.add(lost)
-            db.session.commit()
+
             item = {
                 "id": lost.id,
                 "icon": 'https://q2.qlogo.cn/headimg_dl?dst_uin={}&spec=100'.format(user.qq),
@@ -59,15 +65,14 @@ def index():
                 "about": lost.about,
                 "images": imglist,
                 "category": (Category.query.get(lost.category_id)).name,
-                "lookCount": lost.look_count,
+                "lookCount":intcnt,
                 "status": lost.status,
                 "dealTime": None if lost.deal_time is None else lost.deal_time.strftime('%Y-%m-%d %H:%M:%S'),
                 "isSelf": current_user.id == lost.user_id,
                 "email": user.qq + '@qq.com',
                 "QQ": user.qq,
-                "site":os.getenv('SITE_URL')
+                "site": os.getenv('SITE_URL')
             }
             return render_template('detail.html', item=item)
     else:
         return restful.success()
-
