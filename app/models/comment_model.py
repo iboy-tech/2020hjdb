@@ -12,5 +12,6 @@ class Comment(db.Model):
     content = db.Column(db.String(1024), nullable=False, info='评论内容')
     create_time = db.Column(db.DateTime, default=datetime.now, info='时间')
 
+
     def __repr__(self):
         return '<Comment %r>' % self.content

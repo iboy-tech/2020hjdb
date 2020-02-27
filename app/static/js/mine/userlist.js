@@ -41,7 +41,6 @@ var app = new Vue({
             }, function () {
                 freezeUser(userId)
             }, function () {
-
             });
         },
         unfreezeUser(userId) {
@@ -50,7 +49,6 @@ var app = new Vue({
             }, function () {
                 unfreezeUser(userId)
             }, function () {
-
             });
         },
         setAsManager(userId) {
@@ -59,7 +57,6 @@ var app = new Vue({
             }, function () {
                 setAsAdmin(userId);
             }, function () {
-
             });
         },
         logout() {
@@ -69,17 +66,17 @@ var app = new Vue({
             }, function () {
                 // deleteSession("user");
                 // window.location.replace("/logout");
-                    $.ajax({
-        url: baseUrl + "/logout" ,
-        //data: JSON.stringify(data),
-        method: "POST",
-        success: function (res) {
-            if (res.success){
-                 console.log(res);
-                window.location=baseUrl+'/login';
-            }
-        }
-    });
+                $.ajax({
+                    url: baseUrl + "/logout",
+                    //data: JSON.stringify(data),
+                    method: "POST",
+                    success: function (res) {
+                        if (res.success) {
+                            console.log(res);
+                            window.location = baseUrl + '/login';
+                        }
+                    }
+                });
             }, function () {
             });
         },
@@ -90,7 +87,6 @@ var app = new Vue({
             }, function () {
                 resetPassword(userId);
             }, function () {
-
             });
         }
     }
@@ -163,7 +159,7 @@ function resetPassword(userId) {
             showLoading();
         },
         success: function (res, status) {
-            console.log('我是res'+res);
+            console.log('我是res' + res);
             if (status == "success") {
                 if (res.success) {
                     showOK();

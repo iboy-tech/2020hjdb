@@ -24,6 +24,7 @@ from .extensions import *
 #  会记录客户端 IP
 # 地址和浏览器的用户代理信息，如果发现异动就登出用户
 from .models.open_model import OpenID
+from .models.report_model import Report
 from .models.role_model import Role
 from .models.user_model import Guest, User
 from .utils.create_data import create_test_data
@@ -42,7 +43,7 @@ from app.page import category as category_bp
 from app.page import user as user_bp
 from app.page import auth as auth_bp
 from app.page import chart as admin_bp
-
+from app.page import report as report_bp
 
 # 工厂函数
 def create_app(config_name=None):
@@ -75,6 +76,7 @@ def register_blueprints(app):
     app.register_blueprint(comment_bp)
     app.register_blueprint(pusher_bp)
     app.register_blueprint(cache_bp)
+    app.register_blueprint(report_bp)
 
 
 def register_extensions(app):  # 实例化扩展
@@ -117,7 +119,9 @@ def register_shell_context(app):
             Feedback=Feedback,
             Role=Role,
             Permission=Permission,
-            OpenID=OpenID)
+            OpenID=OpenID,
+            Report=Report
+        )
 
 
 # 注册异步队列

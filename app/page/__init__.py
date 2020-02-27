@@ -26,8 +26,9 @@ detail = Blueprint('detail', __name__, url_prefix='/detail.html')
 comment = Blueprint('comment', __name__, url_prefix='/comment')
 oauth = Blueprint('oauth', __name__, url_prefix='/oauth')
 cached = Blueprint('cache', __name__, url_prefix='/cache.html')
+report=Blueprint('report', __name__, url_prefix='/report.html')
 
 
 from ..views import chart_view, auth_view, user_view, category_view,notice_view, comment_view, \
-    feedback_view, userlist_view, found_view, detail_view, oauth_view, cache_view
+    feedback_view, userlist_view, found_view, detail_view, oauth_view, cache_view,report_view
 print('main蓝图注册了')

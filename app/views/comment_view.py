@@ -48,7 +48,7 @@ def index():
                 'url': os.getenv('SITE_URL') + 'detail.html?id=' + str(lost.id)
             }
             op = OpenID.query.filter_by(user_id=user.id).first()
-            if op is not None:
+            if op is not None and user.id !=current_user.id:
                 print('发送消息')
                 uids = [op.wx_id]
                 send_message_by_pusher.delay(dict, uids, 4)

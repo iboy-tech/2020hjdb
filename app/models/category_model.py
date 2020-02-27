@@ -7,10 +7,7 @@ from app.models.lostfound_model import LostFound
 
 class Category(db.Model):
     __tablename__ = 't_category'
-    # 一对多关系
-    # lostfounds=db.relationship('LostFound', backref='t_category')
     id = db.Column(db.Integer, primary_key=True, info='主键')
-    lost_founds = db.relationship('LostFound',backref='t_lost_found',lazy="select",cascade='all',passive_deletes=True)
     name = db.Column(db.String(128), nullable=False, info='分类名称', unique=True)
     about = db.Column(db.String(256), info='分类说明')
     create_time = db.Column(db.DateTime,default=datetime.now,nullable=False,info='创建时间')

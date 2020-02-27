@@ -9,8 +9,9 @@
 @Software: PyCharm
 """
 import os
-from datetime import datetime, timedelta
+import datetime
 import time
+
 
 def get_action_time():
     # 获取当前时间 此时间为东八区时间
@@ -18,19 +19,20 @@ def get_action_time():
     # 将当前的东八区时间改为 UTC时间 注意这里一定是UTC时间,没有其他说法
     utc_time = datetime.utcfromtimestamp(ctime)
     # 为当前时间增加 10 秒
-    add_time = timedelta(seconds=int(os.getenv('SEND_MAIL_DELAY_TIME')))
+    add_time = datetime.timedelta(seconds=int(os.getenv('SEND_MAIL_DELAY_TIME')))
     action_time = utc_time + add_time
     # action_time 就是当前时间未来10秒之后的时间
     # 现在我们使用apply_async定时执行
     return action_time
 
+
 def get_time_str(create_time):
     create_time_utc = time.mktime(create_time.timetuple())
-    now_utc = time.mktime(datetime.now().timetuple())
+    now_utc = time.mktime(datetime.datetime.now().timetuple())
     minute = int((now_utc - create_time_utc) / 60)
     if minute <= 60:
         mytime = minute / 60
-        print('我是mytime',mytime)
+        print('我是mytime', mytime)
         if mytime == 0:
             return '刚刚'
         else:
@@ -46,4 +48,8 @@ def get_time_str(create_time):
 
 
 if __name__ == '__main__':
-    pass
+    str = '2020-01-02'
+    relday = datetime.datetime.strptime(str, '%Y-%m-%d')
+    need_time = datetime.date.today()
+    print('查询用的时间格式',datetime.datetime.now(),type(datetime.datetime.now()))
+    print(relday, type(relday), need_time, type(need_time))
