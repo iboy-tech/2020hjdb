@@ -49,46 +49,54 @@ def get_all():
     req = request.json
     page = int(req['pageNum'])
     pagesize = int(req['pageSize'])
-    if current_user.kind>1:
-        totalpage=db.session.query(LostFound).count()
-        mid=totalpage//10
-        print('总的页数',totalpage,mid)
+    if current_user.kind > 1:
+        totalpage = db.session.query(LostFound).count()
+        mid = totalpage // 10
+        print('总的页数', totalpage, mid)
         if pagesize < mid:
-            pagesize=mid
+            pagesize = mid
 
     print('我是前端获取的分页数据', req)
     # print('get_users收到请求')
     keyword = req['keyword']
     if req['kind'] == -1 and req['category'] == '' and req['username'] == '' and keyword == '':
-        pagination = LostFound.query.order_by(LostFound.status,LostFound.create_time.desc()).paginate(page + 1, per_page=pagesize,
-                                                                            error_out=False)
+        pagination = LostFound.query.order_by(LostFound.status, LostFound.create_time.desc()).paginate(page + 1,
+                                                                                                       per_page=pagesize,
+                                                                                                       error_out=False)
 
     elif req['kind'] == -1 and req['category'] != '':
         c = Category.query.filter_by(name=req['category']).first()
-        pagination = LostFound.query.filter_by(category_id=c.id).order_by(LostFound.status,LostFound.create_time.desc()).paginate(page + 1,
-                                                                                                        per_page=
-                                                                                                        pagesize,
-                                                                                                        error_out=False)
+        pagination = LostFound.query.filter_by(category_id=c.id).order_by(LostFound.status,
+                                                                          LostFound.create_time.desc()).paginate(
+            page + 1,
+            per_page=
+            pagesize,
+            error_out=False)
     elif req['username'] != '':
         # print('这是用户个人查询')
         u = User.query.filter_by(username=req['username']).first()
-        pagination = LostFound.query.filter_by(user_id=u.id).order_by(LostFound.status,LostFound.create_time.desc()).paginate(page + 1, per_page=
-        pagesize, error_out=False)
+        pagination = LostFound.query.filter_by(user_id=u.id).order_by(LostFound.status,
+                                                                      LostFound.create_time.desc()).paginate(page + 1,
+                                                                                                             per_page=
+                                                                                                             pagesize,
+                                                                                                             error_out=False)
     elif req['kind'] != -1 and req['category'] != '':
         # print('这是分类查询')
         # print(req['category'])
         c = Category.query.filter_by(name=req['category']).first()
         # print('Category.query.',c)
         pagination = LostFound.query.filter_by(category_id=c.id, kind=req['kind']).order_by(
-            LostFound.status,LostFound.create_time.desc()).paginate(page + 1, per_page=pagesize,
-                                          error_out=False)
+            LostFound.status, LostFound.create_time.desc()).paginate(page + 1, per_page=pagesize,
+                                                                     error_out=False)
     elif req['kind'] != -1 and req['category'] == '':
         # print('这是分类查询')
         c = Category.query.filter_by(name=req['category']).first()
-        pagination = LostFound.query.filter_by(kind=req['kind']).order_by(LostFound.status,LostFound.create_time.desc()).paginate(page + 1,
-                                                                                                        per_page=
-                                                                                                        pagesize,
-                                                                                                        error_out=False)
+        pagination = LostFound.query.filter_by(kind=req['kind']).order_by(LostFound.status,
+                                                                          LostFound.create_time.desc()).paginate(
+            page + 1,
+            per_page=
+            pagesize,
+            error_out=False)
     elif keyword != '':
         # print('这是分类查询')
         c = Category.query.filter(Category.name.like(("%" + keyword + "%"))).first()
@@ -101,46 +109,46 @@ def get_all():
                     LostFound.about.like("%" + keyword + "%"),
                     LostFound.category_id == c.id,
                     LostFound.user_id == u.id)
-            ).order_by(LostFound.status,LostFound.create_time.desc()).paginate(page + 1, per_page=pagesize,
-                                                     error_out=False)
+            ).order_by(LostFound.status, LostFound.create_time.desc()).paginate(page + 1, per_page=pagesize,
+                                                                                error_out=False)
         elif c is not None and u is None:
             pagination = LostFound.query.filter(
                 or_(LostFound.title.like("%" + keyword + "%"),
                     LostFound.about.like("%" + keyword + "%"),
                     LostFound.category_id == c.id)
-            ).order_by(LostFound.status,LostFound.create_time.desc()).paginate(page + 1, per_page=pagesize,
-                                                     error_out=False)
+            ).order_by(LostFound.status, LostFound.create_time.desc()).paginate(page + 1, per_page=pagesize,
+                                                                                error_out=False)
         elif c is None and u is not None:
             pagination = LostFound.query.filter(
                 or_(LostFound.title.like("%" + keyword + "%"),
                     LostFound.about.like("%" + keyword + "%"),
                     LostFound.user_id == u.id)
-            ).order_by(LostFound.status,LostFound.create_time.desc()).paginate(page + 1, per_page=pagesize,
-                                                     error_out=False)
+            ).order_by(LostFound.status, LostFound.create_time.desc()).paginate(page + 1, per_page=pagesize,
+                                                                                error_out=False)
         elif ('寻物' or '寻' or '启' or '事') in keyword:
             pagination = LostFound.query.filter(
                 LostFound.kind == 0
-            ).order_by(LostFound.status,LostFound.create_time.desc()).paginate(page + 1, per_page=pagesize,
-                                                     error_out=False)
+            ).order_by(LostFound.status, LostFound.create_time.desc()).paginate(page + 1, per_page=pagesize,
+                                                                                error_out=False)
         elif ('认领' or '失' or '招' or '领' or '认') in keyword:
             pagination = LostFound.query.filter(
                 LostFound.kind == 1
-            ).order_by(LostFound.status,LostFound.create_time.desc()).paginate(page + 1, per_page=pagesize,
-                                                     error_out=False)
+            ).order_by(LostFound.status, LostFound.create_time.desc()).paginate(page + 1, per_page=pagesize,
+                                                                                error_out=False)
         else:
             pagination = LostFound.query.filter(
                 or_(LostFound.title.like("%" + keyword + "%"),
                     LostFound.about.like("%" + keyword + "%"),
                     LostFound.location.like("%" + keyword + "%"))
-            ).order_by(LostFound.status,LostFound.create_time.desc()).paginate(page + 1, per_page=pagesize,
-                                                     error_out=False)
+            ).order_by(LostFound.status, LostFound.create_time.desc()).paginate(page + 1, per_page=pagesize,
+                                                                                error_out=False)
     else:
         pagination = LostFound.query.filter(
             or_(LostFound.title.like("%" + keyword + "%"),
                 LostFound.about.like("%" + keyword + "%"),
-                )).order_by(LostFound.status,LostFound.create_time.desc()).paginate(page + 1,
-                                                          per_page=pagesize,
-                                                          error_out=False)
+                )).order_by(LostFound.status, LostFound.create_time.desc()).paginate(page + 1,
+                                                                                     per_page=pagesize,
+                                                                                     error_out=False)
     data = get_search_data(pagination, page, pagesize)
     # print('分类查询：',data)
     return data
@@ -221,14 +229,16 @@ def pub():
 def send_message_by_pusher(msg, uid, kind):
     print('即将要发送的消息', msg)
     # uids = ['UID_CLkvFs8PCxHFDnfEsyHsksbve07f']
-    if kind == 0:  # 寻物
-        content = render_template('msgs/' + 'WXLostNotice' + '.txt', messages=msg)
-    elif kind == 1:  # 招领
-        content = render_template('msgs/' + 'WXFoundNotice' + '.txt', messages=msg)
-    elif kind == 2:
-        content = render_template('msgs/' + 'WXDeleteNotice' + '.txt', messages=msg)
-    elif kind == 3:
-        content = render_template('msgs/' + 'WXNotice' + '.txt', messages=msg)
+    if kind == 0:  # 寻物认领
+        content = render_template('msgs/' + 'WXLostNotice.txt', messages=msg)
+    elif kind == 1:  # 招领认领
+        content = render_template('msgs/' + 'WXFoundNotice.txt', messages=msg)
+    elif kind == 2:  # 删除通知
+        content = render_template('msgs/' + 'WXDeleteNotice.txt', messages=msg)
+    elif kind == 3:  # 发布招领匹配
+        content = render_template('msgs/' + 'WXNotice.txt', messages=msg)
+    elif kind == 4:
+        content = render_template('msgs/' + 'WXCommentNotice.txt', messages=msg)
     print(content)
     msg_id = WxPusher.send_message(content=u'' + str(content), uids=uid, content_type=2, url=msg['url'])
     print('我是消息的ID', msg_id)
@@ -248,11 +258,11 @@ def get_search_data(pagination, pageNum, pagesize):
             imglist = l.images.strip().split(',')
         # print(imglist, type(imglist))
         user = User.query.get(l.user_id)
-        view_count=redis_client.get(str(l.id) + PostConfig.POST_REDIS_PREFIX)
+        view_count = redis_client.get(str(l.id) + PostConfig.POST_REDIS_PREFIX)
         if view_count is None:
-            look_count=0
+            look_count = l.look_count
         else:
-            look_count=int(bytes.decode(view_count))
+            look_count = int(bytes.decode(view_count)) if int(bytes.decode(view_count))>l.look_count else l.look_count
         dict = {
             "id": l.id,
             "icon": 'https://q2.qlogo.cn/headimg_dl?dst_uin={}&spec=100'.format(user.qq),
@@ -268,7 +278,7 @@ def get_search_data(pagination, pageNum, pagesize):
             "about": l.about,
             "images": imglist,
             "category": Category.query.get(l.category_id).name,
-            "lookCount":look_count ,
+            "lookCount": look_count,
             "commentCount": len(Comment.query.filter_by(lost_found_id=l.id).all()),
             "ustatus": user.status
         }
@@ -303,7 +313,7 @@ def delete_lost():
                 imglist = l.images.strip().split(',')
                 remove_imglist.delay(imglist)
             delete_post_notice.delay(current_user.kind, current_user.id, l)
-            key=str(l.id) + PostConfig.POST_REDIS_PREFIX
+            key = str(l.id) + PostConfig.POST_REDIS_PREFIX
             view_count = redis_client.get(key)
             if view_count is not None:
                 redis_client.delete(key)

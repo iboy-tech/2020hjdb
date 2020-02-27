@@ -8,19 +8,22 @@
 @Description : 
 @Software: PyCharm
 """
+import datetime
+import os
 
 from flask import request
 from flask_cors import cross_origin
 from flask_login import current_user, login_required
 from sqlalchemy import desc
 
-from app import db
+from app import db, OpenID
 from app.decorators import wechat_required
 from app.page import comment
 from app.models.comment_model import Comment
 from app.models.lostfound_model import LostFound
 from app.models.user_model import User
 from app.utils import restful
+from app.views.found_view import send_message_by_pusher
 
 
 @comment.route('/', methods=['GET', 'POST', 'OPTIONS'],strict_slashes=False)
@@ -30,12 +33,30 @@ def index():
     id=request.args.get('id')
     print('评论的ID',id)
     req = request.json
-    if req is not None:
+    if req  is not None:
         print('添加评论',req)
-        comment = Comment(lost_found_id=req['targetId'], user_id=current_user.id, content=req['content'])
-        db.session.add(comment)
-        db.session.commit()
-        return restful.success()
+        lost = LostFound.query.get(req['targetId'])
+        if lost:
+            user=User.query.get(lost.user_id)
+            comment = Comment(lost_found_id=req['targetId'], user_id=current_user.id, content=req['content'].replace('/(<（[^>]+）>)/script', ''))
+            dict = {
+                'post_user': user.real_name,
+                'comment_user': current_user.real_name,
+                'comment_content': comment.content,
+                'connect_way': current_user.qq,
+                'comment_time': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+                'url': os.getenv('SITE_URL') + 'detail.html?id=' + str(lost.id)
+            }
+            op = OpenID.query.filter_by(user_id=user.id).first()
+            if op is not None:
+                print('发送消息')
+                uids = [op.wx_id]
+                send_message_by_pusher.delay(dict, uids, 4)
+            db.session.add(comment)
+            db.session.commit()
+            return restful.success(msg='评论成功')
+        else:
+            return restful.params_error()
     else:
         comments=Comment.query.order_by(desc('create_time')).filter_by(lost_found_id=int(id)).all()
         # print("我是帖子的评论：",comments)

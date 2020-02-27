@@ -121,7 +121,9 @@ if __name__ == '__main__':
    ps auxww | grep 'celery worker'
    celery worker -A run.celery --loglevel=debug --pool=eventlet  -E
    ln -s /usr/local/python3/bin/celery /usr/bin/celery
-  
+  https://blog.wpjam.com/m/weixin-emotions/ 
+  http://www.oicqzone.com/tool/emoji/ #表情地址
+  http://www.oicqzone.com/qqjiqiao/2014123020663.html
    ln -s  /usr/local/bin/celery /usr/bin/celery
    export C_FORCE_ROOT="True"
    重启celery multi restart 1 --pidfile=%n.pid

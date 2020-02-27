@@ -17,8 +17,8 @@ BASEURL = 'http://wxpusher.zjiecode.com/api'
 
 class WxPusher():
     """WxPusher Python Client."""
-    default_token = os.getenv('WX_PUSHER_TOKEN')
-
+    # default_token = os.getenv('WX_PUSHER_TOKEN')
+    default_token="AT_nSOP4p7kD8K2quDdwOhnZ1nJsaD8qAWc"
     @classmethod
     def send_message(cls, content, uids, token=None, **kwargs):
         print('这是环境变量中的token', cls.default_token)

@@ -1,0 +1,10 @@
+三峡大学失物招领处/:handclap
+/:rose 亲爱的 {{ messages.post_user }} 同学,
+您发布的帖子有人评论啦！/:li
+详情如下：
+评论者：{{ messages.comment_user }}
+内容：{{ messages.comment_content }}
+联系QQ：{{ messages.connect_way }}
+时间：{{ messages.comment_time }}
+详情链接：{{ messages.url }}
+(请您及时处理,如有疑问，请联系管理员.)

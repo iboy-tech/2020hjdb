@@ -183,8 +183,8 @@
                     <div class="" id="tweetCommentForm">
                         <div class="ui form tweet-form">
                             <div class="field">
-                    <textarea v-model="comment" rows="4" placeholder="我有话要说"
-                              maxlength="256" class="tweet-comment-textarea disabled-resize">
+                    <textarea v-model="comment" rows="4" placeholder="我有话要说（评论最多100字）"
+                              oninput="if(value.length > 100)value = value.slice(0, 100)" class="tweet-comment-textarea disabled-resize">
                     </textarea>
                             </div>
                             <div class="field foot-bar">
