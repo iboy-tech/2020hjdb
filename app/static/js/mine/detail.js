@@ -61,16 +61,6 @@ var app = new Vue({
                 content: $('#shareDiv') //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
             });
         },
-/*        share(){
-            console.log(location.href);
-            //捕获页
-            layer.open({
-                type: 1,
-                //shade: true,
-                title: "微信扫一扫：分享", //不显示标题
-                content: $('#shareDiv') //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
-            });
-        },*/
         pubComment(id) {
             console.log(this.comment);
             let data = {

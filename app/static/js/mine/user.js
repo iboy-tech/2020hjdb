@@ -84,6 +84,15 @@ var app = new Vue({
         }
     },
     methods: {
+        share(){
+            //捕获页
+            layer.open({
+                type: 1,
+                //shade: true,
+                title: "<h4>微信扫一扫分享</h4>", //不显示标题
+                content: $('#shareDiv') //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
+            });
+        },
         showAllNotice(b) {
             this.noticeAll = b;
         },
@@ -256,11 +265,11 @@ var app = new Vue({
                          showAlertError('密吗至少是6位');
                         return false;
 	            } else if(!reg.test( app.newPassword)){
-                    showAlertError('密吗必须包为字母或数字');
+                    showAlertError('密码必须包为字母或数字！');
                         return false;
                      }
                else if(pwd.newPassword != pwd.confirmPassword) {
-                        showAlertError("新密吗不一致！");
+                        showAlertError("两次密码不一致！");
                         return;
                     }
                     setPassword(app.password);
@@ -278,13 +287,13 @@ var app = new Vue({
             app.showMenu = false;
             layer.prompt({title: '请输入新的QQ：'}, function (qq, index) {
                 if(qq==''){
-                    showAlertError('QQ号不可为空');
+                    showAlertError('QQ号不可为空！');
                     return false;
                 }
                 else{
                      var reg=/^[1-9][0-9]{4,14}$/;;
                      if(!reg.test(qq)){
-                     showAlertError('QQ号格式错误');
+                     showAlertError('QQ号格式错误！');
                     return false;
 	            }
                 }

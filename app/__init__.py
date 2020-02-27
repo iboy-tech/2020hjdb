@@ -58,7 +58,7 @@ def create_app(config_name=None):
     register_errors(app)  # 注册错误处理函数
     register_shell_context(app)  # 注册shell上下文处理函数
     register_commands(app)  # 注册自定义shell命令
-    register_interceptor(app)  # 拦截器
+    # register_interceptor(app)  # 拦截器
     return app
 
 

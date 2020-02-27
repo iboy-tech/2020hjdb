@@ -10,7 +10,7 @@
 """
 import os
 
-from flask import render_template, request
+from flask import render_template, request, abort
 from flask_login import current_user, login_required
 
 from app import db, redis_client
@@ -33,10 +33,13 @@ def index():
     if request.method == 'GET':
         print("我是获取的ID", request.args.get('id'))
         id = request.args.get('id')
+        if id is None:
+            return restful.success(success=False, msg='提示：参数缺失')
         try:
-            lost = LostFound.query.get_or_404(int(id))
+            myid=int(id)
+            lost = LostFound.query.get(myid)
         except:
-            return restful.success(success=False, msg='警告,非法注入，后台已记录')
+            return restful.success(success=False, msg='警告,检测到用户%s尝试非法字符注入，后台已记录'%current_user.real_name)
         if lost is not None:
             key = str(lost.id)+ PostConfig.POST_REDIS_PREFIX
             redis_client.incr(key)
@@ -51,7 +54,6 @@ def index():
             else:
                 lost.images = lost.images.replace('[', '').replace(']', '').replace(' \'', '').replace('\'', '')
                 imglist = lost.images.strip().split(',')
-
             item = {
                 "id": lost.id,
                 "icon": 'https://q2.qlogo.cn/headimg_dl?dst_uin={}&spec=100'.format(user.qq),
@@ -74,5 +76,7 @@ def index():
                 "site": os.getenv('SITE_URL')
             }
             return render_template('detail.html', item=item)
+        else:
+            abort(404)
     else:
         return restful.success()

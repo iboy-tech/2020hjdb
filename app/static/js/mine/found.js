@@ -28,7 +28,7 @@ var app = new Vue({
                       location: "欣苑的门口",
                       title: "丢了一只篮球",
                       images: ["./go/icon.jpg"],
-                      category: "电子数码",
+                      category: "电子数吗",
                       lookCount: 12,
                       commentCount: 2,
                   }*/
@@ -55,7 +55,7 @@ var app = new Vue({
     methods: {
         freezeUser(userId,flag){
             if (flag==1){
-                layer.confirm('冻结后该用户将无法再登录系统，确定要冻结码？', {
+                layer.confirm('冻结后该用户将无法再登录系统，确定要冻结吗？', {
                 btn: ['确定', '取消'] //按钮
             }, function () {
                 freezeUser(userId,flag)
@@ -97,7 +97,7 @@ var app = new Vue({
         },
         toPage(pageNum) {
             console.log(pageNum);
-            if (pageNum < 0 || pageNum > this.result.totalPage) {
+            if (pageNum < 0 || pageNum >= this.result.totalPage) {
                 return;
             }
             this.result.search.pageNum = pageNum;

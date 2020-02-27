@@ -24,7 +24,7 @@ var app = new Vue({
     methods: {
         toPage(pageNum) {
             console.log(pageNum);
-            if (pageNum < 0 || pageNum > this.result.totalPage) {
+            if (pageNum < 0 || pageNum >= this.result.totalPage) {
                 return;
             }
             this.search.pageNum = pageNum;
@@ -36,7 +36,7 @@ var app = new Vue({
             getUserList(app.search, app, false);
         },
         freezeUser(userId) {
-            layer.confirm('冻结后该用户将无法再登录系统，确定要冻结码？', {
+            layer.confirm('冻结后该用户将无法再登录系统，确定要冻结吗？', {
                 btn: ['确定', '取消'] //按钮
             }, function () {
                 freezeUser(userId)
@@ -45,7 +45,7 @@ var app = new Vue({
             });
         },
         unfreezeUser(userId) {
-            layer.confirm('解冻后用户可正常登录并发布信息，确定要解冻码？', {
+            layer.confirm('解冻后用户可正常登录并发布信息，确定要解冻吗？', {
                 btn: ['确定', '取消'] //按钮
             }, function () {
                 unfreezeUser(userId)
@@ -85,7 +85,7 @@ var app = new Vue({
         },
         resetPassword(userId) {
             //询问框
-            layer.confirm('确定码？', {
+            layer.confirm('确定吗？', {
                 btn: ['确定', '取消'] //按钮
             }, function () {
                 resetPassword(userId);
@@ -153,7 +153,7 @@ function getUserList(data, app, append) {
     });
 }
 
-//重置密码
+//重置密吗
 function resetPassword(userId) {
     $.ajax({
         url: baseUrl + "/userlist.html/resetPassword?userId=" + userId,
