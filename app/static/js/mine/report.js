@@ -7,29 +7,34 @@
  @Software: PyCharm
  */
 var app = new Vue({
-    el: '#day',
+    el: '#app',
     data: {
-        api:"https://view.officeapps.live.com/op/view.aspx?src=",
+        path: window.location.protocol+"//"+window.location.host+"/static/file/",
+        api: "https://view.officeapps.live.com/op/view.aspx?src=",
         user: getSession("user") ? JSON.parse(getSession('user')) : {},
         time: moment(new Date()).format("YYYY-MM-DD"),
         startTime: moment(new Date()).format("YYYY-MM-DD"),
         endTime: moment(new Date()).format("YYYY-MM-DD"),
-        choice: [{id: "1", name: "失物报表"}, {id: "2", name: "招领报表"}],
+        choice: [{value: "1", name: "失物登记表"}, {value: "2", name: "失物统计表"}],
+        flag: -1,
         condition: {
             start: "2020-02-27",
             end: "2020-02-28",
             type: 1
         },
-        result: {
-            list: []
-        }
+        list: []
     },
     methods: {
         execute() {
-            this.condition.start=this.startTime,
-            this.condition.end=this.endTime,
-
-            addFile(app,app.condition)
+            this.condition.start = this.startTime;
+            this.condition.end = this.endTime;
+            this.condition.type = this.flag;
+            if (this.flag == -1) {
+                showInfo("请选择报表类型");
+                return;
+            } else {
+                addFile(app, app.condition);
+            }
         },
         logout() {
             //询问框
@@ -53,6 +58,23 @@ var app = new Vue({
                 }
             );
         },
+        deleteFile: function (id) {
+            $.ajax({
+                url: "/report.html/delete",
+                data: JSON.stringify(id),
+                method: "POST",
+                success: function (res) {
+                    if (res.success) {
+                        showOK(res.msg);
+                        getFile(app,false);
+                    }
+                    else {
+                        showError(res.msg)
+                    }
+
+                }
+            });
+        },
         confrim: function (startTime, endTime) {
             console.log(startTime);
             console.log(endTime);
@@ -60,13 +82,13 @@ var app = new Vue({
     }
 });
 $(function () {
-    getFile();
+    getFile(app, false);
 });
 
-function getFile(app,append) {
+function getFile(app, append) {
     $.ajax({
         url: baseUrl + "/report.html/getall",
-        data: JSON.stringify(data),
+        // data: JSON.stringify(data),
         method: "POST",
         success: function (res) {
             console.log(res);
@@ -74,10 +96,10 @@ function getFile(app,append) {
                 if (append) {
                     for (let v in res.data.list) {
                         //console.log(v);
-                        app.result.list.push(res.data.list[v]);
+                        app.list.push(res.data.list[v]);
                     }
                 } else {
-                    app.result.list = res.data.list;
+                    app.list = res.data.list;
                 }
             } else {
                 showAlertError(res.msg)
@@ -85,8 +107,9 @@ function getFile(app,append) {
         }
     });
 }
-function addFile(app,data) {
-        $.ajax({
+
+function addFile(app, data) {
+    $.ajax({
         url: baseUrl + "/report.html/add",
         data: JSON.stringify(data),
         method: "POST",
@@ -95,7 +118,7 @@ function addFile(app,data) {
             // alert('我是userlist'+res)
             if (res.success) {
                 showOK(res.msg);
-                getFile(app,);
+                getFile(app, false);
             } else {
                 showAlertError(res.msg)
             }

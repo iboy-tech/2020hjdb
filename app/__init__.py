@@ -230,25 +230,11 @@ def register_errors(app):
             'errors/400.html', description=e.description), 400
 
 
+
 def register_interceptor(app):
-    pass
-    # @app.before_request
-    # def before_request():
-    #     ip = request.remote_addr
-    #     url = request.url
-    #     print(ip),
-    #     print(url)
-    """
-    if  'auth' in request.url_rule.endpoint:
-        return None
-    print("endpoint", request.url_rule.endpoint)
-    if current_user.is_authenticated:
-        op = OpenID.query.filter_by(user_id= current_user.id).first()
-        print('判断用户是否关注公众号', )
-        print(op)
-        if op is None:
-            # messages = {
-            #     'msg': '请完成微信绑定'
-            # }
-            return redirect(url_for('oauth.index')),301
-    """
+    @app.before_request
+    def before_request():
+        if request.url.startswith('http://'):
+            url = request.url.replace('http://', 'https://', 1)
+            code = 301
+            return redirect(url, code=code)

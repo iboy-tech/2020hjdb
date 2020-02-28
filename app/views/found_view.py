@@ -167,7 +167,7 @@ def change_bs4_to_png(imglist):
         tinypng.delay(files)
     print(files, '我是文件名')
 
-    return str(files)
+    return files
 
 
 @found.route('/pub', methods=['GET', 'POST', 'OPTIONS'], strict_slashes=False)
@@ -186,7 +186,7 @@ def pub():
     # print(type(imgstr), imgstr)
     print(data['location'])
     lost = LostFound(kind=data['applyKind'], category_id=data['categoryId'],
-                     images=imgstr, location=data['location'].replace('/(<（[^>]+）>)/script', ''),
+                     images=str(imgstr), location=data['location'].replace('/(<（[^>]+）>)/script', ''),
                      title=data['title'].replace('/(<（[^>]+）>)/script', ''),
                      about=data['about'].replace('/(<（[^>]+）>)/script', ''), user_id=current_user.id)
     try:
@@ -194,6 +194,8 @@ def pub():
         print('帖子的ID')
     except Exception as e:
         db.session.rollback()
+        # 出现异常删除照片
+        remove_imglist(imgstr)
         return restful.params_error(msg=str(e))
     if info != '':
         lost_users = User.query.filter(or_(User.username == info, User.real_name == info))
@@ -262,7 +264,7 @@ def get_search_data(pagination, pageNum, pagesize):
         if view_count is None:
             look_count = l.look_count
         else:
-            look_count = int(bytes.decode(view_count)) if int(bytes.decode(view_count))>l.look_count else l.look_count
+            look_count = int(bytes.decode(view_count)) if int(bytes.decode(view_count)) > l.look_count else l.look_count
         dict = {
             "id": l.id,
             "icon": 'https://q2.qlogo.cn/headimg_dl?dst_uin={}&spec=100'.format(user.qq),

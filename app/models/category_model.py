@@ -24,4 +24,4 @@ class Category(db.Model):
 
     # 返回一个具有可读性的字符串模型  方便调试
     def __repr__(self):
-        return '<TCategory %r>' % self.name
+        return '<Category %r>' % self.name
