@@ -140,7 +140,8 @@
                             if (res.success) {
                                     showOK(res.msg);
                                     if(me.tabIndex==0){
-                                        saveSession("user", res.data.user);
+                                        saveLocal("user", res.data.user);
+                                        {#saveSession("user", res.data.user);#}
                                         if(res.ext=='wx'){
                                               window.location=baseUrl+"/oauth/wx.html";
                                         }

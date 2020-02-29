@@ -3,7 +3,7 @@ var app = new Vue({
     data: {
         imgPrefix: staticUrl,
         schoolIcon: './go/icon-school.png',
-        user: getSession("user") ? JSON.parse(getSession('user')) : {},
+        user: getLocal("user") ? JSON.parse(getLocal("user")) : {},
         result: {
             search: {//tab0
                 "kind": -1,
@@ -53,25 +53,24 @@ var app = new Vue({
         }
     },
     methods: {
-        freezeUser(userId,flag){
-            if (flag==1){
+        freezeUser(userId, flag) {
+            if (flag == 1) {
                 layer.confirm('冻结后该用户将无法再登录系统，确定要冻结吗？', {
-                btn: ['确定', '取消'] //按钮
-            }, function () {
-                freezeUser(userId,flag)
-            }, function () {
-            });
-            }
-            else{
+                    btn: ['确定', '取消'] //按钮
+                }, function () {
+                    freezeUser(userId, flag)
+                }, function () {
+                });
+            } else {
                 layer.confirm('取消冻结后用户可正常登录系统，你确定要取消吗？', {
-                btn: ['确定', '取消'] //按钮
-            }, function () {
-                freezeUser(userId,flag)
-            }, function () {
-            });
+                    btn: ['确定', '取消'] //按钮
+                }, function () {
+                    freezeUser(userId, flag)
+                }, function () {
+                });
             }
-            },
-        seeInfo(userId){
+        },
+        seeInfo(userId) {
             console.log(userId);
             getUserInfo(userId, this);
 
@@ -108,25 +107,7 @@ var app = new Vue({
             window.open("./detail.html?id=" + id, "_blank");
         },
         logout() {
-            //询问框
-            layer.confirm('确定要退出吗？', {
-                btn: ['确定', '取消'] //按钮
-            }, function () {
-                // deleteSession("user");
-                // window.location.replace("/logout");
-                    $.ajax({
-        url: baseUrl + "/logout" ,
-        //data: JSON.stringify(data),
-        method: "POST",
-        success: function (res) {
-            if (res.success){
-                 console.log(res);
-                window.location=baseUrl+'/login';
-            }
-        }
-    });}, function () {
-
-            });
+            logout();
         },
     }
 
@@ -155,8 +136,9 @@ $(function () {
         }
     }
 });
+
 //冻结用户
-function freezeUser(userId,flag){
+function freezeUser(userId, flag) {
     $.ajax({
         url: baseUrl + "/userlist.html/freeze?userId=" + userId,
         method: "POST",
@@ -178,7 +160,7 @@ function freezeUser(userId,flag){
 }
 
 //查询用户信息
-function getUserInfo(userId, app){
+function getUserInfo(userId, app) {
     $.ajax({
         url: baseUrl + "/userlist.html/userInfo?userId=" + userId,
         method: "POST",
@@ -212,7 +194,7 @@ function getUserInfo(userId, app){
 //删除招领信息
 function deletePub(id) {
     $.ajax({
-        url: baseUrl + "/found.html/delete?id="+id,
+        url: baseUrl + "/found.html/delete?id=" + id,
         method: "POST",
         // data: JSON.stringify(data),
         success: function (res, status) {

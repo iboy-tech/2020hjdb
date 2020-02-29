@@ -35,11 +35,14 @@ function cleanObj(obj, key) {
 }
 
 function isAnonymous() {
-    if(storage.getItem("user") ==undefined){
-            showAlertError('登录状态已失效，请重新登录');
-            setTimeout(function() {  window.location=baseUrl +'/login'; }, 3000);  //5秒后将会调用执行remind()函数
+    if (getLocal("user") == null) {
+        showAlertError('登录状态已失效，请重新登录');
+        setTimeout(function () {
+            window.location = baseUrl + '/login';
+        }, 3000);  //5秒后将会调用执行remind()函数
     }
 }
+
 //是否可用LocalStorage
 function canUseLocal() {
     if (!window.localStorage) {
@@ -73,6 +76,7 @@ function getLocal(key) {
 }
 
 function deleteLocal(key) {
+    let storage = window.localStorage;
     storage.removeItem(key);
 }
 
@@ -84,6 +88,29 @@ function canUseSession() {
         alert("浏览器不支持sessionStorage");
         return false;
     }
+}
+
+function logout() {
+    //询问框
+    layer.confirm('确定要退出吗？', {
+        btn: ['确定', '取消'] //按钮
+    }, function () {
+        // deleteSession("user");
+        // window.location.replace("/logout");
+        $.ajax({
+            url: baseUrl + "/logout",
+            //data: JSON.stringify(data),
+            method: "POST",
+            success: function (res) {
+                if (res.success) {
+                    console.log(res);
+                    deleteLocal("user");
+                    window.location = baseUrl + '/login';
+                }
+            }
+        });
+    }, function () {
+    });
 }
 
 function saveSession(key, value) {
@@ -124,8 +151,7 @@ function getUrlParam(paramName) {
             }
         }
         return "";
-    }
-    else {
+    } else {
         return "";
     }
 }

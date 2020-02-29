@@ -3,7 +3,7 @@ var app = new Vue({
     data: {
         imgPrefix: staticUrl,
         schoolIcon: './go/icon-school.png',
-        user: getSession("user") ? JSON.parse(getSession('user')) : {},
+        user: getLocal("user") ? JSON.parse(getLocal("user")) : {},
         list: [],
         reply: {
             id: "",
@@ -28,40 +28,22 @@ var app = new Vue({
                 }
             });
         },
-        markFeedback(id){
+        markFeedback(id) {
             markFeedback(id);
         },
-        deleteFeedback(id){
+        deleteFeedback(id) {
             //询问框
             layer.confirm('确定要删除吗？', {
-                btn: ['确定','取消'] //按钮
-            }, function(){
+                btn: ['确定', '取消'] //按钮
+            }, function () {
                 deleteFeedback(id);
-            }, function(){
+            }, function () {
 
             });
 
         },
         logout() {
-            //询问框
-            layer.confirm('确定要退出吗？', {
-                btn: ['确定', '取消'] //按钮
-            }, function () {
-                // deleteSession("user");
-                // window.location.replace("/logout");
-                    $.ajax({
-        url: baseUrl + "/logout" ,
-        //data: JSON.stringify(data),
-        method: "POST",
-        success: function (res) {
-            if (res.success){
-                 console.log(res);
-                window.location=baseUrl+'/login';
-            }
-        }
-    });}, function () {
-
-            });
+            logout();
         },
     }
 });
@@ -87,10 +69,11 @@ $(function () {
         }
     }
 });
+
 //标记已读反馈
 function deleteFeedback(id) {
     $.ajax({
-        url: baseUrl + "/feedback.html/delete?id="+id,
+        url: baseUrl + "/feedback.html/delete?id=" + id,
         method: "POST",
         //data: JSON.stringify(data),
         success: function (res, status) {
@@ -113,7 +96,7 @@ function deleteFeedback(id) {
 //标记已读反馈
 function markFeedback(id) {
     $.ajax({
-        url: baseUrl + "/feedback.html/mark?id="+id,
+        url: baseUrl + "/feedback.html/mark?id=" + id,
         method: "POST",
         //data: JSON.stringify(data),
         success: function (res, status) {

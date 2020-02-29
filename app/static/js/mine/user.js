@@ -3,7 +3,7 @@ var app = new Vue({
     data: {
         showMenu: false,
         tabIndex: 0,
-        user: getSession("user") ? JSON.parse(getSession('user')) : {},
+        user: getLocal("user") ? JSON.parse(getLocal("user")) : {},
         category: getCategory() || [],
         userIcon: "http://localhost/static/icon/user_icon.png",
         api:'https://api.uomg.com/api/qq.talk?qq=',
@@ -157,25 +157,7 @@ var app = new Vue({
             });
         },
         logout() {
-            //询问框
-            layer.confirm('确定要退出吗？', {
-                btn: ['确定', '取消'] //按钮
-            }, function () {
-                // deleteSession("user");
-                // window.location.replace("/logout");
-                    $.ajax({
-                    url: baseUrl + "/logout" ,
-                    //data: JSON.stringify(data),
-                    method: "POST",
-                    success: function (res) {
-                        if (res.success){
-                             console.log(res);
-                            window.location=baseUrl+'/login';
-                     }
-        }
-    });
-            }, function () {
-            });
+            logout();
         },
         removeComment(id) {
             console.log(id);

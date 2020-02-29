@@ -3,20 +3,20 @@ var app = new Vue({
     data: {
         imgPrefix: staticUrl,
         schoolIcon: './go/icon-school.png',
-        user: getSession("user") ? JSON.parse(getSession('user')) : {},
+        user: getLocal("user") ? JSON.parse(getLocal("user")) : {},
         notice: {
             title: "",
             content: "",
             fixTop: false
         },
         list: [
-           /* {
-                id: "0000000001",
-                title: "every one notice",
-                content: "hello, thank u, thank u very much!",
-                time: "2019-04-21 18:45",
-                fixTop: 1,
-            }*/
+            /* {
+                 id: "0000000001",
+                 title: "every one notice",
+                 content: "hello, thank u, thank u very much!",
+                 time: "2019-04-21 18:45",
+                 fixTop: 1,
+             }*/
         ]
     },
     methods: {
@@ -33,11 +33,11 @@ var app = new Vue({
         submit() {
             addNotice(app.notice);
         },
-        switchFix(id, index){
+        switchFix(id, index) {
             let ask;
-            if (this.list[index].fixTop==1){
+            if (this.list[index].fixTop == 1) {
                 ask = "确定要取消置顶吗？";
-            }else{
+            } else {
                 ask = "确定要设置为置顶吗？";
             }
             layer.confirm(ask, {
@@ -58,29 +58,12 @@ var app = new Vue({
             });
         },
         logout() {
-            //询问框
-            layer.confirm('确定要退出吗？', {
-                btn: ['确定', '取消'] //按钮
-            }, function () {
-                // deleteSession("user");
-                // window.location.replace("/logout");
-                    $.ajax({
-        url: baseUrl + "/logout" ,
-        //data: JSON.stringify(data),
-        method: "POST",
-        success: function (res) {
-            if (res.success){
-                 console.log(res);
-                window.location=baseUrl+'/login';
-            }
-        }
-    });
-            }, function () {
-            });
+            logout();
         },
     }
 });
-function switchFix(id){
+
+function switchFix(id) {
     $.ajax({
         url: baseUrl + "/notice.html/switch?id=" + id,
         //data: JSON.stringify(data),

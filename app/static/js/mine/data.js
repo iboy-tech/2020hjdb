@@ -3,29 +3,11 @@ var app = new Vue({
     data: {
         imgPrefix: staticUrl,
         schoolIcon: './images/icon-school.png',
-        user: getSession("user") ? JSON.parse(getSession('user')) : {}
+        user: getLocal("user") ? JSON.parse(getLocal("user")) : {},
     },
     methods: {
-               logout() {
-            //询问框
-            layer.confirm('确定要退出吗？', {
-                btn: ['确定', '取消'] //按钮
-            }, function () {
-                // deleteSession("user");
-                // window.location.replace("/logout");
-                    $.ajax({
-        url: baseUrl + "/logout" ,
-        //data: JSON.stringify(data),
-        method: "POST",
-        success: function (res) {
-            if (res.success){
-                 console.log(res);
-                window.location=baseUrl+'/login';
-            }
-        }
-    });}, function () {
-
-            });
+        logout() {
+            logout();
         },
     }
 });

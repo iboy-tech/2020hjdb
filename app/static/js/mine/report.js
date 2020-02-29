@@ -11,7 +11,7 @@ var app = new Vue({
     data: {
         path: window.location.protocol+"//"+window.location.host+"/static/file/",
         api: "https://view.officeapps.live.com/op/view.aspx?src=",
-        user: getSession("user") ? JSON.parse(getSession('user')) : {},
+        user: getLocal("user") ? JSON.parse(getLocal("user")) : {},
         time: moment(new Date()).format("YYYY-MM-DD"),
         startTime: moment(new Date()).format("YYYY-MM-DD"),
         endTime: moment(new Date()).format("YYYY-MM-DD"),
@@ -37,26 +37,7 @@ var app = new Vue({
             }
         },
         logout() {
-            //询问框
-            layer.confirm('确定要退出吗？', {
-                    btn: ['确定', '取消'] //按钮
-                }, function () {
-                    // deleteSession("user");
-                    // window.location.replace("/logout");
-                    $.ajax({
-                        url: baseUrl + "/logout",
-                        //data: JSON.stringify(data),
-                        method: "POST",
-                        success: function (res) {
-                            if (res.success) {
-                                console.log(res);
-                                window.location = baseUrl + '/login';
-                            }
-                        }
-                    });
-                }, function () {
-                }
-            );
+            logout();
         },
         deleteFile: function (id) {
             $.ajax({
