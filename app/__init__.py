@@ -13,10 +13,10 @@ import os
 from logging.handlers import RotatingFileHandler, SMTPHandler
 
 import click
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 from flask_wtf.csrf import CSRFError
 
-from app.config import BaseConfig
+from app.config import BaseConfig, basedir
 # .表示当前路径
 from app.config import config  # 导入存储配置的字典
 from tasks import celery
@@ -44,6 +44,7 @@ from app.page import user as user_bp
 from app.page import auth as auth_bp
 from app.page import chart as admin_bp
 from app.page import report as report_bp
+
 
 # 工厂函数
 def create_app(config_name=None):
@@ -130,8 +131,10 @@ def create_celery(app):
         def __call__(self, *args, **kwargs):
             with app.app_context():
                 return self.run(*args, **kwargs)
+
     celery.Task = ContextTask
     return celery
+
 
 """
     # 一般之前的配置没有这个，需要添加上
@@ -147,27 +150,9 @@ def create_celery(app):
 
 # Attach to celery object for easy access.
 
-
 def register_logging(app):
-    app.logger.setLevel(logging.INFO)
-    formatter = logging.Formatter(
-        '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-    # 日志超过10MB会被覆盖
-    file_handler = RotatingFileHandler(
-        'logs/app.log',
-        maxBytes=10 * 1024 * 1024,
-        backupCount=10)
-    file_handler.setFormatter(formatter)
-    file_handler.setLevel(logging.INFO)
-
-    mail_handler = SMTPHandler(
-        mailhost=os.getenv('MAIL_SERVER'),
-        fromaddr=os.getenv('MAIL_USERNAME'),
-        toaddrs=os.getenv('SUPER_ADMIN_EMAIL'),
-        subject='应用程序错误通知',
-        credentials=(os.getenv('MAIL_USERNAME'), os.getenv('MAIL_PASSWORD')))
-
     class RequestFormatter(logging.Formatter):
+
         def format(self, record):
             record.url = request.url
             record.remote_addr = request.remote_addr
@@ -178,11 +163,25 @@ def register_logging(app):
         '%(levelname)s in %(module)s: %(message)s'
     )
 
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+
+    file_handler = RotatingFileHandler('logs/app.log',
+                                       maxBytes=10 * 1024 * 1024, backupCount=10)
+    file_handler.setFormatter(formatter)
+    file_handler.setLevel(logging.INFO)
+
+    mail_handler = SMTPHandler(
+        mailhost=app.config['MAIL_SERVER'],
+        fromaddr=app.config['MAIL_USERNAME'],
+        toaddrs=['547142436@qq.com'],
+        subject='系统错误通知',
+        credentials=(app.config['MAIL_USERNAME'], app.config['MAIL_PASSWORD']))
     mail_handler.setLevel(logging.ERROR)
     mail_handler.setFormatter(request_formatter)
-    # if not app.debug:
-    #     app.logger.addHandler(file_handler)
-    app.logger.addHandler(file_handler)
+
+    if not app.debug:
+        app.logger.addHandler(mail_handler)
+        app.logger.addHandler(file_handler)
 
 
 #
@@ -210,6 +209,31 @@ def register_commands(app):
     def createuser():
         create_test_data()
 
+    @app.cli.command()
+    # prompt=True二次输入
+    @click.option('--username', prompt=True, help='组织用户名.')
+    @click.option('--password', prompt=True, hide_input=True,
+                  confirmation_prompt=True, help='组织.')
+    @click.option('--qq', prompt=True, hide_input=True,
+                  confirmation_prompt=True, help='官方QQ.')
+    # 初始化公用账号
+    def initpub(username, password, qq):
+        """Building Bluelog, just for you."""
+        click.echo('Initializing the publi user...')
+        db.create_all()
+        public = User.query.filter_by(username=username).first()
+        if public is not None:
+            click.echo('The administrator already exists, updating...')
+            public.username = username
+            public.set_password(password)
+        else:
+            click.echo('Creating the temporary public account...')
+            public = User(username=username, password=password, real_name='三峡大学失物招领中心', academy='部门账号',
+                          class_name='部门账号', major='部门账号', qq=qq, kind=1, gender=3,status=2)
+            db.session.add(public)
+
+        db.session.commit()
+
 
 def register_errors(app):
     @app.errorhandler(400)
@@ -228,7 +252,6 @@ def register_errors(app):
     def handle_csrf_error(e):
         return render_template(
             'errors/400.html', description=e.description), 400
-
 
 
 def register_interceptor(app):

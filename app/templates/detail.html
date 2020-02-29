@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
     <title>三峡大学失物招领中心</title>
     <link rel="stylesheet" type="text/css" href="../static/css/semantic.min.css"/>
+      <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/components/icon.min.css'>
     <link type="text/css" rel="stylesheet" href="../static/css/space.4cb6e48f.css">
     <link rel="stylesheet" href="../static/css/share/css/share.min.css">
     <script src="../static/js/jquery.js"></script>
@@ -135,10 +136,10 @@
                                 <div class="meta">
 
                                     <a class="reply"><i class="envelope outline icon"></i>
-                                        <span></span>{{ item.email }}</a>
-                                    <a class="share">
-                                        <i class="mobile alternate icon"></i>
-                                        <span></span>{{ item.QQ }}
+                                        {{ item.email }}</a>
+                                    <a style="color: rgba(0,0,0,.5);" class="share" href="{{ 'https://api.uomg.com/api/qq.talk?qq='+item.QQ }}">
+                                        <i class="qq icon" style="color: rgba(121, 103, 103, 0.4) !important;"></i>
+                                        {{ item.QQ }}
                                     </a>
                                     <!--  <div class="right">
                                           <a class="ban" ban-report data-id="19937739" data-obj-type="100"

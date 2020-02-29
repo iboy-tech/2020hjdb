@@ -79,7 +79,8 @@
                                         </div>
                                     </a>
                                     <div class="gender ui large teal circular label">
-                                        <i class=" icon" :class="{venus: user.gender==0, mars:user.gender != 0}"></i>
+                                        <i v-if="user.gender==2" class="chevron circle down icon"></i>
+                                        <i v-else="" class=" icon" :class="{venus: user.gender==0, mars:user.gender ==1,chevron:user.gender==3}"></i>
                                     </div>
                                 </div>
                                 <div class="ui header">
@@ -707,7 +708,6 @@
                 <div class="ui   horizontal link list">
                     <div class="item">&copy; 校园失物招领网站系统 | <a href="http://www.ctgu.edu.cn/"
                                                                   target="_blank">CTGU</a></div>
-
                 </div>
             </div>
         </div>
@@ -754,7 +754,7 @@
 <script src="../static/js/mine/user.js"></script>
 <script>
      // hideLoading();
-     $(function () {
+$(function () {
         isAnonymous();
      })
 </script>

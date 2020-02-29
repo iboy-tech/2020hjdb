@@ -35,7 +35,7 @@ function cleanObj(obj, key) {
 }
 
 function isAnonymous() {
-    if(sessionStorage.getItem("user") ==null){
+    if(storage.getItem("user") ==undefined){
             showAlertError('登录状态已失效，请重新登录');
             setTimeout(function() {  window.location=baseUrl +'/login'; }, 3000);  //5秒后将会调用执行remind()函数
     }

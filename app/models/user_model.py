@@ -72,11 +72,15 @@ class User(db.Model, UserMixin):
             db.session.commit()
 
     def to_dict(self):
+        if self.gender != 2:
+            gender = '男' if self.gender == 0 else '女'
+        else:
+            gender = "无"
         dict = {
             "userId": self.id,
             "name": self.real_name,
             "username": self.username,
-            "gender": '男' if self.gender == 0 else '女',
+            "gender": gender,
             "qq": self.qq,
             "classNum": self.class_name,
             "major": self.major,
