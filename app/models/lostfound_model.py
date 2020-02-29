@@ -27,9 +27,9 @@ class LostFound(db.Model):
     location = db.Column(db.String(512), info='位置')
     look_count = db.Column(db.Integer, nullable=False, server_default=text('0'))
     status = db.Column(db.Integer, nullable=False, info='物品的状态01是否被领取', server_default=text('0'))
-    # 关系查询
-    post_user = relationship('User', backref='user_lost_founds')
-    post_category=relationship('Category', backref='category_lost_founds')
+    # 帖子评论-一对多，删除帖子要删除评论
+    comments=db.relationship('Comment', backref='post_comment', cascade='all, delete-orphan', passive_deletes=True)
+
 
     # 返回一个具有可读性的字符串模型  方便调试
     def __repr__(self):

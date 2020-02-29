@@ -4,7 +4,7 @@ var app = new Vue({
         imgPrefix: staticUrl,
         schoolIcon: './go/icon-school.png',
         // item:'',
-        user: getSession("user") ? JSON.parse(getSession('user')) : {},
+        user: getLocal("user") ? JSON.parse(getLocal("user")) : {},
         search: {
             keyword: "",
             pageNum: 0,
@@ -61,6 +61,15 @@ var app = new Vue({
         },
         logout() {
             logout();
+        },
+        deleteUser(userId){
+            //询问框
+            layer.confirm('危险操作，你确定要这样做吗？', {
+                btn: ['确定', '取消'] //按钮
+            }, function () {
+                deleteUser(userId);
+            }, function () {
+            });
         },
         resetPassword(userId) {
             //询问框
@@ -207,7 +216,23 @@ function freezeUser(userId) {
         }
     });
 }
-
+//冻结用户
+function deleteUser(userId) {
+    $.ajax({
+        url: baseUrl + "/userlist.html/delete?userId=" + userId,
+        method: "POST",
+        //data: JSON.stringify(data),
+        success: function (res, status) {
+                console.log(res);
+                if (res.success) {
+                    showOK();
+                    getUserList(app.search, app, false);
+                } else {
+                    showAlertError(res.msg);
+            }
+        },
+    });
+}
 //解冻用户
 function unfreezeUser(userId) {
     $.ajax({

@@ -11,6 +11,8 @@ class Category(db.Model):
     name = db.Column(db.String(128), nullable=False, info='分类名称', unique=True)
     about = db.Column(db.String(256), info='分类说明')
     create_time = db.Column(db.DateTime,default=datetime.now,nullable=False,info='创建时间')
+    #一对多
+    posts= db.relationship('LostFound', backref='post_category', cascade='all, delete-orphan', passive_deletes=True)
 
     def to_dict(self):
         dict = {

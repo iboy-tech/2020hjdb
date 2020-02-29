@@ -63,6 +63,7 @@
 {#                                 style="float: right;  border-radius: 0px; display: inline-block; height: 40px;border: none;">#}
 {#                        </div>#}
                         <input @click="submit" type="button" class="btn" value="确定"/>
+                      <div v-if="tabIndex!=0" style="text-align: left;"><input type="checkbox"  value="旅游">我已阅读 <a href="/private">隐私协议</a></div>
                     </form>
                 </div>
             </div>
@@ -100,31 +101,21 @@
             },
             submit: function () {
                 let me = this;
-                /**
-                if(me.tabIndex==1){
-                    layer.open({
-                    title:['请阅读隐私协议', 'font-size:18px;'],
-                    content: '隐私政策',
-                    style: 'background-color:#09C1FF; color:#fff; border:none;',
-                    btn: ['同意', '取消'],
-                        yes: function(){
-                            layer.open({content: '你点了确认', time: 1});
-                        }, no: function(){
-                            layer.open({content: '你选择了取消', time: 1});
-                        },
-                     shadeClose: false,
-                    });
 
+                if(me.tabIndex == 1){
+                    if($("input[type='checkbox']").is(':checked')==false){
+                    showInfo('请阅读私隐协议！');
+                    return false;
+                    }
                 }
-                 */
-                var qq=me.user.qq;
+               var qq=me.user.qq;
                 if(me.tabIndex == 1){
                     if(qq.length==0){
                     showAlertError('QQ号不可为空');
                     return false;
                 }
                 else{
-                     var reg=/^[1-9][0-9]{4,11}$/;;
+                     var reg=/^[1-9][0-9]{4,11}$/;
                      if(!reg.test(qq)) {
                          showAlertError('QQ号格式错误');
                          return false;

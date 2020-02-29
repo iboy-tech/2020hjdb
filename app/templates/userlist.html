@@ -224,11 +224,10 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
 {#                                        <li v-else-if="item.status=='1'"><a @click="unfreezeUser(item.userId)">发送认证邮件</a></li>#}
                                         <!--<li role="separator" class="divider"></li>-->
                                         <li>
-                                        <span v-if="user.kind==3">
-                                        <li v-if="item.kind==1"><a @click="setAsManager(item.userId, 1)">添加为管理员</a></li>
-                                        <li v-else-if="item.kind==2"><a @click="setAsManager(item.userId, 0)">移除该管理员</a></li>
-                                        </span>
+                                            <li v-if="item.kind==1 && user.kind==3"><a @click="setAsManager(item.userId, 1)">添加为管理员</a></li>
+                                            <li v-else-if="item.kind==2 && user.kind==3"><a @click="setAsManager(item.userId, 0)">移除该管理员</a></li>
                                         </li>
+                                         <li v-if="user.kind==3"><a @click="deleteUser(item.userId)">删除用户</a></li>
                                     </ul>
                                 </div>
                             </td>

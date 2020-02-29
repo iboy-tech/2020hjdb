@@ -40,7 +40,7 @@ var app = new Vue({
                     "kind": -1,
                     "category": "",
                     "keyword": "",
-                    "username": (getSession("user") ? JSON.parse(getSession('user')) : {}).studentNum,
+                    "username": (getLocal("user") ? JSON.parse(getLocal("user")) : {}).studentNum,
                     "pageNum": 0,
                     "pageSize": 15
                 },

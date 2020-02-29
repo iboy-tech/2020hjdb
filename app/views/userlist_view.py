@@ -35,7 +35,7 @@ def index():
 @login_required
 @wechat_required
 @admin_required
-#@cache.cached(timeout=10 * 60,query_string=True,key_prefix='user-getall')  # 缓存10分钟 默认为300s
+# @cache.cached(timeout=10 * 60,query_string=True,key_prefix='user-getall')  # 缓存10分钟 默认为300s
 def get_all():
     req = request.json
     print(req)
@@ -155,6 +155,24 @@ def reset_pssword():
     send_email.apply_async(args=(u.qq, '密码重置提醒', 'resetPassword', messages), countdown=randint(1, 30))
     print('要给用户发送提醒邮件')
     return restful.success()
+
+
+@userlist.route('/delete', methods=['POST'], strict_slashes=False)
+@super_admin_required
+def delete_user():
+    req = request.args.get('userId')
+    print('request.args', req)
+    u = User.query.get(int(req))
+    if u:
+        try:
+            db.session.delete(u)
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            return restful.params_error(success=False, msg=str(e))
+    else:
+        return restful.params_error(success=False,msg="用户不存在")
+    return restful.success(msg="删除失败")
 
 
 @userlist.route('/setAsAdmin', methods=['POST'], strict_slashes=False)

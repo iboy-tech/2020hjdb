@@ -67,18 +67,13 @@ def get_all():
     elif req['kind'] == -1 and req['category'] != '':
         c = Category.query.filter_by(name=req['category']).first()
         pagination = LostFound.query.filter_by(category_id=c.id).order_by(LostFound.status,
-                                                                          LostFound.create_time.desc()).paginate(
-            page + 1,
-            per_page=
-            pagesize,
-            error_out=False)
+        LostFound.create_time.desc()).paginate(page + 1,per_page=pagesize,error_out=False)
     elif req['username'] != '':
         # print('这是用户个人查询')
         u = User.query.filter_by(username=req['username']).first()
         pagination = LostFound.query.filter_by(user_id=u.id).order_by(LostFound.status,
-                                                                      LostFound.create_time.desc()).paginate(page + 1,
-                                                                                                             per_page=
-                                                                                                             pagesize,
+        LostFound.create_time.desc()).paginate(page + 1,per_page=
+pagesize,
                                                                                                              error_out=False)
     elif req['kind'] != -1 and req['category'] != '':
         # print('这是分类查询')
@@ -230,7 +225,6 @@ def pub():
 @celery.task
 def send_message_by_pusher(msg, uid, kind):
     print('即将要发送的消息', msg)
-    # uids = ['UID_CLkvFs8PCxHFDnfEsyHsksbve07f']
     if kind == 0:  # 寻物认领
         content = render_template('msgs/' + 'WXLostNotice.txt', messages=msg)
     elif kind == 1:  # 招领认领

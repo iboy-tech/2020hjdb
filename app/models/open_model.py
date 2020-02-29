@@ -18,6 +18,7 @@ class OpenID(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     qq_id = db.Column(db.String(50), unique=True, default=None)
     wx_id = db.Column(db.String(50), unique=True, default=None)
+    # 一对一外键关系使用
     user_id = db.Column(db.Integer, db.ForeignKey('t_user.id', ondelete='CASCADE'), unique=True)
     create_time = db.Column(db.DateTime, default=datetime.now, nullable=False)
 

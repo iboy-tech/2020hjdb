@@ -116,6 +116,7 @@ if __name__ == '__main__':
     https://www.jianshu.com/p/cdee367b77d3
     python run.py  --host=0.0.0.0 --port=8888 --no-reload
     启动 Celery worker:
+    sudo apt-get --purge remove gunicorn
     nohup gunicorn -c config.py run:app   &> log.log
    celery multi start  celery worker -A run.celery -l  DEBUG -E -P eventlet
    ps auxww | grep 'celery worker'

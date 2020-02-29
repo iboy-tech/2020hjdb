@@ -59,8 +59,10 @@ def wechat_required(func):
     def decorated_view(*args, **kwargs):
         op = OpenID.query.filter(OpenID.user_id == current_user.id).first()
         print('判断用户是否关注公众号', )
-        if op is None:
-            return redirect(url_for('oauth.index')),301
+        if current_user.status==0:
+            return redirect(url_for('auth.login')), 301
+            if op is None:
+                return redirect(url_for('oauth.index')),301
         else:
             return func(*args, **kwargs)
     return decorated_view

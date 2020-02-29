@@ -28,6 +28,12 @@ from app.utils.mail_sender import send_email
 from app.config import LoginConfig
 
 
+# 隐私协议
+@auth.route('/private')
+def private():
+    return render_template('private.html')
+
+
 @auth.route('/favicon.ico')
 def favicon():
     return send_from_directory(
@@ -132,7 +138,7 @@ def login():
                     return restful.success(success=False,
                                            msg="用户名或密码错误,您还能尝试 %s 次" % str(LoginConfig.LOGIN_ERROR_MAX_TIMES - 1))
             else:
-                return restful.success(success=False,msg="用户名或密码错误")
+                return restful.success(success=False, msg="用户名或密码错误")
 
     if request.args.get('next'):
         session['next'] = request.args.get('next')

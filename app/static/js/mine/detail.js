@@ -277,7 +277,7 @@ function getDetail(id) {
                     //console.log(result.item);
                     app.page.search.category = $("#search-category").text();
                     console.log(app.page.search);
-                    if (getSession('user')) {
+                    if (getLocal("user")) {
                         getComments(id, app);
                         pageLostFound(app.page.search, app.page);
                     }
