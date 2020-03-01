@@ -161,33 +161,38 @@ def recognize():
     usr = data['username']
     pwd = data['password']
     qq = data['qq']
+    # 校验QQ号
     if checkQQ(qq):
+        # 判断用户是否存在
         user_db = User.query.filter_by(username=data['username']).first()
-        if user_db is not None and user_db.status > 1:
+        if user_db is not None and user_db.status > 1:  # 已认证
             data = {"user": {}}
             return restful.success(success=False, msg="您的账户已认证，请直接登录", data=data)
-        elif user_db is not None and user_db.status == 0:
+        elif user_db is not None and user_db.status == 0:  # 被冻结
             data = {"user": {}}
             return restful.success(
                 success=False,
                 msg="您的账户已被冻结，请联系管理员申诉",
                 data=data)
-        elif user_db is not None and user_db.status == 1:  # 重发验证邮件
-            user_db.qq = qq
-            db.session.commit()
-            # 发送验证邮件
-            token = str(generate_token(id=user_db.id, operation='confirm-qq', qq=user_db.qq), encoding="utf-8")
-            messages = {
-                'real_name': user_db.real_name,
-                'token': url_for('auth.confirm', token=token, _external=True)
-            }
-            cache.delete('user-getall')  # 删除缓存
-            send_email.apply_async(args=(qq, '身份认证', 'confirm', messages), countdown=randint(1, 30))
-            return restful.success(
-                success=False,
-                msg="验证邮件已发送到您的QQ邮箱，可能在垃圾信箱中，请尽快认证",
-                data=data)
-        else:
+        elif user_db is not None and user_db.status == 1:  # 重发验证
+            try:
+                user_db.qq = qq
+                db.session.commit()
+                # 发送验证邮件
+                token = str(generate_token(id=user_db.id, operation='confirm-qq', qq=user_db.qq), encoding="utf-8")
+                messages = {
+                    'real_name': user_db.real_name,
+                    'token': url_for('auth.confirm', token=token, _external=True)
+                }
+                send_email.apply_async(args=(qq, '身份认证', 'confirm', messages), countdown=randint(1, 30))
+                return restful.success(
+                    success=False,
+                    msg="验证邮件已发送到您的QQ邮箱，可能在垃圾信箱中，请尽快认证",
+                    data=data)
+            except:
+                db.session.rollback()
+                return restful.success(success=False, msg="QQ号已被他人使用", data=data)
+        else:  # 新用户进行认证
             from app.utils.jwc import user_verify
             user_jwc = user_verify(usr, pwd)
             if user_jwc is not None:
@@ -217,6 +222,11 @@ def recognize():
                 data = restful.success(
                     success=False,
                     msg='验证邮件已发送到您的QQ邮箱，可能在垃圾信箱中，请尽快认证',
+                    data=data)
+            else:
+                data = restful.success(
+                    success=False,
+                    msg='学号或密码错误',
                     data=data)
     else:
         return restful.success(success=False, msg='QQ号格式不正确', data=data)

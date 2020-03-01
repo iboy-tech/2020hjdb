@@ -21,6 +21,7 @@ from app.models.user_model import User
 from app.page import userlist
 from app.utils import restful
 from app.utils.mail_sender import send_email
+from app.views import found_view
 
 
 @userlist.route('/', methods=['POST', 'GET', 'OPTIONS'], strict_slashes=False)
@@ -165,6 +166,20 @@ def delete_user():
     u = User.query.get(int(req))
     if u:
         try:
+            posts=u.posts
+            print(posts,type(posts))
+            del_imgs=[]
+            for lost in posts:
+                print(lost.images)
+                if lost.images == "":
+                    temp_imglist = []
+                else:
+                    lost.images = lost.images.replace('[', '').replace(']', '').replace(' \'', '').replace('\'', '')
+                    temp_imglist = lost.images.strip().split(',')
+                del_imgs+=temp_imglist
+                print(del_imgs)
+            print("删除用户的所有图片")
+            found_view.remove_imglist(del_imgs)
             db.session.delete(u)
             db.session.commit()
         except Exception as e:

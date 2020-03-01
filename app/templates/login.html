@@ -63,7 +63,7 @@
 {#                                 style="float: right;  border-radius: 0px; display: inline-block; height: 40px;border: none;">#}
 {#                        </div>#}
                         <input @click="submit" type="button" class="btn" value="确定"/>
-                      <div v-if="tabIndex!=0" style="text-align: left;"><input type="checkbox"  value="旅游">我已阅读 <a href="/private">隐私协议</a></div>
+                      <div v-if="tabIndex!=0" style="text-align: left;"><input type="checkbox"  value="旅游">我已阅读并同意 <a href="/private" style="color:#004276;" target="_blank">《隐私协议》</a></div>
                     </form>
                 </div>
             </div>
@@ -104,7 +104,7 @@
 
                 if(me.tabIndex == 1){
                     if($("input[type='checkbox']").is(':checked')==false){
-                    showInfo('请阅读私隐协议！');
+                    showInfo('请阅读隐私协议！');
                     return false;
                     }
                 }

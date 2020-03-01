@@ -51,18 +51,28 @@ var app = new Vue({
             }, function () {
             });
         },
-        setAsManager(userId) {
-            layer.confirm('设置为管理员的账号可登录后台，请谨慎操作，确定要将其设置为管理员吗？', {
-                btn: ['确定', '取消'] //按钮
-            }, function () {
-                setAsAdmin(userId);
-            }, function () {
-            });
+        setAsManager(userId, flag) {
+            if (flag == 1) {
+                layer.confirm('设置为管理员的账号可登录后台，请谨慎操作，确定要将其设置为管理员吗？', {
+                    btn: ['确定', '取消'] //按钮
+                }, function () {
+                    setAsAdmin(userId);
+                }, function () {
+                });
+            } else {
+                layer.confirm('你确定要取消管理员吗？', {
+                    btn: ['确定', '取消'] //按钮
+                }, function () {
+                    setAsAdmin(userId);
+                }, function () {
+                });
+            }
+
         },
         logout() {
             logout();
         },
-        deleteUser(userId){
+        deleteUser(userId) {
             //询问框
             layer.confirm('危险操作，你确定要这样做吗？', {
                 btn: ['确定', '取消'] //按钮
@@ -216,6 +226,7 @@ function freezeUser(userId) {
         }
     });
 }
+
 //冻结用户
 function deleteUser(userId) {
     $.ajax({
@@ -223,16 +234,17 @@ function deleteUser(userId) {
         method: "POST",
         //data: JSON.stringify(data),
         success: function (res, status) {
-                console.log(res);
-                if (res.success) {
-                    showOK();
-                    getUserList(app.search, app, false);
-                } else {
-                    showAlertError(res.msg);
+            console.log(res);
+            if (res.success) {
+                showOK();
+                getUserList(app.search, app, false);
+            } else {
+                showAlertError(res.msg);
             }
         },
     });
 }
+
 //解冻用户
 function unfreezeUser(userId) {
     $.ajax({

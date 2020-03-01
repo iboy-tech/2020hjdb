@@ -212,10 +212,8 @@ def register_commands(app):
     @app.cli.command()
     # prompt=True二次输入
     @click.option('--username', prompt=True, help='组织用户名.')
-    @click.option('--password', prompt=True, hide_input=True,
-                  confirmation_prompt=True, help='组织.')
-    @click.option('--qq', prompt=True, hide_input=True,
-                  confirmation_prompt=True, help='官方QQ.')
+    @click.option('--password', prompt=True, hide_input=True,confirmation_prompt=True, help='组织.')
+    @click.option('--qq', prompt=True,confirmation_prompt=True, help='官方QQ.')
     # 初始化公用账号
     def initpub(username, password, qq):
         """Building Bluelog, just for you."""
@@ -229,10 +227,15 @@ def register_commands(app):
         else:
             click.echo('Creating the temporary public account...')
             public = User(username=username, password=password, real_name='三峡大学失物招领中心', academy='部门账号',
-                          class_name='部门账号', major='部门账号', qq=qq, kind=1, gender=3,status=2)
+                          class_name='部门账号', major='部门账号', qq=qq, kind=1, gender=2,status=2)
             db.session.add(public)
+            db.session.commit()
+            print('共有账户的ID',public.id)
+            op=OpenID(qq_id=None,wx_id=None,user_id=public.id)
+            print('创建开发平台ID')
+            db.session.add(op)
+            db.session.commit()
 
-        db.session.commit()
 
 
 def register_errors(app):

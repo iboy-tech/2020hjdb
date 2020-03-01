@@ -1,6 +1,6 @@
-三峡大学失物招领处/:handclap
-/:rose 亲爱的 {{ messages.post_user }} 同学,
-您发布的帖子有人评论啦！/:li
+三峡大学失物招领处
+亲爱的 {{ messages.post_user }} 同学,
+您发布的帖子有人评论啦！
 详情如下：
 评论者：{{ messages.comment_user }}
 内容：{{ messages.comment_content }}

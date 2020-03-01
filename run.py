@@ -127,6 +127,8 @@ if __name__ == '__main__':
   http://www.oicqzone.com/qqjiqiao/2014123020663.html
    ln -s  /usr/local/bin/celery /usr/bin/celery
    export C_FORCE_ROOT="True"
+   source venv/bin/activate && gunicorn -c config.py run:app 
+
    重启celery multi restart 1 --pidfile=%n.pid
     """
     socketio.run(app=app,host ='0.0.0.0',port ='8888')

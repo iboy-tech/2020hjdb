@@ -51,7 +51,7 @@ def index():
             if op is not None and user.id !=current_user.id:
                 print('发送消息')
                 uids = [op.wx_id]
-                send_message_by_pusher.delay(dict, uids, 4)
+                send_message_by_pusher(dict, uids, 4)
             db.session.add(comment)
             db.session.commit()
             return restful.success(msg='评论成功')
