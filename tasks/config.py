@@ -20,4 +20,4 @@ accept_content = ['json']
 # 最长的确认时间，防止延迟任务被不同的worker重复执行
 # https://yabzhang.github.io/2018/10/08/celery%E5%BB%B6%E6%97%B6%E4%BB%BB%E5%8A%A1%E8%B8%A9%E5%9D%91/
 visibility_timeout=43200
-result_expires = 3600
+# result_expires = 3600

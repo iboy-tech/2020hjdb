@@ -117,7 +117,7 @@ if __name__ == '__main__':
     python run.py  --host=0.0.0.0 --port=8888 --no-reload
     启动 Celery worker:
     sudo apt-get --purge remove gunicorn
-    nohup gunicorn -c config.py run:app   &> log.log
+    source venv/bin/activate && nohup gunicorn -c config.py run:app   &> log.log
    celery multi start  celery worker -A run.celery -l  DEBUG -E -P eventlet
    ps auxww | grep 'celery worker'
    celery worker -A run.celery --loglevel=debug --pool=eventlet  -E

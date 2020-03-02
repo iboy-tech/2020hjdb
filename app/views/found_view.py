@@ -17,7 +17,7 @@ from random import randint
 from flask import render_template, request
 from flask_cors import cross_origin
 from flask_login import current_user, login_required
-from sqlalchemy import desc, or_
+from sqlalchemy import or_
 
 from app import db, OpenID, redis_client
 from app.config import PostConfig
@@ -50,9 +50,9 @@ def get_all():
     page = int(req['pageNum'])
     pagesize = int(req['pageSize'])
     if current_user.kind > 1:
-        totalpage = db.session.query(LostFound).count()
-        mid = totalpage // 10
-        print('总的页数', totalpage, mid)
+        total_page = db.session.query(LostFound).count()
+        mid = total_page // 10
+        print('总的页数', total_page, mid)
         if pagesize < mid:
             pagesize = mid
 
@@ -67,13 +67,15 @@ def get_all():
     elif req['kind'] == -1 and req['category'] != '':
         c = Category.query.filter_by(name=req['category']).first()
         pagination = LostFound.query.filter_by(category_id=c.id).order_by(LostFound.status,
-        LostFound.create_time.desc()).paginate(page + 1,per_page=pagesize,error_out=False)
+                                                                          LostFound.create_time.desc()).paginate(
+            page + 1, per_page=pagesize, error_out=False)
     elif req['username'] != '':
         # print('这是用户个人查询')
         u = User.query.filter_by(username=req['username']).first()
         pagination = LostFound.query.filter_by(user_id=u.id).order_by(LostFound.status,
-        LostFound.create_time.desc()).paginate(page + 1,per_page=
-pagesize,
+                                                                      LostFound.create_time.desc()).paginate(page + 1,
+                                                                                                             per_page=
+                                                                                                             pagesize,
                                                                                                              error_out=False)
     elif req['kind'] != -1 and req['category'] != '':
         # print('这是分类查询')
@@ -254,11 +256,14 @@ def get_search_data(pagination, pageNum, pagesize):
             imglist = l.images.strip().split(',')
         # print(imglist, type(imglist))
         user = User.query.get(l.user_id)
-        view_count = redis_client.get(str(l.id) + PostConfig.POST_REDIS_PREFIX)
+        key = str(l.id) + PostConfig.POST_REDIS_PREFIX
+        view_count = redis_client.get(key)
         if view_count is None:
+            # 防止redis迁移导致的数据丢失
             look_count = l.look_count
+            redis_client.set(key, l.look_count)
         else:
-            look_count = int(bytes.decode(view_count)) if int(bytes.decode(view_count)) > l.look_count else l.look_count
+            look_count = int(bytes.decode(view_count))
         dict = {
             "id": l.id,
             "icon": 'https://q2.qlogo.cn/headimg_dl?dst_uin={}&spec=100'.format(user.qq),
@@ -308,14 +313,14 @@ def delete_lost():
                 l.images = l.images.replace('[', '').replace(']', '').replace(' \'', '').replace('\'', '')
                 imglist = l.images.strip().split(',')
                 remove_imglist.delay(imglist)
-            delete_post_notice.delay(current_user.kind, current_user.id, l)
+
             key = str(l.id) + PostConfig.POST_REDIS_PREFIX
-            view_count = redis_client.get(key)
-            if view_count is not None:
-                redis_client.delete(key)
+            # 删除浏览量，不存在的key会被忽略
+            redis_client.delete(key)
+            delete_post_notice(current_user.kind, current_user.id, l)
             db.session.delete(l)
             db.session.commit()
-            db.session.close()
+            # db.session.close()
             return restful.success(msg='删除成功')
         else:
             return restful.params_error()
@@ -323,6 +328,7 @@ def delete_lost():
 
 @celery.task  # 删除帖子给用户发送通知
 def delete_post_notice(kind, id, l):
+    # 管理删除的和自己删除的不通知
     if kind > 1 and l.user_id != id:
         u = User.query.get_or_404(l.user_id)
         op = OpenID.query.filter_by(user_id=u.id).first_or_404()

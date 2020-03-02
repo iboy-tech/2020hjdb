@@ -61,8 +61,7 @@ def wechat_required(func):
         print('判断用户是否关注公众号', )
         if current_user.status==0:
             return redirect(url_for('auth.login')), 301
-            if op is None:
-                return redirect(url_for('oauth.index')),301
-        else:
-            return func(*args, **kwargs)
+        if op is None:
+            return redirect(url_for('oauth.index')),301
+        return func(*args, **kwargs)
     return decorated_view

@@ -15,7 +15,8 @@ from flask import render_template, request
 from flask_login import current_user, login_required
 from sqlalchemy import or_
 
-from app import db
+from app import db, redis_client
+from app.config import PostConfig
 from app.decorators import super_admin_required, admin_required, wechat_required
 from app.models.user_model import User
 from app.page import userlist
@@ -164,12 +165,15 @@ def delete_user():
     req = request.args.get('userId')
     print('request.args', req)
     u = User.query.get(int(req))
-    if u:
+    if u and u.kind!=3:
         try:
             posts=u.posts
             print(posts,type(posts))
             del_imgs=[]
             for lost in posts:
+                #删除redis中的浏览量数据
+                key = str(lost.id) + PostConfig.POST_REDIS_PREFIX
+                redis_client.delete(key)
                 print(lost.images)
                 if lost.images == "":
                     temp_imglist = []

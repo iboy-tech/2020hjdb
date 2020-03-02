@@ -39,7 +39,7 @@ class User(db.Model, UserMixin):
     create_time = db.Column(db.DateTime, default=datetime.now, info='时间')
     last_login = db.Column(db.DateTime, default=datetime.now, info='最后登录时间')
     # 一对多关系删除
-    posts = db.relationship('LostFound', backref='post_user', cascade='all, delete-orphan', passive_deletes=True)
+    posts = db.relationship('LostFound', backref='post_user', cascade='all, delete-orphan',lazy='dynamic', passive_deletes=True)
     comments = db.relationship('Comment', backref='comment_user', cascade='all, delete-orphan', passive_deletes=True)
     reports = db.relationship('Report', backref='report_user', cascade='all, delete-orphan', passive_deletes=True)
     # 发布反馈

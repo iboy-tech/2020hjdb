@@ -75,7 +75,7 @@ def login():
         print('请求的全路径：', request.full_path, session.get('next'))
         user = User.query.filter_by(username=data['username']).first()
         if user is None:
-            restful.success(success=False, msg='请认证后登录')
+            return restful.success(success=False, msg='请认证后登录')
         else:
             # 密码错误次数判断
             key = user.username + LoginConfig.LOGIN_REDIS_PREFIX

@@ -6,7 +6,7 @@ var app = new Vue({
         user: getLocal("user") ? JSON.parse(getLocal("user")) : {},
         category: getCategory() || [],
         userIcon: "http://localhost/static/icon/user_icon.png",
-        api:'https://api.uomg.com/api/qq.talk?qq=',
+        api: 'https://api.uomg.com/api/qq.talk?qq=',
         imgPrefix: staticUrl,
         tab: [
             {
@@ -55,12 +55,12 @@ var app = new Vue({
         tab4: {
             applyKind: 0,
             categoryIndex: -1,
-            categoryId:13,
+            categoryId: 13,
             title: " ",
             about: " ",
             location: " ",
             images: [],//srcList
-            info:""
+            info: ""
         },
         notice: [
             {
@@ -84,7 +84,7 @@ var app = new Vue({
         }
     },
     methods: {
-        share(){
+        share() {
             //捕获页
             layer.open({
                 type: 1,
@@ -177,24 +177,61 @@ var app = new Vue({
             this.tab4.categoryIndex = index;
         },
         submitPub() {
-            if (this.tab4.title==" ") {
-            showAlertError('请输入标题!');
-            return ;
-        }
-            if (this.tab4.about==" ") {
-            showAlertError('请输入详情!');
-            return ;
-        }
+
             if (this.tab4.categoryIndex < 0) {
                 showAlertError("请选择物品类别！")
                 return;
             }
+            if (this.tab4.title == " ") {
+                showAlertError('请输入标题!');
+                return;
+            }
+            if (this.tab4.about == " ") {
+                showAlertError('请输入详情!');
+                return;
+            }
             let data = this.tab4;
-            data.categoryId = this.category[data.categoryIndex < 0 ? 0 : data.categoryIndex].categoryId;
-            console.log(data);
-            pubLostFound(data);
-            $("button[type='submit']").attr('disabled','disabled');
+            if (this.tab4.applyKind == 1) {
+                let temp = this.category[data.categoryIndex < 0 ? 0 : data.categoryIndex]
+                data.categoryId = temp.categoryId;
+                if (this.tab4.info == "") {
+                    var regName = /(身份证)$/;
+                    var regNum = /(校园卡|学生证)$/;
+                    if (regName.test(temp.name)) {
+                        showAlertError("分类 " + temp.name + " 需要在附加信息中填入姓名");
+                        return;
+                    } else if (regNum.test(temp.name)) {
+                        showAlertError("分类 " + temp.name + " 需要在附加信息中填入学号");
+                        return;
+                    }
+                } else {
+                    var reg1 = /^\d+$/;
+                    var reg2 = /^[\u4E00-\u9FA5\uf900-\ufa2d·s]{2,20}$/;
+                    if (reg1.test(this.tab4.info)) {
+                    } else if (reg2.test(this.tab4.info)) {
 
+                    } else {
+                        showAlertError("附加信息只填写学号或姓名中的一项,请不要同时填写,如有学号，请优先填写学号");
+                        return;
+                    }
+                }
+            } else {
+                let temp = this.category[data.categoryIndex < 0 ? 0 : data.categoryIndex]
+                data.categoryId = temp.categoryId;
+            }
+            if (this.tab4.images.length != 0) {
+                layer.confirm('检测到您上传有图片,如有隐私信息请注意打码哦！', {
+                    btn: ['已打码', '取消'] //按钮
+                }, function () {
+                    pubLostFound(data);
+                    $("button[type='submit']").attr('disabled', 'disabled');
+                }, function () {
+                });
+            } else {
+                pubLostFound(data);
+                $("button[type='submit']").attr('disabled', 'disabled');
+            }
+            console.log(data);
             //console.log(this.tab4);
         },
         changeImg() {
@@ -207,7 +244,7 @@ var app = new Vue({
         },
         jumpDetail(id) {
             //跳转详情页面
-            window.open(baseUrl+"/detail.html?id=" + id, "_self");
+            window.open(baseUrl + "/detail.html?id=" + id, "_self");
         },
         showFeedback() {
             app.showMenu = false;
@@ -220,9 +257,9 @@ var app = new Vue({
                 content: $('#editorDiv') //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
                 , yes: function () {
                     console.log(app.feedback);
-                    if(app.feedback.subject==" " || app.feedback.content==" "){
+                    if (app.feedback.subject == " " || app.feedback.content == " ") {
                         showAlertError('请填写全部内容!');
-                            return ;
+                        return;
                     }
                     pubFeedback(app.feedback);
                 }, cancel: function () {
@@ -242,15 +279,14 @@ var app = new Vue({
                 yes: function () {
                     console.log(app.password);
                     let pwd = app.password;
-                     var reg=/^[a-zA-Z0-9]{6,15}$/;
-                     if(pwd.newPassword=='' || pwd.newPassword.length<6  ) {
-                         showAlertError('密吗至少是6位');
+                    var reg = /^[a-zA-Z0-9]{6,15}$/;
+                    if (pwd.newPassword == '' || pwd.newPassword.length < 6) {
+                        showAlertError('密吗至少是6位');
                         return false;
-	            } else if(!reg.test( app.newPassword)){
-                    showAlertError('密码必须包为字母或数字！');
+                    } else if (!reg.test(app.newPassword)) {
+                        showAlertError('密码必须包为字母或数字！');
                         return false;
-                     }
-               else if(pwd.newPassword != pwd.confirmPassword) {
+                    } else if (pwd.newPassword != pwd.confirmPassword) {
                         showAlertError("两次密码不一致！");
                         return;
                     }
@@ -268,16 +304,16 @@ var app = new Vue({
         setQQ() {
             app.showMenu = false;
             layer.prompt({title: '请输入新的QQ：'}, function (qq, index) {
-                if(qq==''){
+                if (qq == '') {
                     showAlertError('QQ号不可为空！');
                     return false;
-                }
-                else{
-                     var reg=/^[1-9][0-9]{4,14}$/;;
-                     if(!reg.test(qq)){
-                     showAlertError('QQ号格式错误！');
-                    return false;
-	            }
+                } else {
+                    var reg = /^[1-9][0-9]{4,14}$/;
+                    ;
+                    if (!reg.test(qq)) {
+                        showAlertError('QQ号格式错误！');
+                        return false;
+                    }
                 }
                 //layer.close(index);
                 setQQ(qq);
@@ -364,28 +400,28 @@ function setPassword(data) {
         success: function (res, status) {
             console.log(res);
 
-                if (res.success) {
-                    layer.closeAll();
-                    showOK();
-                    app.password = {
-                        oldPassword: "",
-                        newPassword: "",
-                        confirmPassword: ""
-                    }
-                    $.ajax({
-                    url: baseUrl + "/logout" ,
+            if (res.success) {
+                layer.closeAll();
+                showOK();
+                app.password = {
+                    oldPassword: "",
+                    newPassword: "",
+                    confirmPassword: ""
+                }
+                $.ajax({
+                    url: baseUrl + "/logout",
                     //data: JSON.stringify(data),
                     method: "POST",
                     success: function (res) {
-                        if (res.success){
-                             console.log(res);
-                            window.location=baseUrl+'/login';
+                        if (res.success) {
+                            console.log(res);
+                            window.location = baseUrl + '/login';
                         }
                     }
-                  });
-                } else {
-                    showAlertError(res.msg)
-                }
+                });
+            } else {
+                showAlertError(res.msg)
+            }
         }
     });
 }
@@ -393,7 +429,7 @@ function setPassword(data) {
 //删除招领信息
 function deletePub(id) {
     $.ajax({
-        url: baseUrl + "/found.html/delete?id="+id,
+        url: baseUrl + "/found.html/delete?id=" + id,
         method: "POST",
         success: function (res, status) {
             console.log(res);
@@ -437,18 +473,18 @@ function getNoticeList(app) {
 
 //删除消息（评论）
 function removeComment(id) {
-    console.log("我是要删除的ID:"+id);
+    console.log("我是要删除的ID:" + id);
     $.ajax({
-        url: baseUrl + "/comment/delete?id="+id,
+        url: baseUrl + "/comment/delete?id=" + id,
         method: "POST",
         success: function (res) {
             console.log(res);
-                if (res.success) {
-                    showOK(res.msg);
-                    getMessages(app);
-                } else {
-                    showAlertError(res.msg)
-                }
+            if (res.success) {
+                showOK(res.msg);
+                getMessages(app);
+            } else {
+                showAlertError(res.msg)
+            }
         }
     });
 
@@ -476,38 +512,6 @@ function getMessages(app) {
 
 }
 
-//选择上传头像图片
-function changeIcon(obj) {
-    console.log('change img')
-    console.log(obj);
-    let file = obj.file[0];
-
-    //console.log(file);
-    console.log("file.size = " + file.size);  //file.size 单位为byte
-
-    let reader = new FileReader();
-
-    reader.onload = function (e) {
-        app.icon = this.result;
-        //app.tab4.go.push(e.target.result);
-        //或者 img.src = this.result;  //e.target == this
-    };
-    reader.readAsDataURL(file);
-
-    layer.open({
-        btn: ['确定', '取消'],
-        type: 1,
-        area: ['auto', 'auto'],
-        //shade: true,
-        title: "修改头像", //不显示标题
-        content: $('#iconDiv') //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
-        , yes: function () {
-            setIcon(app.icon);
-        }, cancel: function () {
-            app.icon = "";
-        }
-    });
-}
 
 function setIcon(icon) {
     $.ajax({
@@ -533,52 +537,7 @@ function setIcon(icon) {
         }
     });
 }
-/**
 
-//选择上传图片
-function changeInput(obj) {
-    console.log('搜狗上传图片change img')
-    console.log(obj);
-    let file = obj.files[0];
-    console.log("file.size = " + file.size);  //file.size 单位为byte
-    // alert('执行了file_upload')
-    let reader = new FileReader();
-
-    reader.onload = function () {
-        //console.log("成功读取....");
-
-         let imageData = new FormData();
-                imageData.append("file", 'multipart');
-                imageData.append("Filedata", file);
-console.log("我是传给后台的id：" + imageData);
-    var ajax;
-    ajax = new XMLHttpRequest();
-    ajax.onreadystatechange = function() {
-        if (4 == ajax.readyState && 200 == ajax.status) {
-            var result = ajax.responseText;
-            console.log('返回的结果：'+result);
-            eval("var data=" + result);
-            if (data.code == 1) {
-                // alert("删除成功！");
-                console.log('图片的链接'+data.imgurl);
-                app.tab4.images.push(data.imgurl);
-                // window.location.href = "/admin/list";
-            } else {
-                alert("文件过大,请重新上传！");
-            }
-        }
-    }
-    imgApi_AL='https://api.uomg.com/api/image.ali'
-    ssm_API='https://sm.ms/api/upload'
-    imgApi_JJ='https://api.uomg.com/api/image.juejin'
-    imgApi_JD='https://api.uomg.com/api/image.jd'
-    ajax.open("post",imgApi_AL);
-    // ajax.setRequestHeader("Content-Type", "application/json");
-    ajax.send(imageData);
-    }
-    reader.readAsDataURL(file)
-}
-**/
 //选择上传图片
 function changeInput(obj) {
     console.log('change img')
@@ -586,37 +545,18 @@ function changeInput(obj) {
     let file = obj.files[0];
 
     //console.log(file);
-    console.log("file.size = " +file.size);  //file.size 单位为byte
+    console.log("file.size = " + file.size);  //file.size 单位为byte
     var size = file.size / 1024;
 
-    if(size>2000){
-      showAlertError('您上传的图片大小超过2M，请尝试压缩图片，或上传所拍照片的截图');
-      return;
-      }
+    if (size > 2000) {
+        showAlertError('您上传的图片大小超过2M，请尝试压缩图片，或上传所拍照片的截图');
+        return;
+    }
 
     let reader = new FileReader();
 
-    //读取文件过程方法
-    /* reader.onloadstart = function (e) {
-         console.log("开始读取....");
-     }
-     reader.onprogress = function (e) {
-         console.log("正在读取中....");
-     }
-     reader.onabort = function (e) {
-         console.log("中断读取....");
-     }
-     reader.onerror = function (e) {
-         console.log("读取异常....");
-     }*/
     reader.onload = function (e) {
-        //console.log("成功读取....");
-
-        //var img = document.getElementById("image1");
-        //img.src = e.target.result;
         app.tab4.images.push(e.target.result);
-        //console.log(img.src)
-        //或者 img.src = this.result;  //e.target == this
     }
 
     reader.readAsDataURL(file)
@@ -668,13 +608,13 @@ function pubLostFound(data) {
                     app.tab4 = {
                         applyKind: 0,
                         categoryIndex: -1,
-                        categoryId:13,
+                        categoryId: 13,
                         title: "",
                         about: "",
                         location: null,
                         images: [],//srcList
                     };
-                    window.location.href =baseUrl
+                    window.location.href = baseUrl
                     // changeTab(0);
                 } else {
                     showAlertError(res.msg)

@@ -1,71 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>微信绑定</title>
     <style>
-        #code{
+        #code {
             width: 300px;
             height: 300px;
-            margin: 100px auto 0;
+            margin: 0 auto;
             background: url("{{ data.url }}") no-repeat;
             background-size: cover;
+        }
+
+        .position {
+            width: 400px;
+            height: 400px;
+            margin: 0 auto;
+            text-align: center;
+            margin-top: 18vh;
         }
     </style>
     <script src="../static/js/jquery-1.11.1.min.js"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/socket.io.min.js') }}"></script>
 </head>
-<body style="">
-<div id="code">
 
-</div>
-<h1 id="notice" style="text-align: center;"><span>绑定微信，接受通知！</span></h1>
-<script>
-    $(document).ready(function () {
-        const url = "{{ data.site }}";
-        console.log(url);
-        const socket = io(url);
-        socket.emit('server');//触发通信
-        socket.on('server', function (data) {
-            console.log(data);
-                if(data['success']=='true'){
+<body>
+    <div class="position">
+        <h2><span>绑定微信，接受失物招领通知！</span></h2>
+        <div id="code">
+
+        </div>
+        <h4 id="notice" style="text-align: center;"><span></span></h4>
+    </div>
+
+
+    <script>
+        $(document).ready(function () {
+            const url = "{{ data.site }}";
+            console.log(url);
+            const socket = io(url);
+            socket.emit('server');//触发通信
+            socket.on('server', function (data) {
+                console.log(data);
+                if (data['success'] == 'true') {
+                    $("h2").text("");
                     $("#notice").text(data['data']['msg']);
-                    $("#code").css( "background" ,"url("+data['data']['head']+")").css("background-size","cover").css("background-repeat","no-repeat");
-                    $("#notice").css("color","#41B146");
+                    $("#code").css("background", "url(" + data['data']['head'] + ")").css("background-size", "cover").css("background-repeat", "no-repeat");
+                    $("#notice").css("color", "#41B146");
+                    setTimeout(function () {//5秒之后执行
+                        location.href = "{{ url_for('auth.index', _external=True) }} ";
+                    }, 4000);
+                }
+                else {
+                    $("#notice").text(data['data']['msg']);
+                    if (data['data']['bg'] == '0') {
+                        $("#code").css("background", "url(https://ae01.alicdn.com/kf/H750e159a0e144e5cb3a063a9901215f1m.jpg)").css("background-size", "cover").css("background-repeat", "no-repeat");
+                    }
+                    /**
                      setTimeout(function(){//5秒之后执行
-                         location.href="{{ url_for('auth.index', _external=True) }} ";
-                 }, 4000);
-             }
-              else{
-                  $("#notice").text(data['data']['msg']);
-                  if (data['data']['bg']=='0'){
-                      $("#code").css( "background" ,"url(https://ae01.alicdn.com/kf/H750e159a0e144e5cb3a063a9901215f1m.jpg)").css("background-size","cover").css("background-repeat","no-repeat");
-                  }
-                  /**
-                   setTimeout(function(){//5秒之后执行
-                          $("#notice").text(data['data']['msg']);
-                 }, 2000); */
-              }
+                            $("#notice").text(data['data']['msg']);
+                   }, 2000); */
+                }
 
+            });
+
+            /**
+             setInterval(function () {//间隔5秒执行一次
+               socket.emit('connect', {'msg': '你获取了数据吗？'})
+             },2000);
+
+             function tel(){
+                      socket.on('connect',function (data) {
+                     console.log('监听服务端connect'+data)
+                     if(data!=undefined){
+                           console.log('服务器发来的数据'+data['msg']);
+                     }
+                });
+             }
+             */
+            //判断是否登录
         });
 
-        /**
-         setInterval(function () {//间隔5秒执行一次
-           socket.emit('connect', {'msg': '你获取了数据吗？'})
-         },2000);
-
-         function tel(){
-                  socket.on('connect',function (data) {
-                 console.log('监听服务端connect'+data)
-                 if(data!=undefined){
-                       console.log('服务器发来的数据'+data['msg']);
-                 }
-            });
-         }
-         */
-        //判断是否登录
-    });
-
-</script>
+    </script>
 </body>
+
 </html>
