@@ -10,7 +10,7 @@
 """
 # 消息代理的连接Celery 从 4.0 开始启用新的小写配置名
 broker_url = 'redis://localhost:6379/2'
-result_backend = 'redis://localhost:6379/3'
+# result_backend = 'redis://localhost:6379/3'
 task_serializer = 'json'
 result_serializer = 'json'
 accept_content = ['json']
@@ -20,4 +20,6 @@ accept_content = ['json']
 # 最长的确认时间，防止延迟任务被不同的worker重复执行
 # https://yabzhang.github.io/2018/10/08/celery%E5%BB%B6%E6%97%B6%E4%BB%BB%E5%8A%A1%E8%B8%A9%E5%9D%91/
 visibility_timeout=43200
+task_ignore_result= True
+
 # result_expires = 3600
