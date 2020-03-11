@@ -23,7 +23,7 @@ print('视图文件加载')
 
 # https://blog.csdn.net/yannanxiu/article/details/53816567
 
-@chart.route('/', methods=['GET', 'POST'],strict_slashes=False)
+@chart.route('/', methods=['GET', 'POST'], strict_slashes=False)
 @auth.route('/admin')
 @login_required
 @wechat_required
@@ -40,35 +40,43 @@ def get_data():
     # 0=lost 1 found
     # losts_today = LostFound.query.filter(db.cast(LostFound.create_time, db.DATE) == today,LostFound.kind==1).all()
     # founds_today = LostFound.query.filter(db.cast(LostFound.create_time, db.DATE) == today, LostFound.kind == 1).all()
+    # 今日丢失
     today_lost = LostFound.query.filter(db.cast(LostFound.create_time, db.DATE) == today, LostFound.kind == 0).count()
+    # 今日拾取
     today_found = LostFound.query.filter(db.cast(LostFound.create_time, db.DATE) == today, LostFound.kind == 1).count()
+    # 今日解决
     today_solve = LostFound.query.filter(db.cast(LostFound.deal_time, db.DATE) == today,
                                          LostFound.status == 1).count()
+    # 总计丢失
     total_lost = LostFound.query.filter(LostFound.kind == 0).count()
+    # 总计拾取
     total_found = LostFound.query.filter(LostFound.kind == 1).count()
+    # 总计解决
     total_solve = LostFound.query.filter(LostFound.status == 1).count()
+    # 男生
     boy_users = User.query.filter(User.gender == 0).count()
+    # 女生
     girl_users = User.query.filter(User.gender == 1).count()
     # list1, list2, list3, list4 = get_week_data()
-    mylist=get_week_data()
+    mylist = get_week_data()
     data = {
         # //数据总览
         # //今日和总计
         'lost': [today_lost, total_lost],
         'found': [today_found, total_found],
         'solve': [today_solve, total_solve],
-        # //近期数据
+        # //最近7天
         # 'barChartData1': {
-        'dayLabels':  mylist[6],
-        # //柱状图
+        'dayLabels': mylist[6],
+        # //近期数据
         # 'data1': [[1111, 70, 55, 20, 45, 0, 60], [65, 59, 90, 81, 56, 0, 40], [65, 1, 90, 81, 56, 1, 300]],
-        'data1': [mylist[0], mylist[1],mylist[2]],
+        'data1': [mylist[0], mylist[1], mylist[2]],
         # },
         # //面积图
         # 'lineChartData1': {
         # 'labels2': ["Jan", "Feb", "March", "April", "May", "June", "July"],
         # 'data2': [[22, 31, 2, 40, 555, 65, 68], [1, 31, 2, 40, 55, 0, 68], [1, 1, 39, 1, 55, 65, 68]],
-        'data2': [mylist[0], mylist[1],mylist[2]],
+        # 'data2': [mylist[0], mylist[1], mylist[2]],
         # },
         # //饼状图
         # 'pieData1': {
@@ -79,7 +87,7 @@ def get_data():
         # 'lineChartData2': {
         # 'labels4':["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
         # 'data4': list4,
-        'data4':mylist[3],
+        'data4': mylist[3],
         # },
         # //用户活跃量
         # 'lineChartData3': {
@@ -120,13 +128,13 @@ def get_week_data():
     # time_len = (today - last_sunday.date()).days  # 获取当前与上周相差的天数
     # print("time——len", time_len)
     # list1 = [], list2 = [], list3 = [], list4 = []
-    mylist=[[],[],[],[],[],[],[]]
-    seven_day_ago=today - datetime.timedelta(days=7)
+    mylist = [[], [], [], [], [], [], []]
+    seven_day_ago = today - datetime.timedelta(days=7)
     # datetime.timedelta(days=1)加上一个天数
     for i in range(1, 8):
         print(i)
         day = seven_day_ago + datetime.timedelta(days=i)
-        print("我是七天前查询的时间",day)
+        print("我是七天前查询的时间", day)
         today_lost = LostFound.query.filter(db.cast(LostFound.create_time, db.DATE) == day, LostFound.kind == 0).count()
         mylist[0].append(today_lost)
         today_found = LostFound.query.filter(db.cast(LostFound.create_time, db.DATE) == day,
@@ -137,12 +145,12 @@ def get_week_data():
         mylist[2].append(today_solve)
         today_user = User.query.filter(db.cast(User.create_time, db.DATE) <= day).count()
         mylist[3].append(today_user)
-        active_boy = User.query.filter(db.cast(User.last_login, db.DATE) == day, User.gender ==0).count()
+        active_boy = User.query.filter(db.cast(User.last_login, db.DATE) == day, User.gender == 0).count()
         mylist[4].append(active_boy)
-        active_girl=User.query.filter(db.cast(User.last_login, db.DATE) == day,User.gender==1).count()
+        active_girl = User.query.filter(db.cast(User.last_login, db.DATE) == day, User.gender == 1).count()
         mylist[5].append(active_girl)
         mylist[6].append(day.strftime('%m/%d'))
 
     # print(list1,list2,list3,list4)
-    print('每周的结果',mylist)
+    print('每周的结果', mylist)
     return mylist

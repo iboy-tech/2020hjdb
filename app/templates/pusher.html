@@ -5,6 +5,11 @@
     <meta charset="UTF-8">
     <title>微信绑定</title>
     <style>
+body {
+    font-family: Helvetica Neue,Helvetica,Hiragino Sans GB,Microsoft YaHei,\\5FAE\8F6F\96C5\9ED1,Arial,sans-serif;
+    background: url(https://ae01.alicdn.com/kf/H8c1d47e9af6f4dfb92a5432a3d81dfe1p.jpg) no-repeat;
+    background-size: cover;
+}
         #code {
             width: 300px;
             height: 300px;
@@ -14,25 +19,51 @@
         }
 
         .position {
-            width: 400px;
-            height: 400px;
+                border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    background-color: #fff;
+            width: 380px;
+            height: 450px;
             margin: 0 auto;
             text-align: center;
-            margin-top: 18vh;
+            margin-top: 10vh;
+             box-shadow: 0 2px 10px #999;
+    -moz-box-shadow: #999 0 2px 10px;
+    -webkit-box-shadow: #999 0 2px 10px;
         }
+        .sub_title {
+        text-align: center;
+    font-size: 20px;
+    color: #353535;
+    margin-bottom: 13px;
+    margin-top: 30px;
+    display: inline-block;
+}
+        #notice {
+    text-align: center;
+    color: #a3a3a3;
+    font-size: 15px;
+    padding: 0 40px;
+    line-height: 1.8;
+}
     </style>
         <script src="https://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/socket.io.min.js') }}"></script>
 </head>
 
 <body>
-    <div class="position">
-        <h2><span>绑定微信，接受失物招领通知！</span></h2>
+
+            <div class="position">
+        <span class="sub_title">绑定微信，接受失物招领通知！</span>
         <div id="code">
 
         </div>
-        <h4 id="notice" style="text-align: center;"><span></span></h4>
+        <span id="notice"></span>
     </div>
+
+        </div>
+
 
 
     <script>
@@ -44,7 +75,7 @@
             socket.on('server', function (data) {
                 console.log(data);
                 if (data['success'] == 'true') {
-                    $("h2").text("");
+                    $(".sub_title").text("");
                     $("#notice").text(data['data']['msg']);
                     $("#code").css("background", "url(" + data['data']['head'] + ")").css("background-size", "cover").css("background-repeat", "no-repeat");
                     $("#notice").css("color", "#41B146");
@@ -55,12 +86,10 @@
                 else {
                     $("#notice").text(data['data']['msg']);
                     if (data['data']['bg'] == '0') {
+                        $(".sub_title").text("");
                         $("#code").css("background", "url(https://ae01.alicdn.com/kf/H750e159a0e144e5cb3a063a9901215f1m.jpg)").css("background-size", "cover").css("background-repeat", "no-repeat");
                     }
-                    /**
-                     setTimeout(function(){//5秒之后执行
-                            $("#notice").text(data['data']['msg']);
-                   }, 2000); */
+
                 }
 
             });

@@ -13,6 +13,7 @@ import os
 import uuid
 from datetime import datetime
 from random import randint
+from PIL import Image
 
 from flask import render_template, request
 from flask_cors import cross_origin
@@ -28,6 +29,7 @@ from app.models.lostfound_model import LostFound
 from app.models.user_model import User
 from app.page import found
 from app.utils import restful
+from app.utils.img_compress import resize_images
 from app.utils.mail_sender import send_email
 from app.utils.time_util import get_time_str
 from app.utils.tinify_tool import tinypng
@@ -157,8 +159,14 @@ def change_bs4_to_png(imglist):
         bas4_code = img.split(',')
         filename = uuid.uuid4().hex + '.png'
         files.append(filename)
-        with open(os.path.join(os.getenv('PATH_OF_UPLOAD'), filename), 'wb') as f:
+        myfile = os.path.join(os.getenv('PATH_OF_UPLOAD'), filename)
+        with open(myfile, 'wb') as f:
             f.write(base64.b64decode(bas4_code[1]))
+            # 后台检查图片大小
+            if os.path.getsize(myfile) / 1024 > 1024:
+                os.remove(myfile)
+                print("图片太大")
+                files.remove(filename)
     if files:
         print('对上传图片进行异步压缩')
         tinypng.delay(files)
@@ -167,13 +175,21 @@ def change_bs4_to_png(imglist):
     return files
 
 
+def check_pup(data):
+    if data['title'] == "" or data['about'] == "":
+        return True
+    else:
+        return False
+
+
 @found.route('/pub', methods=['GET', 'POST', 'OPTIONS'], strict_slashes=False)
 @login_required
 def pub():
     data = request.json
-    # print(data)
+    print(data)
     # print(data['images'], type(data['images']))
-
+    if check_pup(data):
+        return restful.params_error(success=False, msg="参数错误")
     print(type(data['images']), len(data['images']))
     # strs = data['images'][0]
     imgstr = ''
@@ -324,6 +340,14 @@ def delete_lost():
             return restful.success(msg='删除成功')
         else:
             return restful.params_error()
+
+
+@found.route('/compress', methods=['GET'])
+@login_required
+@cross_origin()
+def compress():
+    resize_images(r"..\\app\\static\\upload", r"..\\app\\static\\upload", 140000)
+    return restful.success(msg="压缩成功")
 
 
 @celery.task  # 删除帖子给用户发送通知

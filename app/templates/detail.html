@@ -120,7 +120,7 @@
                                         <span data-tweet-ref-count></span>
                                         分享
                                     </a>
-                                {% if item.isSelf %}
+                                {% if item.isSelf or isAdmin %}
                                     <a class="like" @click="deletePub({{ item.id }})">
                                         <i class="trash alternate outline icon"></i>删除
                                     </a>
@@ -135,9 +135,9 @@
                                 </div>
                                 <div class="meta">
 
-                                    <a class="reply"><i class="envelope outline icon"></i>
+                                    <a target="_blank" style="color: rgba(0,0,0,.5);" class="reply" href="{{ 'https://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email='+item.email }}"><i class="envelope outline icon"></i>
                                         {{ item.email }}</a>
-                                    <a style="color: rgba(0,0,0,.5);" class="share" href="{{ 'https://api.uomg.com/api/qq.talk?qq='+item.QQ }}">
+                                    <a target="_blank" style="color: rgba(0,0,0,.5);" class="share" href="{{ 'https://api.uomg.com/api/qq.talk?qq='+item.QQ }}">
                                         <i class="qq icon" style="color: rgba(121, 103, 103, 0.4) !important;"></i>
                                         {{ item.QQ }}
                                     </a>
@@ -337,7 +337,7 @@
         <div class="ui container">
             <div class="ui clearing basic segment" style="text-align: center;">
                 <div class="ui   horizontal link list">
-                    <div class="item">&copy; 校园失物招领网站系统 | <a href="http://www.ctgu.edu.cn/"
+                    <div class="item">&copy; 三峡大学失物招领中心 | <a href="http://www.ctgu.edu.cn/"
                                                                   target="_blank">CTGU</a></div>
 
                 </div>
@@ -383,15 +383,20 @@
 </style>
 <script src="https://cdn.bootcss.com/semantic-ui/2.3.1/semantic.min.js"></script>
 <script src="../static/js/mine/common.js"></script>
-<script src="https://cdn.bootcss.com/layer/2.3/layer.js"></script>
+<script src="../static/js/layer.js"></script>
 <script src="../static/js/mine/detail.js"></script>
 <script src="../static/js/share/js/social-share.js"></script>
 <script src="../static/js/qrcode.js"></script>
 <script>
      // hideLoading();
-     $(function () {
+var _hmt = _hmt || [];
+$(function () {
         isAnonymous();
-     })
+          var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?cadc146ea11d785cac889d32e36f336b";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+     })();
 </script>
 </body>
 </html>

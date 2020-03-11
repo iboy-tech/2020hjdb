@@ -104,8 +104,7 @@ def login():
                 print('我是查询的登录页面查询的OPIN', op, datetime.now())
                 if op is None:
                     data = user.auth_to_dict()
-                    return restful.success(
-                        success=True, msg='登录成功，请绑定微信', data=data, ext='wx')
+                    return restful.success(success=True, msg='登录成功，请绑定微信', data=data, ext='wx')
                 print('当前登录的用户', current_user.real_name)
                 print(
                     'current_user.is_authenticated',
@@ -184,10 +183,10 @@ def recognize():
                     'real_name': user_db.real_name,
                     'token': url_for('auth.confirm', token=token, _external=True)
                 }
-                send_email.apply_async(args=(qq, '身份认证', 'confirm', messages), countdown=randint(1, 30))
+                send_email.apply_async(args=(qq, '邮箱验证', 'confirm', messages), countdown=randint(1, 30))
                 return restful.success(
                     success=False,
-                    msg="验证邮件已发送到您的QQ邮箱，可能在垃圾信箱中，请尽快认证",
+                    msg="验证邮件已发送到您的QQ邮箱，可能在垃圾信箱中，请尽快认证，强烈建议您将此地址添加到通讯录中",
                     data=data)
             except:
                 db.session.rollback()

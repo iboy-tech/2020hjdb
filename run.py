@@ -116,6 +116,7 @@ if __name__ == '__main__':
     sudo apt-get --purge remove gunicorn
     source venv/bin/activate && nohup gunicorn -c config.py run:app   &> log.log
    celery multi start  celery worker -A run.celery -l  DEBUG -E -P eventlet
+      gunicorn -c config.py run:app  --daemon
     celery worker -A run.celery -l  DEBUG -E -P eventlet -Q default 
    ps auxww | grep 'celery worker'
    pkill -f "celery"
@@ -129,7 +130,7 @@ if __name__ == '__main__':
    ln -s  /usr/local/bin/celery /usr/bin/celery
    export C_FORCE_ROOT="True"
    pkill -9 -f 'celery worker'
-   gunicorn -c config.py run:app  --daemon
+
    source venv/bin/activate && gunicorn -c config.py run:app 
    set ff=unix
    celery worker -E -l INFO -A run.celery -n send_mail -Q send_mail -P eventlet

@@ -23,7 +23,7 @@ from app.utils.wxpusher import WxPusher
 def index():
     # print('SECRET_KEY', os.getenv('SECRET_KEY'))
     # print('request.sid',request.sid)
-
+    print("用户要绑定位置")
     if current_user.is_authenticated and request.method == 'GET':
         op = OpenID.query.filter_by(user_id=current_user.id).first()
         if op is not None:

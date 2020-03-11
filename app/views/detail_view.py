@@ -36,16 +36,16 @@ def index():
         if id is None:
             return restful.success(success=False, msg='提示：参数缺失')
         try:
-            myid=int(id)
+            myid = int(id)
             lost = LostFound.query.get(myid)
         except:
-            return restful.success(success=False, msg='警告,检测到用户%s尝试非法字符注入，后台已记录'%current_user.real_name)
+            return restful.success(success=False, msg='警告,检测到用户%s尝试非法字符注入，后台已记录' % current_user.real_name)
         if lost is not None:
-            key = str(lost.id)+ PostConfig.POST_REDIS_PREFIX
+            key = str(lost.id) + PostConfig.POST_REDIS_PREFIX
             redis_client.incr(key)
             intcnt = int(bytes.decode(redis_client.get(key)))
             if intcnt - lost.look_count >= PostConfig.REDIS_MAX_VIEW:  # 超过一定程度吧浏览量存入数据库
-                lost.look_count = lost.look_count + (intcnt-lost.look_count)
+                lost.look_count = lost.look_count + (intcnt - lost.look_count)
                 db.session.add(lost)
                 db.session.commit()
             user = User.query.get_or_404(lost.user_id)
@@ -67,10 +67,11 @@ def index():
                 "about": lost.about,
                 "images": imglist,
                 "category": (Category.query.get(lost.category_id)).name,
-                "lookCount":intcnt,
+                "lookCount": intcnt,
                 "status": lost.status,
                 "dealTime": None if lost.deal_time is None else lost.deal_time.strftime('%Y-%m-%d %H:%M:%S'),
                 "isSelf": current_user.id == lost.user_id,
+                "isAdmin": current_user.kind > 1,
                 "email": user.qq + '@qq.com',
                 "QQ": user.qq,
                 "site": os.getenv('SITE_URL')

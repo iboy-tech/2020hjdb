@@ -1,0 +1,30 @@
+[2020-03-09 12:01:32,888: DEBUG/MainProcess] | Worker: Preparing bootsteps.
+[2020-03-09 12:01:32,942: DEBUG/MainProcess] | Worker: Building graph...
+[2020-03-09 12:01:32,944: DEBUG/MainProcess] | Worker: New boot order: {Beat, StateDB, Timer, Hub, Pool, Autoscaler, Consumer}
+[2020-03-09 12:01:35,137: DEBUG/MainProcess] | Consumer: Preparing bootsteps.
+[2020-03-09 12:01:35,138: DEBUG/MainProcess] | Consumer: Building graph...
+[2020-03-09 12:01:35,343: DEBUG/MainProcess] | Consumer: New boot order: {Connection, Events, Mingle, Gossip, Tasks, Control, Heart, Agent, event loop}
+[2020-03-09 12:01:35,350: DEBUG/MainProcess] | Worker: Starting Pool
+[2020-03-09 12:01:35,350: DEBUG/MainProcess] ^-- substep ok
+[2020-03-09 12:01:35,350: DEBUG/MainProcess] | Worker: Starting Consumer
+[2020-03-09 12:01:35,351: DEBUG/MainProcess] | Consumer: Starting Connection
+[2020-03-09 12:01:38,519: INFO/MainProcess] Connected to redis://localhost:6379/2
+[2020-03-09 12:01:38,520: DEBUG/MainProcess] ^-- substep ok
+[2020-03-09 12:01:38,521: DEBUG/MainProcess] | Consumer: Starting Events
+[2020-03-09 12:01:41,360: DEBUG/MainProcess] ^-- substep ok
+[2020-03-09 12:01:41,361: DEBUG/MainProcess] | Consumer: Starting Mingle
+[2020-03-09 12:01:41,361: INFO/MainProcess] mingle: searching for neighbors
+[2020-03-09 12:01:46,056: INFO/MainProcess] mingle: all alone
+[2020-03-09 12:01:46,057: DEBUG/MainProcess] ^-- substep ok
+[2020-03-09 12:01:46,057: DEBUG/MainProcess] | Consumer: Starting Gossip
+[2020-03-09 12:01:46,932: DEBUG/MainProcess] ^-- substep ok
+[2020-03-09 12:01:46,933: DEBUG/MainProcess] | Consumer: Starting Tasks
+[2020-03-09 12:01:46,971: DEBUG/MainProcess] ^-- substep ok
+[2020-03-09 12:01:46,972: DEBUG/MainProcess] | Consumer: Starting Control
+[2020-03-09 12:01:46,973: DEBUG/MainProcess] ^-- substep ok
+[2020-03-09 12:01:46,974: DEBUG/MainProcess] | Consumer: Starting Heart
+[2020-03-09 12:01:47,444: INFO/MainProcess] pidbox: Connected to redis://localhost:6379/2.
+[2020-03-09 12:01:49,395: DEBUG/MainProcess] ^-- substep ok
+[2020-03-09 12:01:49,396: DEBUG/MainProcess] | Consumer: Starting event loop
+[2020-03-09 12:01:49,397: INFO/MainProcess] celery@windows ready.
+[2020-03-09 12:01:49,397: DEBUG/MainProcess] basic.qos: prefetch_count->32

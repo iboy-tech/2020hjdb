@@ -56,9 +56,9 @@ var app = new Vue({
             applyKind: 0,
             categoryIndex: -1,
             categoryId: 13,
-            title: " ",
-            about: " ",
-            location: " ",
+            title: "",
+            about: "",
+            location: "",
             images: [],//srcList
             info: ""
         },
@@ -117,6 +117,12 @@ var app = new Vue({
             } else if (index == 3) {//我的消息
                 getMessages(this);
             } else if (index == 4) {
+            }
+            else if(index==5){
+                // 常见问题
+            }
+            else  if(index==6){
+                // 关于我们
             }
         },
         search() {
@@ -182,11 +188,11 @@ var app = new Vue({
                 showAlertError("请选择物品类别！")
                 return;
             }
-            if (this.tab4.title == " ") {
+            if (this.tab4.title == "") {
                 showAlertError('请输入标题!');
                 return;
             }
-            if (this.tab4.about == " ") {
+            if (this.tab4.about == "") {
                 showAlertError('请输入详情!');
                 return;
             }
@@ -548,8 +554,8 @@ function changeInput(obj) {
     console.log("file.size = " + file.size);  //file.size 单位为byte
     var size = file.size / 1024;
 
-    if (size > 2000) {
-        showAlertError('您上传的图片大小超过2M，请尝试压缩图片，或上传所拍照片的截图');
+    if (size > 1000) {
+        showAlertError('您上传的图片大小超过1M，请尝试压缩图片，或上传所拍照片的截图');
         return;
     }
 

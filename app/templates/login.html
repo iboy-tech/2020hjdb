@@ -38,7 +38,7 @@
     </style>
 </head>
 <body>
-<h1>校园失物招领管理系统</h1>
+<h1>校园失物招领平台</h1>
 
 <div class="w3l-form" id="app">
     <div class="w3l-grids-from2">
@@ -63,7 +63,7 @@
 {#                                 style="float: right;  border-radius: 0px; display: inline-block; height: 40px;border: none;">#}
 {#                        </div>#}
                         <input @click="submit" type="button" class="btn" value="确定"/>
-                      <div v-if="tabIndex!=0" style="text-align: left;"><input type="checkbox"  value="旅游">我已阅读并同意 <a href="/private" style="color:#004276;" target="_blank">《隐私协议》</a></div>
+                      <div v-if="tabIndex!=0" style="text-align: left;"><input type="checkbox"  value="checkbox" checked>我已阅读并同意 <a href="/private" style="color:#004276;" target="_blank">《隐私协议》</a></div>
                     </form>
                 </div>
             </div>
@@ -73,7 +73,7 @@
 
 </div>
     <footer>
-        &copy;校园失物招领系统 | <a href="http://www.ctgu.edu.cn/" target="_blank">CTGU</a>
+        &copy;三峡大学失物招领中心 | <a href="http://www.ctgu.edu.cn/" target="_blank">CTGU</a>
     </footer>
 <!--<script src="https://cdn.bootcss.com/toastr.js/latest/toastr.min.js"></script>-->
 <!--<link href="https://cdn.bootcss.com/toastr.js/latest/toastr.min.css" rel="stylesheet">-->
@@ -101,14 +101,13 @@
             },
             submit: function () {
                 let me = this;
-
                 if(me.tabIndex == 1){
                     if($("input[type='checkbox']").is(':checked')==false){
                     showInfo('请阅读隐私协议！');
                     return false;
                     }
                 }
-               var qq=me.user.qq;
+               let qq=me.user.qq;
                 if(me.tabIndex == 1){
                     if(qq.length==0){
                     showAlertError('QQ号不可为空');
@@ -131,12 +130,12 @@
                             if (res.success) {
                                     showOK(res.msg);
                                     if(me.tabIndex==0){
+
                                         saveLocal("user", res.data.user);
-                                        {#saveSession("user", res.data.user);#}
                                         if(res.ext=='wx'){
                                               window.location=baseUrl+"/oauth/wx.html";
                                         }
-                                        else if (res.ext!==null) {
+                                       else if (res.ext!==null) {
                                             window.location=baseUrl+unescape(res.ext);
                                         }
                                         else if (res.data.user.kind >= 2) {
@@ -162,12 +161,17 @@
             }
         }
     });
+    var _hmt = _hmt || [];
     $(function () {
         //验证码高度设置
         $("#codeImg").css("height", $("#vcode").outerHeight() + 'px');
         $(window).resize(function () {
             $("#codeImg").css("height", $("#vcode").outerHeight() + 'px');
         });
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?cadc146ea11d785cac889d32e36f336b";
+          var s = document.getElementsByTagName("script")[0];
+          s.parentNode.insertBefore(hm, s);
     });
 
 
