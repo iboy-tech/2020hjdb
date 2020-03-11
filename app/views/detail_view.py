@@ -71,7 +71,7 @@ def index():
                 "status": lost.status,
                 "dealTime": None if lost.deal_time is None else lost.deal_time.strftime('%Y-%m-%d %H:%M:%S'),
                 "isSelf": current_user.id == lost.user_id,
-                "isAdmin": current_user.kind > 1,
+                "isAdmin": current_user.kind > lost.user_id,
                 "email": user.qq + '@qq.com',
                 "QQ": user.qq,
                 "site": os.getenv('SITE_URL')

@@ -263,7 +263,7 @@ var app = new Vue({
                 content: $('#editorDiv') //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
                 , yes: function () {
                     console.log(app.feedback);
-                    if (app.feedback.subject == " " || app.feedback.content == " ") {
+                    if (app.feedback.subject == "" || app.feedback.content == "") {
                         showAlertError('请填写全部内容!');
                         return;
                     }

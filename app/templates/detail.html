@@ -120,7 +120,7 @@
                                         <span data-tweet-ref-count></span>
                                         分享
                                     </a>
-                                {% if item.isSelf or isAdmin %}
+                                {% if item.isSelf or item.isAdmin %}
                                     <a class="like" @click="deletePub({{ item.id }})">
                                         <i class="trash alternate outline icon"></i>删除
                                     </a>
@@ -396,7 +396,7 @@ $(function () {
   hm.src = "https://hm.baidu.com/hm.js?cadc146ea11d785cac889d32e36f336b";
   var s = document.getElementsByTagName("script")[0];
   s.parentNode.insertBefore(hm, s);
-     })();
+     });
 </script>
 </body>
 </html>

@@ -14,6 +14,7 @@ from flask import render_template, request
 from flask_login import current_user, login_required
 
 from app import db
+from app.config import AdminConfig
 from app.decorators import admin_required, wechat_required
 from app.models.feedback_model import Feedback
 from app.models.user_model import User
@@ -34,15 +35,15 @@ def index():
 @login_required
 @admin_required
 def get_all():
-    feedbacks=Feedback.query.all()
-    list=[]
+    feedbacks = Feedback.query.all()
+    list = []
     if feedbacks:
         for f in feedbacks:
-            admin=None
+            admin = None
             if f.handler_id is not None:
-                admin=User.query.get(int(f.handler_id))
-            user=User.query.get(int(f.user_id))
-            dict={
+                admin = User.query.get(int(f.handler_id))
+            user = User.query.get(int(f.user_id))
+            dict = {
                 "id": f.id,
                 "userId": user.id,
                 "username": user.username,
@@ -53,15 +54,22 @@ def get_all():
                 "status": f.status,
                 "handlerId": f.handler_id,
                 "handlerName": admin.real_name if admin is not None else None,
-                "handlerEmail": admin.qq+'@qq.com' if admin is not None else None,
+                "handlerEmail": admin.qq + '@qq.com' if admin is not None else None,
                 "answer": f.answer,
-                "handlerTime": f.handler_time.strftime('%Y-%m-%d %H:%M:%S') if f.handler_time is not  None else None,
+                "handlerTime": f.handler_time.strftime('%Y-%m-%d %H:%M:%S') if f.handler_time is not None else None,
             }
             list.append(dict)
-    data={
-        "list":list
+    data = {
+        "list": list
     }
     return restful.success(data=data)
+
+
+def checkFeedback(data):
+    if data['subject'] == "" or data['content'] == "":
+        return True
+    else:
+        return False
 
 
 @feedback.route('/add', methods=['GET', 'POST', 'OPTIONS'], strict_slashes=False)
@@ -69,9 +77,25 @@ def get_all():
 def feedback_add():
     req = request.json
     print('req', req)
-    f = Feedback(subject=req['subject'].replace('/(<（[^>]+）>)/script',''), content=req['content'].replace('<','&lt;').replace('>','&gt;'), user_id=current_user.id)
-    db.session.add(f)
-    db.session.commit()
+    if checkFeedback(req):
+        return restful.params_error()  # 表单内容为空
+    # 表单过滤
+    f = Feedback(subject=req['subject'].replace('/(<（[^>]+）>)/script', ''),
+                 content=req['content'].replace('<', '&lt;').replace('>', '&gt;'), user_id=current_user.id)
+    messages={
+        "username":current_user.username,
+        "real_name":current_user.real_name,
+        "subject":f.subject,
+        "content":f.content,
+        'feedbackTime': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    }
+    try:
+        db.session.add(f)
+        db.session.commit()
+    except Exception as e:
+        db.session.rollback()
+        return  restful.success(success=False,msg=str(e))
+    send_email.delay(AdminConfig.SUPER_ADMIN_QQ, '反馈通知', 'feedbackNotice', messages)
     return restful.success()
 
 
@@ -91,27 +115,27 @@ def feedback_delete():
 @login_required
 @admin_required
 def feedback_replay():
-    req=request.json
+    req = request.json
     print(req)
-    id=int(req['id'])
-    f=Feedback.query.get(id)
-    f.handler_id=current_user.id
-    f.status=1
-    f.handler_time=datetime.now()
-    u=User.query.get(f.user_id)
-    f.answer=req['content']
+    id = int(req['id'])
+    f = Feedback.query.get(id)
+    f.handler_id = current_user.id
+    f.status = 1
+    f.handler_time = datetime.now()
+    u = User.query.get(f.user_id)
+    f.answer = req['content']
     db.session.commit()
     messages = {
-        'subject':f.subject,
-        'content':f.content,
-        'createTime':f.create_time.strftime('%Y-%m-%d %H:%M:%S'),
+        'subject': f.subject,
+        'content': f.content,
+        'createTime': f.create_time.strftime('%Y-%m-%d %H:%M:%S'),
         'realName': u.real_name,
-        'answer':req['content'],
-        'handlerTime':datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+        'answer': req['content'],
+        'handlerTime': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
         'handlerName': current_user.real_name,
         'handlerEmail': current_user.qq + '@qq.com',
     }
-    send_email.delay(u.qq, '反馈回复','feedbackReply', messages)
+    send_email.delay(u.qq, '反馈回复', 'feedbackReply', messages)
     print('要给用户发送提醒邮件')
     return restful.success()
 
@@ -120,11 +144,11 @@ def feedback_replay():
 @login_required
 @admin_required
 def feedback_mark():
-    req=request.args.get('id')
-    print('request.args.get(\'id\')',req)
-    f=Feedback.query.get(int(req))
-    f.status=1
-    f.handler_time=datetime.now()
-    f.handler_id=current_user.id
+    req = request.args.get('id')
+    print('request.args.get(\'id\')', req)
+    f = Feedback.query.get(int(req))
+    f.status = 1
+    f.handler_time = datetime.now()
+    f.handler_id = current_user.id
     db.session.commit()
     return restful.success()
