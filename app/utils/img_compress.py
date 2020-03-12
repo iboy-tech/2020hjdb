@@ -1,5 +1,5 @@
 # -*- coding:UTF-8 -*-
-#!/usr/bin/python
+# !/usr/bin/python
 """
 @File    : img_compress.py
 @Time    : 2020/3/9 23:30
@@ -10,6 +10,8 @@
 """
 # -*- coding:UTF-8 -*-
 # !/usr/bin/python
+import re
+
 """
 @File    : img_3c.py
 @Time    : 2020/3/9 23:04
@@ -18,32 +20,50 @@
 @Description : 
 @Software: PyCharm
 """
-import math
 import os
-from glob import glob
 
 from PIL import Image
+from PIL import ImageFile
+from app.config import PostConfig
+ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 
-def resize_images(source_dir, target_dir, threshold):
-    filenames = glob('{}/*'.format(source_dir))
-    if not os.path.exists(target_dir):
-        os.makedirs(target_dir)
-    for filename in filenames:
-        filesize = os.path.getsize(filename)
-        if filesize >= threshold:
-            print(filename)
-            with Image.open(filename) as im:
-                width, height = im.size
-                if width >= height:
-                    new_width = int(math.sqrt(threshold / 2))
-                    new_height = int(new_width * height * 1.0 / width)
-                else:
-                    new_height = int(math.sqrt(threshold / 2))
-                    new_width = int(new_height * width * 1.0 / height)
-                resized_im = im.resize((new_width, new_height))
-                output_filename = filename.replace(source_dir, target_dir)
-                resized_im.save(output_filename)
+# resize_images(r"..\\app\\static\\upload", r"..\\app\\static\\upload", 140000)
+def change_all_img_scale():
+    dir = PostConfig.IMG_UPLOAD_PATH
+    min_dir = PostConfig.MINI_IMG_PATH
+    allFile = os.listdir(dir)
+    for file in allFile:
+        print(file, type(file))
+        img = Image.open(dir + file)
+        w, h = img.size
+        newWidth = 100
+        # 四舍五入
+        newHeight = round(newWidth / w * h)
+        img = img.resize((newWidth, newHeight), Image.ANTIALIAS)
+        try:
+            img.save(min_dir + file, optimize=True, quality=85)
+            print(min_dir + file)
+        except Exception as e:
+            print("错误",str(e),file)
 
 
-resize_images(r"..\\app\\static\\upload", r"..\\app\\static\\upload", 140000)
+# 传入文件名称
+def change_img_scale(file):
+    dir = PostConfig.IMG_UPLOAD_PATH
+    min_dir = PostConfig.MINI_IMG_PATH
+    print(os.path.join(dir, file))
+    img = Image.open(os.path.join(dir, file))
+    w, h = img.size
+    newWidth = 100
+    newHeight = round(newWidth / w * h)
+    img = img.resize((newWidth, newHeight), Image.ANTIALIAS)
+    print(file, type(file))
+    print(os.path.join(min_dir, file))
+    img.save(os.path.join(min_dir, file), optimize=True, quality=10)
+
+
+# file = "1559b6de23e34c4a8e44d9e1e29a05df.png"
+# change_img_scale(file)
+
+# change_all_img_scale()

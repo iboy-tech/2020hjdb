@@ -1,6 +1,6 @@
 //请求前缀
 const baseUrl = "http://iboy.f3322.net:8888";
-const staticUrl = "http://iboy.f3322.net:8888/static/upload/";
+const staticUrl = "http://iboy.f3322.net:8888/static/thumb/";
 
 //全局设置ajax
 $.ajaxSetup({

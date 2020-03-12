@@ -8,8 +8,7 @@
 @Description : 
 @Software: PyCharm
 """
-import os
-from random import random, randint
+from random import randint
 
 from flask import render_template, request
 from flask_login import current_user, login_required
@@ -46,50 +45,53 @@ def get_all():
     keyword = req['keyword']
     if keyword == '':
         print('get_users收到请求')
-        pagination = User.query.order_by(User.kind.desc(), User.status).paginate(page + 1, per_page=pagesize,
-                                                                                 error_out=False)
+        pagination = User.query.order_by(User.kind.desc(), User.status, User.last_login.desc(),
+                                         User.last_login.desc()).paginate(page + 1, per_page=pagesize,
+                                                                          error_out=False)
         data = search(pagination, page, pagesize)
         return data
     else:
         if keyword == '男':
             pagination = User.query.filter(
-                User.gender == 0).order_by(User.kind.desc(), User.status).paginate(page + 1,
-                                                                                   per_page=pagesize,
-                                                                                   error_out=False)
+                User.gender == 0).order_by(User.kind.desc(), User.status, User.last_login.desc()).paginate(page + 1,
+                                                                                                           per_page=pagesize,
+                                                                                                           error_out=False)
             data = search(pagination, page, pagesize)
             return data
         elif keyword == '女':
             pagination = User.query.filter(
-                User.gender == 1).order_by(User.kind.desc(), User.status).paginate(page + 1
-                                                                                   , per_page=pagesize, error_out=False)
+                User.gender == 1).order_by(User.kind.desc(), User.status, User.last_login.desc()).paginate(page + 1
+                                                                                                           ,
+                                                                                                           per_page=pagesize,
+                                                                                                           error_out=False)
             data = search(pagination, page, pagesize)
             return data
         elif '正常' in keyword:
             pagination = User.query.filter(
-                User.status == 1).order_by(User.kind.desc(), User.status).paginate(page + 1,
-                                                                                   per_page=pagesize,
-                                                                                   error_out=False)
+                User.status == 1).order_by(User.kind.desc(), User.status, User.last_login.desc()).paginate(page + 1,
+                                                                                                           per_page=pagesize,
+                                                                                                           error_out=False)
             data = search(pagination, page, pagesize)
             return data
         elif '冻结' in keyword:
             pagination = User.query.filter(
-                User.status == 0).order_by(User.kind.desc(), User.status).paginate(page + 1,
-                                                                                   per_page=pagesize,
-                                                                                   error_out=False)
+                User.status == 0).order_by(User.kind.desc(), User.status, User.last_login.desc()).paginate(page + 1,
+                                                                                                           per_page=pagesize,
+                                                                                                           error_out=False)
             data = search(pagination, page, pagesize)
             return data
         elif '认证' in keyword:
             pagination = User.query.filter(
-                User.status == 2).order_by(User.kind.desc(), User.status).paginate(page + 1,
-                                                                                   per_page=pagesize,
-                                                                                   error_out=False)
+                User.status == 2).order_by(User.kind.desc(), User.status, User.last_login.desc()).paginate(page + 1,
+                                                                                                           per_page=pagesize,
+                                                                                                           error_out=False)
             data = search(pagination, page, pagesize)
             return data
         elif '管理' in keyword:
             pagination = User.query.filter(
-                User.kind >= 2).order_by(User.kind.desc(), User.status).paginate(page + 1,
-                                                                                 per_page=pagesize,
-                                                                                 error_out=False)
+                User.kind >= 2).order_by(User.kind.desc(), User.status, User.last_login.desc()).paginate(page + 1,
+                                                                                                         per_page=pagesize,
+                                                                                                         error_out=False)
             data = search(pagination, page, pagesize)
             return data
         else:
@@ -101,7 +103,8 @@ def get_all():
                 User.major.like("%" + keyword + "%"),
                 User.academy.like("%" + keyword + "%"),
                 User.kind.like("%" + keyword + "%"),
-            )).order_by(User.kind.desc(), User.status).paginate(page + 1, per_page=pagesize, error_out=False)
+            )).order_by(User.kind.desc(), User.status, User.last_login.desc()).paginate(page + 1, per_page=pagesize,
+                                                                                        error_out=False)
         data = search(pagination, page, pagesize)
         return data
 
@@ -165,13 +168,13 @@ def delete_user():
     req = request.args.get('userId')
     print('request.args', req)
     u = User.query.get(int(req))
-    if u and u.kind!=3:
+    if u and u.kind != 3:
         try:
-            posts=u.posts
-            print(posts,type(posts))
-            del_imgs=[]
+            posts = u.posts
+            print(posts, type(posts))
+            del_imgs = []
             for lost in posts:
-                #删除redis中的浏览量数据
+                # 删除redis中的浏览量数据
                 key = str(lost.id) + PostConfig.POST_REDIS_PREFIX
                 redis_client.delete(key)
                 print(lost.images)
@@ -180,7 +183,7 @@ def delete_user():
                 else:
                     lost.images = lost.images.replace('[', '').replace(']', '').replace(' \'', '').replace('\'', '')
                     temp_imglist = lost.images.strip().split(',')
-                del_imgs+=temp_imglist
+                del_imgs += temp_imglist
                 print(del_imgs)
             print("删除用户的所有图片")
             found_view.remove_imglist(del_imgs)
@@ -190,7 +193,7 @@ def delete_user():
             db.session.rollback()
             return restful.params_error(success=False, msg=str(e))
     else:
-        return restful.params_error(success=False,msg="用户不存在")
+        return restful.params_error(success=False, msg="用户不存在")
     return restful.success(msg="删除失败")
 
 

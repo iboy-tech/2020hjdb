@@ -29,7 +29,7 @@ var app = new Vue({
                     "keyword": "",
                     "username": "",
                     "pageNum": 0,
-                    "pageSize": 15
+                    "pageSize": 10
                 },
                 totalPage: 0,
                 total: 0,
@@ -42,7 +42,7 @@ var app = new Vue({
                     "keyword": "",
                     "username": (getLocal("user") ? JSON.parse(getLocal("user")) : {}).studentNum,
                     "pageNum": 0,
-                    "pageSize": 15
+                    "pageSize": 10
                 },
                 totalPage: 0,
                 total: 0,

@@ -14,7 +14,7 @@ from random import randint
 
 from flask import request, url_for
 from flask_cors import cross_origin
-from flask_login import current_user, login_required
+from flask_login import current_user, login_required, fresh_login_required
 
 from app import db, OpenID
 from app.models.lostfound_model import LostFound
@@ -35,7 +35,7 @@ def get_message():
     req = request.json
     print('查询消息req', req)
     # commens=Comment.query.join(LostFound,user_id=current_user.id)
-    losts = LostFound.query.filter_by(user_id=current_user.id).all()
+    losts = LostFound.query.filter_by(user_id=current_user.id).order_by(LostFound.create_time.desc()).all()
     if len(losts) == 0:
         data = {
             "list": []
@@ -65,7 +65,7 @@ def get_message():
 
 
 @user.route('/setQQ', methods=['POST'])
-@login_required
+@fresh_login_required
 @cross_origin()
 def set_QQ():
     print('用户准备更改密码')
@@ -84,7 +84,7 @@ def set_QQ():
 
 
 @user.route('/setPassword', methods=['POST'])
-@login_required
+@fresh_login_required
 @cross_origin()
 def set_password():
     print('用户准备更改密码')

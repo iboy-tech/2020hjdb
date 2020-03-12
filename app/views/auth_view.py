@@ -11,21 +11,21 @@
 import json
 import os
 import re
-from datetime import datetime
+from datetime import datetime, timedelta
 from random import randint
 
-from flask import render_template, request, redirect, url_for, session, send_from_directory, current_app
+from flask import render_template, request, url_for, session, send_from_directory, current_app
 from flask_cors import cross_origin
 from flask_login import logout_user, login_user, login_required, current_user
 
-from app import db, OpenID, redis_client, cache
+from app import db, OpenID, redis_client
+from app.config import LoginConfig
 from app.decorators import wechat_required
-from app.page import auth
 from app.models.user_model import User
+from app.page import auth
 from app.utils import restful
 from app.utils.auth_token import generate_token, validate_token
 from app.utils.mail_sender import send_email
-from app.config import LoginConfig
 
 
 # 隐私协议
@@ -94,6 +94,11 @@ def login():
                     success=False,
                     msg='您的账户还未完成认证，请认证后登录，若之前填写的QQ有误，可以在认证界面填写新的QQ重新进行认证')
             elif user is not None and user.verify_password(data['password']):
+                # 登录并保存cookie
+                session.permanent = True
+                app = current_app._get_current_object()
+                # session持久化，免登陆
+                app.permanent_session_lifetime = timedelta(days=365)
                 login_user(user, remember=True)
                 user.last_login = datetime.now()
                 print(user)
@@ -232,6 +237,7 @@ def recognize():
     return data
 
 
+# token验证入口
 @auth.route('/confirm.html', methods=['GET'])
 @cross_origin()
 def confirm():
@@ -245,7 +251,3 @@ def confirm():
     return render_template('mails/go.html', messages=messages)
 
 
-@auth.route('/index', methods=['GET'])
-@cross_origin()
-def demo():
-    return render_template('index.html')

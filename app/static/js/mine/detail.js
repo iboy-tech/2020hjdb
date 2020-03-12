@@ -250,7 +250,7 @@ function viewImages1(index) {
             app.images.data = [];
             app.images.start = index;
             $("#share-images img").each(function(){
-                var url = $(this).attr("src");
+                var url = $(this).attr("src").replace("thumb","upload");
                let d= {"src": url}
                 app.images.data.push(d);
             });

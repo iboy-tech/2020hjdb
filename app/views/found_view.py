@@ -13,7 +13,6 @@ import os
 import uuid
 from datetime import datetime
 from random import randint
-from PIL import Image
 
 from flask import render_template, request
 from flask_cors import cross_origin
@@ -29,7 +28,7 @@ from app.models.lostfound_model import LostFound
 from app.models.user_model import User
 from app.page import found
 from app.utils import restful
-from app.utils.img_compress import resize_images
+from app.utils.img_compress import  change_all_img_scale, change_img_scale
 from app.utils.mail_sender import send_email
 from app.utils.time_util import get_time_str
 from app.utils.tinify_tool import tinypng
@@ -162,9 +161,15 @@ def change_bs4_to_png(imglist):
         myfile = os.path.join(os.getenv('PATH_OF_UPLOAD'), filename)
         with open(myfile, 'wb') as f:
             f.write(base64.b64decode(bas4_code[1]))
+            # 生成缩略图
+            change_img_scale(filename)
             # 后台检查图片大小
             if os.path.getsize(myfile) / 1024 > 1024:
-                os.remove(myfile)
+                try:
+                    os.remove(myfile)
+                    os.remove(PostConfig.MINI_IMG_PATH+filename)
+                except Exception as e:
+                    print(str(e))
                 print("图片太大")
                 files.remove(filename)
     if files:
@@ -193,8 +198,10 @@ def pub():
     print(type(data['images']), len(data['images']))
     # strs = data['images'][0]
     imgstr = ''
-    if len(data['images']) != 0:
+    if len(data['images']) != 0 and len(data['images']) <= 3:
         imgstr = change_bs4_to_png(data['images'])
+    elif len(data['images']) > 3:
+        return restful.params_error(success=False, msg="照片数量超过上限")
     info = data['info']
     # print(type(imgstr), imgstr)
     print(data['location'])
@@ -346,7 +353,7 @@ def delete_lost():
 @login_required
 @cross_origin()
 def compress():
-    resize_images(r"..\\app\\static\\upload", r"..\\app\\static\\upload", 140000)
+    change_all_img_scale()
     return restful.success(msg="压缩成功")
 
 
@@ -379,5 +386,6 @@ def remove_imglist(imgs):
         print('要删除的文件', file)
         try:
             os.remove(file)
+            os.remove(PostConfig.MINI_IMG_PATH+file)
         except Exception as e:
             print('删除文件', str(e))
