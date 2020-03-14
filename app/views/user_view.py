@@ -79,6 +79,7 @@ def set_QQ():
         'real_name': current_user.real_name,
         'token': url_for('auth.confirm', token=token, _external=True)
     }
+    # send_email.delay(new_qq, 'QQ更改', 'changeQQ', messages)
     send_email.apply_async(args=(new_qq, 'QQ更改', 'changeQQ', messages),countdown=randint(1, 30))
     return restful.success(success=True, msg="验证邮件已发送到您的QQ邮箱，请及时确认")
 

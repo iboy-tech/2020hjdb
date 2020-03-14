@@ -43,7 +43,7 @@ def add():
         return restful.success(False, msg="秘钥格式错误")
     key = PostConfig.TINYPNG_REDIS_KEY
     mapping = {req: 500}
-    res = redis_client.zadd(key,mapping)
+    res = redis_client.zadd(key, mapping)
     print("添加结果", res)
     if res != 0:
         return restful.success(msg="添加成功")
@@ -65,18 +65,40 @@ def delete():
         return restful.params_error()
 
 
+@tool.route('/import', methods=['GET', 'POST'])
+@login_required
+@admin_required
+@cross_origin()
+def import_keys():
+    cnt=0
+    try:
+        with open("app/static/temp/tiny_keys.txt") as f:
+            for api_key in f:
+                api_key = api_key[:-1]  # 去掉换行符
+                print(api_key)
+                key = PostConfig.TINYPNG_REDIS_KEY
+                mapping = {api_key: 500}
+                res = redis_client.zadd(key, mapping)
+                print("插入的结果", res)
+                if res is not 0:
+                    cnt=cnt+1
+        f.close()
+    except Exception as e:
+        return restful.success(False,msg="请把秘钥文件(tiny_keys.txt)放在app/static/temp/目录下")
+    return restful.success(msg="恭喜，成功导入"+str(cnt)+"个秘钥")
+
+
 @tool.route('/compress', methods=['GET', 'POST'])
 @login_required
 @admin_required
 @cross_origin()
 def compress():
-    big_img=find_big_img()
+    big_img = find_big_img()
     if big_img:
         tinypng.delay(big_img)
-        return restful.success(msg="异步压缩任务已启动,共有 "+str(len(big_img))+" 张图片需要压缩")
+        return restful.success(msg="异步压缩任务已启动,共有 " + str(len(big_img)) + " 张图片需要压缩")
     else:
         return restful.success(msg="恭喜，所有图片都达到要求了")
-
 
 
 # 通过接口进行无损压缩
@@ -103,6 +125,3 @@ def getall():
         'list': list
     }
     return restful.success(data=data)
-
-
-

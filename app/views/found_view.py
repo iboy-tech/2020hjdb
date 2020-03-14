@@ -414,7 +414,7 @@ def delete_post_notice(kind, id, l):
             send_message_by_pusher(msg=dict, uid=uids, kind=2)
 
 
-@celery.task(time_limit=10)
+@celery.task
 def remove_imglist(imgs):
     # os.chdir("O:/Python/Flask-WC/")
     for img in imgs:

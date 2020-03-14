@@ -23,13 +23,6 @@ var app = new Vue({
                 if (key == '') {
                     showAlertError('Key不可为空！');
                     return false;
-                } else {
-                    // var reg = /^[1-9][0-9]{4,14}$/;
-                    // ;
-                    // if (!reg.test(qq)) {
-                    //     showAlertError('QQ号格式错误！');
-                    //     return false;
-                    // }
                 }
                 //layer.close(index);
                 addKey(key);
@@ -59,6 +52,20 @@ var app = new Vue({
                 success: function (res) {
                     if (res.success) {
                         showOK(res.msg);
+                    } else {
+                        showError(res.msg)
+                    }
+                }
+            });
+        },
+        importKeys:function () {
+            $.ajax({
+                url: "/tool.html/import",
+                method: "POST",
+                success: function (res) {
+                    if (res.success) {
+                        showOK(res.msg);
+                        getKeys(app, false);
                     } else {
                         showError(res.msg)
                     }

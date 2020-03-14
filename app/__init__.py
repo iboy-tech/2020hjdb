@@ -27,7 +27,6 @@ from .models.open_model import OpenID
 from .models.report_model import Report
 from .models.role_model import Role
 from .models.user_model import Guest, User
-# from .utils.create_data import create_test_data
 
 login_manager.session_protection = 'basic'
 
@@ -44,6 +43,8 @@ from app.page import user as user_bp
 from app.page import auth as auth_bp
 from app.page import chart as admin_bp
 from app.page import report as report_bp
+from app.page import  tool as tool_bp
+
 
 
 # 工厂函数
@@ -60,7 +61,7 @@ def create_app(config_name=None):
     register_errors(app)  # 注册错误处理函数
     register_shell_context(app)  # 注册shell上下文处理函数
     register_commands(app)  # 注册自定义shell命令
-    # register_interceptor(app)  # 拦截器
+    #register_interceptor(app)  # 拦截器
     return app
 
 
@@ -78,6 +79,8 @@ def register_blueprints(app):
     app.register_blueprint(pusher_bp)
     app.register_blueprint(cache_bp)
     app.register_blueprint(report_bp)
+    app.register_blueprint(tool_bp)
+
 
 
 def register_extensions(app):  # 实例化扩展
@@ -94,7 +97,7 @@ def register_extensions(app):  # 实例化扩展
     # toolbar.init_app(app)
     redis_client.init_app(app)
     cache.init_app(app)
-    mongo_client.init_app(app)
+    # mongo_client.init_app(app)
 
 
 def register_shell_context(app):
@@ -205,9 +208,6 @@ def register_commands(app):
         Role.init_role()
         click.echo("Done.")
 
-    # @app.cli.command()
-    # def createuser():
-    #     create_test_data()
 
     @app.cli.command()
     # prompt=True二次输入

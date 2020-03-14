@@ -166,8 +166,10 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                 <div class="col-lg-12 col-sm-12 col-md-12" style="padding: 0px 0px 20px 0px;">
                     <div class="input-group" style="float: right;">
 <button class="btn btn-primary" type="button" style="margin-right: 20px;" @click="compress">压缩</button>
-<button class="btn btn-primary" type="button" style="" @click="addKey">添加</button> </div>
-                    </div>
+<button v-if="list.length == 0" class="btn btn-primary" type="button"  @click="importKeys">导入</button>
+<button v-else class="btn btn-primary" type="button"  @click="addKey">添加</button> </div>
+
+                </div>
                 </div>
 
             </div>
