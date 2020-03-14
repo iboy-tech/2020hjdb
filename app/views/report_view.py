@@ -93,7 +93,6 @@ def delete_report():
             os.remove(filename)
         except Exception as e:
             db.session.rollback()
-            return restful.success(success=False, msg=str(e))
     return restful.success(msg="删除成功")
 
 

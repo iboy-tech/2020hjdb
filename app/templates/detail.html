@@ -113,16 +113,16 @@
                                 <!--赞，分享，评论，举报-->
                                 <div class="meta">
 
-                                    <a class="reply" href="#comments"><i class="comment outline icon"></i>
+                                    <a class="reply with-popup" data-content="有物品消息，快告诉对方吧" href="#comments"><i class="comment outline icon"></i>
                                         <span data-tweet-reply-count>{{comments.length || 0}}</span> 评论</a>
-                                    <a class="share" @click="share">
+                                    <a class="share with-popup"   data-content="分享到社交平台可以增大找回的几率" @click="share">
                                         <i class="external icon"></i>
                                         <span data-tweet-ref-count></span>
                                         分享
                                     </a>
                                 {% if item.isSelf or item.isAdmin %}
-                                    <a class="like" @click="deletePub({{ item.id }})">
-                                        <i class="trash alternate outline icon"></i>删除
+                                    <a class="like with-popup" data-content="如果您的问题已经解决，记得及时删帖哦" @click="deletePub({{ item.id }})">
+                                        <i class="trash alternate outline icon "></i>删除
                                     </a>
                                 {% endif %}
 
@@ -134,10 +134,9 @@
                                       </div>-->
                                 </div>
                                 <div class="meta">
-
-                                    <a target="_blank" style="color: rgba(0,0,0,.5);" class="reply" href="{{ 'https://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email='+item.email }}"><i class="envelope outline icon"></i>
+                                    <a target="_blank" class="with-popup" data-content="点击邮箱可给对方发送邮件"  style="color: rgba(0,0,0,.5);" class="reply" href="{{ 'https://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email='+item.email }}"><i class="envelope outline icon"></i>
                                         {{ item.email }}</a>
-                                    <a target="_blank" style="color: rgba(0,0,0,.5);" class="share" href="{{ 'https://api.uomg.com/api/qq.talk?qq='+item.QQ }}">
+                                    <a target="_blank" class="with-popup" data-content="点击QQ可直接跳转到对话框" style="color: rgba(0,0,0,.5);" class="share" href="{{ 'https://api.uomg.com/api/qq.talk?qq='+item.QQ }}">
                                         <i class="qq icon" style="color: rgba(121, 103, 103, 0.4) !important;"></i>
                                         {{ item.QQ }}
                                     </a>
@@ -397,6 +396,12 @@ $(function () {
   var s = document.getElementsByTagName("script")[0];
   s.parentNode.insertBefore(hm, s);
      });
+// 2 种方式都可以
+        $('.with-popup').popup();
+        $('.with-popup').popup({ position: 'bottom left' });
+
+        // 如果 popup 的位置不够理想，还可以设置 offset 进行微调，例如下面向左偏移 12 像素
+        $('.with-popup').popup({ position: 'bottom left', offset: -12 });
 </script>
 </body>
 </html>

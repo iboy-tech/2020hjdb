@@ -102,7 +102,7 @@ def change_img_scale(file):
     print(file, type(file))
     print(os.path.join(min_dir, file))
     try:
-        img.save(os.path.join(min_dir, file), optimize=True, quality=10)
+        img.save(os.path.join(min_dir, file), optimize=True, quality=80)
     except Exception as e:
         print("出现错误",str(e))
 
