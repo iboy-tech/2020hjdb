@@ -3,7 +3,6 @@ var app = new Vue({
     data: {
         imgPrefix: staticUrl,
         schoolIcon: './go/icon-school.png',
-        // item:'',
         user: getLocal("user") ? JSON.parse(getLocal("user")) : {},
         search: {
             keyword: "",
@@ -14,7 +13,9 @@ var app = new Vue({
             totalPage: 0,
             total: 0,
             list: []
-        }
+        },
+        checkedList: [],
+        checked: false,
     },
     computed: {
         currentPage: function () {
@@ -29,6 +30,43 @@ var app = new Vue({
             }
             this.search.pageNum = pageNum;
             getUserList(app.search, app, false);
+        },
+        checkAll() {
+            if (this.checked == false) {
+                this.checkedList = [];//清空数据
+            } else {
+                this.result.list.forEach((item) => {
+                    if (this.checkedList.indexOf(item.userId) == -1) {
+                        this.checkedList.push(item.userId);
+                    }
+                })
+            }
+        },
+        deleteAll() {
+            let data = this.checkedList;
+            layer.confirm('你确定要批量删除 ' + data.length + ' 条数据吗？', {
+                btn: ['确定', '取消'] //按钮
+            }, function () {
+                $.ajax({
+                    url: baseUrl + "/userlist.html/deleteAll",
+                    method: "POST",
+                    data: JSON.stringify(data),
+                    success: function (res) {
+                        console.log(res);
+
+                            if (res.success) {
+                                showOK(res.msg);
+                                //数据置空
+                                app.checked = false;
+                                app.checkedList = [];
+                                getUserList(app.search, app, false);
+                            } else {
+                                showAlertError(res.msg)
+                            }
+                    }
+                });
+            }, function () {
+            });
         },
         submit() {
             let pgNum = $('#pgNum').val() - 1;

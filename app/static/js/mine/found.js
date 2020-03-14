@@ -12,12 +12,14 @@ var app = new Vue({
                 "username": "",
                 "pageNum": 0,
                 "pageSize": 10,
-                "flag":1,
+                "flag": 1,
             },
             totalPage: 0,
             total: 0,
             list: []
         },
+        checkedList: [],
+        checked: false,
         userInfo: {
             userId: "001",
             name: "iBoy",
@@ -57,7 +59,42 @@ var app = new Vue({
         seeInfo(userId) {
             console.log(userId);
             getUserInfo(userId, this);
-
+        },
+        checkAll() {
+            if (this.checked == false) {
+                this.checkedList = [];//清空数据
+            } else {
+                this.result.list.forEach((item) => {
+                    if (this.checkedList.indexOf(item.id) == -1) {
+                        this.checkedList.push(item.id)
+                    }
+                })
+            }
+        },
+        deleteAll() {
+            let data=this.checkedList;
+            layer.confirm('你确定要批量删除 '+data.length+' 条数据吗？', {
+                btn: ['确定', '取消'] //按钮
+            }, function () {
+                $.ajax({
+                    url: baseUrl + "/found.html/deleteAll",
+                    method: "POST",
+                    data: JSON.stringify(data),
+                    success: function (res) {
+                        console.log(res);
+                            if (res.success) {
+                                showOK(res.msg);
+                                //数据置空
+                                app.checked=false;
+                                app.checkedList=[];
+                                pageLostFound(app.result.search, app.result, false);
+                            } else {
+                                showAlertError(res.msg)
+                            }
+                    }
+                });
+            }, function () {
+            });
         },
         submit() {
             let pgNum = $('#pgNum').val() - 1;
@@ -71,7 +108,6 @@ var app = new Vue({
             }, function () {
                 deletePub(id);
             }, function () {
-
             });
 
         },

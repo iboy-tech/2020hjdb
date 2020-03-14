@@ -331,14 +331,43 @@ def get_search_data(pagination, pageNum, pagesize):
     return restful.success(data=data)
 
 
+@found.route('/deleteAll', methods=['POST'])
+@login_required
+@admin_required
+@cross_origin()
+def delete_losts():
+    req = request.json
+    print(req)
+    if req:
+        lost_founds = LostFound.query.filter(LostFound.id.in_(req))
+        for l in lost_founds:
+            u = User.query.get_or_404(l.user_id)
+            # 管理员删帖或用户自身删帖
+            if l is not None and (l.user_id == current_user.id or current_user.kind > u.kind):
+                if l.images != "":
+                    l.images = l.images.replace('[', '').replace(']', '').replace(' \'', '').replace('\'', '')
+                    imglist = l.images.strip().split(',')
+                    remove_imglist.delay(imglist)
+                key = str(l.id) + PostConfig.POST_REDIS_PREFIX
+                # # 删除浏览量，不存在的key会被忽略
+                redis_client.delete(key)
+                delete_post_notice.delay(current_user.kind, current_user.id, l.to_dict())
+            db.session.delete(l)
+    try:
+        db.session.commit()
+        print("try块内")
+    except Exception as e:
+        db.session.rollback()
+        return restful.success(False, msg=str(e))
+    return restful.success(msg="删除成功")
+
+
 @found.route('/delete', methods=['POST'])
 @login_required
 @cross_origin()
-def delete_lost():
-    refer = request.referrer
-    print(refer)
+def delete_lost(flag=-1):
+    print("我是其他函数传来的参数", flag)
     req = request.args.get('id')
-    print('删除帖子：', req, type(req))
     if not req:
         return restful.params_error()
     else:
@@ -353,7 +382,7 @@ def delete_lost():
             key = str(l.id) + PostConfig.POST_REDIS_PREFIX
             # # 删除浏览量，不存在的key会被忽略
             redis_client.delete(key)
-            delete_post_notice(current_user.kind, current_user.id, l)
+            delete_post_notice(current_user.kind, current_user.id, l.to_dict())
             db.session.delete(l)
             db.session.commit()
             # db.session.close()
@@ -396,14 +425,14 @@ def compress_from_api():
 @celery.task  # 删除帖子给用户发送通知
 def delete_post_notice(kind, id, l):
     # 管理删除的和自己删除的不通知
-    if kind > 1 and l.user_id != id:
-        u = User.query.get_or_404(l.user_id)
+    if kind > 1 and l['user_id'] != id:
+        u = User.query.get_or_404(l['user_id'])
         op = OpenID.query.filter_by(user_id=u.id).first_or_404()
         if op is not None:
             dict = {
                 'post_user': u.real_name,
-                'post_title': l.title,
-                'post_content': l.about,
+                'post_title': l['title'],
+                'post_content': l['about'],
                 'handle_time': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
                 'qq_group': '878579883',
                 'url': os.getenv('SITE_URL')

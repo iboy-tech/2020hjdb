@@ -28,8 +28,16 @@ class LostFound(db.Model):
     look_count = db.Column(db.Integer, nullable=False, server_default=text('0'))
     status = db.Column(db.Integer, nullable=False, info='物品的状态01是否被领取', server_default=text('0'))
     # 帖子评论-一对多，删除帖子要删除评论
-    comments=db.relationship('Comment', backref='post_comment', cascade='all, delete-orphan', passive_deletes=True)
+    comments = db.relationship('Comment', backref='post_comment', cascade='all, delete-orphan', passive_deletes=True)
 
+    def to_dict(self):
+        dict = {
+            'id': self.id,
+            'user_id':self.user_id,
+            'title': self.title,
+            'about': self.about,
+        }
+        return dict
 
     # 返回一个具有可读性的字符串模型  方便调试
     def __repr__(self):

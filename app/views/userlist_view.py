@@ -162,6 +162,46 @@ def reset_pssword():
     return restful.success()
 
 
+@userlist.route('/deleteAll', methods=['POST'], strict_slashes=False)
+@super_admin_required
+def delete_users():
+    req = request.json
+    print(req)
+    if req:
+        users = User.query.filter(User.id.in_(req))
+        for u in users:
+            if  u.kind != 3:
+                posts = u.posts
+                print(posts, type(posts))
+                del_imgs = []
+                for lost in posts:
+                    # 删除redis中的浏览量数据
+                    key = str(lost.id) + PostConfig.POST_REDIS_PREFIX
+                    redis_client.delete(key)
+                    print(lost.images)
+                    if lost.images == "":
+                        temp_imglist = []
+                    else:
+                        lost.images = lost.images.replace('[', '').replace(']', '').replace(' \'', '').replace('\'', '')
+                        temp_imglist = lost.images.strip().split(',')
+                    del_imgs += temp_imglist
+                print("删除用户的所有图片")
+                found_view.remove_imglist(del_imgs)
+                try:
+                    db.session.delete(u)
+                    db.session.commit()
+                except Exception as e:
+                    db.session.rollback()
+                    return restful.params_error(success=False, msg=str(e))
+            # 无法直接删除超级管理员
+            else:
+                return restful.params_error(False, msg="超级管理员无法直接删除")
+        return restful.success(msg="删除成功")
+    else:
+        return restful.params_error(False, msg="参数错误")
+    return restful.success(msg="删除失败")
+
+
 @userlist.route('/delete', methods=['POST'], strict_slashes=False)
 @super_admin_required
 def delete_user():
@@ -184,15 +224,16 @@ def delete_user():
                     lost.images = lost.images.replace('[', '').replace(']', '').replace(' \'', '').replace('\'', '')
                     temp_imglist = lost.images.strip().split(',')
                 del_imgs += temp_imglist
-                print(del_imgs)
             print("删除用户的所有图片")
-            found_view.remove_imglist(del_imgs)
+            found_view.remove_imglist.delay(del_imgs)
             db.session.delete(u)
             db.session.commit()
         except Exception as e:
             db.session.rollback()
             return restful.params_error(success=False, msg=str(e))
     else:
+        if u.kind==3:
+            return restful.params_error(False, msg="超级管理员无法直接删除")
         return restful.params_error(success=False, msg="用户不存在")
     return restful.success(msg="删除失败")
 
