@@ -8,3 +8,4 @@ app/config.py
 total.xlsx
 app/static/upload/*
 app/static/thumb/*
+*.log
