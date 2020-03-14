@@ -12,8 +12,10 @@ import base64
 import os
 import uuid
 from datetime import datetime
+from io import BytesIO
 from random import randint
 
+from PIL import Image
 from flask import render_template, request
 from flask_cors import cross_origin
 from flask_login import current_user, login_required
@@ -21,14 +23,14 @@ from sqlalchemy import or_
 
 from app import db, OpenID, redis_client
 from app.config import PostConfig
-from app.decorators import wechat_required
+from app.decorators import wechat_required, admin_required
 from app.models.category_model import Category
 from app.models.comment_model import Comment
 from app.models.lostfound_model import LostFound
 from app.models.user_model import User
 from app.page import found
 from app.utils import restful
-from app.utils.img_compress import  change_all_img_scale, change_img_scale
+from app.utils.img_compress import change_all_img_scale, change_img_scale, change_all_img_to_jpg, find_big_img
 from app.utils.mail_sender import send_email
 from app.utils.time_util import get_time_str
 from app.utils.tinify_tool import tinypng
@@ -50,12 +52,17 @@ def get_all():
     req = request.json
     page = int(req['pageNum'])
     pagesize = int(req['pageSize'])
-    if current_user.kind > 1:
+    # 后台分页动态调整
+    if current_user.kind > 1 and req.get("flag") is not None:
         total_page = db.session.query(LostFound).count()
         mid = total_page // 10
         print('总的页数', total_page, mid)
         if pagesize < mid:
             pagesize = mid
+    else:
+        # 前端请求的最大页数
+        if pagesize > PostConfig.PAGESIZE_OF_USER:
+            return restful.params_error()
 
     print('我是前端获取的分页数据', req)
     # print('get_users收到请求')
@@ -152,25 +159,30 @@ def get_all():
     return data
 
 
+# 对上传图片进行格式转换并裁剪
 def change_bs4_to_png(imglist):
     files = []
     for img in imglist:
         bas4_code = img.split(',')
-        filename = uuid.uuid4().hex + '.png'
+        filename = uuid.uuid4().hex + '.jpg'
         files.append(filename)
-        myfile = os.path.join(os.getenv('PATH_OF_UPLOAD'), filename)
-        with open(myfile, 'wb') as f:
-            f.write(base64.b64decode(bas4_code[1]))
-            # 生成缩略图
-            change_img_scale(filename)
-            # 后台检查图片大小
-            if os.path.getsize(myfile) / 1024 > 1024:
-                try:
-                    os.remove(myfile)
-                    os.remove(PostConfig.MINI_IMG_PATH+filename)
-                except Exception as e:
-                    print(str(e))
-                print("图片太大")
+        myfile = os.path.join(os.getenv("PATH_OF_UPLOAD"), filename)
+        print("保存的路径", myfile)
+        image = base64.b64decode(bas4_code[1])
+        image = BytesIO(image)
+        image = Image.open(image)
+        image = image.convert('RGB')
+        image.save(myfile)
+        # 生成缩略图
+        change_img_scale(filename)
+        # 后台检查图片大小
+        if os.path.getsize(myfile) / 1024 > 1024:
+            try:
+                os.remove(myfile)
+                os.remove(os.getenv("MINI_IMG_PATH") + filename)
+            except Exception as e:
+                print(str(e))
+                print("图片太大,移除列表中的元素")
                 files.remove(filename)
     if files:
         print('对上传图片进行异步压缩')
@@ -331,14 +343,15 @@ def delete_lost():
         return restful.params_error()
     else:
         l = LostFound.query.get_or_404(int(req))
-        if l is not None and (l.user_id == current_user.id or current_user.kind >= 2):
+        u = User.query.get_or_404(l.user_id)
+        # 管理员删帖或用户自身删帖
+        if l is not None and (l.user_id == current_user.id or current_user.kind > u.kind):
             if l.images != "":
                 l.images = l.images.replace('[', '').replace(']', '').replace(' \'', '').replace('\'', '')
                 imglist = l.images.strip().split(',')
                 remove_imglist.delay(imglist)
-
             key = str(l.id) + PostConfig.POST_REDIS_PREFIX
-            # 删除浏览量，不存在的key会被忽略
+            # # 删除浏览量，不存在的key会被忽略
             redis_client.delete(key)
             delete_post_notice(current_user.kind, current_user.id, l)
             db.session.delete(l)
@@ -349,11 +362,34 @@ def delete_lost():
             return restful.params_error()
 
 
+# 对之前的图片进行批量裁剪
 @found.route('/compress', methods=['GET'])
 @login_required
+@admin_required
 @cross_origin()
 def compress():
+    change_all_img_to_jpg()
     change_all_img_scale()
+    return restful.success(msg="压缩成功")
+
+
+@celery.task
+def compress_imgs_in_freetime():
+    big_img = find_big_img()
+    if big_img:
+        tinypng(big_img)
+    else:
+        print("没有图片无需压缩")
+    return restful.success(msg="压缩成功")
+
+
+# 通过接口进行无损压缩
+@found.route('/tinypng', methods=['GET'])
+@login_required
+@admin_required
+@cross_origin()
+def compress_from_api():
+    compress_imgs_in_freetime()
     return restful.success(msg="压缩成功")
 
 
@@ -375,17 +411,18 @@ def delete_post_notice(kind, id, l):
             print('删除帖子要发送的消息', dict)
             print('管理员删帖发送消息')
             uids = [op.wx_id]
-            send_message_by_pusher.delay(msg=dict, uid=uids, kind=2)
+            send_message_by_pusher(msg=dict, uid=uids, kind=2)
 
 
 @celery.task(time_limit=10)
 def remove_imglist(imgs):
-    print('获取执行结果', os.getenv('CELERY_RESULT_BACKEND'))
+    # os.chdir("O:/Python/Flask-WC/")
     for img in imgs:
-        file = os.getenv('PATH_OF_UPLOAD') + img
-        print('要删除的文件', file)
+        print(img)
+        file = os.path.join(os.getenv("PATH_OF_UPLOAD"), img)
         try:
+            print('要删除的文件', file)
             os.remove(file)
-            os.remove(PostConfig.MINI_IMG_PATH+file)
+            os.remove(os.path.join(os.getenv("MINI_IMG_PATH"), img))
         except Exception as e:
             print('删除文件', str(e))

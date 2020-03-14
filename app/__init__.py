@@ -27,9 +27,9 @@ from .models.open_model import OpenID
 from .models.report_model import Report
 from .models.role_model import Role
 from .models.user_model import Guest, User
-from .utils.create_data import create_test_data
+# from .utils.create_data import create_test_data
 
-login_manager.session_protection = 'strong'
+login_manager.session_protection = 'basic'
 
 from app.page import cached as cache_bp
 from app.page import oauth as pusher_bp
@@ -205,9 +205,9 @@ def register_commands(app):
         Role.init_role()
         click.echo("Done.")
 
-    @app.cli.command()
-    def createuser():
-        create_test_data()
+    # @app.cli.command()
+    # def createuser():
+    #     create_test_data()
 
     @app.cli.command()
     # prompt=True二次输入

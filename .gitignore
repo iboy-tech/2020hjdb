@@ -6,3 +6,5 @@ venv/
 app/config.py
 *.xlsx
 total.xlsx
+app/static/upload/*
+app/static/thumb/*

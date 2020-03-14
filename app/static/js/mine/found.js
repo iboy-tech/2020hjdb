@@ -11,39 +11,23 @@ var app = new Vue({
                 "keyword": "",
                 "username": "",
                 "pageNum": 0,
-                "pageSize": 10
+                "pageSize": 10,
+                "flag":1,
             },
             totalPage: 0,
             total: 0,
-            list: [
-                /*  {
-                      id: "01",
-                      icon: "./go/icon.jpg",
-                      kind: 0,
-                      status: 1,
-                      ustatus:2
-                      username: "2018111111",
-                      realName: "Alice",
-                      time: "2019-04-16 09:27:10",
-                      location: "欣苑的门口",
-                      title: "丢了一只篮球",
-                      images: ["./go/icon.jpg"],
-                      category: "电子数吗",
-                      lookCount: 12,
-                      commentCount: 2,
-                  }*/
-            ]
+            list: []
         },
         userInfo: {
             userId: "001",
-            name: "Alice",
+            name: "iBoy",
             username: "201811128",
             gender: "male",
-            qq: "",
+            qq: "547142436",
             classNum: "1521805",
             major: "soft making",
             academy: "soft academy",
-            lastLogin: "2019-4-20 13:00",
+            lastLogin: "2020-02-20 13:00",
             status: 2
         }
     },

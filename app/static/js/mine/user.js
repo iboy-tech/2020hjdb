@@ -5,7 +5,7 @@ var app = new Vue({
         tabIndex: 0,
         user: getLocal("user") ? JSON.parse(getLocal("user")) : {},
         category: getCategory() || [],
-        userIcon: "http://localhost/static/icon/user_icon.png",
+        userIcon: "https://ae01.alicdn.com/kf/H26181ae0390643b6850ad4c46341f8bcV.png",
         api: 'https://api.uomg.com/api/qq.talk?qq=',
         imgPrefix: staticUrl,
         tab: [
@@ -280,14 +280,14 @@ var app = new Vue({
                 type: 1,
                 area: ['300px', 'auto'],
                 //shade: true,
-                title: "修改密吗", //不显示标题
+                title: "修改密码", //不显示标题
                 content: $('#pwdDiv'),  //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
                 yes: function () {
                     console.log(app.password);
                     let pwd = app.password;
                     var reg = /^[a-zA-Z0-9]{6,15}$/;
                     if (pwd.newPassword == '' || pwd.newPassword.length < 6) {
-                        showAlertError('密吗至少是6位');
+                        showAlertError('密码至少是6位');
                         return false;
                     } else if (!reg.test(app.newPassword)) {
                         showAlertError('密码必须包为字母或数字！');
@@ -356,7 +356,7 @@ function setQQ(qq) {
                     layer.closeAll();
                     showOK(res.msg);
                     app.user.QQ = res.data.qq;
-                    saveSession("user", app.user);
+                    saveLocal("user", app.user);
                 } else {
                     showAlertError(res.msg)
                 }
@@ -532,7 +532,7 @@ function setIcon(icon) {
                     layer.closeAll();
                     showOK();
                     app.user.icon = res.data.icon;
-                    saveSession("user", app.user);
+                    saveLocal("user", app.user);
                 } else {
                     showAlertError(res.msg)
                 }
@@ -555,7 +555,7 @@ function changeInput(obj) {
     var size = file.size / 1024;
 
     if (size > 1000) {
-        showAlertError('您上传的图片大小超过1M，请尝试压缩图片，或上传所拍照片的截图');
+        showAlertError('图片大小超过1M，请将拍摄的图片进行屏幕截图并裁剪多余部分之后重新上传');
         return;
     }
 

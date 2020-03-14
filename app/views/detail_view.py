@@ -44,7 +44,8 @@ def index():
             key = str(lost.id) + PostConfig.POST_REDIS_PREFIX
             redis_client.incr(key)
             intcnt = int(bytes.decode(redis_client.get(key)))
-            if intcnt - lost.look_count >= PostConfig.REDIS_MAX_VIEW:  # 超过一定程度吧浏览量存入数据库
+            # 超过一定程度吧浏览量存入数据库
+            if intcnt - lost.look_count >= PostConfig.REDIS_MAX_VIEW:
                 lost.look_count = lost.look_count + (intcnt - lost.look_count)
                 db.session.add(lost)
                 db.session.commit()
@@ -71,7 +72,7 @@ def index():
                 "status": lost.status,
                 "dealTime": None if lost.deal_time is None else lost.deal_time.strftime('%Y-%m-%d %H:%M:%S'),
                 "isSelf": current_user.id == lost.user_id,
-                "isAdmin": current_user.kind > lost.user_id,
+                "isAdmin": current_user.kind > user.kind,
                 "email": user.qq + '@qq.com',
                 "QQ": user.qq,
                 "site": os.getenv('SITE_URL')
