@@ -124,7 +124,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                     <span>管理控制台</span>
                 </a>
             </div>
-            <div class="clearfix"></div>
+{#            <div class="clearfix"></div>#}
         </div>
         <div class="header-right">
 
@@ -165,10 +165,10 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
     <div id="page-wrapper" style="padding-top: 5em;">
         <div class="main-page">
             <div class="col-md-12">
-                <div class="col-lg-6">
+                <div class="col-lg-6 col-sm-6 col-md-6">
             <button v-if="checkedList.length>1" style="background-color: #d9534f;border-color: #d43f3a;" @click="deleteAll" class="btn btn-primary glyphicon glyphicon-trash" type="button"> 批量删除</button>
                 </div>
-                <div class="col-lg-6" style="padding: 0px 0px 20px 0px;">
+                <div class="col-lg-6 col-sm-6 col-md-6" style="padding: 0px 0px 20px 0px;">
                     <div class="input-group">
                         <input v-model="result.search.keyword" type="text" class="form-control" placeholder="关键字">
                         <span class="input-group-btn">

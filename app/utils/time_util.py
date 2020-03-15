@@ -27,8 +27,11 @@ def get_action_time():
 
 
 def get_time_str(create_time):
+    print("时间BUG修复", type(create_time), create_time, create_time.day)
     create_time_utc = time.mktime(create_time.timetuple())
-    now_utc = time.mktime(datetime.datetime.now().timetuple())
+    now = datetime.datetime.now()
+    now_utc = time.mktime(now.timetuple())
+    day_len = now.day - create_time.day
     minute = int((now_utc - create_time_utc) / 60)
     if minute <= 60:
         mytime = minute / 60
@@ -37,10 +40,13 @@ def get_time_str(create_time):
             return '刚刚'
         else:
             return '%d分钟前' % minute
+    # 一天之内
     elif minute <= 60 * 24:
         return u'%d小时前' % (minute / 60)
-    elif minute <= 60 * 24 * 2:
+    # 超过24小时
+    elif minute <= 60 * 24 * 2 and day_len == 1:
         return '昨天'
+    # 超过30天显示准确的时间
     elif minute <= 60 * 24 * 30:
         return '%d天前' % (minute / 60 / 24)
     else:
@@ -51,5 +57,6 @@ if __name__ == '__main__':
     str = '2020-01-02'
     relday = datetime.datetime.strptime(str, '%Y-%m-%d')
     need_time = datetime.date.today()
-    print('查询用的时间格式',datetime.datetime.now(),type(datetime.datetime.now()))
-    print(relday, type(relday), need_time, type(need_time))
+    print('查询用的时间格式', datetime.datetime.now(), type(datetime.datetime.now()))
+    print(relday, type(relday), "need_time:", need_time, type(need_time))
+    print(datetime.datetime.now().day - relday.day)
