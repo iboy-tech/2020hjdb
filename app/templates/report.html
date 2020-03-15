@@ -161,14 +161,16 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
     </div>
     <!-- //header-ends -->
         <!-- page content start-->
-    <div id="page-wrapper" style="padding-top: 5em;">
+    <div id="page-wrapper">
         <div class="main-page">
             <div class="col-md-12">
                 <div class="col-lg-8" style="padding: 0px 0px 20px 0px;">
                     <div class="input-group">
-                        <mz-datepicker format="yyyy-MM-dd" :start-time.sync="startTime" :end-time.sync="endTime" range
+                        <div class="col-sm-6 ">
+                           <mz-datepicker format="yyyy-MM-dd" :start-time.sync="startTime" :end-time.sync="endTime" range
                                        cn confirm :on-confirm="confrim"></mz-datepicker>
-                     <div style="border: none;display: inline-block;margin-left: 15px;">
+                        </div>
+                     <div style="" class="col-sm-6">
                      <select v-model="flag" style="height: 31.5px;border: 1px solid #d9d9d9;">
                         <option v-for="x in choice" selected="selected"  :value="x.value">{{x.name}}</option>
                         <input class="btn btn-primary" type="button" style="display: inline-block;margin-left: 20px;" @click="execute" value="导出" />

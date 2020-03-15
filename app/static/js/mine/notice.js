@@ -26,7 +26,7 @@ var app = new Vue({
                 type: 1,
                 title: false,
                 skin: 'layui-layer-rim', //加上边框
-                area: ['500px', 'auto'], //宽高
+                area: ['auto', 'auto'], //宽高
                 content: $('#addDiv') //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
             });
         },
