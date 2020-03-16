@@ -41,7 +41,7 @@ def get_time_str(create_time):
         else:
             return '%d分钟前' % minute
     # 一天之内
-    elif minute <= 60 * 24:
+    elif minute <= 60 * 24 and day_len == 0:
         return u'%d小时前' % (minute / 60)
     # 超过24小时
     elif minute <= 60 * 24 * 2 and day_len == 1:
