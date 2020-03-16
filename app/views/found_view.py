@@ -176,19 +176,19 @@ def change_bs4_to_png(imglist):
         # 生成缩略图
         change_img_scale(filename)
         # 后台检查图片大小
-        if os.path.getsize(myfile) / 1024 > 1024:
+        if os.path.getsize(myfile) / 1024 > PostConfig.UPLOAD_MAX_SIZE:
             try:
                 os.remove(myfile)
                 os.remove(os.getenv("MINI_IMG_PATH") + filename)
+                # 一张图片超过上限返回空值
+                return ''
             except Exception as e:
                 print(str(e))
                 print("图片太大,移除列表中的元素")
-                files.remove(filename)
     if files:
         print('对上传图片进行异步压缩')
         tinypng.delay(files)
     print(files, '我是文件名')
-
     return files
 
 
@@ -249,13 +249,14 @@ def pub():
                     'url': os.getenv('SITE_URL') + 'detail.html?id=' + str(lost.id)
                 }
                 op = OpenID.query.filter_by(user_id=u.id).first()
-                if op is not None:
+                if op is not None and op.wx_id is not None:
                     print('发送消息')
                     uids = [op.wx_id]
                     send_message_by_pusher.delay(dict, uids, 3)
                     send_email.apply_async(args=(u.qq, '失物找回通知', 'foundNotice', dict), countdown=randint(1, 30))
+                db.session.commit()
     # cache.delete('found-getall')  # 删除缓存
-    db.session.commit()
+
     return restful.success()
 
 
@@ -365,8 +366,7 @@ def delete_losts():
 @found.route('/delete', methods=['POST'])
 @login_required
 @cross_origin()
-def delete_lost(flag=-1):
-    print("我是其他函数传来的参数", flag)
+def delete_lost():
     req = request.args.get('id')
     if not req:
         return restful.params_error()

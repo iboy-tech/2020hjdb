@@ -9,6 +9,7 @@
 @Software: PyCharm
 """
 import os
+import re
 from datetime import datetime
 from random import randint
 
@@ -65,7 +66,7 @@ def get_message():
 
 
 @user.route('/setQQ', methods=['POST'])
-@fresh_login_required
+@login_required
 @cross_origin()
 def set_QQ():
     print('用户准备更改密码')
@@ -80,23 +81,29 @@ def set_QQ():
         'token': url_for('auth.confirm', token=token, _external=True)
     }
     # send_email.delay(new_qq, 'QQ更改', 'changeQQ', messages)
-    send_email.apply_async(args=(new_qq, 'QQ更改', 'changeQQ', messages),countdown=randint(1, 30))
+    send_email.apply_async(args=(new_qq, 'QQ更改', 'changeQQ', messages), countdown=randint(1, 30))
     return restful.success(success=True, msg="验证邮件已发送到您的QQ邮箱，请及时确认")
 
 
 @user.route('/setPassword', methods=['POST'])
-@fresh_login_required
 @cross_origin()
+@login_required
 def set_password():
     print('用户准备更改密码')
     req = request.json
     print(req)
     u = User.query.get(current_user.id)
-    if u.verify_password(req['oldPassword']):
-        u.password = req['newPassword']
-        db.session.commit()
-        return restful.success()
-    return restful.success(success=False, msg="您输入的密码有误")
+    new_pwd = req['newPassword']
+    regx = "^(?:(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])).{6,16}$"
+    if re.match(regx, new_pwd):
+        if u.verify_password(req['oldPassword']):
+            print("密码强度够！")
+            u.password = new_pwd
+            db.session.commit()
+            return restful.success()
+    else:
+        return restful.success(False, msg="密码长度至少是6位且必须包含大小写字母和数字")
+    return restful.success(success=False, msg="您的原密码有误")
 
 
 @user.route('/claim', methods=['POST'])
@@ -111,11 +118,11 @@ def claim():
         try:
             l = LostFound.query.get(int(req))
             # 寻物
-            if l is not  None: #查到了
+            if l is not None:  # 查到了
                 if l.kind == 0:
-                    if l.user_id != current_user.id :
+                    if l.user_id != current_user.id:
                         l.status = 1
-                        l.deal_time=datetime.now()
+                        l.deal_time = datetime.now()
                         l.claimant_id = current_user.id
                         # db.session.add(l)
                         lost_user = User.query.filter_by(id=l.user_id).first()
@@ -128,21 +135,22 @@ def claim():
                             'pub_time': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
                             'pub_content': l.about,
                             'pub_location': l.location,
-                            'url': os.getenv('SITE_URL')+'detail.html?id=' + str(l.id)
+                            'url': os.getenv('SITE_URL') + 'detail.html?id=' + str(l.id)
                         }
-                        send_email.apply_async(args=[lost_user.qq, '失物找回通知', 'noticeLost', dict], countdown=randint(1, 30))
+                        send_email.apply_async(args=[lost_user.qq, '失物找回通知', 'noticeLost', dict],
+                                               countdown=randint(1, 30))
                         op = OpenID.query.filter_by(user_id=lost_user.id).first()
                         if op is not None:
                             print('发送消息')
                             uids = [op.wx_id]
-                            send_message_by_pusher(dict, uids,0)
+                            send_message_by_pusher(dict, uids, 0)
                         return restful.success(msg='上报成功,您的联系方式已发送给失主')
 
                 # l = db.session.merge(l)
                 else:  # 招领
                     if l.user_id != current_user.id:
                         l.status = 1
-                        l.deal_time=datetime.now()
+                        l.deal_time = datetime.now()
                         l.claimant_id = current_user.id
                         # db.session.commit()
                         # l=db.session.merge(l)
@@ -155,21 +163,22 @@ def claim():
                             'pub_time': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
                             'pub_content': l.about,
                             'pub_location': l.location,
-                            'url': os.getenv('SITE_URL')+'detail.html?id=' + str(l.id)
+                            'url': os.getenv('SITE_URL') + 'detail.html?id=' + str(l.id)
                         }
-                        send_email.apply_async(args=[found_user.qq, '失物认领通知', 'noticeFound', dict], countdown=randint(1, 30))
+                        send_email.apply_async(args=[found_user.qq, '失物认领通知', 'noticeFound', dict],
+                                               countdown=randint(1, 30))
                         op = OpenID.query.filter_by(user_id=found_user.id).first()
                         if op is not None:
                             print('发送消息')
                             uids = [op.wx_id]
-                            send_message_by_pusher(dict, uids,1)
+                            send_message_by_pusher(dict, uids, 1)
                         return restful.success(msg='认领成功,您的联系方式已发送给失主')
             else:
                 return restful.params_error()
         except Exception as e:
             db.session.rollback()
             print(str(e))
-            return restful.success(success=False,msg=str(e))
+            return restful.success(success=False, msg=str(e))
         finally:
             db.session.add(l)
             db.session.commit()

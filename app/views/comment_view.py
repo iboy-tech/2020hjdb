@@ -52,9 +52,14 @@ def index():
                 print('发送消息')
                 uids = [op.wx_id]
                 send_message_by_pusher(dict, uids, 4)
-            db.session.add(comment)
-            db.session.commit()
-            return restful.success(msg='评论成功')
+            try:
+                db.session.add(comment)
+                db.session.commit()
+                return restful.success(msg='评论成功')
+            except Exception as e:
+                return restful.success(False,str(e))
+
+
         else:
             return restful.params_error()
     else:

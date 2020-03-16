@@ -64,7 +64,7 @@ def index():
         redis_client.setrange(key, 0, str(data))  # 把数据存入redis
         print('key的过期时间：', os.getenv('QR_CODE_VALID_TIME'))
         print('redis中的值', redis_client.get('key'), type(redis_client.get('key')))
-        return data
+        return "ok"
 
 
 @oauth.route('/qq')

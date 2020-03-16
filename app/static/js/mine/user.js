@@ -16,7 +16,7 @@ var app = new Vue({
                     "keyword": "",
                     "username": "",
                     "pageNum": 0,
-                    "pageSize": 10
+                    "pageSize": 15
                 },
                 totalPage: 0,
                 total: 0,
@@ -29,7 +29,7 @@ var app = new Vue({
                     "keyword": "",
                     "username": "",
                     "pageNum": 0,
-                    "pageSize": 10
+                    "pageSize": 15
                 },
                 totalPage: 0,
                 total: 0,
@@ -42,7 +42,7 @@ var app = new Vue({
                     "keyword": "",
                     "username": (getLocal("user") ? JSON.parse(getLocal("user")) : {}).studentNum,
                     "pageNum": 0,
-                    "pageSize": 10
+                    "pageSize": 15
                 },
                 totalPage: 0,
                 total: 0,
@@ -405,7 +405,6 @@ function setPassword(data) {
         method: "POST",
         success: function (res, status) {
             console.log(res);
-
             if (res.success) {
                 layer.closeAll();
                 showOK();
@@ -421,6 +420,7 @@ function setPassword(data) {
                     success: function (res) {
                         if (res.success) {
                             console.log(res);
+                            deleteLocal("user");
                             window.location = baseUrl + '/login';
                         }
                     }
@@ -554,8 +554,8 @@ function changeInput(obj) {
     console.log("file.size = " + file.size);  //file.size 单位为byte
     var size = file.size / 1024;
 
-    if (size > 1000) {
-        showAlertError('图片大小超过1M，请将拍摄的图片进行屏幕截图并裁剪多余部分之后重新上传');
+    if (size > 400) {
+        showAlertError('图片大小超过400KB，请将拍摄的图片进行屏幕截图并裁剪多余部分之后重新上传');
         return;
     }
 

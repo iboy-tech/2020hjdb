@@ -11,7 +11,7 @@ var app = new Vue({
                 "keyword": "",
                 "username": "",
                 "pageNum": 0,
-                "pageSize": 10,
+                "pageSize": 15,
                 "flag": 1,
             },
             totalPage: 0,
@@ -115,12 +115,7 @@ var app = new Vue({
             console.log(e);
         },
         toPage(pageNum) {
-            console.log(pageNum);
-            if (pageNum < 0 || pageNum >= this.result.totalPage) {
-                return;
-            }
-            this.result.search.pageNum = pageNum;
-            pageLostFound(app.result.search, app.result, false);
+            toPage(pageNum);
         },
         jumpDetail(id) {
             //跳转详情页面
@@ -130,9 +125,15 @@ var app = new Vue({
             logout();
         },
     }
-
 });
-
+function toPage(pageNum){
+    console.log(pageNum);
+            if (pageNum < 0 || pageNum >= app.result.totalPage) {
+                return;
+            }
+            app.result.search.pageNum = pageNum;
+            pageLostFound(app.result.search, app.result, false);
+}
 $(function () {
     //console.log('index');
     //console.log(app.user);

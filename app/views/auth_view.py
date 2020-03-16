@@ -28,6 +28,14 @@ from app.utils.auth_token import generate_token, validate_token
 from app.utils.mail_sender import send_email
 
 
+@auth.route('/ctgu')
+def ctgu():
+    req=request.json;
+    print(req)
+    print(request.args)
+    return "ok"
+
+
 # 隐私协议
 @auth.route('/private')
 def private():
@@ -249,5 +257,3 @@ def confirm():
         'success': True
     }
     return render_template('mails/go.html', messages=messages)
-
-

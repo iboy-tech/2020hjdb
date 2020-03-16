@@ -39,6 +39,14 @@
                 });
             }
         </script>
+        <style>
+            h2{
+                background:url(https://ae01.alicdn.com/kf/Hac5ddf1e89d6411ca0151aefe6db97c0e.png) no-repeat left center;
+                text-indent: 50px;
+                background-size: 50px 50px;
+                font-size: 20px !important;
+            }
+        </style>
     </head>
     {% autoescape false %}
     <body>
@@ -52,7 +60,7 @@
                 <div class="in">
                     <div class="textThis">
                         {% if messages.success==False %}
-                        <h2>{{ messages.msg }}</h2>
+                        <h2 >{{ messages.msg }}</h2>
                         {% else %}
                         <h2 style="color: #61cc52;">{{ messages.msg }}</h2>
                         {% endif %}

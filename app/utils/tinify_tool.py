@@ -25,7 +25,8 @@ from .img_compress import get_max_key
 path = os.getenv('PATH_OF_UPLOAD')
 from tasks import celery
 
-
+def async_compress_imgs(m,n,files):
+    pass
 # 图片异步压缩队列
 @celery.task
 def tinypng(files):

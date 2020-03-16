@@ -42,6 +42,11 @@ def get_all():
     print(req)
     page = int(req['pageNum'])
     pagesize = int(req['pageSize'])
+    # 自动调整每页的数量
+    total_page = db.session.query(User).count()
+    mid = total_page // 10
+    if pagesize < mid:
+        pagesize = mid
     keyword = req['keyword']
     if keyword == '':
         print('get_users收到请求')
@@ -170,7 +175,7 @@ def delete_users():
     if req:
         users = User.query.filter(User.id.in_(req))
         for u in users:
-            if  u.kind != 3:
+            if u.kind != 3:
                 posts = u.posts
                 print(posts, type(posts))
                 del_imgs = []
@@ -232,7 +237,7 @@ def delete_user():
             db.session.rollback()
             return restful.params_error(success=False, msg=str(e))
     else:
-        if u.kind==3:
+        if u.kind == 3:
             return restful.params_error(False, msg="超级管理员无法直接删除")
         return restful.params_error(success=False, msg="用户不存在")
     return restful.success(msg="删除失败")
