@@ -11,5 +11,6 @@ MINI_IMG_PATH='app/static/thumb/'
 PATH_OF_REPORT= 'app/static/file/'
 PATH_OF_TEMP= 'app/static/temp/'
 SITE_URL='http://iboy.f3322.net:8888/'
+CDN_URL='https://cdn.ctguswzl.cn'
 C_FORCE_ROOT=True
 

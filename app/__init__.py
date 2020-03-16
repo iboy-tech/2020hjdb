@@ -16,7 +16,7 @@ import click
 from flask import Flask, render_template, request, redirect
 from flask_wtf.csrf import CSRFError
 
-from app.config import BaseConfig, basedir
+from app.config import BaseConfig, basedir, PostConfig
 # .表示当前路径
 from app.config import config  # 导入存储配置的字典
 from tasks import celery
@@ -43,8 +43,7 @@ from app.page import user as user_bp
 from app.page import auth as auth_bp
 from app.page import chart as admin_bp
 from app.page import report as report_bp
-from app.page import  tool as tool_bp
-
+from app.page import tool as tool_bp
 
 
 # 工厂函数
@@ -61,7 +60,8 @@ def create_app(config_name=None):
     register_errors(app)  # 注册错误处理函数
     register_shell_context(app)  # 注册shell上下文处理函数
     register_commands(app)  # 注册自定义shell命令
-    #register_interceptor(app)  # 拦截器
+    register_template_context(app)
+    # register_interceptor(app)  # 拦截器
     return app
 
 
@@ -80,7 +80,6 @@ def register_blueprints(app):
     app.register_blueprint(cache_bp)
     app.register_blueprint(report_bp)
     app.register_blueprint(tool_bp)
-
 
 
 def register_extensions(app):  # 实例化扩展
@@ -187,11 +186,14 @@ def register_logging(app):
         app.logger.addHandler(file_handler)
 
 
-#
-# def register_template_context(app):
-#     @app.context_processor
-#     def make_template_context():
-#         pass
+# 模板上下文
+def register_template_context(app):
+    @app.context_processor
+    def make_template_context():
+        # CDN加速的地址
+        cdn_url = os.getenv("CDN_URL")
+        return dict(cdnUrl=cdn_url)
+
 
 def register_commands(app):
     @app.cli.command()
@@ -208,12 +210,11 @@ def register_commands(app):
         Role.init_role()
         click.echo("Done.")
 
-
     @app.cli.command()
     # prompt=True二次输入
     @click.option('--username', prompt=True, help='组织用户名.')
-    @click.option('--password', prompt=True, hide_input=True,confirmation_prompt=True, help='组织.')
-    @click.option('--qq', prompt=True,confirmation_prompt=True, help='官方QQ.')
+    @click.option('--password', prompt=True, hide_input=True, confirmation_prompt=True, help='组织.')
+    @click.option('--qq', prompt=True, confirmation_prompt=True, help='官方QQ.')
     # 初始化公用账号
     def initpub(username, password, qq):
         """Building Bluelog, just for you."""
@@ -227,15 +228,14 @@ def register_commands(app):
         else:
             click.echo('Creating the temporary public account...')
             public = User(username=username, password=password, real_name='三峡大学失物招领中心', academy='部门账号',
-                          class_name='部门账号', major='部门账号', qq=qq, kind=1, gender=2,status=2)
+                          class_name='部门账号', major='部门账号', qq=qq, kind=1, gender=2, status=2)
             db.session.add(public)
             db.session.commit()
-            print('共有账户的ID',public.id)
-            op=OpenID(qq_id=None,wx_id=None,user_id=public.id)
+            print('共有账户的ID', public.id)
+            op = OpenID(qq_id=None, wx_id=None, user_id=public.id)
             print('创建开发平台ID')
             db.session.add(op)
             db.session.commit()
-
 
 
 def register_errors(app):

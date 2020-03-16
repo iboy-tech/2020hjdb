@@ -13,6 +13,7 @@
 from __future__ import absolute_import
 import os
 from datetime import datetime
+from threading import Thread
 
 import tinify
 
@@ -25,16 +26,11 @@ from .img_compress import get_max_key
 path = os.getenv('PATH_OF_UPLOAD')
 from tasks import celery
 
-def async_compress_imgs(m,n,files):
-    pass
-# 图片异步压缩队列
-@celery.task
-def tinypng(files):
-    max_key=get_max_key()
-    print("最大的key",max_key)
-    tinify.key =max_key
-    start = datetime.now()
-    for file in files:
+
+def async_compress_imgs(m, n, files):
+    images = files[m:n]
+    print("切片", images)
+    for file in images:
         print(file)
         file = os.path.join(os.getenv("PATH_OF_UPLOAD"), file)
         print('我是压缩函数中图片的路径', file)
@@ -66,18 +62,42 @@ def tinypng(files):
         mini_size = os.path.getsize(file) / 1024
         # 减少体积
         compressions_this_month = tinify.compression_count
-        left_times=500 - compressions_this_month
+        left_times = 500 - compressions_this_month
         print('剩余的压缩次数', left_times)
         key = PostConfig.TINYPNG_REDIS_KEY
-        mapping = {max_key: left_times}
-        res = redis_client.zadd(key,mapping)
+        mapping = {tinify.key: left_times}
+        res = redis_client.zadd(key, mapping)
         print("添加结果", res)
         if res != 0:
             print("次数更新成功")
         remove_size = round(original_size - mini_size)
         print('压缩前：', original_size, '压缩后：', mini_size, '减少：', remove_size)
-    end = datetime.now()
-    print('压缩用时', end - start)
+
+
+# 图片异步压缩队列
+@celery.task
+def tinypng(files):
+    max_key = get_max_key()
+    print("最大的key", max_key)
+    tinify.key = max_key
+    start = datetime.now()
+    total_imgs = len(files)
+    print("线程的分组", total_imgs // PostConfig.IMG_NUM_IN_THREAD, total_imgs / PostConfig.IMG_NUM_IN_THREAD)
+    for i in range(total_imgs // PostConfig.IMG_NUM_IN_THREAD):
+        s = Thread(target=async_compress_imgs,
+                   args=(i * PostConfig.IMG_NUM_IN_THREAD, (1 + i) * PostConfig.IMG_NUM_IN_THREAD, files))
+        # print(i * 5, (1 + i) *5)
+        s.start()
+        # s.join()
+        print('线程【', i + 1, '】已启动')
+        if (total_imgs % PostConfig.IMG_NUM_IN_THREAD != 0 and i == total_imgs // PostConfig.IMG_NUM_IN_THREAD - 1):
+            s = Thread(target=async_compress_imgs, args=((i + 1) * PostConfig.IMG_NUM_IN_THREAD, (
+                        1 + i) * PostConfig.IMG_NUM_IN_THREAD + total_imgs % PostConfig.IMG_NUM_IN_THREAD, files))
+            # print((i+1)* 5, (1 + i) * 5+urllen % 5)
+            s.start()
+            # s.join()
+            print('线程【', i + 2, '】已启动')
+
     # thr = Thread(target=send_async_email, args=[app,msg])
     # thr.start()
     # return thr
@@ -86,8 +106,8 @@ def tinypng(files):
 
 
 def get_count(data):
-    tinify.key =data
-    resp=tinify.from_url("https://tinypng.com/web/output/tu2zvxe80hh79f7x40emeg9ueewb2d13/tick.png")
+    tinify.key = data
+    resp = tinify.from_url("https://tinypng.com/web/output/tu2zvxe80hh79f7x40emeg9ueewb2d13/tick.png")
     print(resp)
     compressions_this_month = tinify.compression_count
     print('剩余的压缩次数', 500 - compressions_this_month)

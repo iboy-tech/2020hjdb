@@ -9,7 +9,7 @@
 var app = new Vue({
     el: '#app',
     data: {
-        path: window.location.protocol+"//"+window.location.host+"/static/file/",
+        path: window.location.protocol + "//" + window.location.host + "/static/file/",
         api: "https://view.officeapps.live.com/op/view.aspx?src=",
         user: getLocal("user") ? JSON.parse(getLocal("user")) : {},
         time: moment(new Date()).format("YYYY-MM-DD"),
@@ -40,7 +40,10 @@ var app = new Vue({
             logout();
         },
         deleteFile: function (id) {
-            $.ajax({
+            layer.confirm('确定要删除吗？', {
+                btn: ['确定', '取消'] //按钮
+            }, function () {
+                            $.ajax({
                 url: "/report.html/delete",
                 data: JSON.stringify(id),
                 method: "POST",
@@ -54,6 +57,8 @@ var app = new Vue({
                     }
 
                 }
+            });
+            }, function () {
             });
         },
         confrim: function (startTime, endTime) {
@@ -80,7 +85,8 @@ $(function () {
             classie.toggle(showLeftPush, 'disabled');
         }
     }
-     getFile(app, false);
+
+    getFile(app, false);
 });
 
 function getFile(app, append) {

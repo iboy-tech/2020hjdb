@@ -104,7 +104,9 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                         </a>
                         <!-- //nav-second-level -->
                     </li>
-
+           <li class="visible-xs-block">
+                        <a href="#" @click="logout"><i class="fa fa-sign-out nav_icon"></i>安全退出</a>
+                    </li>
                 </ul>
                 <!-- //sidebar-collapse -->
             </nav>
@@ -128,7 +130,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
         </div>
         <div class="header-right">
             <!--notification menu end -->
-            <div class="profile_details">
+            <div class="profile_details visible-lg-block">
                 <ul>
                     <li class="dropdown profile_details_drop">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -247,8 +249,8 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
             </div>
             <div class="row">
 
-                <div class="col-md-7">
-                    <nav style="float: right;">
+                <div class="col-md-7 col-sm-12">
+                    <nav>
                         <ul class="pagination">
                             <li><a @click="toPage(0)">首页</a></li>
                             <li :class="{disabled: search.pageNum==0}">
@@ -266,12 +268,12 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                         </ul>
                     </nav>
                 </div>
-                <div class="col-md-5">
-                    <div class="input-group" style="margin: 20px 10px;">
-                        <span class="input-group-addon" id="sizing-addon1">共{{result.total}}条，每页</span>
-                        <input type="text" class="form-control" v-model="search.pageSize">
+                <div class="col-md-5 col-sm-12">
+                    <div class="input-group" style="margin-top:20px;">
+                        <span class="input-group-addon"  id="sizing-addon1">共{{result.total}}条，每页</span>
+                        <input type="text" class="form-control" style="padding-left: 10px; padding-right: 10px;text-align: center;" v-model="search.pageSize">
                         <span class="input-group-addon" id="sizing-addon2">条，第</span>
-                        <input type="text" class="form-control" :value="currentPage" id="pgNum">
+                        <input type="text" class="form-control" style="padding-left: 10px; padding-right: 10px;text-align: center;" :value="currentPage" id="pgNum">
                         <span class="input-group-addon" id="sizing-addon3">/{{result.totalPage}}页</span>
                         <span class="input-group-btn" style="width: auto;">
                                 <button class="btn btn-primary" type="button" @click="submit">确定</button>

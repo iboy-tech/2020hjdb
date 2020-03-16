@@ -214,3 +214,11 @@ function showAsk(msg) {
 
 //4灰色锁，5红色瘪嘴表情，6绿色笑脸
 
+//百度统计
+var hm = document.createElement("script");
+$(function () {
+  hm.src = "https://hm.baidu.com/hm.js?cadc146ea11d785cac889d32e36f336b";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})
+

@@ -161,17 +161,12 @@
             }
         }
     });
-    var _hmt = _hmt || [];
     $(function () {
         //验证码高度设置
         $("#codeImg").css("height", $("#vcode").outerHeight() + 'px');
         $(window).resize(function () {
             $("#codeImg").css("height", $("#vcode").outerHeight() + 'px');
         });
-          var hm = document.createElement("script");
-          hm.src = "https://hm.baidu.com/hm.js?cadc146ea11d785cac889d32e36f336b";
-          var s = document.getElementsByTagName("script")[0];
-          s.parentNode.insertBefore(hm, s);
     });
 
 

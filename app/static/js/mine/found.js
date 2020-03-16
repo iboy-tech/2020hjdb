@@ -38,6 +38,7 @@ var app = new Vue({
             return this.result.search.pageNum + 1;
         }
     },
+
     methods: {
         freezeUser(userId, flag) {
             if (flag == 1) {

@@ -8,10 +8,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
     <title>三峡大学失物招领中心</title>
 {#    <link rel="stylesheet" type="text/css" href="../static/css/semantic.min.css"/>#}
-    <link rel="stylesheet" type="text/css" href="https://swzl-1301392786.cos.ap-chongqing.myqcloud.com/static/css/semantic.min.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ cdnUrl }}/static/css/semantic.min.css"/>
       <link rel='stylesheet prefetch' href='https://cdn.bootcss.com/semantic-ui/2.3.1/components/icon.min.css'>
 
-    <link type="text/css" rel="stylesheet" href="https://swzl-1301392786.cos.ap-chongqing.myqcloud.com/static/css/space.4cb6e48f.css">
+    <link type="text/css" rel="stylesheet" href="{{ cdnUrl }}/static/css/space.4cb6e48f.css">
     <script src="https://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/vue/2.4.2/vue.min.js"></script>
     <style>
@@ -653,9 +653,9 @@
 <div class="left_div_content">
         <ul>
 		<li><span>您可以通过以下方式联系我们</span></li>
-		<li><span><i class="weibo icon"></i>微博 ：<wb:follow-button uid="3224639237" type="red_1" width="67" height="24"><iframe src="http://widget.weibo.com/relationship/followbutton.php?btn=red&amp;style=1&amp;uid=3224639237&amp;width=67&amp;height=24&amp;language=zh_cn" width="67" height="24" frameborder="0" scrolling="no" marginheight="0"></iframe></wb:follow-button></span></li>
-		<li><span><i class="qq icon"></i>官方QQ：<a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=1994124775&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:1994124775:51" alt="点击这里给我发消息" title="点击这里给我发消息"/></a></span></li>
-        <li><span><i class="qq icon"></i>QQ群：<a target="_blank" href="//shang.qq.com/wpa/qunwpa?idkey=6c652bd1073f3bbb87913503b6c36b89dd89cf7fb4b7b28593f971974d1cc1ef"><img border="0" src="//pub.idqqimg.com/wpa/images/group.png" alt="三峡大学失物招领③群" title="三峡大学失物招领③群"></a></span></li>
+		<li><span><i class="weibo icon"></i>微博 ：<wb:follow-button uid="3224639237" type="red_1" width="67" height="24"><iframe src="https://widget.weibo.com/relationship/followbutton.php?btn=red&amp;style=1&amp;uid=3224639237&amp;width=67&amp;height=24&amp;language=zh_cn" width="67" height="24" frameborder="0" scrolling="no" marginheight="0"></iframe></wb:follow-button></span></li>
+		<li><span><i class="qq icon"></i>官方QQ：<a target="_blank" href="https://wpa.qq.com/msgrd?v=3&uin=1994124775&site=qq&menu=yes"><img border="0" src="https://pub.idqqimg.com/qconn/wpa/button/button_111.gif" alt="点击这里给我发消息" title="点击这里给我发消息"/></a></span></li>
+        <li><span><i class="qq icon"></i>QQ群：<a target="_blank" href="https://shang.qq.com/wpa/qunwpa?idkey=6c652bd1073f3bbb87913503b6c36b89dd89cf7fb4b7b28593f971974d1cc1ef"><img border="0" src="https://pub.idqqimg.com/wpa/images/group.png" alt="三峡大学失物招领③群" title="三峡大学失物招领③群"></a></span></li>
         <li><span><i class="envelope outline icon"></i>Email：<a target="_blank" href="https://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=service@ctguswzl.cn" style="color: rgba(0, 0, 0, 0.87);">service@ctguswzl.cn 点击此处，给我们写信</a></span></li>
         抖音:  dyeezcqqm1bt
         </ul>
@@ -817,14 +817,9 @@
 <script>
      // hideLoading();
      var _hmt = _hmt || [];
-
 $(function () {
-        isAnonymous();
-          var hm = document.createElement("script");
-  hm.src = "https://hm.baidu.com/hm.js?cadc146ea11d785cac889d32e36f336b";
-  var s = document.getElementsByTagName("script")[0];
-  s.parentNode.insertBefore(hm, s);
-     });
+    isAnonymous();
+});
 </script>
 
 

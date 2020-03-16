@@ -29,7 +29,10 @@ var app = new Vue({
             });
         },
         deleteKey: function (key) {
-            $.ajax({
+            layer.confirm('确定要删除吗？', {
+                btn: ['确定', '取消'] //按钮
+            }, function () {
+                            $.ajax({
                 url: "/tool.html/deleteKey?key=" + key,
                 // data: JSON.stringify(key),
                 method: "POST",
@@ -42,6 +45,8 @@ var app = new Vue({
                     }
 
                 }
+            });
+            }, function () {
             });
         },
         compress: function () {
@@ -58,7 +63,7 @@ var app = new Vue({
                 }
             });
         },
-        importKeys:function () {
+        importKeys: function () {
             $.ajax({
                 url: "/tool.html/import",
                 method: "POST",

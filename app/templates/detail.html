@@ -7,9 +7,9 @@
     <meta name="referrer" content="always"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
     <title>三峡大学失物招领中心</title>
-    <link rel="stylesheet" type="text/css" href="https://swzl-1301392786.cos.ap-chongqing.myqcloud.com/static/css/semantic.min.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ cdnUrl }}/static/css/semantic.min.css"/>
       <link rel='stylesheet prefetch' href='https://cdn.bootcss.com/semantic-ui/2.3.1/components/icon.min.css'>
-    <link type="text/css" rel="stylesheet" href="https://swzl-1301392786.cos.ap-chongqing.myqcloud.com/static/css/space.4cb6e48f.css">
+    <link type="text/css" rel="stylesheet" href="{{ cdnUrl }}/static/css/space.4cb6e48f.css">
     <link rel="stylesheet" href="../static/css/share/css/share.min.css">
      <script src="https://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/vue/2.4.2/vue.min.js"></script>
@@ -382,24 +382,19 @@
 </style>
 <script src="https://cdn.bootcss.com/semantic-ui/2.3.1/semantic.min.js"></script>
 <script src="../static/js/mine/common.js"></script>
-<script src="https://swzl-1301392786.cos.ap-chongqing.myqcloud.com/static/js/layer.js"></script>
+<script src="{{ cdnUrl }}/static/js/layer.js"></script>
 <script src="../static/js/mine/detail.js"></script>
-<script src="https://swzl-1301392786.cos.ap-chongqing.myqcloud.com/static/js/share/js/social-share.js"></script>
-<script src="https://swzl-1301392786.cos.ap-chongqing.myqcloud.com/static/js/qrcode.js"></script>
+<script src="{{ cdnUrl }}/static/js/share/js/social-share.js"></script>
+<script src="{{ cdnUrl }}/static/js/qrcode.js"></script>
 <script>
      // hideLoading();
-var _hmt = _hmt || [];
+
 $(function () {
         isAnonymous();
-          var hm = document.createElement("script");
-  hm.src = "https://hm.baidu.com/hm.js?cadc146ea11d785cac889d32e36f336b";
-  var s = document.getElementsByTagName("script")[0];
-  s.parentNode.insertBefore(hm, s);
      });
 // 2 种方式都可以
         $('.with-popup').popup();
         $('.with-popup').popup({ position: 'bottom left' });
-
         // 如果 popup 的位置不够理想，还可以设置 offset 进行微调，例如下面向左偏移 12 像素
         $('.with-popup').popup({ position: 'bottom left', offset: -12 });
 </script>

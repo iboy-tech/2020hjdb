@@ -33,6 +33,7 @@ print('SECRET_KEY', os.getenv('SECRET_KEY'))
 print('PATH_OF_IMAGES_DIR', os.getenv('PATH_OF_IMAGES_DIR'))
 print('MAIL_SENDGRID_API_KEY', os.getenv('MAIL_SENDGRID_API_KEY'))
 print('我是站点的地址', os.getenv('SITE_URL'))
+print("我是CDN加速地址", os.getenv("CDN_URL"))
 
 app = create_app(os.getenv('FlASK_ENV') or 'production')
 CORS(app, supports_credentials=True, resources=r'/*')  # 允许所有域名跨域

@@ -104,6 +104,9 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                         </a>
                         <!-- //nav-second-level -->
                     </li>
+             <li class="visible-xs-block">
+                        <a href="#" @click="logout"><i class="fa fa-sign-out nav_icon"></i>安全退出</a>
+                    </li>
 
                 </ul>
                 <!-- //sidebar-collapse -->
@@ -129,7 +132,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
         <div class="header-right">
 
             <!--notification menu end -->
-            <div class="profile_details">
+            <div class="profile_details visible-lg-block">
                 <ul>
                     <li class="dropdown profile_details_drop">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -245,7 +248,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
             <div class="row">
 
                 <div class="col-md-7 col-sm-12">
-                    <nav style="float: right;">
+                    <nav>
                         <ul class="pagination">
                             <li><a @click="toPage(0)">首页</a></li>
                             <li :class="{disabled:  result.search.pageNum==0}">
@@ -255,20 +258,20 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                             <li v-for="num in result.totalPage" :class="{active: num==currentPage}">
                                 <a @click="toPage(num-1)">{{num}}</a>
                             </li>
-                            <li :class="{disabled:  result.search.pageNum>=result.totalPage -1}">
-                                <a @click="toPage( result.search.pageNum+1)"
+                            <li :class="{disabled: result.search.pageNum>=result.totalPage -1}">
+                                <a @click="toPage(result.search.pageNum+1)"
                                    aria-label="Next"><span aria-hidden="true">»</span></a>
                             </li>
                             <li><a @click="toPage(result.totalPage-1)">末页</a></li>
                         </ul>
                     </nav>
                 </div>
-                <div class="col-md-5">
-                    <div class="input-group" style="margin: 20px 10px;">
+                <div class="col-md-5 col-sm-12">
+                    <div class="input-group" style="margin-top:20px;">
                         <span class="input-group-addon" id="sizing-addon1">共{{result.total}}条，每页</span>
-                        <input type="text" class="form-control" v-model=" result.search.pageSize">
+                        <input type="text" class="form-control" style="padding-left: 10px; padding-right: 10px;text-align: center;" :value="result.search.pageSize" v-model="result.search.pageSize">
                         <span class="input-group-addon" id="sizing-addon2">条，第</span>
-                        <input type="text" class="form-control" :value="currentPage" id="pgNum">
+                        <input type="text" class="form-control" style="padding-left: 10px; padding-right: 10px;text-align: center;" :value="currentPage" v-model="currentPage" id="pgNum">
                         <span class="input-group-addon" id="sizing-addon3">/{{result.totalPage}}页</span>
                         <span class="input-group-btn" style="width: auto;">
                                 <button class="btn btn-primary" type="button" @click="submit">确定</button>
@@ -299,10 +302,6 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
             <td>性别</td>
             <td>{{userInfo.gender}}</td>
         </tr>
-{#        <tr>#}
-{#            <td>邮箱</td>#}
-{#            <td>{{userInfo.email}}</td>#}
-{#        </tr>#}
         <tr>
             <td>QQ</td>
             <td>{{userInfo.qq}}</td>
