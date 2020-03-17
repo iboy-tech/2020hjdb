@@ -122,8 +122,8 @@ def login():
                 print(
                     'current_user.is_authenticated',
                     current_user.is_authenticated)
-                print('Flask-Login自动添加', session['user_id'])
-                print(session.get('uid'))
+                # print('Flask-Login自动添加', session['user_id'])
+                # print(session.get('uid'))
                 data = user.auth_to_dict()
                 if session.get('next') is not None:
                     print(session.get("next的值"), session['next'])

@@ -16,7 +16,7 @@ var app = new Vue({
                     "keyword": "",
                     "username": "",
                     "pageNum": 0,
-                    "pageSize": 15
+                    "pageSize":2
                 },
                 totalPage: 0,
                 total: 0,
@@ -29,7 +29,7 @@ var app = new Vue({
                     "keyword": "",
                     "username": "",
                     "pageNum": 0,
-                    "pageSize": 15
+                    "pageSize": 2
                 },
                 totalPage: 0,
                 total: 0,
@@ -42,7 +42,7 @@ var app = new Vue({
                     "keyword": "",
                     "username": (getLocal("user") ? JSON.parse(getLocal("user")) : {}).studentNum,
                     "pageNum": 0,
-                    "pageSize": 15
+                    "pageSize": 2
                 },
                 totalPage: 0,
                 total: 0,
@@ -102,7 +102,6 @@ var app = new Vue({
                 title: t.time + "  " + t.title || "",
                 content: t.content || ""
             });
-
         },
         changeTab(index) {
             //console.log(index);
@@ -117,11 +116,9 @@ var app = new Vue({
             } else if (index == 3) {//我的消息
                 getMessages(this);
             } else if (index == 4) {
-            }
-            else if(index==5){
+            } else if (index == 5) {
                 // 常见问题
-            }
-            else  if(index==6){
+            } else if (index == 6) {
                 // 关于我们
             }
         },
@@ -150,9 +147,10 @@ var app = new Vue({
             console.log(this.tab[0].search, this.tab[0]);
         },
         nextPage(tabIndex) {
-            this.tab[tabIndex].search.pageNum++;
-            pageLostFound(app.tab[0].search, app.tab[0], true);
+            app.tab[tabIndex].search.pageNum++;
+            pageLostFound(app.tab[tabIndex].search, app.tab[tabIndex], true);
         },
+
         deletePub(id) {
             console.log(id);
             layer.confirm('确定要删除吗？', {
@@ -183,7 +181,6 @@ var app = new Vue({
             this.tab4.categoryIndex = index;
         },
         submitPub() {
-
             if (this.tab4.categoryIndex < 0) {
                 showAlertError("请选择物品类别！")
                 return;
@@ -315,7 +312,6 @@ var app = new Vue({
                     return false;
                 } else {
                     var reg = /^[1-9][0-9]{4,14}$/;
-                    ;
                     if (!reg.test(qq)) {
                         showAlertError('QQ号格式错误！');
                         return false;
@@ -332,9 +328,22 @@ var app = new Vue({
         showAbout() {
             app.showMenu = false;
             showAlert("CTGU失物招领系统", "关于");
-        }
-    }
+        },
+        titleAlert(title) {
+            console.log(title);
+            alert(title)
+        },
+    },
+    mounted() {
+        var io = new IntersectionObserver((entries) => {
+            setTimeout(function () {app.nextPage(0)},100);
+        });
+        io.observe(document.getElementById('flag'));
+    },
+
 });
+
+
 
 $(function () {
     pageLostFound(app.tab[0].search, app.tab[0], true);
@@ -694,15 +703,6 @@ $('.ui.radio.checkbox')
 $('select.dropdown')
     .dropdown()
 ;
-//滚动到底部触发事件
-// $(window).scroll(function(){
-//     var scrollTop = $(this).scrollTop();
-//     var scrollHeight = $(document).height();
-//     var windowHeight = $(this).height();
-//     if(scrollTop + windowHeight == scrollHeight){
-//         alert("you are in the bottom");
-//     }
-// });
 
 $(function () {
     let id = getUrlParam("id");

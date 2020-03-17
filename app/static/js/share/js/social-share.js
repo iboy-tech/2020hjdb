@@ -30,6 +30,14 @@
     var site = getMetaContentByName('site') || getMetaContentByName('Site') || document.title;
     var title = getMetaContentByName('title') || getMetaContentByName('Title') || document.title;
     var description = getMetaContentByName('description') || getMetaContentByName('Description') || '';
+var myimg=$("#share-images img").attr("src");
+if(myimg==undefined){
+    imgSrc="https://ae01.alicdn.com/kf/H178e60830e4342b8916cbfd620d46d57Q.png";
+}
+else{
+    imgSrc=window.location.protocol+"//"+window.location.host+'/'+$("#share-images img").attr("src");
+}
+
 
     var defaults = {
          url: location.href,
@@ -37,7 +45,7 @@
         source: site,
         title: $("#share-title").text().replace(/\s+/g,""),
         description: $("#share-description").text().replace(/\s+/g,""),
-        image: window.location.protocol+"//"+window.location.host+'/'+$("#share-images img").attr("src"),
+        image: imgSrc,
         imageSelector: undefined,
         weiboKey: '',
         wechatQrcodeHelper: '<p>微信里点“发现”，扫一下</p>',

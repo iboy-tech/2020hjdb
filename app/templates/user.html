@@ -10,7 +10,6 @@
 {#    <link rel="stylesheet" type="text/css" href="../static/css/semantic.min.css"/>#}
     <link rel="stylesheet" type="text/css" href="{{ cdnUrl }}/static/css/semantic.min.css"/>
       <link rel='stylesheet prefetch' href='https://cdn.bootcss.com/semantic-ui/2.3.1/components/icon.min.css'>
-
     <link type="text/css" rel="stylesheet" href="{{ cdnUrl }}/static/css/space.4cb6e48f.css">
     <script src="https://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/vue/2.4.2/vue.min.js"></script>
@@ -271,10 +270,11 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <a href="#1435">测试</a>
                                         <block v-if="tab[0].list.length > 0">
                                             <div v-for="item in tab[0].list" class="ui feed tweet-item item blog-item"
                                                  :key="item.id">
-                                                <div class="event">
+                                                <div class="event" :id="item.id">
                                                     <div class="content">
                                                         <div class="ui items tweet-user-info">
                                                             <div class="item">
@@ -473,7 +473,7 @@
                                         <block v-if="tab[2].list.length > 0">
                                             <div v-for="item in tab[2].list" class="ui feed tweet-item item blog-item"
                                                  :key="item.id">
-                                                <div class="event">
+                                                <div class="event" :data-id="item.id">
                                                     <div class="content">
                                                         <div class="ui items tweet-user-info">
                                                             <div class="item">
@@ -485,7 +485,7 @@
                                                                              :title="item.username">
                                                                     </div>
                                                                 </a>
-                                                                <div class="content">
+                                                                <div class="content" >
                                                                     <a class="user __user" @click="jumpDetail(item.id)">
                                                                         <div v-if="item.kind==0"
                                                                              class="ui red label horizontal"
@@ -745,9 +745,10 @@
 
 
                                 </div>
+                                <span id="flag" style="text-align: center;display: block;"><img v-if="tab[0].search.pageNum+1 < tab[0].totalPage && tabIndex == 0" src="https://ae01.alicdn.com/kf/H514381de973a47d6ad4c13120b0cbf51E.png" alt=""></span>
                                 <a v-if="tab[0].search.pageNum+1 < tab[0].totalPage && tabIndex == 0"
                                    @click="nextPage(0)"
-                                   class="ui fluid button load-more-button" style="display: block;">加载更多</a>
+                                   class="ui fluid button load-more-button"  style="display: block;">Loading</a>
                                 <div v-else class="page-load-status" :style="{display: tabIndex==0?'block':'none'}">
                                     <p class="infinite-scroll-last">没有更多内容</p>
                                 </div>
@@ -816,7 +817,6 @@
 <script src="../static/js/mine/user.js"></script>
 <script>
      // hideLoading();
-     var _hmt = _hmt || [];
 $(function () {
     isAnonymous();
 });

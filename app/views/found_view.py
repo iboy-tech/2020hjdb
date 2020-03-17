@@ -38,7 +38,7 @@ from app.utils.wxpusher import WxPusher
 from tasks import celery
 
 
-@found.route('/', methods=['GET', 'POST'], strict_slashes=False)
+@found.route('/', methods=['GET'], strict_slashes=False)
 @login_required
 @wechat_required
 def index():
@@ -199,7 +199,7 @@ def check_pup(data):
         return False
 
 
-@found.route('/pub', methods=['GET', 'POST', 'OPTIONS'], strict_slashes=False)
+@found.route('/pub', methods=['POST', 'OPTIONS'], strict_slashes=False)
 @login_required
 def pub():
     data = request.json
