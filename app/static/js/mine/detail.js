@@ -18,23 +18,23 @@ var app = new Vue({
             ]
         },
         item: {
-                id: null,
-                icon: "https://ae01.alicdn.com/kf/U89b7be7d8d234a38b9a4b0d4258de362X.jpg",
-                kind: 1,
-                username: "",
-                userId: "",
-                time: "",
-                location: "",
-                title: "",
-                about: "",
-                images: [],
-                category: "",
-                lookCount: 12,
-                status: 1,
-                dealTime: null,
-                isSelf: false,
-                email: "",
-                QQ: "",
+            id: null,
+            icon: "https://ae01.alicdn.com/kf/U89b7be7d8d234a38b9a4b0d4258de362X.jpg",
+            kind: 1,
+            username: "",
+            userId: "",
+            time: "",
+            location: "",
+            title: "",
+            about: "",
+            images: [],
+            category: "",
+            lookCount: 12,
+            status: 1,
+            dealTime: null,
+            isSelf: false,
+            email: "",
+            QQ: "",
         },
         comments: [],
         page: {
@@ -52,7 +52,7 @@ var app = new Vue({
         },
     },
     methods: {
-        share(){
+        share() {
             //捕获页
             layer.open({
                 type: 1,
@@ -83,23 +83,22 @@ var app = new Vue({
         },
         jumpDetail(id) {
             //跳转详情页面
-            window.open(baseUrl+"/detail.html?id=" + id, "_self");
+            window.open(baseUrl + "/detail.html?id=" + id, "_self");
         },
-        claim(flag,id){
-            if(flag==1){
-                 layer.confirm("物品是您的吗？" , {
-                     btn:["是的","不是"]
-                },function () {
+        claim(flag, id) {
+            if (flag == 1) {
+                layer.confirm("物品是您的吗？", {
+                    btn: ["是的", "不是"]
+                }, function () {
                     claimID(id);
-                 },function () {
-            });
-            }
-            else{
-                layer.confirm("您找到失物了吗？" , {
-                     btn:["是的","不是"]
-                },function () {
+                }, function () {
+                });
+            } else {
+                layer.confirm("您找到失物了吗？", {
+                    btn: ["是的", "不是"]
+                }, function () {
                     claimID(id);
-                 },function () {
+                }, function () {
                 });
             }
         }
@@ -120,14 +119,14 @@ $(function () {
 //删除招领信息
 function deletePub(id) {
     $.ajax({
-        url: baseUrl + "/found.html/delete?id="+id,
+        url: baseUrl + "/found.html/delete?id=" + id,
         method: "POST",
         success: function (res, status) {
             console.log(res);
             if (status == "success") {
                 if (res.success) {
                     // showOK(res.msg);
-                    window.location.href=baseUrl+'/';
+                    window.location.href = baseUrl + '/';
                 } else {
                     showAlertError(res.msg)
                 }
@@ -177,15 +176,15 @@ function pubComment(data, app) {
         success: function (res, status) {
             console.log(res);
             console.log(res);
-            console.log(typeof(res.ext),res.ext,res.ext==null);
+            console.log(typeof (res.ext), res.ext, res.ext == null);
             if (status == "success") {
                 if (res.success) {
                     showOK("发布成功！");
                     app.comment = "";
                     // location.reload();
                     console.log('把评论框清空')
-                    console.log('我是传给详情的ID:'+app.item.id)
-                    console.log(""+data.targetId )
+                    console.log('我是传给详情的ID:' + app.item.id)
+                    console.log("" + data.targetId)
                     getDetail(data);
                     console.log('评论完成之后刷新')
                 } else {
@@ -201,7 +200,7 @@ function pubComment(data, app) {
 
 //获得启事评论列表
 function getComments(data, app) {
-    console.log("评论有BUG：",data);
+    console.log("评论有BUG：", data);
     $.ajax({
         url: baseUrl + "/comment?id=" + window.location.search.split("id=")[1],
         method: "POST",
@@ -222,49 +221,51 @@ function getComments(data, app) {
 }
 
 function viewImages1(index) {
-    console.log('我是相册下标'+index)
-            //相册层
-            // this.images.data = [];
-            var images=[];
-            var start = index;
-            // let i = 0;
-            // let t = $("#share-images img").length;
-            // for (; i < t; i++) {
-            //     let src = app.imgPrefix+this.item.images[i];
-            //     let d = {"src":src};
-            //     this.images.data.push(d);
-            // }
-            $("#share-images img").each(function(){
-                var url = $(this).attr("src");
-                images.push(url);
-            });
-            app.images.data=images;
-            console.log(images);
-            layer.photos({
-                photos: images,//格式见API文档手册页
-                anim: 5 //0-6的选择，指定弹出图片动画类型，默认随机
-            });
-        }
-        function viewImages(index) {
-            //相册层
-            app.images.data = [];
-            app.images.start = index;
-            $("#share-images img").each(function(){
-                var url = $(this).attr("src").replace("thumb","upload");
-               let d= {"src": url}
-                app.images.data.push(d);
-            });
-            console.log(app.images);
-            layer.photos({
-                photos: app.images,//格式见API文档手册页
-                anim: 5 //0-6的选择，指定弹出图片动画类型，默认随机
-            });
-        }
+    console.log('我是相册下标' + index)
+    //相册层
+    // this.images.data = [];
+    var images = [];
+    var start = index;
+    // let i = 0;
+    // let t = $("#share-images img").length;
+    // for (; i < t; i++) {
+    //     let src = app.imgPrefix+this.item.images[i];
+    //     let d = {"src":src};
+    //     this.images.data.push(d);
+    // }
+    $("#share-images img").each(function () {
+        var url = $(this).attr("src");
+        images.push(url);
+    });
+    app.images.data = images;
+    console.log(images);
+    layer.photos({
+        photos: images,//格式见API文档手册页
+        anim: 5 //0-6的选择，指定弹出图片动画类型，默认随机
+    });
+}
+
+function viewImages(index) {
+    //相册层
+    app.images.data = [];
+    app.images.start = index;
+    $("#share-images img").each(function () {
+        var url = $(this).attr("src").replace("thumb", "upload");
+        let d = {"src": url}
+        app.images.data.push(d);
+    });
+    console.log(app.images);
+    layer.photos({
+        photos: app.images,//格式见API文档手册页
+        anim: 5 //0-6的选择，指定弹出图片动画类型，默认随机
+    });
+}
+
 //获得启事详情
 function getDetail(id) {
-    console.log('这是帖子的ID:'+id);
+    console.log('这是帖子的ID:' + id);
     $.ajax({
-        url: baseUrl + "/detail.html?id="+id,
+        url: baseUrl + "/detail.html?id=" + id,
         // data:id,
         method: "POST",
         // async : false,
@@ -302,7 +303,16 @@ function claimID(id) {
             if (status == "success") {
                 if (res.success) {
                     showOK(res.msg);
-                    window.location=baseUrl+"/detail.html?id="+id;
+                    if (res.msg.indexOf("认领") != -1) {
+                        $("#claim").empty();
+                        res="<button class=\"ui green small button\">已认领</button>";
+                        $("#claim").append(res);
+                    } else {
+                         $("#report").empty();
+                          res="<button class=\"ui green small button\">已找到</button>";
+                        $("#report").append(res);
+                    }
+
                 }
             } else {
                 console.log(res);
