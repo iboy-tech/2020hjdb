@@ -270,11 +270,10 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <a href="#1435">测试</a>
                                         <block v-if="tab[0].list.length > 0">
                                             <div v-for="item in tab[0].list" class="ui feed tweet-item item blog-item"
                                                  :key="item.id">
-                                                <div class="event" :id="item.id">
+                                                <div class="event">
                                                     <div class="content">
                                                         <div class="ui items tweet-user-info">
                                                             <div class="item">
@@ -473,7 +472,7 @@
                                         <block v-if="tab[2].list.length > 0">
                                             <div v-for="item in tab[2].list" class="ui feed tweet-item item blog-item"
                                                  :key="item.id">
-                                                <div class="event" :data-id="item.id">
+                                                <div class="event">
                                                     <div class="content">
                                                         <div class="ui items tweet-user-info">
                                                             <div class="item">

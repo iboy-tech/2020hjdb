@@ -13,14 +13,16 @@ from __future__ import absolute_import
 import os
 from datetime import datetime
 
-# os.environ.setdefault('FORKED_BY_MULTIPROCESSING', '1')
-
 from dotenv import load_dotenv, find_dotenv
+from flask import request
 from flask_cors import CORS
 from flask_login import current_user
 from flask_socketio import emit, SocketIO
 
-from app import create_app, create_celery, redis_client
+from app import create_app, create_celery, redis_client, OpenID
+from app.utils.wxpusher import WxPusher
+
+# os.environ.setdefault('FORKED_BY_MULTIPROCESSING', '1')
 
 async_mode = 'eventlet'
 load_dotenv(find_dotenv('.env'), override=True)
@@ -38,44 +40,55 @@ print("我是CDN加速地址", os.getenv("CDN_URL"))
 app = create_app(os.getenv('FlASK_ENV') or 'production')
 CORS(app, supports_credentials=True, resources=r'/*')  # 允许所有域名跨域
 
-socketio = SocketIO(app=app, async_mode=async_mode, cors_allowed_origins="*")
+socketio = SocketIO(app=app, async_mode=async_mode, cors_allowed_origins="*", manage_session=False)
 celery = create_celery(app)
 
 res = None
 
 
 @socketio.on('server')
-def server():
-    print('server用户连接了', datetime.now())
-    # global thread
-    # with thread_lock:
-    #     if thread is None:
-    #         thread = socketio.start_background_task(background_thread)
-    key = str(current_user.id) + '-pusher-post-data'
-    redis_client.set(key, 'null')  # 把数据存入redis
-    redis_client.expire(key, 180)
+def server(data):
+    msg = data.get("msg")
+    if msg == 'login':
+        client_id = request.sid
+        key = client_id + '-pusher-post-data'
+        redis_client.set(key, 'null')  # 把数据存入redis
+        redis_client.expire(key, 180)
+    elif msg == 'wx':
+        key = str(current_user.id) + '-pusher-post-data'
+        redis_client.set(key, 'null')  # 把数据存入redis
+        redis_client.expire(key, 180)
+    else:
+        res = {
+            'success': 'false',
+            'data': {'msg': '参数错误'},
+        }
+        emit('server', res)
     while True:
         op = redis_client.get(key)
         print('我是redis中的数据类型', op, type(op))
         if op is not None:
             op = op.decode()
-            print('当前用户姓名', current_user.real_name)
+            # print('当前用户姓名', current_user.real_name)
             # op = OpenID.query.filter_by(user_id=current_user.id).first()
             # db.session.remove()
             if op != 'null':
                 data = eval(op)
                 print('data的数据类型', type(data))
-                print('我是查询的OP', op)
-                print('循环查询OpenID', datetime.now(), op)
-                res = {
-                    'success': 'true',
-                    'data': {'msg': '绑定成功！即将回到主页',
-                             'head': data['userHeadImg'].replace('http', 'https')
-                             }
-                }
-                print('background_thread我是查询结果', res)
+                op = OpenID.query.filter_by(wx_id=data['uid']).one()
+                if op:
+                    print(op, op.user)
+                    print('我是查询的OP', op)
+                    print('循环查询OpenID', datetime.now(), op)
+                    res = {
+                        'success': 'true',
+                        'data': {'msg': '绑定成功！即将回到主页',
+                                 'head': data['userHeadImg'].replace('http', 'https')
+                                 },
+                        'token': request.sid
+                    }
+                    print('background_thread我是查询结果', res)
                 emit('server', res)
-                # redis_client.delete(key)
                 break;
             else:
                 res = {
@@ -97,15 +110,30 @@ def server():
         socketio.sleep(3)
 
 
+@socketio.on('qrcode')
+def get_qrcode():
+    client_id = request.sid
+    data = (WxPusher.create_qrcode(extra=client_id, valid_time=180))
+    if data['success']:
+        data = data['data']
+        res = {
+            'success': 'true',
+            'url': data['url'],
+        }
+        print("我是获取的数据", res)
+        # res =
+        socketio.emit("qrcode", res)
+    else:
+        print("我是获取的数据没成功")
+        res = {
+            'success': 'false',
+        }
+        socketio.emit("qrcode", res)
+
+
 @socketio.on('connect')
 def connect():
-    # print('服务端的connect函数',datetime.now())
-    emit('connect', {'msg': datetime.now().strftime('%Y-%m-%d %H:%M:%S')})
-    print('server用户连接了', datetime.now())
-    # global thread
-    # with thread_lock:
-    #     if thread is None:
-    #         thread = socketio.start_background_task(background_thread)
+    print("客户连接了")
 
 
 if __name__ == '__main__':

@@ -49,7 +49,7 @@ body {
 }
     </style>
         <script src="https://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='js/socket.io.min.js') }}"></script>
+    <script type="text/javascript" src="../static/js/socket.io.min.js"></script>
 </head>
 
 <body>
@@ -71,7 +71,7 @@ body {
             const url = "{{ data.site }}";
             console.log(url);
             const socket = io(url);
-            socket.emit('server');//触发通信
+            socket.emit('server',{msg:'wx'});//触发通信
             socket.on('server', function (data) {
                 console.log(data);
                 if (data['success'] == 'true') {

@@ -18,7 +18,8 @@ BASEURL = 'http://wxpusher.zjiecode.com/api'
 class WxPusher():
     """WxPusher Python Client."""
     # default_token = os.getenv('WX_PUSHER_TOKEN')
-    default_token="AT_nSOP4p7kD8K2quDdwOhnZ1nJsaD8qAWc"
+    default_token = "AT_nSOP4p7kD8K2quDdwOhnZ1nJsaD8qAWc"
+
     @classmethod
     def send_message(cls, content, uids, token=None, **kwargs):
         print('这是环境变量中的token', cls.default_token)
@@ -32,13 +33,13 @@ class WxPusher():
             'uids': uids,
             'url': kwargs.get('url')
         }
-        url = BASEURL+'/send/message'
+        url = BASEURL + '/send/message'
         return requests.post(url, json=payload).json()
 
     @classmethod
     def query_message(cls, message_id):
         """Query message status."""
-        url = BASEURL+'/send/query/{message_id}'
+        url = BASEURL + '/send/query/{message_id}'
         return requests.get(url).json()
 
     @classmethod
@@ -49,7 +50,7 @@ class WxPusher():
             'extra': extra,
             'validTime': valid_time
         }
-        url = BASEURL+'/fun/create/qrcode'
+        url = BASEURL + '/fun/create/qrcode'
         return requests.post(url, json=payload).json()
 
     @classmethod
@@ -60,7 +61,7 @@ class WxPusher():
             'page': page,
             'pageSize': page_size
         }
-        url = BASEURL+'/fun/wxuser'
+        url = BASEURL + '/fun/wxuser'
         return requests.get(url, params=payload).json()
 
     @classmethod

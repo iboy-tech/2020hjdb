@@ -30,7 +30,7 @@ from app.utils.mail_sender import send_email
 
 @auth.route('/ctgu')
 def ctgu():
-    req=request.json;
+    req = request.json;
     print(req)
     print(request.args)
     return "ok"
@@ -76,6 +76,25 @@ def checkQQ(str):
 @auth.route('/login', methods=['GET', 'POST', 'OPTIONS'])
 @cross_origin()
 def login():
+    socket_id = request.args.get('token')
+    print("我是登录的token", socket_id)
+    if socket_id:
+        key = socket_id + '-pusher-post-data'
+        op = redis_client.get(key)
+        if op != 'null':
+            print("我是登录的微信数据", op, type(op))
+            op = op.decode()
+            data = eval(op)
+            print('data的数据类型', type(data))
+            op = OpenID.query.filter_by(wx_id=data['uid']).one()
+            if op:
+                print(op, op.user)
+                login_user(op.user, remember=True)
+                print("tokekn我是当前用户：", current_user.real_name)
+                print("扫码登录")
+                # 删除redis中的数据
+                # redis_client.delete(key)
+                return restful.success(msg="密码重置成功，新密码已发送到您的微信", data=op.user.auth_to_dict())
     data = request.json
     print("next的值", request.args.get('next'))
     print('请求成功', type(data))
@@ -126,8 +145,9 @@ def login():
                 # print(session.get('uid'))
                 data = user.auth_to_dict()
                 if session.get('next') is not None:
-                    print(session.get("next的值"), session['next'])
-                    return restful.success(msg='登录成功', data=data, ext=session.get('next'))
+                    print(session.get("next的值"))
+                    if "getQRcode" not in session['next']:
+                        return restful.success(msg='登录成功', data=data, ext=session.get('next'))
                 return restful.success(msg='登录成功', data=data)
             # 状态判断完毕
 
@@ -151,7 +171,6 @@ def login():
                                            msg="用户名或密码错误,您还能尝试 %s 次" % str(LoginConfig.LOGIN_ERROR_MAX_TIMES - 1))
             else:
                 return restful.success(success=False, msg="用户名或密码错误")
-
     if request.args.get('next'):
         session['next'] = request.args.get('next')
     return render_template('login.html')

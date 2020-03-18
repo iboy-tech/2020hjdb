@@ -263,16 +263,15 @@ def pub():
 @celery.task
 def send_message_by_pusher(msg, uid, kind):
     print('即将要发送的消息', msg)
-    if kind == 0:  # 寻物认领
-        content = render_template('msgs/' + 'WXLostNotice.txt', messages=msg)
-    elif kind == 1:  # 招领认领
-        content = render_template('msgs/' + 'WXFoundNotice.txt', messages=msg)
-    elif kind == 2:  # 删除通知
-        content = render_template('msgs/' + 'WXDeleteNotice.txt', messages=msg)
-    elif kind == 3:  # 发布招领匹配
-        content = render_template('msgs/' + 'WXNotice.txt', messages=msg)
-    elif kind == 4:
-        content = render_template('msgs/' + 'WXCommentNotice.txt', messages=msg)
+    msg_template = {
+        0: 'WXLostNotice.txt',  # 寻物认领
+        1: "WXFoundNotice.txt",  # 招领认领
+        2: 'WXDeleteNotice.txt',  # 删除通知
+        3: 'WXNotice.txt',  # 发布招领匹配
+        4: "WXCommentNotice.txt",  # 评论提醒
+        5: 'WXPasswordNotice.txt'  # 重置密码的消息
+    }
+    content = render_template('msgs/' + msg_template[kind], messages=msg)
     print(content)
     msg_id = WxPusher.send_message(content=u'' + str(content), uids=uid, content_type=2, url=msg['url'])
     print('我是消息的ID', msg_id)

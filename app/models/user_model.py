@@ -4,6 +4,7 @@ from datetime import datetime
 from flask import current_app
 from flask_login import UserMixin, AnonymousUserMixin
 from sqlalchemy import text
+from sqlalchemy.orm import relationship
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from app.models.feedback_model import Feedback
@@ -16,7 +17,6 @@ class Guest(AnonymousUserMixin):
     @property
     def is_admin(self):
         return False
-
     @property
     def is_super_admin(self):
         return False
@@ -38,16 +38,20 @@ class User(db.Model, UserMixin):
     status = db.Column(db.Integer, nullable=False, server_default=text('1'), info='用户状态01')
     create_time = db.Column(db.DateTime, default=datetime.now, info='时间')
     last_login = db.Column(db.DateTime, default=datetime.now, info='最后登录时间')
+    # 一对一关系
+    wx_open = relationship("OpenID", uselist=False, back_populates="user")
     # 一对多关系删除
-    posts = db.relationship('LostFound', backref='post_user', cascade='all, delete-orphan',lazy='dynamic', passive_deletes=True)
+    posts = db.relationship('LostFound', backref='post_user', cascade='all, delete-orphan', lazy='dynamic',
+                            passive_deletes=True)
     comments = db.relationship('Comment', backref='comment_user', cascade='all, delete-orphan', passive_deletes=True)
     reports = db.relationship('Report', backref='report_user', cascade='all, delete-orphan', passive_deletes=True)
     # 发布反馈
     feedbacks_pub = db.relationship('Feedback', backref='feedback_pubs',
-                                    foreign_keys=Feedback.user_id,passive_deletes=True)
+                                    foreign_keys=Feedback.user_id, passive_deletes=True)
     # 回复反馈
     feedbacks_rep = db.relationship('Feedback', backref='feedback_reps',
-                                    foreign_keys=Feedback.handler_id,passive_deletes=True)
+                                    foreign_keys=Feedback.handler_id, passive_deletes=True)
+
     # @property是让这个更简洁
     # ，既保持直接对属性赋值的方便，又对条件做了限制：
     # 调用的时候仍然是方便快捷的直接赋值：

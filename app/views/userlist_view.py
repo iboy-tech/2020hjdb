@@ -20,6 +20,7 @@ from app.decorators import super_admin_required, admin_required, wechat_required
 from app.models.user_model import User
 from app.page import userlist
 from app.utils import restful
+from app.utils.auth_token import generate_password
 from app.utils.mail_sender import send_email
 from app.views import found_view
 
@@ -152,12 +153,13 @@ def reset_pssword():
     req = request.args.get('userId')
     print('request.args', req)
     u = User.query.get(int(req))
-    u.password = '123456'
+    password = generate_password()
+    u.password = password
     db.session.commit()
     print('发送邮件')
     messages = {
         'username': u.username,
-        'password': '123456',
+        'password': password,
         'realName': u.real_name,
         'handlerName': current_user.real_name,
         'handlerEmail': current_user.qq + '@qq.com',

@@ -13,6 +13,7 @@
     <link href="../static/css/style-login.css" rel="stylesheet" type="text/css" media="all"/><!--stylesheet-css-->
     <script src="https://cdn.bootcss.com/vue/2.4.2/vue.min.js"></script>
      <script src="https://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
+{#    <script type="text/javascript" src="../static/js/socket.io.min.js"></script>#}
     <style>
         body{
             margin-top: 8vh;
@@ -35,6 +36,17 @@
             color: #fff;
             border-bottom: 1px solid #fff;
         }
+        #qrcode{
+            width: 250px;
+            height: 250px;
+            margin: 0 auto;
+            margin-bottom: 10px;
+        }
+        #notice {
+             color: #454441;
+            line-height: 20px;
+            font-size: 16px;
+        }
     </style>
 </head>
 <body>
@@ -46,24 +58,30 @@
             <div class="agile">
                 <div class="w3l-signup5" style="">
                     <form action="#" method="post">
-                        <div class="tabContainer">
-                            <div title="" class="tab" :class="{tabActive: tabIndex == 0}" @click="changeTab(0)">
-                                用户登录
-                            </div>
+                        <div class="tabContainer" v-if="tabIndex != 3">
+                            <div title="" class="tab" :class="{tabActive: tabIndex == 0}" @click="changeTab(0)">用户登录</div>
                             <div class="tab" :class="{tabActive: tabIndex == 1}" @click="changeTab(1)">身份认证</div>
                         </div>
-                        <input v-model="user.username" type="text" placeholder="学号" required=""/>
+                        <div class="tabContainer" v-else>
+                    <div class="tab">
+                        <sapn style="display: inline-block;line-height: 16px;font-size: 18px;font-weight: bold;color: #000000a3;margin-bottom: 20px;}">微信扫一扫，重置密码</sapn>
+                        <div id="qrcode"></div>
+                        <span id="notice"></span>
+                    </div>
+                         </div>
+                        <template v-if="tabIndex != 3">
+               <input v-model="user.username" type="text" placeholder="学号" required=""/>
                         <input v-model="user.password" type="password" :placeholder="tabIndex==1?'教务系统密码':'密码'" required=""/>
                         <input v-model="user.qq" v-if="tabIndex!=0" type="text" placeholder="QQ" required=""/>
-{#                        <div class="opt" v-if="tabIndex==1">#}
-{#                            <input id="vcode" style="width: 65%; display: inline-block;float: left;" type="text" @keyup.enter="submit"#}
-{#                                   v-model="user.code"#}
-{#                                   placeholder="验证码" required="" maxlength="5"/>#}
-{#                            <img alt="验证码" title="点击刷新" id="codeImg" @click="newCode" src="http://210.42.38.26:84/jwc_glxt/ValidateCode.aspx"#}
-{#                                 style="float: right;  border-radius: 0px; display: inline-block; height: 40px;border: none;">#}
-{#                        </div>#}
                         <input @click="submit" type="button" class="btn" value="确定"/>
+                        <div class="row" v-if="tabIndex==0">
+                            <span  style="color: #d28520;margin-right:15%;"><a  style="color:#004276;" @click=changeTab(1)>立即注册</a></span>
+                            <sapn  style="color: #d28520;margin-left: 15%;"><a  style="color:#004276;" @click=changeTab(3)>忘记密码？</a></sapn>
+                        </div>
                       <div v-if="tabIndex!=0" style="text-align: left;"><input type="checkbox"  value="checkbox" checked>我已阅读并同意 <a href="/private" style="color:#004276;" target="_blank">《隐私协议》</a></div>
+
+                        </template>
+
                     </form>
                 </div>
             </div>
@@ -98,6 +116,9 @@
             changeTab: function (index) {
                 console.log(index);
                 this.tabIndex = index;
+                if(this.tabIndex==3){
+                    this.getQRCode();
+                }
             },
             submit: function () {
                 let me = this;
@@ -106,6 +127,10 @@
                     showInfo('请阅读隐私协议！');
                     return false;
                     }
+                }
+                if(me.user.username=="" || me.user.password==""){
+                    showInfo('用户名或密码不能为空');
+                    return false;
                 }
                let qq=me.user.qq;
                 if(me.tabIndex == 1){
@@ -146,28 +171,72 @@
                                         }
                                     }
                                     me.user.password = "";
-                                    me.user.code = "";
                                 }
                             else {
                                 showInfo(res.msg);
-                                me.user.code = "";
                             }
-                            me.newCode();
                     },
                 });
             },
-            newCode() {
-                this.now = new Date().getTime();
+            getQRCode() {
+                this.loadJS("../static/js/socket.io.min.js");
+                loadScript.onload = function () {//加载结束之后执行回调
+                    const url = baseUrl;
+                    console.log(url);
+                    const socket = io(url);
+                    app.socketConnect(socket);
+            }
+            },
+            socketConnect(socket){
+                //删除cokie
+                deleteLocal("user");
+                socket.emit('qrcode');//触发通信
+                    socket.on('qrcode', function (data) {
+                        if (data['success']) {
+                            $("#qrcode").css("background", "url(" + data['url'] + ")").css("background-size", "cover").css("background-repeat", "no-repeat");
+                             app.socketServer(socket);
+                        }
+                        else{
+                            console.log("二维码请求失败")
+                        }
+                    });
+
+            },
+            socketServer(socket){
+                    socket.emit('server',{msg: 'login'});//触发通信
+                    socket.on('server', function (data) {
+                        if (data['success']=="true") {
+                   $.ajax({
+                    url: location.href =baseUrl+"/login?token="+data['token'],
+                    method: "POST",
+                    success: function (res) {
+                        if (res.success) {
+                            saveLocal("user",res.data["user"]);
+                           location.href=baseUrl;
+                        }
+                        else {
+                                showInfo(res.msg);
+                        }
+                    }
+                });} else {
+                     if (data['data']['bg'] == '0') {
+                     $("#notice").text(data["data"]["msg"]);
+                     $("#notice").append(msg);
+                        $("#qrcode").css("background", "url(https://ae01.alicdn.com/kf/H4deaf078934d40ff9b81e5e262a3b65eE.png)").css("background-size", "cover").css("background-repeat", "no-repeat");
+                    }
+             }
+        });
+    },
+            loadJS(url)
+            {//加载js
+                loadScript = document.createElement("script");
+                loadScript.type = "text/javascript";
+                loadScript.src = url;
+                document.head.appendChild(loadScript);
             }
         }
     });
-    $(function () {
-        //验证码高度设置
-        $("#codeImg").css("height", $("#vcode").outerHeight() + 'px');
-        $(window).resize(function () {
-            $("#codeImg").css("height", $("#vcode").outerHeight() + 'px');
-        });
-    });
+
 
 
 </script>

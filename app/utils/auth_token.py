@@ -8,6 +8,9 @@
 @Description :
 @Software: PyCharm
 """
+import string
+from random import choice
+
 from app.config import Operations
 from flask import current_app
 from itsdangerous import TimedJSONWebSignatureSerializer  as Serializer, SignatureExpired, BadSignature
@@ -15,6 +18,10 @@ from itsdangerous import TimedJSONWebSignatureSerializer  as Serializer, Signatu
 # 生成邮箱验证TOKEN
 from app import db, User
 from app.utils import restful
+
+
+def generate_password(length=8, chars=string.ascii_letters + string.digits):
+    return ''.join([choice(chars) for i in range(length)])
 
 
 def generate_token(id, operation, expire_in=172800, **kwargs):
