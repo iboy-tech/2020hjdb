@@ -95,7 +95,6 @@ def get_all():
                                                                      error_out=False)
     elif req['kind'] != -1 and req['category'] == '':
         # print('这是分类查询')
-        c = Category.query.filter_by(name=req['category']).first()
         pagination = LostFound.query.filter_by(kind=req['kind']).order_by(LostFound.status,
                                                                           LostFound.create_time.desc()).paginate(
             page + 1,
@@ -269,11 +268,16 @@ def send_message_by_pusher(msg, uid, kind):
         2: 'WXDeleteNotice.txt',  # 删除通知
         3: 'WXNotice.txt',  # 发布招领匹配
         4: "WXCommentNotice.txt",  # 评论提醒
-        5: 'WXPasswordNotice.txt'  # 重置密码的消息
+        5: 'WXPasswordNotice.txt',  # 重置密码的消息
+        6: "WXLoginNotice.txt"  # 异常登录提醒
     }
     content = render_template('msgs/' + msg_template[kind], messages=msg)
     print(content)
-    msg_id = WxPusher.send_message(content=u'' + str(content), uids=uid, content_type=2, url=msg['url'])
+    if msg.get("url") is None:
+        notice_url=os.getenv("SITE_URL")
+    else:
+        notice_url=msg['url']
+    msg_id = WxPusher.send_message(content=u'' + str(content), uids=uid, content_type=2, url=notice_url)
     print('我是消息的ID', msg_id)
     # html=render_template('mails/WXNotice.html', messages=messages)
     # WxPusher.send_message(content=str(msg), uids=uid,content_type=2)

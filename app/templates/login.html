@@ -74,9 +74,9 @@
                         <input v-model="user.password" type="password" :placeholder="tabIndex==1?'教务系统密码':'密码'" required=""/>
                         <input v-model="user.qq" v-if="tabIndex!=0" type="text" placeholder="QQ" required=""/>
                         <input @click="submit" type="button" class="btn" value="确定"/>
-                        <div class="row" v-if="tabIndex==0">
-                            <span  style="color: #d28520;margin-right:15%;"><a  style="color:#004276;" @click=changeTab(1)>立即注册</a></span>
-                            <sapn  style="color: #d28520;margin-left: 15%;"><a  style="color:#004276;" @click=changeTab(3)>忘记密码？</a></sapn>
+                        <div style="width: 100%;height: 10px;" v-if="tabIndex==0">
+                            <span  style="color: #d28520;float: left"><a  style="color:#004276;" @click=changeTab(1)>立即注册</a></span>
+                            <sapn  style="color: #d28520;float: right;"><a  style="color:#004276;" @click=changeTab(3)>忘记密码？</a></sapn>
                         </div>
                       <div v-if="tabIndex!=0" style="text-align: left;"><input type="checkbox"  value="checkbox" checked>我已阅读并同意 <a href="/private" style="color:#004276;" target="_blank">《隐私协议》</a></div>
 
