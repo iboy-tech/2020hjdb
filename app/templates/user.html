@@ -26,6 +26,31 @@
             cursor: pointer;
         }
 
+
+.opr-toplist1-new {
+    position: relative;
+    top: 1px;
+}
+
+.c-text-danger {
+    background-color: #f13f40;
+}
+.c-text {
+    display: inline-block;
+    padding: 2px;
+    text-align: center;
+    vertical-align: text-bottom;
+    font-size: 12px;
+    line-height: 100%;
+    font-style: normal;
+    font-weight: 400;
+    color: #fff;
+    overflow: hidden;
+}
+.c-gap-icon-left-small {
+    margin-left: 5px;
+}
+
         .tweet-item {
             border-bottom: 1px solid #dddddd;
         }
@@ -69,6 +94,7 @@
     text-indent:2em;
     line-height: 2em;
 }
+
 .about-us ul,.faq  ul{
         text-decoration: none;
         list-style: none;
@@ -161,7 +187,8 @@
                                 <div class="ui divided items">
                                     <div class="item" v-if="notice.length >0 && !noticeAll" @click="seeNotice(0)">
                                         <div class="content">
-                                            <a class="ui small header ">{{notice[0].title}}</a>
+                                            <a class="ui small header ">{{notice[0].title}}</a><span v-if="notice[0].isNew" class="c-text c-text-danger c-gap-icon-left-small opr-toplist1-new">新</span>
+
                                             <div class="extra">{{notice[0].time}}</div>
                                         </div>
                                         <div v-if="notice[0].fixTop==1" class="ui basic label software-collect-btn"
@@ -174,7 +201,7 @@
                                          :key="item.id"
                                          @click="seeNotice(index)">
                                         <div class="content">
-                                            <a class="ui small header ">{{item.title}}</a>
+                                            <a class="ui small header ">{{item.title}}</a><span v-if="item.isNew" class="c-text c-text-danger c-gap-icon-left-small opr-toplist1-new">新</span>
                                             <div class="extra">{{item.time}}</div>
                                         </div>
                                         <div v-if="item.fixTop==1" class="ui basic label software-collect-btn"

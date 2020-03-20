@@ -20,7 +20,8 @@ class Notice(db.Model):
             "title": self.title,
             "content": self.content,
             "time": self.create_time.strftime('%Y-%m-%d %H:%M:%S'),
-            "fixTop": self.fix_top
+            "fixTop": self.fix_top,
+            "isNew": (datetime.now()-self.create_time).days<=7
         }
         return dict
 
