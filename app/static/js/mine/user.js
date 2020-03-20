@@ -1,6 +1,7 @@
 var app = new Vue({
     el: "#app",
     created() {
+        console.log("appcreated()方法");
     },
     data: {
         showMenu: false,
@@ -128,13 +129,14 @@ var app = new Vue({
             console.log("--------------------------------------------");
             if (index == 0) {//主页
                 console.log(app.tab[0].list.length)
-                pageLostFound(app.tab[0].search, app.tab[0], true);
+                app.nextPage(0);
+                // pageLostFound(app.tab[0].search, app.tab[0], true);
             } else if (index == 1) {//搜索
                 console.log(app.tab[1].list.length)
             } else if (index == 2) {//我发布的
                 console.log(app.tab[2].list.length)
                 console.log(this.tab[2].search.username);
-                pageLostFound(this.tab[2].search, this.tab[2], false);
+                pageLostFound(this.tab[2].search, this.tab[2], true);
             } else if (index == 3) {//我的消息
                 getMessages(this);
             } else if (index == 4) {
@@ -173,9 +175,11 @@ var app = new Vue({
             console.log(this.tab[0].search, this.tab[0]);
         },
         nextPage(tabIndex) {
-            if (app.tabIndex == 0 || app.tabIndex == 1 || app.tabIndex == 2) {//这有主页，搜索，和我的需要无限滚动
+            console.log("当前tabIndex",tabIndex)
+            if (tabIndex == 0 || tabIndex == 2) {//这有主页，和我的需要无限滚动
                 pageLostFound(app.tab[tabIndex].search, app.tab[tabIndex], true);
                 app.tab[tabIndex].search.pageNum++;
+                console.log("当前的页数app.tab[tabIndex].search.pageNum",app.tab[tabIndex].search.pageNum);
             }
         },
 
@@ -279,6 +283,7 @@ var app = new Vue({
             //跳转详情页面
             saveLocal("isBack", true);
             // 记住当前数据
+            saveSession("pageNum",app.tab[app.tabIndex].search.pageNum);
             saveSession("data", app.tab[app.tabIndex].list);
             if (app.tabIndex == 0) {
                 saveSession("category", app.tab[0].search.category);
@@ -375,8 +380,9 @@ var app = new Vue({
         },
     },
     mounted() {
+        // console.log("我是监控的mounted", app.tabIndex);
         var io = new IntersectionObserver((entries) => {
-            console.log("我是监控的mounted", app.tabIndex)
+            console.log("我是监控的mounted", app.tabIndex);
             if (app.tabIndex == 1) {
                 let mysearch = getSession("isSearched");
                 if (mysearch != "false") {
@@ -385,8 +391,8 @@ var app = new Vue({
                     // 搜索页面没有滚动加载
                 }
             } else if (app.tabIndex == 0 || app.tabIndex == 2) {
-                console.log("需要请求下一页", getSession("tabIndex"));
-                app.nextPage(app.tabIndex);
+                 console.log("需要请求下一页", getSession("tabIndex"));
+                 app.nextPage(app.tabIndex);
             }
             console.log("--------------------------------------------");
             console.log("我是mouted()");
@@ -404,10 +410,10 @@ var app = new Vue({
                 console.log(mylist, typeof (mylist));
             }
         });
-        this.$nextTick(() => {
+        // this.$nextTick(() => {
             io.observe(document.getElementById('flag'));
             /* code */
-        });
+        // });
 
     },
 
@@ -715,14 +721,15 @@ function pageLostFound(data, result, append) {
         url: baseUrl + "/found.html/getall",
         data: JSON.stringify(data),
         method: "POST",
-        success: function (res, status) {
+        success: function (res) {
             console.log(res);
-            if (status == "success") {
                 if (res.success) {
-                    result.search.pageNum = res.data.page.pageNum;
+
+                    // result.search.pageNum = res.data.page.pageNum;
                     result.search.pageSize = res.data.page.pageSize;
                     result.totalPage = res.data.page.totalPage;
                     result.total = res.data.page.total;
+
                     if (append) {
                         for (let v in res.data.page.list) {
                             //console.log(v);
@@ -734,10 +741,6 @@ function pageLostFound(data, result, append) {
                 } else {
                     showAlertError(res.msg)
                 }
-            } else {
-                console.log(res);
-                showAlertError(res)
-            }
         }
     });
 }
@@ -764,6 +767,7 @@ function getCategory() {
 }
 
 $(function () {
+    getNoticeList(app);
     //从详情页返回
     if (getLocal("isBack") == "true") {
         app.tabIndex = JSON.parse(getSession("tabIndex"));
@@ -775,8 +779,12 @@ $(function () {
         }
         if (app.tabIndex == 0) {
             //主页的搜索数据
+            app.tab[0].search.pageNum=JSON.parse(getSession("pageNum"));
             app.tab[0].search.category = getSession("category");
             app.tab[0].search.kind = JSON.parse(getSession("kind"));
+        }
+        if(app.tabIndex==2){
+            app.tab[2].search.pageNum=JSON.parse(getSession("pageNum"));
         }
         app.tab[app.tabIndex].list = JSON.parse(getSession("data"));
         $("html,body").scrollTop(JSON.parse(getSession("scroll")))
@@ -784,8 +792,10 @@ $(function () {
         deleteSession("data");
         // app.notice=JSON.parse(getSession("notice"));
     } else {
-        if (app.tabIndex == 0 || app.tabIndex == 2 && getLocal("isBack") != "false") {
-            pageLostFound(app.tab[app.tabIndex].search, app.tab[app.tabIndex], true);
+        if ((app.tabIndex == 0 || app.tabIndex == 2 )) {
+            console.log("我是正常加载，不进入详情",getLocal("isBack"));
+            // app.nextPage(app.tabIndex);
+            // pageLostFound(app.tab[app.tabIndex].search, app.tab[app.tabIndex], true);
         }
         else if(app.tabIndex == 3){
              getMessages(app);
@@ -817,16 +827,4 @@ $('.ui.radio.checkbox')
 $('select.dropdown')
     .dropdown()
 ;
-/**
- $(function () {
-    let id = getUrlParam("id");
-    if (!id) {
-        // showAlertError("缺少请求参数！");
-    } else {
-        getDetail(id, app);
-    }
-    // var qrcode = new QRCode(document.getElementById("imgDiv"), location.href);
-});
- */
-
 

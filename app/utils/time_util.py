@@ -27,7 +27,7 @@ def get_action_time():
 
 
 def get_time_str(create_time):
-    print("时间BUG修复", type(create_time), create_time, create_time.day)
+    # print("时间BUG修复", type(create_time), create_time, create_time.day)
     create_time_utc = time.mktime(create_time.timetuple())
     now = datetime.datetime.now()
     now_utc = time.mktime(now.timetuple())

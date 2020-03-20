@@ -50,6 +50,7 @@ def index():
 # @cache.cached(timeout=10 * 60, query_string=True, key_prefix='found-getall')  # 缓存10分钟 默认为300s
 def get_all():
     req = request.json
+    print(req)
     page = int(req['pageNum'])
     pagesize = int(req['pageSize'])
     # 后台分页动态调整
@@ -253,7 +254,7 @@ def pub():
                 if op is not None and op.wx_id is not None:
                     print('发送消息')
                     uids = [op.wx_id]
-                    send_message_by_pusher.delay(dict, uids, 3)
+                    send_message_by_pusher(dict, uids, 3)
                     send_email.apply_async(args=(u.qq, '失物找回通知', 'foundNotice', dict), countdown=randint(1, 30))
                 db.session.commit()
     # cache.delete('found-getall')  # 删除缓存
@@ -271,7 +272,8 @@ def send_message_by_pusher(msg, uid, kind):
         3: 'WXNotice.txt',  # 发布招领匹配
         4: "WXCommentNotice.txt",  # 评论提醒
         5: 'WXPasswordNotice.txt',  # 重置密码的消息
-        6: "WXLoginNotice.txt"  # 异常登录提醒
+        6: "WXLoginNotice.txt",  # 异常登录提醒
+        7: "WXImportantNotice.txt"  # 群发重要通知
     }
     content = render_template('msgs/' + msg_template[kind], messages=msg)
     print(content)
@@ -279,9 +281,19 @@ def send_message_by_pusher(msg, uid, kind):
         notice_url = os.getenv("SITE_URL")
     else:
         notice_url = msg['url']
-    msg_id = WxPusher.send_message(content=u'' + str(content), uids=uid, content_type=2, url=notice_url)
-    print('我是消息的ID', msg_id)
-    # html=render_template('mails/WXNotice.html', messages=messages)
+    msg_ids = WxPusher.send_message(content=u'' + str(content), uids=uid, content_type=1, url=notice_url)
+    print(msg_ids)
+    for msg_id in msg_ids["data"]:
+        print(msg_id,msg_id["status"])
+        if "关闭" in msg_id["status"]:
+            print("用户关闭了通知，发送邮件提醒")
+            op = OpenID.query.filter(OpenID.wx_id == msg_id["uid"]).first()
+            print(op)
+            real_name={
+                "realName":op.user.real_name
+            }
+            send_email.apply_async(args=(op.user.qq, '系统通知', 'importantNotice', real_name), countdown=randint(1, 30))
+
     # WxPusher.send_message(content=str(msg), uids=uid,content_type=2)
 
 

@@ -11,13 +11,12 @@
 import datetime
 import os
 
-
 from flask import render_template, request, redirect, url_for, session
 from flask_login import login_required, current_user, login_user
 
 from app import db, OpenID, redis_client
 from app.page import oauth
-from app.utils import restful,mail_sender
+from app.utils import restful, mail_sender
 from app.utils.auth_token import generate_password
 from app.utils.wxpusher import WxPusher
 from app.views.found_view import send_message_by_pusher
@@ -74,19 +73,20 @@ def index():
                 print(op, op.user)
 
                 print('用户的OPEN-ID', wx_open_id)
-                password=generate_password()
-                op.user.password =password
+                password = generate_password()
+                op.user.password = password
                 # 新密码发送到微信
-                msg= {
+                msg = {
                     'real_name': op.user.real_name,
                     'username': op.user.username,
                     'password': password,
                     'time': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
                     'url': os.getenv('SITE_URL') + 'login'
                 }
-                print("我是新的密码",password)
+                print("我是新的密码", password)
                 mail_sender.send_email.delay(op.user.qq, '密码重置', 'findPassword', msg)
                 send_message_by_pusher(msg, [op.wx_id], 5)
+                db.session.commit()
     print('我是key的后缀', os.getenv('QR_CODE_SUFFIX'))
     key = user_id + '-pusher-post-data'
     redis_client.setrange(key, 0, str(data))  # 把数据存入redis

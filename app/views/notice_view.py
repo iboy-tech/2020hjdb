@@ -8,15 +8,19 @@
 @Description : 
 @Software: PyCharm
 """
+import datetime
+
 from flask import request, render_template
-from flask_login import login_required
+from flask_login import login_required, current_user
 from sqlalchemy import desc
 
-from app import db
+from app import db, OpenID
 from app.decorators import admin_required, wechat_required
 from app.page import notice
 from app.models.notice_model import Notice
 from app.utils import restful
+from app.views.found_view import send_message_by_pusher
+from tasks import celery
 
 
 @notice.route('/', methods=['GET', 'POST', 'OPTIONS'], strict_slashes=False)
@@ -35,12 +39,12 @@ def get_all():
     # notices=Notice.query.limit(10).order_by(Notice.create_time.desc()).all()
     # notices = Notice.query.all().order_by(Notice.create_time.desc())
     # notices = Notice.query.limit(10).order_by(desc('create_time')).all()
-    notices = Notice.query.order_by(desc('fix_top'),desc('create_time')).limit(10)
+    notices = Notice.query.order_by(desc('fix_top'), desc('create_time')).limit(10)
     cnt = len(Notice.query.all())
-    print('cnt:',cnt)
+    print('cnt:', cnt)
     # print('notices:',notices)
-    list=[n.to_dict() for n in notices ]
-    data={
+    list = [n.to_dict() for n in notices]
+    data = {
         "list": list
     }
     return restful.success(data=data)
@@ -51,20 +55,43 @@ def get_all():
 @admin_required
 def notice_add():
     req = request.json
-    # print(req)
-    n = Notice(title=req['title'].replace('<','&lt;').replace('>','&gt;'), content=req['content'].replace('<','&lt;').replace('>','&gt;'), fix_top=1 if req['fixTop'] == True else 0)
+    print(req)
+    n = Notice(title=req['title'].replace('<', '&lt;').replace('>', '&gt;'),
+               content=req['content'].replace('<', '&lt;').replace('>', '&gt;'),
+               fix_top=1 if req['fixTop'] == True else 0)
+    if req['pusher']:
+        if current_user.kind == 3:
+            print("超级管理向所有用户推送微信消息")
+            msg = {
+                "title": n.title,
+                "content": n.content,
+                "time": datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+            }
+            noticeAll.delay(msg)
     db.session.add(n)
     db.session.commit()
     return restful.success()
+
+
+# 向所有用户异步发送通知
+@celery.task
+def noticeAll(msg):
+    uids = []
+    wx_opens = db.session.query(OpenID)
+    for wx in wx_opens:
+        if wx.wx_id:
+            uids.append(wx.wx_id)
+    print(uids)
+    send_message_by_pusher(msg=msg, uid=uids, kind=7)
 
 
 @notice.route('/delete', methods=['POST'], strict_slashes=False)
 @login_required
 @admin_required
 def notice_delete():
-    req=request.args.get('id')
-    print('request.args.get(\'id\')',req)
-    n=Notice.query.get(int(req))
+    req = request.args.get('id')
+    print('request.args.get(\'id\')', req)
+    n = Notice.query.get(int(req))
     db.session.delete(n)
     db.session.commit()
     return restful.success()
@@ -74,9 +101,9 @@ def notice_delete():
 @login_required
 @admin_required
 def notice_switch():
-    req=request.args.get('id')
-    print('request.args.get(\'id\')',req)
-    n=Notice.query.get(int(req))
-    n.fix_top=1 if n.fix_top==0 else 0
+    req = request.args.get('id')
+    print('request.args.get(\'id\')', req)
+    n = Notice.query.get(int(req))
+    n.fix_top = 1 if n.fix_top == 0 else 0
     db.session.commit()
     return restful.success()

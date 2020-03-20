@@ -15,7 +15,7 @@ from random import randint
 
 from flask import request, url_for
 from flask_cors import cross_origin
-from flask_login import current_user, login_required, fresh_login_required
+from flask_login import current_user, login_required
 
 from app import db, OpenID
 from app.models.lostfound_model import LostFound

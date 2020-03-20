@@ -7,17 +7,10 @@ var app = new Vue({
         notice: {
             title: "",
             content: "",
-            fixTop: false
+            fixTop: false,
+            pusher: false,//是否微信群发推送
         },
-        list: [
-            /* {
-                 id: "0000000001",
-                 title: "every one notice",
-                 content: "hello, thank u, thank u very much!",
-                 time: "2019-04-21 18:45",
-                 fixTop: 1,
-             }*/
-        ]
+        list: []
     },
     methods: {
         showAdd() {
@@ -31,7 +24,17 @@ var app = new Vue({
             });
         },
         submit() {
-            addNotice(app.notice);
+            if (app.notice.pusher) {
+                layer.confirm('微信群发用来发送重要通知，仅超级管理员可用，你确定要群发吗？', {
+                    btn: ['确定', '取消'] //按钮
+                }, function () {
+                    addNotice(app.notice);
+                }, function () {
+                });
+            } else {
+                addNotice(app.notice);
+            }
+
         },
         switchFix(id, index) {
             let ask;
@@ -117,22 +120,18 @@ function addNotice(notice) {
         data: JSON.stringify(notice),
         success: function (res, status) {
             console.log(res);
-            if (status == "success") {
-                if (res.success) {
-                    showOK();
-                    layer.closeAll(); //疯狂模式，关闭所有层
-                    app.notice = {
-                        title: "",
-                        content: "",
-                        fixTop: false,
-                    };
-                    getNoticeList(app);
-                } else {
-                    showAlertError(res.msg)
-                }
+            if (res.success) {
+                showOK();
+                layer.closeAll(); //疯狂模式，关闭所有层
+                app.notice = {
+                    title: "",
+                    content: "",
+                    fixTop: false,
+                    pusher: false,
+                };
+                getNoticeList(app);
             } else {
-                console.log(res);
-                showAlertError(res)
+                showAlertError(res.msg)
             }
         }
     });
