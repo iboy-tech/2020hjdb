@@ -256,7 +256,7 @@ def pub():
                     uids = [op.wx_id]
                     send_message_by_pusher(dict, uids, 3)
                     send_email.apply_async(args=(u.qq, '失物找回通知', 'foundNotice', dict), countdown=randint(1, 30))
-                db.session.commit()
+    db.session.commit()
     # cache.delete('found-getall')  # 删除缓存
 
     return restful.success()

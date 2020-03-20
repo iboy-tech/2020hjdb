@@ -141,9 +141,8 @@ function deletePub(id) {
     $.ajax({
         url: baseUrl + "/found.html/delete?id=" + id,
         method: "POST",
-        success: function (res, status) {
+        success: function (res) {
             console.log(res);
-            if (status == "success") {
                 if (res.success) {
                     showOK(res.msg);
                     saveSession("category", "");
@@ -154,10 +153,6 @@ function deletePub(id) {
                 } else {
                     showAlertError(res.msg)
                 }
-            } else {
-                console.log(res);
-                showAlertError(res)
-            }
         }
     });
 

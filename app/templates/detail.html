@@ -85,14 +85,6 @@
                                     {{ item.about }}
                                 </div>
 
-{#
-                                <div class="extra multi-image" id="share-images" v-if="item.images && item.images.length > 0">
-                                    <div data-multi-image-raw="list" class="multimgs" style="display: flex;">
-                                        <div v-for="(src, index) in item.images" class="wrapper multing-wrapper">
-                                            <img :src="imgPrefix+src" :key="imgPrefix+src" @click="viewImages(index)" style="max-width: 160px; height: auto;">
-                                        </div>
-                                    </div>
-                                </div>#}
 
                              {% if  item.images|length  > 0  %}
                                 <div class="extra multi-image" id="share-images">

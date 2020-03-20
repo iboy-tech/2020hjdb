@@ -4,6 +4,7 @@ var app = new Vue({
         imgPrefix: staticUrl,
         schoolIcon: './images/icon-school.png',
         user: getLocal("user") ? JSON.parse(getLocal("user")) : {},
+        newCount:0
     },
     methods: {
         logout() {

@@ -17,8 +17,8 @@ from app import db, User
 from app.decorators import admin_required, wechat_required
 from app.page import chart, auth
 from app.models.lostfound_model import LostFound
-
-print('视图文件加载')
+from app.views.feedback_view import get_new_feedback
+# print('视图文件加载')
 
 
 # https://blog.csdn.net/yannanxiu/article/details/53816567
@@ -31,12 +31,12 @@ print('视图文件加载')
 def index_page():
     print('蓝图请求成功！')
     data = get_data()
-    return render_template('chart.html', data=data)
+    return render_template('chart.html', data=data,newCount=get_new_feedback())
 
 
 def get_data():
     today = datetime.date.today()
-    print(today)
+    # print(today)
     # 0=lost 1 found
     # losts_today = LostFound.query.filter(db.cast(LostFound.create_time, db.DATE) == today,LostFound.kind==1).all()
     # founds_today = LostFound.query.filter(db.cast(LostFound.create_time, db.DATE) == today, LostFound.kind == 1).all()
@@ -122,9 +122,9 @@ def get_last_sunday():
 
 def get_week_data():
     last_sunday = get_last_sunday()
-    print('last_sunday', last_sunday)
+    # print('last_sunday', last_sunday)
     today = datetime.date.today()
-    print('today', today)
+    # print('today', today)
     # time_len = (today - last_sunday.date()).days  # 获取当前与上周相差的天数
     # print("time——len", time_len)
     # list1 = [], list2 = [], list3 = [], list4 = []
@@ -132,9 +132,9 @@ def get_week_data():
     seven_day_ago = today - datetime.timedelta(days=7)
     # datetime.timedelta(days=1)加上一个天数
     for i in range(1, 8):
-        print(i)
+        # print(i)
         day = seven_day_ago + datetime.timedelta(days=i)
-        print("我是七天前查询的时间", day)
+        # print("我是七天前查询的时间", day)
         today_lost = LostFound.query.filter(db.cast(LostFound.create_time, db.DATE) == day, LostFound.kind == 0).count()
         mylist[0].append(today_lost)
         today_found = LostFound.query.filter(db.cast(LostFound.create_time, db.DATE) == day,
@@ -152,5 +152,5 @@ def get_week_data():
         mylist[6].append(day.strftime('%m/%d'))
 
     # print(list1,list2,list3,list4)
-    print('每周的结果', mylist)
+    # print('每周的结果', mylist)
     return mylist

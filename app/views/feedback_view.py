@@ -60,9 +60,21 @@ def get_all():
             }
             list.append(dict)
     data = {
-        "list": list
+        "list": list,
     }
     return restful.success(data=data)
+
+
+# 获取未处理的反馈
+def get_new_feedback():
+    new_count = Feedback.query.filter(Feedback.handler_id == None).count()
+    if new_count >= 10:
+        new_count = str(new_count)
+    elif new_count > 0:
+        new_count = "0" + str(new_count)
+    else:
+        new_count = 0
+    return new_count
 
 
 def checkFeedback(data):
@@ -82,11 +94,11 @@ def feedback_add():
     # 表单过滤
     f = Feedback(subject=req['subject'].replace('/(<（[^>]+）>)/script', ''),
                  content=req['content'].replace('<', '&lt;').replace('>', '&gt;'), user_id=current_user.id)
-    messages={
-        "username":current_user.username,
-        "real_name":current_user.real_name,
-        "subject":f.subject,
-        "content":f.content,
+    messages = {
+        "username": current_user.username,
+        "real_name": current_user.real_name,
+        "subject": f.subject,
+        "content": f.content,
         'feedbackTime': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     }
     try:
@@ -94,9 +106,9 @@ def feedback_add():
         db.session.commit()
     except Exception as e:
         db.session.rollback()
-        return  restful.success(success=False,msg=str(e))
+        return restful.success(success=False, msg=str(e))
     send_email.delay(AdminConfig.SUPER_ADMIN_QQ, '反馈通知', 'feedbackNotice', messages)
-    return restful.success()
+    return restful.success(msg="感谢您的反馈")
 
 
 @feedback.route('/delete', methods=['POST', 'OPTIONS'], strict_slashes=False)
