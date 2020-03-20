@@ -164,6 +164,7 @@ def reset_pssword():
         'handlerName': current_user.real_name,
         'handlerEmail': current_user.qq + '@qq.com',
     }
+    print("我是新的密码", password)
     send_email.apply_async(args=(u.qq, '密码重置提醒', 'resetPassword', messages), countdown=randint(1, 30))
     print('要给用户发送提醒邮件')
     return restful.success()

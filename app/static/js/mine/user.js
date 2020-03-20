@@ -1,54 +1,58 @@
 var app = new Vue({
     el: "#app",
+    created() {
+    },
     data: {
         showMenu: false,
         tabIndex: 0,
+        isSearched: getSession("isSearched") ? JSON.parse(getSession("isSearched")) : false,
         user: getLocal("user") ? JSON.parse(getLocal("user")) : {},
         category: getCategory() || [],
         userIcon: "https://ae01.alicdn.com/kf/H26181ae0390643b6850ad4c46341f8bcV.png",
         api: 'https://api.uomg.com/api/qq.talk?qq=',
         imgPrefix: staticUrl,
         tab: [
-            {
+            {//主页
                 search: {//tab0
                     "kind": -1,
                     "category": "",
                     "keyword": "",
                     "username": "",
                     "pageNum": 0,
-                    "pageSize":2
+                    "pageSize": 8
                 },
                 totalPage: 0,
                 total: 0,
                 list: []
             },
-            {
+            {//搜索
                 search: {//tab1
                     "kind": -1,
                     "category": "",
                     "keyword": "",
                     "username": "",
                     "pageNum": 0,
-                    "pageSize": 2
+                    "pageSize": 30,
+                    "isSearch": "",
                 },
                 totalPage: 0,
                 total: 0,
                 list: []
             },
-            {
+            {//我的
                 search: {//tab2
                     "kind": -1,
                     "category": "",
                     "keyword": "",
                     "username": (getLocal("user") ? JSON.parse(getLocal("user")) : {}).studentNum,
                     "pageNum": 0,
-                    "pageSize": 2
+                    "pageSize": 15
                 },
                 totalPage: 0,
                 total: 0,
                 list: [],
             },
-            {},
+            {},//消息
         ],
         tab3: [],
         imgTotal: 3,//最多3张图片
@@ -104,13 +108,31 @@ var app = new Vue({
             });
         },
         changeTab(index) {
-            //console.log(index);
-            this.tabIndex = index;
-            if (index == 0) {
+            console.log(index);
+            if (index != 1) {
+                app.isSearched = false;
+            }
+            app.tabIndex = index;
+            saveSession("tabIndex", index);
+            console.log("删除缓存");
+            deleteSession("data");
+            console.log("搜索状态置空");
+            saveSession("isSearched", false);
+            console.log("--------------------------------------------");
+            console.log("我是 changeTab(index)");
+            console.log("getSession", getSession("scroll"));
+            console.log("getLocal(isBack)", getLocal("isBack"));
+            console.log("getSession(isSearched)", getSession("isSearched"));
+            console.log("getSession(tabIndex)", getSession("tabIndex"));
+            console.log("getSession(data)", getSession("data"));
+            console.log("--------------------------------------------");
+            if (index == 0) {//主页
+                console.log(app.tab[0].list.length)
                 pageLostFound(app.tab[0].search, app.tab[0], true);
-            } else if (index == 1) {
-
-            } else if (index == 2) {
+            } else if (index == 1) {//搜索
+                console.log(app.tab[1].list.length)
+            } else if (index == 2) {//我发布的
+                console.log(app.tab[2].list.length)
                 console.log(this.tab[2].search.username);
                 pageLostFound(this.tab[2].search, this.tab[2], false);
             } else if (index == 3) {//我的消息
@@ -123,6 +145,10 @@ var app = new Vue({
             }
         },
         search() {
+            //用户开始搜索
+            app.isSearched = true;
+            saveSession("isSearched", true);
+            saveSession("keyword", this.tab[1].search['keyword']);
             this.tab[1].search.pageNum = 0;
             this.tab[1].totalPage = 0;
             this.tab[1].total = 0;
@@ -147,8 +173,10 @@ var app = new Vue({
             console.log(this.tab[0].search, this.tab[0]);
         },
         nextPage(tabIndex) {
-            app.tab[tabIndex].search.pageNum++;
-            pageLostFound(app.tab[tabIndex].search, app.tab[tabIndex], true);
+            if (app.tabIndex == 0 || app.tabIndex == 1 || app.tabIndex == 2) {//这有主页，搜索，和我的需要无限滚动
+                pageLostFound(app.tab[tabIndex].search, app.tab[tabIndex], true);
+                app.tab[tabIndex].search.pageNum++;
+            }
         },
 
         deletePub(id) {
@@ -232,6 +260,8 @@ var app = new Vue({
                 });
             } else {
                 pubLostFound(data);
+                console.log("删除缓存");
+                deleteSession("data");
                 $("button[type='submit']").attr('disabled', 'disabled');
             }
             console.log(data);
@@ -247,6 +277,16 @@ var app = new Vue({
         },
         jumpDetail(id) {
             //跳转详情页面
+            saveLocal("isBack", true);
+            // 记住当前数据
+            saveSession("data", app.tab[app.tabIndex].list);
+            if (app.tabIndex == 0) {
+                saveSession("category", app.tab[0].search.category);
+                saveSession("kind", app.tab[0].search.kind)
+            }
+            //记住当前位置
+            saveSession("scroll", $(window).scrollTop());
+            saveSession("tabIndex", app.tabIndex);
             window.open(baseUrl + "/detail.html?id=" + id, "_self");
         },
         showFeedback() {
@@ -336,20 +376,42 @@ var app = new Vue({
     },
     mounted() {
         var io = new IntersectionObserver((entries) => {
-            setTimeout(function () {app.nextPage(0)},100);
+            console.log("我是监控的mounted", app.tabIndex)
+            if (app.tabIndex == 1) {
+                let mysearch = getSession("isSearched");
+                if (mysearch != "false") {
+                    saveSession("isSearched", true);
+                    // app.nextPage(app.tabIndex);
+                    // 搜索页面没有滚动加载
+                }
+            } else if (app.tabIndex == 0 || app.tabIndex == 2) {
+                console.log("需要请求下一页", getSession("tabIndex"));
+                app.nextPage(app.tabIndex);
+            }
+            console.log("--------------------------------------------");
+            console.log("我是mouted()");
+            console.log("getSession", getSession("scroll"));
+            console.log("getLocal(isBack)", getLocal("isBack"));
+            console.log("getSession(isSearched)", getSession("isSearched"));
+            console.log("getSession(tabIndex)", getSession("tabIndex"));
+            console.log("getSession(data)", getSession("data"));
+            console.log("--------------------------------------------");
+            // 存储数据，还没去详情页
+            if (getLocal("isBack") == null) {
+                console.log($(window).scrollTop());
+                // var scroll_top=$(window).scrollTop()
+                mylist = JSON.parse(getSession("data"))
+                console.log(mylist, typeof (mylist));
+            }
         });
-        io.observe(document.getElementById('flag'));
+        this.$nextTick(() => {
+            io.observe(document.getElementById('flag'));
+            /* code */
+        });
+
     },
 
 });
-
-
-
-$(function () {
-    pageLostFound(app.tab[0].search, app.tab[0], true);
-    getNoticeList(app);
-});
-
 
 //设置QQ号
 function setQQ(qq) {
@@ -446,17 +508,18 @@ function deletePub(id) {
     $.ajax({
         url: baseUrl + "/found.html/delete?id=" + id,
         method: "POST",
-        success: function (res, status) {
+        success: function (res) {
             console.log(res);
-            if (status == "success") {
-                if (res.success) {
-                    showOK(res.msg);
-                } else {
-                    showAlertError(res.msg)
-                }
+            if (res.success) {
+                showOK(res.msg);
+                // saveSession("category", "");
+                // saveSession("kind", -1);
+                saveSession("tabIndex", 2);
+                // saveLocal("isBack",false);
+                // location.reload();
+                pageLostFound(app.tab[2].search, app.tab[2], false);
             } else {
-                console.log(res);
-                showAlertError(res)
+                showAlertError(res.msg)
             }
         }
     });
@@ -597,6 +660,7 @@ function pubLostFound(data) {
                         location: null,
                         images: [],//srcList
                     };
+                    console.log("删除缓存");
                 } else {
                     showAlertError(res.msg)
                 }
@@ -619,7 +683,10 @@ function pubLostFound(data) {
             console.log(res);
             if (status == "success") {
                 if (res.success) {
-                    // showOK("发布成功！");
+                    showOK("发布成功！");
+                    saveSession("category", "");
+                    saveSession("kind", -1);
+                    saveSession("tabIndex", 0);
                     app.tab4 = {
                         applyKind: 0,
                         categoryIndex: -1,
@@ -629,8 +696,7 @@ function pubLostFound(data) {
                         location: null,
                         images: [],//srcList
                     };
-                    window.location.href = baseUrl
-                    // changeTab(0);
+                    location.reload();
                 } else {
                     showAlertError(res.msg)
                 }
@@ -697,14 +763,62 @@ function getCategory() {
     });
 }
 
+$(function () {
+    //从详情页返回
+    if (getLocal("isBack") == "true") {
+        app.tabIndex = JSON.parse(getSession("tabIndex"));
+        console.log("我是现在的tab", app.tabIndex);
+        if (app.tabIndex == 1) {
+            //搜索的关键字
+            app.tab[app.tabIndex].search["keyword"] = getSession("keyword");
+            deleteSession("keyword");
+        }
+        if (app.tabIndex == 0) {
+            //主页的搜索数据
+            app.tab[0].search.category = getSession("category");
+            app.tab[0].search.kind = JSON.parse(getSession("kind"));
+        }
+        app.tab[app.tabIndex].list = JSON.parse(getSession("data"));
+        $("html,body").scrollTop(JSON.parse(getSession("scroll")))
+        deleteLocal("isBack");
+        deleteSession("data");
+        // app.notice=JSON.parse(getSession("notice"));
+    } else {
+        if (app.tabIndex == 0 || app.tabIndex == 2 && getLocal("isBack") != "false") {
+            pageLostFound(app.tab[app.tabIndex].search, app.tab[app.tabIndex], true);
+        }
+        else if(app.tabIndex == 3){
+             getMessages(app);
+        }
+        // saveSession("notice",getNoticeList(app)["data"]["list"]);
+    }
+    console.log("--------------------------------------------");
+    console.log("我一定是最先加载的");
+    console.log("getSession", getSession("scroll"));
+    console.log("getLocal(isBack)", getLocal("isBack"));
+    console.log("getSession(isSearched)", getSession("isSearched"));
+    console.log("getSession(tabIndex)", getSession("tabIndex"));
+    console.log("getSession(data)", getSession("data"));
+    console.log("getSession(category)", getSession("category"));
+    console.log("getSession(kind)", getSession("kind"));
+    console.log("--------------------------------------------");
+    let sessionIndex = getSession("tabIndex");
+    if (sessionIndex != null) {
+        app.tabIndex = JSON.parse(sessionIndex);
+    } else {
+        console.log("saveSession丢失了$(function () ");
+        saveSession("tabIndex", 0);
+        app.tabIndex = 0;
+    }
+});
 $('.ui.radio.checkbox')
     .checkbox()
 ;
 $('select.dropdown')
     .dropdown()
 ;
-
-$(function () {
+/**
+ $(function () {
     let id = getUrlParam("id");
     if (!id) {
         // showAlertError("缺少请求参数！");
@@ -713,5 +827,6 @@ $(function () {
     }
     // var qrcode = new QRCode(document.getElementById("imgDiv"), location.href);
 });
+ */
 
 

@@ -111,7 +111,7 @@ class User(db.Model, UserMixin):
             "user": {
                 "realName": self.real_name,
                 "studentNum": self.username,
-                "icon": 'https://q2.qlogo.cn/headimg_dl?dst_uin={}&spec=100'.format(self.qq),
+                "icon": 'https://avater.ctguswzl.cn/headimg_dl?dst_uin={}&spec=100'.format(self.qq),
                 "email": self.qq + '@qq.com',
                 "qq": self.qq,
                 "gender": self.gender,

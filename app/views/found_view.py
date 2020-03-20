@@ -62,7 +62,9 @@ def get_all():
     else:
         # 前端请求的最大页数
         if pagesize > PostConfig.PAGESIZE_OF_USER:
-            return restful.params_error()
+            # 不是搜索页面的请求
+            if req.get("isSearch") is None:
+                return restful.params_error()
 
     print('我是前端获取的分页数据', req)
     # print('get_users收到请求')
@@ -101,12 +103,12 @@ def get_all():
             per_page=
             pagesize,
             error_out=False)
+    # 用户搜索开始模糊匹配
     elif keyword != '':
         # print('这是分类查询')
         c = Category.query.filter(Category.name.like(("%" + keyword + "%"))).first()
         u = User.query.filter(or_(User.real_name.like("%" + keyword + "%"),
-                                  User.username.like("%" + keyword + "%")
-                                  )).first()
+                                  User.username == keyword)).first()
         if c is not None and u is not None:
             pagination = LostFound.query.filter(
                 or_(LostFound.title.like("%" + keyword + "%"),
@@ -213,7 +215,7 @@ def pub():
         imgstr = change_bs4_to_png(data['images'])
     elif len(data['images']) > 3:
         return restful.params_error(success=False, msg="照片数量超过上限")
-    info = data['info']
+    info = data.get('info')
     # print(type(imgstr), imgstr)
     print(data['location'])
     lost = LostFound(kind=data['applyKind'], category_id=data['categoryId'],
@@ -274,9 +276,9 @@ def send_message_by_pusher(msg, uid, kind):
     content = render_template('msgs/' + msg_template[kind], messages=msg)
     print(content)
     if msg.get("url") is None:
-        notice_url=os.getenv("SITE_URL")
+        notice_url = os.getenv("SITE_URL")
     else:
-        notice_url=msg['url']
+        notice_url = msg['url']
     msg_id = WxPusher.send_message(content=u'' + str(content), uids=uid, content_type=2, url=notice_url)
     print('我是消息的ID', msg_id)
     # html=render_template('mails/WXNotice.html', messages=messages)

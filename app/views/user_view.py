@@ -51,7 +51,7 @@ def get_message():
                     dict = {
                         "id": c.id,
                         "userId": user.id,
-                        "icon": 'https://q2.qlogo.cn/headimg_dl?dst_uin={}&spec=100'.format(user.qq),
+                        "icon": 'https://avater.ctguswzl.cn/headimg_dl?dst_uin={}&spec=100'.format(user.qq),
                         "username": user.real_name + ' ' + user.username,
                         "time": c.create_time.strftime('%Y-%m-%d %H:%M:%S'),
                         "title": l.title,

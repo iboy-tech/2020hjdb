@@ -1,9 +1,16 @@
 var app = new Vue({
     el: "#app",
+    create() {
+        // if(getLocal("isRelate")=="true"){
+        //     app.is
+        // }
+    },
     data: {
         imgPrefix: staticUrl,
         userIcon: "https://ae01.alicdn.com/kf/U89b7be7d8d234a38b9a4b0d4258de362X.jpg",
         comment: "",//发布评论
+        //从相关页面进入
+        isRelate: getLocal("isRelate") ? JSON.parse(getLocal("isRelate")) : false,
         images: {
             "title": "", //相册标题
             "id": "", //相册id
@@ -82,8 +89,17 @@ var app = new Vue({
 
         },
         jumpDetail(id) {
+            console.log("执行相关函数");
+            //从相关启示进去，出来直接返回主页面
+            app.isRelate = true;
+            saveLocal("isRelate", true);
+            saveSession("category", "");
+            saveSession("kind", -1);
+            // deleteSession("data");
+            saveLocal("isBack", false);
+            // sessionStorage.clear();
             //跳转详情页面
-            window.open(baseUrl + "/detail.html?id=" + id, "_self");
+            location.href = baseUrl + "/detail.html?id=" + id;
         },
         claim(flag, id) {
             if (flag == 1) {
@@ -103,6 +119,10 @@ var app = new Vue({
             }
         }
 
+    },
+    mounted() {
+        // console.log("挂载完成",this.isRelate);
+        deleteLocal("isRelate");
     }
 });
 
@@ -125,8 +145,12 @@ function deletePub(id) {
             console.log(res);
             if (status == "success") {
                 if (res.success) {
-                    // showOK(res.msg);
-                    window.location.href = baseUrl + '/';
+                    showOK(res.msg);
+                    saveSession("category", "");
+                    saveSession("kind", -1);
+                    saveSession("tabIndex", 0);
+                    saveLocal("isBack", false);
+                    location.href=baseUrl;
                 } else {
                     showAlertError(res.msg)
                 }
@@ -305,11 +329,11 @@ function claimID(id) {
                     showOK(res.msg);
                     if (res.msg.indexOf("认领") != -1) {
                         $("#claim").empty();
-                        res="<button class=\"ui green small button\">已认领</button>";
+                        res = "<button class=\"ui green small button\">已认领</button>";
                         $("#claim").append(res);
                     } else {
-                         $("#report").empty();
-                          res="<button class=\"ui green small button\">已找到</button>";
+                        $("#report").empty();
+                        res = "<button class=\"ui green small button\">已找到</button>";
                         $("#report").append(res);
                     }
 

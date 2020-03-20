@@ -84,6 +84,7 @@ def index():
                     'time': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
                     'url': os.getenv('SITE_URL') + 'login'
                 }
+                print("我是新的密码",password)
                 mail_sender.send_email.delay(op.user.qq, '密码重置', 'findPassword', msg)
                 send_message_by_pusher(msg, [op.wx_id], 5)
     print('我是key的后缀', os.getenv('QR_CODE_SUFFIX'))
