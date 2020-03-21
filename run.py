@@ -147,6 +147,7 @@ if __name__ == '__main__':
    celery multi start  celery worker -A run.celery -l  DEBUG -E -P eventlet
       gunicorn -c config.py run:app  --daemon
     celery worker -A run.celery -l  DEBUG -E -P eventlet -Q default 
+    celery worker -A run.celery -l  DEBUG -E -P solo -Q default
    ps auxww | grep 'celery worker'
    pkill -f "celery"
    celery worker

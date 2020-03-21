@@ -48,9 +48,9 @@ def validate_token(token):  # 验证邮箱
         if user.status == 1:
             user.status = 2
             db.session.commit()
-            return restful.success(msg='恭喜,验证成功,即将返回登录页')
+            return restful.success(msg='恭喜,验证成功')
         else:
-            return restful.params_error(msg='您已验证，请直接登录')
+            return restful.params_error(msg='您已注册，请直接登录')
     if data.get('operation') == Operations.CHANGE_QQ:
         user.qq = data.get('qq')
         try:

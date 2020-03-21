@@ -26,6 +26,7 @@ from app.utils.auth_token import generate_token
 from app.utils.mail_sender import send_email
 from .found_view import send_message_by_pusher
 from ..decorators import wechat_required
+from ..utils.check_data import check_qq
 
 
 @user.route('/messages', methods=['POST', 'OPTIONS', 'GET'])
@@ -68,9 +69,10 @@ def get_message():
 @user.route('/setQQ', methods=['POST'])
 @login_required
 @cross_origin()
+@check_qq
 def set_QQ():
-    print('用户准备更改密码')
-    new_qq = request.args.get('qq')
+    print(current_user.username,current_user.real_name,'用户准备更改密码')
+    new_qq = request.json['qq']
     print(new_qq, type(new_qq))
     if new_qq == current_user.qq:
         return restful.success(success=False, msg="您的QQ和之前一样，修改失败")
@@ -80,8 +82,7 @@ def set_QQ():
         'real_name': current_user.real_name,
         'token': url_for('auth.confirm', token=token, _external=True)
     }
-    # send_email.delay(new_qq, 'QQ更改', 'changeQQ', messages)
-    send_email.apply_async(args=(new_qq, 'QQ更改', 'changeQQ', messages), countdown=randint(1, 30))
+    send_email.apply_async(args=(new_qq, 'QQ更改', 'changeQQ', messages), countdown=randint(10, 30))
     return restful.success(success=True, msg="验证邮件已发送到您的QQ邮箱，请及时确认")
 
 
@@ -138,7 +139,7 @@ def claim():
                             'url': os.getenv('SITE_URL') + 'detail.html?id=' + str(l.id)
                         }
                         send_email.apply_async(args=[lost_user.qq, '失物找回通知', 'noticeLost', dict],
-                                               countdown=randint(1, 30))
+                                               countdown=randint(10, 30))
                         op = OpenID.query.filter_by(user_id=lost_user.id).first()
                         if op is not None:
                             print('发送消息')
@@ -166,7 +167,7 @@ def claim():
                             'url': os.getenv('SITE_URL') + 'detail.html?id=' + str(l.id)
                         }
                         send_email.apply_async(args=[found_user.qq, '失物认领通知', 'noticeFound', dict],
-                                               countdown=randint(1, 30))
+                                               countdown=randint(10, 30))
                         op = OpenID.query.filter_by(user_id=found_user.id).first()
                         if op is not None:
                             print('发送消息')

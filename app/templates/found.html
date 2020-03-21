@@ -219,20 +219,25 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                                     </ul>
                                 </div>
                             </td>
-                            <td v-if="item.kind==0 && item.status==0"><span class="label label-warning">寻回中</span></td>
-                            <td v-else-if="item.kind==0 && item.status==1 ">
+                            <template v-if="item.kind==0">
+                              <td v-if="item.status==0"><span class="label label-warning">寻回中</span></td>
+                            <td v-else>
                                 <button title="查看拾取者信息" @click="seeInfo(item.claimantId)" type="button"
                                         class="btn btn-success btn-xs">
                                     已寻回
                                 </button>
                             </td>
-                            <td v-else-if="item.kind==1 && item.status==0"><span class="label label-warning">认领中</span></td>
-                            <td v-else-if="item.kind==1 && item.status==1 ">
-                                <button title="查看认领者信息" @click="seeInfo(item.claimantId)" type="button"
-                                        class="btn btn-success btn-xs">
-                                    已认领
-                                </button>
-                            </td>
+                            </template>
+                        <template v-else>
+                            <td v-if="item.status==0"><span class="label label-warning">认领中</span></td>
+                        <td v-else >
+                            <button title="查看认领者信息" @click="seeInfo(item.claimantId)" type="button"
+                                    class="btn btn-success btn-xs">
+                                已认领
+                            </button>
+                        </td>
+                        </template>
+
                             <td>
                                 <button @click="deletePub(item.id)" type="button" class="btn btn-danger btn-xs">
                                     <span class="glyphicon glyphicon-trash"></span>

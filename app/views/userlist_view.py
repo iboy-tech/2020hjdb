@@ -132,7 +132,7 @@ def user_freeze_or_unfreeze():
             'handlerName': current_user.real_name,
             'handlerEmail': current_user.qq + '@qq.com',
         }
-        send_email.apply_async(args=(u.qq, '账户冻结通知', 'userFreeze', messages), countdown=randint(1, 30))
+        send_email.apply_async(args=(u.qq, '账户冻结通知', 'userFreeze', messages), countdown=randint(10, 30))
     elif u.status == 0:
         u.status = 2
         messages = {
@@ -140,7 +140,7 @@ def user_freeze_or_unfreeze():
             'handlerName': current_user.real_name,
             'handlerEmail': current_user.qq + '@qq.com',
         }
-        send_email.apply_async(args=(u.qq, '账户恢复通知', 'userunFreeze', messages), countdown=randint(1, 30))
+        send_email.apply_async(args=(u.qq, '账户恢复通知', 'userunFreeze', messages), countdown=randint(10, 30))
     print('要给用户发送提醒邮件')
     db.session.commit()
     return restful.success()
@@ -164,7 +164,7 @@ def reset_pssword():
         'handlerEmail': current_user.qq + '@qq.com',
     }
     print("我是新的密码", password)
-    send_email.apply_async(args=(u.qq, '密码重置提醒', 'resetPassword', messages), countdown=randint(1, 30))
+    send_email.apply_async(args=(u.qq, '密码重置提醒', 'resetPassword', messages), countdown=randint(10, 30))
     print('要给用户发送提醒邮件')
     db.session.add(u)
     db.session.commit()

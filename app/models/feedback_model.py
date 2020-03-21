@@ -8,9 +8,10 @@ from app import db
 
 class Feedback(db.Model):
     __tablename__ = 't_feedback'
+    __table_args__ = {'mysql_charset': 'utf8mb4','mysql_collate': 'utf8mb4_unicode_ci'}
     id = db.Column(db.Integer, primary_key=True, info='主键')
     # 外键
-    user_id = db.Column(db.Integer, db.ForeignKey('t_user.id', ondelete='CASCADE'), nullable=False, info='创建人ID')
+    user_id = db.Column(db.Integer, db.ForeignKey('t_user.id', ondelete='CASCADE'),index=True, nullable=False, info='创建人ID')
     subject = db.Column(db.String(256), nullable=False, info='反馈的主题')
     content = db.Column(db.String(1024), nullable=False, info='反馈的内容')
     create_time = db.Column(db.DateTime, default=datetime.now, nullable=False, info='反馈创建时间')

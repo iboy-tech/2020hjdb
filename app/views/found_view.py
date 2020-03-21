@@ -30,6 +30,7 @@ from app.models.lostfound_model import LostFound
 from app.models.user_model import User
 from app.page import found
 from app.utils import restful
+from app.utils.check_data import check_post
 from app.utils.img_compress import change_all_img_scale, change_img_scale, change_all_img_to_jpg, find_big_img
 from app.utils.mail_sender import send_email
 from app.utils.time_util import get_time_str
@@ -194,43 +195,31 @@ def change_bs4_to_png(imglist):
     return files
 
 
-def check_pup(data):
-    if data['title'] == "" or data['about'] == "":
-        return True
-    else:
-        return False
-
-
 @found.route('/pub', methods=['POST', 'OPTIONS'], strict_slashes=False)
 @login_required
+@check_post
 def pub():
     data = request.json
     print(data)
-    # print(data['images'], type(data['images']))
-    if check_pup(data):
-        return restful.params_error(success=False, msg="参数错误")
-    print(type(data['images']), len(data['images']))
-    # strs = data['images'][0]
     imgstr = ''
     if len(data['images']) != 0 and len(data['images']) <= 3:
         imgstr = change_bs4_to_png(data['images'])
-    elif len(data['images']) > 3:
-        return restful.params_error(success=False, msg="照片数量超过上限")
     info = data.get('info')
     # print(type(imgstr), imgstr)
     print(data['location'])
-    lost = LostFound(kind=data['applyKind'], category_id=data['categoryId'],
-                     images=str(imgstr), location=data['location'].replace('/(<（[^>]+）>)/script', ''),
-                     title=data['title'].replace('/(<（[^>]+）>)/script', ''),
-                     about=data['about'].replace('/(<（[^>]+）>)/script', ''), user_id=current_user.id)
     try:
+        lost = LostFound(kind=data['applyKind'], category_id=data['categoryId'],
+                         images=str(imgstr), location=data['location'].replace('/(<（[^>]+）>)/script', ''),
+                         title=data['title'].replace('/(<（[^>]+）>)/script', ''),
+                         about=data['about'].replace('/(<（[^>]+）>)/script', ''), user_id=current_user.id)
         db.session.add(lost)
         print('帖子的ID')
     except Exception as e:
+        print(str(e))
         db.session.rollback()
         # 出现异常删除照片
         remove_imglist(imgstr)
-        return restful.params_error(msg=str(e))
+        return restful.params_error()
     if info != '':
         lost_users = User.query.filter(or_(User.username == info, User.real_name == info))
         if not lost_users:
@@ -255,11 +244,9 @@ def pub():
                     print('发送消息')
                     uids = [op.wx_id]
                     send_message_by_pusher(dict, uids, 3)
-                    send_email.apply_async(args=(u.qq, '失物找回通知', 'foundNotice', dict), countdown=randint(1, 30))
+                    send_email.apply_async(args=(u.qq, '失物找回通知', 'foundNotice', dict), countdown=randint(10, 30))
     db.session.commit()
-    # cache.delete('found-getall')  # 删除缓存
-
-    return restful.success()
+    return restful.success(msg="发布成功")
 
 
 @celery.task
@@ -292,7 +279,7 @@ def send_message_by_pusher(msg, uid, kind):
             real_name={
                 "realName":op.user.real_name
             }
-            send_email.apply_async(args=(op.user.qq, '系统通知', 'importantNotice', real_name), countdown=randint(1, 30))
+            send_email.apply_async(args=(op.user.qq, '系统通知', 'importantNotice', real_name), countdown=randint(10, 30))
 
     # WxPusher.send_message(content=str(msg), uids=uid,content_type=2)
 
@@ -353,7 +340,7 @@ def get_search_data(pagination, pageNum, pagesize):
 @login_required
 @admin_required
 @cross_origin()
-def delete_losts():
+def delete_posts():
     req = request.json
     print(req)
     if req:
@@ -365,7 +352,7 @@ def delete_losts():
                 if l.images != "":
                     l.images = l.images.replace('[', '').replace(']', '').replace(' \'', '').replace('\'', '')
                     imglist = l.images.strip().split(',')
-                    remove_imglist.delay(imglist)
+                    remove_imglist(imglist)
                 key = str(l.id) + PostConfig.POST_REDIS_PREFIX
                 # # 删除浏览量，不存在的key会被忽略
                 redis_client.delete(key)
@@ -383,7 +370,7 @@ def delete_losts():
 @found.route('/delete', methods=['POST'])
 @login_required
 @cross_origin()
-def delete_lost():
+def delete_post():
     req = request.args.get('id')
     if not req:
         return restful.params_error()
@@ -395,7 +382,7 @@ def delete_lost():
             if l.images != "":
                 l.images = l.images.replace('[', '').replace(']', '').replace(' \'', '').replace('\'', '')
                 imglist = l.images.strip().split(',')
-                remove_imglist.delay(imglist)
+                remove_imglist(imglist)
             key = str(l.id) + PostConfig.POST_REDIS_PREFIX
             # # 删除浏览量，不存在的key会被忽略
             redis_client.delete(key)
@@ -462,12 +449,9 @@ def delete_post_notice(kind, id, l):
 
 @celery.task
 def remove_imglist(imgs):
-    # os.chdir("O:/Python/Flask-WC/")
     for img in imgs:
-        print(img)
         file = os.path.join(os.getenv("PATH_OF_UPLOAD"), img)
         try:
-            print('要删除的文件', file)
             os.remove(file)
             os.remove(os.path.join(os.getenv("MINI_IMG_PATH"), img))
         except Exception as e:

@@ -192,13 +192,12 @@ function pubComment(data, app) {
         url: baseUrl + "/comment",
         data: JSON.stringify(data),
         method: "POST",
-        success: function (res, status) {
+        success: function (res) {
             console.log(res);
             console.log(res);
             console.log(typeof (res.ext), res.ext, res.ext == null);
-            if (status == "success") {
                 if (res.success) {
-                    showOK("发布成功！");
+                    showOK(res.msg);
                     app.comment = "";
                     // location.reload();
                     console.log('把评论框清空')
@@ -209,10 +208,6 @@ function pubComment(data, app) {
                 } else {
                     showAlertError(res.msg)
                 }
-            } else {
-                console.log(res);
-                showAlertError(res)
-            }
         }
     });
 }

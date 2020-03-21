@@ -105,6 +105,7 @@ var app = new Vue({
             let t = app.notice[index];
             layer.open({
                 title: t.time + "  " + t.title || "",
+                btn: ['收到'],
                 content: t.content || ""
             });
         },
@@ -423,8 +424,8 @@ var app = new Vue({
 function setQQ(qq) {
     //console.log(data);
     $.ajax({
-        url: baseUrl + "/user.html/setQQ?qq=" + qq,
-        //data: JSON.stringify(data),
+        url: baseUrl + "/user.html/setQQ",
+        data: JSON.stringify({'qq':qq}),
         method: "POST",
         success: function (res, status) {
             console.log(res);
@@ -655,9 +656,8 @@ function pubLostFound(data) {
         method: "POST",
         success: function (res, status) {
             console.log(res);
-            if (status == "success") {
                 if (res.success) {
-                    showOK("发布成功！");
+                    showOK(res.msg);
                     app.tab4 = {
                         applyKind: 0,
                         categoryIndex: -1,
@@ -670,10 +670,6 @@ function pubLostFound(data) {
                 } else {
                     showAlertError(res.msg)
                 }
-            } else {
-                console.log(res);
-                showAlertError(res)
-            }
         }
     });
 }
@@ -689,7 +685,7 @@ function pubLostFound(data) {
             console.log(res);
             if (status == "success") {
                 if (res.success) {
-                    showOK("发布成功！");
+                    showOK(res.msg);
                     saveSession("category", "");
                     saveSession("kind", -1);
                     saveSession("tabIndex", 0);

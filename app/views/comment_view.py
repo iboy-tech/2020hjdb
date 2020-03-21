@@ -23,24 +23,21 @@ from app.models.comment_model import Comment
 from app.models.lostfound_model import LostFound
 from app.models.user_model import User
 from app.utils import restful
+from app.utils.check_data import check_comment
 from app.views.found_view import send_message_by_pusher
 
 
 @comment.route('/', methods=['GET', 'POST', 'OPTIONS'],strict_slashes=False)
 @login_required
 @wechat_required
+@check_comment
 def index():
     id=request.args.get('id')
-    print('评论的ID',id)
     req = request.json
     if req  is not None:
-        print('添加评论',req)
         lost = LostFound.query.get(req['targetId'])
         if lost:
             user=User.query.get(lost.user_id)
-            if len(req['content'])>PostConfig.MAX_COMMENT_LENGTH:
-                return restful.success(False,msg="评论字数太长")
-
             comment = Comment(lost_found_id=req['targetId'], user_id=current_user.id, content=req['content'].replace('/(<（[^>]+）>)/script', ''))
             dict = {
                 'post_user': user.real_name,
@@ -61,8 +58,6 @@ def index():
                 return restful.success(msg='评论成功')
             except Exception as e:
                 return restful.success(False,str(e))
-
-
         else:
             return restful.params_error()
     else:

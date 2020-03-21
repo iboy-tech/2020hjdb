@@ -6,6 +6,7 @@ from app import db
 
 class Comment(db.Model):
     __tablename__ = 't_comment'
+    __table_args__ = {'mysql_charset': 'utf8mb4','mysql_collate': 'utf8mb4_unicode_ci'}
     id = db.Column(db.Integer, primary_key=True, info='主键')
     lost_found_id = db.Column(db.Integer, db.ForeignKey('t_lost_found.id', ondelete='CASCADE'), nullable=False,
                               index=True, info='失物外键')

@@ -17,6 +17,7 @@ class Guest(AnonymousUserMixin):
     @property
     def is_admin(self):
         return False
+
     @property
     def is_super_admin(self):
         return False
@@ -25,13 +26,13 @@ class Guest(AnonymousUserMixin):
 class User(db.Model, UserMixin):
     __tablename__ = 't_user'
     id = db.Column(db.Integer, primary_key=True, info='主键')
-    username = db.Column(db.String(25), nullable=False, info='学号', unique=True)
+    username = db.Column(db.String(25), nullable=False,index=True, info='学号', unique=True)
     password_hash = db.Column(db.String(128), info='密码散列')
-    real_name = db.Column(db.String(100), nullable=False, info='真名')
+    real_name = db.Column(db.String(100), nullable=False,index=True, info='真名')
     academy = db.Column(db.String(150), nullable=False, info='学院')
     class_name = db.Column(db.String(30), nullable=False, info='班级')
     major = db.Column(db.String(50), nullable=False, info='专业')
-    qq = db.Column(db.String(16), nullable=False, info='QQ', unique=True)
+    qq = db.Column(db.String(16), nullable=False,index=True, info='QQ', unique=True)
     kind = db.Column(db.Integer, db.ForeignKey('t_role.id'), nullable=False, server_default=text('1'), info='是否为管理员')
     role = db.relationship('Role', back_populates='users')
     gender = db.Column(db.Integer, nullable=False, server_default=text('0'), info='0男1女')

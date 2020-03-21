@@ -20,6 +20,7 @@ from app.models.feedback_model import Feedback
 from app.models.user_model import User
 from app.page import feedback
 from app.utils import restful
+from app.utils.check_data import check_feedback
 from app.utils.mail_sender import send_email
 
 
@@ -77,20 +78,11 @@ def get_new_feedback():
     return new_count
 
 
-def checkFeedback(data):
-    if data['subject'] == "" or data['content'] == "":
-        return True
-    else:
-        return False
-
-
 @feedback.route('/add', methods=['GET', 'POST', 'OPTIONS'], strict_slashes=False)
 @login_required
+@check_feedback
 def feedback_add():
     req = request.json
-    print('req', req)
-    if checkFeedback(req):
-        return restful.params_error()  # 表单内容为空
     # 表单过滤
     f = Feedback(subject=req['subject'].replace('/(<（[^>]+）>)/script', ''),
                  content=req['content'].replace('<', '&lt;').replace('>', '&gt;'), user_id=current_user.id)

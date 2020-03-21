@@ -165,9 +165,9 @@
                     data: JSON.stringify(this.user),
                     success: function (res) {
                             if (res.success) {
+                                console.log(res)
                                     showOK(res.msg);
                                     if(me.tabIndex==0){
-
                                         saveLocal("user", res.data.user);
                                         if(res.ext=='wx'){
                                               window.location=baseUrl+"/oauth/wx.html";
@@ -180,6 +180,11 @@
                                         }
                                         else if(res.data.user.kind==1){
                                             window.location=baseUrl;
+                                        }
+                                    }
+                                    else{
+                                        if(res.ext=="reg"){
+                                            showOK(res.msg);
                                         }
                                     }
                                     me.user.password = "";
