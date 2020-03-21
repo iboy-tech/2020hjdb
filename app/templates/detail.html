@@ -391,5 +391,19 @@ $(function () {
         // 如果 popup 的位置不够理想，还可以设置 offset 进行微调，例如下面向左偏移 12 像素
         $('.with-popup').popup({ position: 'bottom left', offset: -12 });
 </script>
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
 </body>
 </html>

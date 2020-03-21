@@ -70,6 +70,7 @@ def wechat_required(func):
 
 
 def unfreeze_user(func):
+    @wraps(func)
     def decorated_view(*args, **kwargs):
         # 用户登陆自助解封
         uid = request.args.get("uid")
@@ -79,5 +80,4 @@ def unfreeze_user(func):
                 key = op.user.username + LoginConfig.LOGIN_REDIS_PREFIX
                 redis_client.delete(key)
         return func(*args, **kwargs)
-
     return decorated_view

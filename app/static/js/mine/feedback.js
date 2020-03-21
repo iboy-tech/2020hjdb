@@ -78,17 +78,12 @@ function deleteFeedback(id) {
         //data: JSON.stringify(data),
         success: function (res, status) {
             console.log(res);
-            if (status == "success") {
                 if (res.success) {
-                    showOK("操作成功！");
+                    showOK(res.msg);
                     getFeedbackList(app);
                 } else {
                     showAlertError(res.msg)
                 }
-            } else {
-                console.log(res);
-                showAlertError(res)
-            }
         }
     });
 }
@@ -103,7 +98,7 @@ function markFeedback(id) {
             console.log(res);
             if (status == "success") {
                 if (res.success) {
-                    showOK("操作成功！");
+                    showOK(res.msg);
                     getFeedbackList(app);
                 } else {
                     showAlertError(res.msg)
@@ -128,7 +123,7 @@ function replyFeedback(data, app) {
             if (status == "success") {
                 if (res.success) {
                     layer.closeAll();
-                    showOK("操作成功！");
+                    showOK(res.msg);
                     app.reply.content = "";
                     app.reply.id = "";
                     getFeedbackList(app);

@@ -86,6 +86,7 @@ def index():
                 print("我是新的密码", password)
                 mail_sender.send_email.delay(op.user.qq, '密码重置', 'findPassword', msg)
                 send_message_by_pusher(msg, [op.wx_id], 5)
+                db.session.add(op)
                 db.session.commit()
     print('我是key的后缀', os.getenv('QR_CODE_SUFFIX'))
     key = user_id + '-pusher-post-data'

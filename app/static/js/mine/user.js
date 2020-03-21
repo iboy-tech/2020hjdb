@@ -457,7 +457,7 @@ function pubFeedback(data) {
             if (status == "success") {
                 if (res.success) {
                     layer.closeAll();
-                    showOK();
+                    showOK(res.msg);
                     app.feedback = {
                         subject: "",
                         content: ""

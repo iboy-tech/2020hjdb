@@ -155,7 +155,6 @@ def reset_pssword():
     u = User.query.get(int(req))
     password = generate_password()
     u.password = password
-    db.session.commit()
     print('发送邮件')
     messages = {
         'username': u.username,
@@ -167,6 +166,8 @@ def reset_pssword():
     print("我是新的密码", password)
     send_email.apply_async(args=(u.qq, '密码重置提醒', 'resetPassword', messages), countdown=randint(1, 30))
     print('要给用户发送提醒邮件')
+    db.session.add(u)
+    db.session.commit()
     return restful.success()
 
 

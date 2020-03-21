@@ -16,7 +16,7 @@ from flask_cors import cross_origin
 from flask_login import current_user, login_required
 from sqlalchemy import desc
 
-from app import db, OpenID
+from app import db, OpenID, PostConfig
 from app.decorators import wechat_required
 from app.page import comment
 from app.models.comment_model import Comment
@@ -38,6 +38,9 @@ def index():
         lost = LostFound.query.get(req['targetId'])
         if lost:
             user=User.query.get(lost.user_id)
+            if len(req['content'])>PostConfig.MAX_COMMENT_LENGTH:
+                return restful.success(False,msg="评论字数太长")
+
             comment = Comment(lost_found_id=req['targetId'], user_id=current_user.id, content=req['content'].replace('/(<（[^>]+）>)/script', ''))
             dict = {
                 'post_user': user.real_name,

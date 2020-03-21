@@ -93,8 +93,20 @@
     <footer>
         &copy;三峡大学失物招领中心 | <a href="http://www.ctgu.edu.cn/" target="_blank">CTGU</a>
     </footer>
-<!--<script src="https://cdn.bootcss.com/toastr.js/latest/toastr.min.js"></script>-->
-<!--<link href="https://cdn.bootcss.com/toastr.js/latest/toastr.min.css" rel="stylesheet">-->
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
 
 <script src="https://cdn.bootcss.com/layer/2.3/layer.js"></script>
 <script src="../static/js/mine/common.js"></script>

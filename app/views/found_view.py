@@ -80,8 +80,8 @@ def get_all():
         pagination = LostFound.query.filter_by(category_id=c.id).order_by(LostFound.status,
                                                                           LostFound.create_time.desc()).paginate(
             page + 1, per_page=pagesize, error_out=False)
+    # print('这是用户个人查询')
     elif req['username'] != '':
-        # print('这是用户个人查询')
         u = User.query.filter_by(username=req['username']).first()
         pagination = LostFound.query.filter_by(user_id=u.id).order_by(LostFound.status,
                                                                       LostFound.create_time.desc()).paginate(page + 1,
