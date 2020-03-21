@@ -9,6 +9,8 @@
 @Software: PyCharm
 """
 # 消息代理的连接Celery 从 4.0 开始启用新的小写配置名
+from datetime import timedelta
+
 from celery.schedules import crontab
 from kombu import Queue, Exchange
 
@@ -29,7 +31,9 @@ task_default_queue='default'
 beat_schedule = {
     "compress_imgs": {
         "task": "app.views.found_view.compress_imgs_in_freetime",
-        "schedule": crontab(minute="*/60"),
+        "schedule": timedelta(seconds=10),# # 每周一至周五早上8点执行任务函数
+        # 'schedule': crontab(minute=50, hour=18, day_of_week=[1, 2, 3, 4, 5]),
+        'schedule': crontab(minute=3, hour=19),
         "args": ()
     },
 }

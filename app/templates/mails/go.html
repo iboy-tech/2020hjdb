@@ -40,7 +40,7 @@
             }
         </script>
         <style>
-            h2{
+            #success{
                 background:url(https://ae01.alicdn.com/kf/Hac5ddf1e89d6411ca0151aefe6db97c0e.png) no-repeat left center;
                 text-indent: 50px;
                 background-size: 50px 50px;
@@ -62,7 +62,7 @@
                         {% if messages.success==False %}
                         <h2 >{{ messages.msg }}</h2>
                         {% else %}
-                        <h2 style="color: #61cc52;">{{ messages.msg }}</h2>
+                        <h2 id="success"style="color: #61cc52;">{{ messages.msg }}</h2>
                         {% endif %}
 
                         <p><span>页面自动<a id="href" href="{{ url_for('auth.index', _external=True) }}">跳转</a></span><span>等待<b id="wait">5</b>秒</span></p>

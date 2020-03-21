@@ -145,6 +145,7 @@ if __name__ == '__main__':
     sudo apt-get --purge remove gunicorn
     source venv/bin/activate && nohup gunicorn -c config.py run:app   &> log.log
    celery multi start  celery worker -A run.celery -l  DEBUG -E -P eventlet
+   celery  -A run.celery  beat
       gunicorn -c config.py run:app  --daemon
     celery worker -A run.celery -l  DEBUG -E -P eventlet -Q default 
     celery worker -A run.celery -l  DEBUG -E -P solo -Q default
@@ -152,6 +153,7 @@ if __name__ == '__main__':
    pkill -f "celery"
    celery worker
    pkill -f " celery worker"
+   celery multi start celery worker -B -A run.celery 
    celery worker -A run.celery --loglevel=debug  --logfile=worker.log --pool=eventlet  -E
    ln -s /usr/local/python3/bin/celery /usr/bin/celery
   https://blog.wpjam.com/m/weixin-emotions/ 
