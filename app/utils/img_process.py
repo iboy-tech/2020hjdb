@@ -1,7 +1,7 @@
 # -*- coding:UTF-8 -*-
 # !/usr/bin/python
 """
-@File    : img_compress.py
+@File    : img_process.py
 @Time    : 2020/3/9 23:30
 @Author  : iBoy
 @Email   : iboy@iboy.tech
@@ -10,8 +10,15 @@
 """
 # -*- coding:UTF-8 -*-
 # !/usr/bin/python
+import base64
+import uuid
+from io import BytesIO
+
 from app import redis_client
 from app.config import PostConfig
+from app.utils import restful
+from app.utils.tinify_tool import tinypng
+from tasks import celery
 
 """
 @File    : img_3c.py
@@ -29,6 +36,15 @@ from PIL import ImageFile
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 
+@celery.task
+def compress_imgs_in_freetime():
+    big_img = find_big_img()
+    if big_img:
+        tinypng(big_img)
+    else:
+        print("没有图片无需压缩")
+
+
 def change_all_img_to_jpg():
     dir = os.getenv("PATH_OF_UPLOAD")
     # dir = "O:\\Python\\Flask-WC\\app\\static\\upload\\"
@@ -44,7 +60,7 @@ def change_all_img_to_jpg():
                 new_name = file.replace("png", "jpg")
                 print(new_name)
                 image.save(dir + new_name)
-                os.remove(dir+file)
+                os.remove(dir + file)
         except Exception as e:
             print("出现意外错误", str(e))
 
@@ -68,6 +84,7 @@ def change_all_img_scale():
         except Exception as e:
             print("错误", str(e), file)
 
+
 def find_big_img():
     dir = os.getenv("PATH_OF_UPLOAD")
     allFile = os.listdir(dir)
@@ -89,6 +106,8 @@ def find_big_img():
         big_img.append(filename)
     print("需要压缩的图片", big_img, len(big_img))
     return big_img
+
+
 # 传入文件名称
 def change_img_scale(file):
     dir = os.getenv("PATH_OF_UPLOAD")
@@ -104,17 +123,40 @@ def change_img_scale(file):
     try:
         img.save(os.path.join(min_dir, file), optimize=True, quality=80)
     except Exception as e:
-        print("出现错误",str(e))
+        print("出现错误", str(e))
 
 
-# file = "1559b6de23e34c4a8e44d9e1e29a05df.png"
-# change_img_scale(file)
-# change_all_img_to_jpg()
-# change_all_img_scale()
-def get_max_key():
-    key = PostConfig.TINYPNG_REDIS_KEY
-    keys = redis_client.zrange(key, 0, -1, desc=True, withscores=True)
-    if keys:
-        return bytes.decode(keys[0][0])
-    else:
-        return "R5gzXY2WKQrCZBhgSvCZRNRgJ2n5MQZQ"
+
+
+
+# 对上传图片进行格式转换并裁剪
+def change_bs4_to_png(imglist):
+    files = []
+    for img in imglist:
+        bas4_code = img.split(',')
+        filename = uuid.uuid4().hex + '.jpg'
+        files.append(filename)
+        myfile = os.path.join(os.getenv("PATH_OF_UPLOAD"), filename)
+        print("保存的路径", myfile)
+        image = base64.b64decode(bas4_code[1])
+        image = BytesIO(image)
+        image = Image.open(image)
+        image = image.convert('RGB')
+        image.save(myfile)
+        # 生成缩略图
+        change_img_scale(filename)
+        # 后台检查图片大小
+        if os.path.getsize(myfile) / 1024 > PostConfig.UPLOAD_MAX_SIZE:
+            try:
+                os.remove(myfile)
+                os.remove(os.getenv("MINI_IMG_PATH") + filename)
+                # 一张图片超过上限返回空值
+                return ''
+            except Exception as e:
+                print(str(e))
+                print("图片太大,移除列表中的元素")
+    if files:
+        print('对上传图片进行异步压缩')
+        tinypng.delay(files)
+    print(files, '我是文件名')
+    return files

@@ -84,10 +84,10 @@ var app = new Vue({
                     success: function (res) {
                         console.log(res);
                             if (res.success) {
-                                showOK(res.msg);
                                 //数据置空
                                 app.checked=false;
                                 app.checkedList=[];
+                                showOK(res.msg);
                                 pageLostFound(app.result.search, app.result, false);
                             } else {
                                 showAlertError(res.msg)
@@ -119,6 +119,8 @@ var app = new Vue({
             toPage(pageNum);
         },
         jumpDetail(id) {
+            saveSession("toIndex",true);
+            saveSession("tabIndex", 0);
             //跳转详情页面
             window.open("./detail.html?id=" + id, "_blank");
         },

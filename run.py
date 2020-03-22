@@ -70,24 +70,23 @@ def server(data):
         if op is not None:
             op = op.decode()
             # print('当前用户姓名', current_user.real_name)
-            # op = OpenID.query.filter_by(user_id=current_user.id).first()
             # db.session.remove()
             if op != 'null':
                 data = eval(op)
-                print('data的数据类型', type(data))
-                op = OpenID.query.filter_by(wx_id=data['uid']).one()
-                if op:
-                    print(op, op.user)
-                    print('我是查询的OP', op)
-                    print('循环查询OpenID', datetime.now(), op)
-                    res = {
-                        'success': 'true',
-                        'data': {'msg': '绑定成功！即将回到主页',
-                                 'head': data['userHeadImg'].replace('http', 'https')
-                                 },
-                        'token': request.sid
-                    }
-                    print('background_thread我是查询结果', res)
+                # print('data的数据类型', type(data),data['uid'])
+                # op = OpenID.query.filter_by(user_id=current_user.id).first()
+                # if op:
+                #     print(op, op.user)
+                #     print('我是查询的OP', op)
+                print('循环查询OpenID', datetime.now(), op)
+                res = {
+                    'success': 'true',
+                    'data': {'msg': '绑定成功！即将回到主页',
+                             'head': data['userHeadImg'].replace('http', 'https')
+                             },
+                    'token': request.sid
+                }
+                print('background_thread我是查询结果', res)
                 emit('server', res)
                 break;
             else:

@@ -3,13 +3,13 @@ from datetime import datetime
 
 from flask import current_app
 from flask_login import UserMixin, AnonymousUserMixin
-from sqlalchemy import text
+from sqlalchemy import text, desc
 from sqlalchemy.orm import relationship
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from app.models.feedback_model import Feedback
 from app.models.role_model import Role
-from app import login_manager, db
+from app import login_manager, db, PostConfig
 from app.models.permission_model import Permission
 
 
@@ -42,7 +42,7 @@ class User(db.Model, UserMixin):
     # 一对一关系
     wx_open = relationship("OpenID", uselist=False, back_populates="user")
     # 一对多关系删除
-    posts = db.relationship('LostFound', backref='post_user', cascade='all, delete-orphan', lazy='dynamic',
+    posts = db.relationship('LostFound', backref='post_user', order_by=desc('create_time'),cascade='all, delete-orphan', lazy='dynamic',
                             passive_deletes=True)
     comments = db.relationship('Comment', backref='comment_user', cascade='all, delete-orphan', passive_deletes=True)
     reports = db.relationship('Report', backref='report_user', cascade='all, delete-orphan', passive_deletes=True)
@@ -112,7 +112,7 @@ class User(db.Model, UserMixin):
             "user": {
                 "realName": self.real_name,
                 "studentNum": self.username,
-                "icon": 'https://avater.ctguswzl.cn/headimg_dl?dst_uin={}&spec=100'.format(self.qq),
+                "icon": PostConfig.AVATER_API.replace("{}",self.qq),
                 "email": self.qq + '@qq.com',
                 "qq": self.qq,
                 "gender": self.gender,

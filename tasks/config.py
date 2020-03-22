@@ -30,7 +30,7 @@ task_default_queue='default'
 # result_expires = 3600
 beat_schedule = {
     "compress_imgs": {
-        "task": "app.views.found_view.compress_imgs_in_freetime",
+        "task": "app.utils.img_process.compress_imgs_in_freetime",
         "schedule": timedelta(seconds=10),# # 每周一至周五早上8点执行任务函数
         # 'schedule': crontab(minute=50, hour=18, day_of_week=[1, 2, 3, 4, 5]),
         'schedule': crontab(minute=3, hour=19),

@@ -48,13 +48,13 @@ def index():
     elif request.method == 'POST':
         data = request.json['data']
         wx_open_id = data['uid']
-        # print('用户的OPEN-ID', wx_open_id)
-        user_id = str(data['extra'])
-        # print('用户的ID', user_id)
-        if isinstance(user_id, int):
-            op = OpenID(user_id=int(user_id), wx_id=wx_open_id)
+        user_id = data['extra']
+        # print('用户的ID', user_id,type(user_id))
+        if user_id.isnumeric():
+            op = OpenID(user_id=user_id, wx_id=wx_open_id)
             db.session.add(op)
             db.session.commit()
+            db.session.close()
             """
             redis_store = FlaskReis()
             redis_store.get(key)
@@ -71,7 +71,6 @@ def index():
             op = OpenID.query.filter_by(wx_id=wx_open_id).first()
             if op:
                 print(op, op.user)
-
                 print('用户的OPEN-ID', wx_open_id)
                 password = generate_password()
                 op.user.password = password
@@ -88,8 +87,9 @@ def index():
                 send_message_by_pusher(msg, [op.wx_id], 5)
                 db.session.add(op)
                 db.session.commit()
+                db.session.close()
     print('我是key的后缀', os.getenv('QR_CODE_SUFFIX'))
-    key = user_id + '-pusher-post-data'
+    key = '{}-pusher-post-data'.format(user_id)
     redis_client.setrange(key, 0, str(data))  # 把数据存入redis
     print('key的过期时间：', os.getenv('QR_CODE_VALID_TIME'))
     print('redis中的值', redis_client.get('key'), type(redis_client.get('key')))
@@ -102,22 +102,4 @@ def open_qq():
     pass
 
 
-@oauth.route('/getQRcode')
-def get_qrcode():
-    # session["sid"]
-    # print(request.sid)
-    data = (WxPusher.create_qrcode(extra="PWD", valid_time=180))
-    print("我是微信的ID", session.get("sid"))
-    print(type(data), data)
-    if data['success']:
-        data = data['data']
-        # print('user_id', data['extra'])
-        # print('qr_code', data['url'])
-        data = {
-            'url': data['url'],
-        }
-        print("我是获取的数据", data)
-        return restful.success(data=data)
-    else:
-        print("我是获取的数据没成功")
-        return restful.success(False)
+

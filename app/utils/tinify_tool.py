@@ -17,11 +17,20 @@ from threading import Thread
 
 import tinify
 
+
+def get_max_key():
+    key = PostConfig.TINYPNG_REDIS_KEY
+    keys = redis_client.zrange(key, 0, -1, desc=True, withscores=True)
+    if keys:
+        return bytes.decode(keys[0][0])
+    else:
+        return "R5gzXY2WKQrCZBhgSvCZRNRgJ2n5MQZQ"
+
+
 # key = 'mmnYWFKXVlkxsKtFbdx17FSqFj5YhWq0'  # 登录后去主页就可以查看到key
 # tinify.key = key
 from app import redis_client
 from app.config import PostConfig
-from .img_compress import get_max_key
 
 path = os.getenv('PATH_OF_UPLOAD')
 from tasks import celery
@@ -92,7 +101,7 @@ def tinypng(files):
         print('线程【', i + 1, '】已启动')
         if (total_imgs % PostConfig.IMG_NUM_IN_THREAD != 0 and i == total_imgs // PostConfig.IMG_NUM_IN_THREAD - 1):
             s = Thread(target=async_compress_imgs, args=((i + 1) * PostConfig.IMG_NUM_IN_THREAD, (
-                        1 + i) * PostConfig.IMG_NUM_IN_THREAD + total_imgs % PostConfig.IMG_NUM_IN_THREAD, files))
+                    1 + i) * PostConfig.IMG_NUM_IN_THREAD + total_imgs % PostConfig.IMG_NUM_IN_THREAD, files))
             # print((i+1)* 5, (1 + i) * 5+urllen % 5)
             s.start()
             # s.join()

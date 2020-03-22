@@ -11,8 +11,8 @@
       <link rel='stylesheet prefetch' href='https://cdn.bootcss.com/semantic-ui/2.3.1/components/icon.min.css'>
     <link type="text/css" rel="stylesheet" href="{{ cdnUrl }}/static/css/space.4cb6e48f.css">
     <link rel="stylesheet" href="../static/css/share/css/share.min.css">
-     <script src="https://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
-    <script src="https://cdn.bootcss.com/vue/2.4.2/vue.min.js"></script>
+     <script src="{{ cdnUrl }}/static/public/jquery.min.js"></script>
+    <script src="{{ cdnUrl }}/static/public/vue.min.js"></script>
 
     <style>
         #mainScreen {
@@ -133,7 +133,7 @@
                                 <div class="meta">
                                     <a target="_blank" class="with-popup" data-content="点击邮箱可给对方发送邮件"  style="color: rgba(0,0,0,.5);" class="reply" href="{{ 'https://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email='+item.email }}"><i class="envelope outline icon"></i>
                                         {{ item.email }}</a>
-                                    <a target="_blank" class="with-popup" data-content="点击QQ可直接跳转到对话框" style="color: rgba(0,0,0,.5);" class="share" href="{{ 'https://api.uomg.com/api/qq.talk?qq='+item.QQ }}">
+                                    <a target="_blank" class="with-popup" data-content="点击QQ可直接跳转到对话框" style="color: rgba(0,0,0,.5);" class="share" href="{{ 'https://wpa.qq.com/msgrd?v=3&site=qq&menu=yes&uin='+item.QQ }}">
                                         <i class="qq icon" style="color: rgba(121, 103, 103, 0.4) !important;"></i>
                                         {{ item.QQ }}
                                     </a>
@@ -373,7 +373,7 @@
 
 
 </style>
-<script src="https://cdn.bootcss.com/semantic-ui/2.3.1/semantic.min.js"></script>
+<script src="{{ cdnUrl }}/static/public/semantic.min.js"></script>
 <script src="../static/js/mine/common.js"></script>
 <script src="{{ cdnUrl }}/static/js/layer.js"></script>
 <script src="../static/js/mine/detail.js"></script>

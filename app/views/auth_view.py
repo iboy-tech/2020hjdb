@@ -58,7 +58,6 @@ def index():
     print('user页面收到请求', data)
     return render_template('user.html')  # 所有参数都要
 
-
 def login_user_longtime(user):
     session.permanent = True
     app = current_app._get_current_object()

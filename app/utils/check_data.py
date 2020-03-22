@@ -29,6 +29,8 @@ def check_comment(func):
                 return restful.success(False, msg="评论内容不能为空")
             if len(req['content']) > PostConfig.MAX_COMMENT_LENGTH:
                 return restful.success(False, msg="评论字数大于" + PostConfig.MAX_COMMENT_LENGTH)
+            if req["content"].isspace():  # 全部是空格
+                return restful.success(False, msg="评论内容无效")
             return func(*args, **kwargs)
         print("查看评论")
         return func(*args, **kwargs)
@@ -41,8 +43,13 @@ def check_feedback(func):
     @wraps(func)
     def decorated_view(*args, **kwargs):
         req = request.json
-        if req['subject'] == "" or req['content'] == "":
-            return restful.params_error(msg="反馈标题或内容不能为空")
+        try:
+            if req['subject'] == "" or req['content'] == "":
+                return restful.params_error(msg="反馈标题或内容不能为空")
+            if req["subject"].isspace() or req['content'].isspace():  # 全部是空格
+                return restful.params_error(msg="请认真填写反馈信息")
+        except:
+            return  restful.params_error()
         return func(*args, **kwargs)
 
     return decorated_view
@@ -58,7 +65,7 @@ def check_qq(func):
             # 正则表达式
             pattern = "^[1-9]\\d{4,10}$"
             res = re.findall(pattern, qq)
-            print(res,"验证QQ",qq)
+            print(res, "验证QQ", qq)
             if res:
                 return func(*args, **kwargs)
             else:
@@ -66,8 +73,6 @@ def check_qq(func):
         except Exception as e:
             print(str(e))
             return restful.params_error()
-
-
 
     return decorated_view
 
@@ -82,9 +87,11 @@ def check_post(func):
                 return restful.params_error(msg="类型有误")
             if req['title'] == "" or req['about'] == "":
                 return restful.params_error(msg="标题或详情不能为空")
+            if req["title"].isspace() or req['about'].isspace():  # 全部是空格
+                return restful.success(False, msg="内容或标题无效")
             if len(req['images']) > PostConfig.MAX_UPLOAD_IMG_NUM:
                 return restful.params_error(msg="最多上传{}张图片".format(PostConfig.MAX_UPLOAD_IMG_NUM))
-        except Exception as e:
+        except:
             return restful.params_error()
         return func(*args, **kwargs)
 

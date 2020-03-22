@@ -10,7 +10,7 @@ var app = new Vue({
         userIcon: "https://ae01.alicdn.com/kf/U89b7be7d8d234a38b9a4b0d4258de362X.jpg",
         comment: "",//发布评论
         //从相关页面进入
-        isRelate: getLocal("isRelate") ? JSON.parse(getLocal("isRelate")) : false,
+        isRelate: getSession("toIndex") ? JSON.parse(getSession("toIndex")) : true,
         images: {
             "title": "", //相册标题
             "id": "", //相册id
@@ -92,7 +92,7 @@ var app = new Vue({
             console.log("执行相关函数");
             //从相关启示进去，出来直接返回主页面
             app.isRelate = true;
-            saveLocal("isRelate", true);
+            saveSession("toIndex", true);
             saveSession("category", "");
             saveSession("kind", -1);
             // deleteSession("data");

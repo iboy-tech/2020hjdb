@@ -8,14 +8,10 @@
 @Description : 
 @Software: PyCharm
 """
-import base64
 import os
-import uuid
 from datetime import datetime
-from io import BytesIO
 from random import randint
 
-from PIL import Image
 from flask import render_template, request
 from flask_cors import cross_origin
 from flask_login import current_user, login_required
@@ -31,12 +27,12 @@ from app.models.user_model import User
 from app.page import found
 from app.utils import restful
 from app.utils.check_data import check_post
-from app.utils.img_compress import change_all_img_scale, change_img_scale, change_all_img_to_jpg, find_big_img
+from app.utils.delete_file import remove_files
+from app.utils.img_process import change_all_img_scale, change_all_img_to_jpg, compress_imgs_in_freetime, \
+    change_bs4_to_png
 from app.utils.mail_sender import send_email
 from app.utils.time_util import get_time_str
-from app.utils.tinify_tool import tinypng
-from app.utils.wxpusher import WxPusher
-from tasks import celery
+from app.utils.wechat_notice import delete_post_notice, send_message_by_pusher
 
 
 @found.route('/', methods=['GET'], strict_slashes=False)
@@ -83,7 +79,7 @@ def get_all():
             page + 1, per_page=pagesize, error_out=False)
     # print('这是用户个人查询')
     elif req['username'] != '':
-        u = User.query.filter_by(username=req['username']).first()
+        u = User.query.filter_by(username=req['username']).one()
         pagination = LostFound.query.filter_by(user_id=u.id).order_by(LostFound.status,
                                                                       LostFound.create_time.desc()).paginate(page + 1,
                                                                                                              per_page=
@@ -162,39 +158,6 @@ def get_all():
     return data
 
 
-# 对上传图片进行格式转换并裁剪
-def change_bs4_to_png(imglist):
-    files = []
-    for img in imglist:
-        bas4_code = img.split(',')
-        filename = uuid.uuid4().hex + '.jpg'
-        files.append(filename)
-        myfile = os.path.join(os.getenv("PATH_OF_UPLOAD"), filename)
-        print("保存的路径", myfile)
-        image = base64.b64decode(bas4_code[1])
-        image = BytesIO(image)
-        image = Image.open(image)
-        image = image.convert('RGB')
-        image.save(myfile)
-        # 生成缩略图
-        change_img_scale(filename)
-        # 后台检查图片大小
-        if os.path.getsize(myfile) / 1024 > PostConfig.UPLOAD_MAX_SIZE:
-            try:
-                os.remove(myfile)
-                os.remove(os.getenv("MINI_IMG_PATH") + filename)
-                # 一张图片超过上限返回空值
-                return ''
-            except Exception as e:
-                print(str(e))
-                print("图片太大,移除列表中的元素")
-    if files:
-        print('对上传图片进行异步压缩')
-        tinypng.delay(files)
-    print(files, '我是文件名')
-    return files
-
-
 @found.route('/pub', methods=['POST', 'OPTIONS'], strict_slashes=False)
 @login_required
 @check_post
@@ -202,29 +165,29 @@ def pub():
     data = request.json
     print(data)
     imgstr = ''
-    if len(data['images']) != 0 and len(data['images']) <= 3:
+    if len(data['images']) != 0:
         imgstr = change_bs4_to_png(data['images'])
     info = data.get('info')
     # print(type(imgstr), imgstr)
     print(data['location'])
     try:
         lost = LostFound(kind=data['applyKind'], category_id=data['categoryId'],
-                         images=str(imgstr), location=data['location'].replace('/(<（[^>]+）>)/script', ''),
+                         images=','.join(imgstr), location=data['location'].replace('/(<（[^>]+）>)/script', ''),
                          title=data['title'].replace('/(<（[^>]+）>)/script', ''),
                          about=data['about'].replace('/(<（[^>]+）>)/script', ''), user_id=current_user.id)
         db.session.add(lost)
+        db.session.commit()
         print('帖子的ID')
     except Exception as e:
         print(str(e))
         db.session.rollback()
         # 出现异常删除照片
-        remove_imglist(imgstr)
+        remove_files(imgstr)
         return restful.params_error()
     if info != '':
         lost_users = User.query.filter(or_(User.username == info, User.real_name == info))
-        if not lost_users:
+        if lost_users:
             print('失主没有注册')
-        else:
             print('可能的失主', lost_users)
             print('有人捡到您的东西了')
             print('微信公众号和邮件通知失主')
@@ -245,43 +208,7 @@ def pub():
                     uids = [op.wx_id]
                     send_message_by_pusher(dict, uids, 3)
                     send_email.apply_async(args=(u.qq, '失物找回通知', 'foundNotice', dict), countdown=randint(10, 30))
-    db.session.commit()
     return restful.success(msg="发布成功")
-
-
-@celery.task
-def send_message_by_pusher(msg, uid, kind):
-    print('即将要发送的消息', msg)
-    msg_template = {
-        0: 'WXLostNotice.txt',  # 寻物认领
-        1: "WXFoundNotice.txt",  # 招领认领
-        2: 'WXDeleteNotice.txt',  # 删除通知
-        3: 'WXNotice.txt',  # 发布招领匹配
-        4: "WXCommentNotice.txt",  # 评论提醒
-        5: 'WXPasswordNotice.txt',  # 重置密码的消息
-        6: "WXLoginNotice.txt",  # 异常登录提醒
-        7: "WXImportantNotice.txt"  # 群发重要通知
-    }
-    content = render_template('msgs/' + msg_template[kind], messages=msg)
-    print(content)
-    if msg.get("url") is None:
-        notice_url = os.getenv("SITE_URL")
-    else:
-        notice_url = msg['url']
-    msg_ids = WxPusher.send_message(content=u'' + str(content), uids=uid, content_type=1, url=notice_url)
-    print(msg_ids)
-    for msg_id in msg_ids["data"]:
-        print(msg_id,msg_id["status"])
-        if "关闭" in msg_id["status"]:
-            print("用户关闭了通知，发送邮件提醒")
-            op = OpenID.query.filter(OpenID.wx_id == msg_id["uid"]).first()
-            print(op)
-            real_name={
-                "realName":op.user.real_name
-            }
-            send_email.apply_async(args=(op.user.qq, '系统通知', 'importantNotice', real_name), countdown=randint(10, 30))
-
-    # WxPusher.send_message(content=str(msg), uids=uid,content_type=2)
 
 
 def get_search_data(pagination, pageNum, pagesize):
@@ -306,7 +233,7 @@ def get_search_data(pagination, pageNum, pagesize):
             look_count = int(bytes.decode(view_count))
         dict = {
             "id": l.id,
-            "icon": 'https://q2.qlogo.cn/headimg_dl?dst_uin={}&spec=100'.format(user.qq),
+            "icon": PostConfig.AVATER_API.replace("{}",user.qq),
             "kind": l.kind,
             "status": l.status,
             "claimantId": l.claimant_id,
@@ -350,9 +277,16 @@ def delete_posts():
             # 管理员删帖或用户自身删帖
             if l is not None and (l.user_id == current_user.id or current_user.kind > u.kind):
                 if l.images != "":
-                    l.images = l.images.replace('[', '').replace(']', '').replace(' \'', '').replace('\'', '')
+                    # l.images = l.images.replace('[', '').replace(']', '').replace(' \'', '').replace('\'', '')
                     imglist = l.images.strip().split(',')
-                    remove_imglist(imglist)
+                    # print("删除的图片",imglist)
+                    # if  isinstance(imglist,list):
+                    #     print(type(imglist),imglist)
+                    # elif isinstance(imglist,str):
+                    #     print(type(imglist),imglist)
+                    #     imglist=[imglist]
+                    #     print("图片是字符串")
+                    remove_files(imglist,0)
                 key = str(l.id) + PostConfig.POST_REDIS_PREFIX
                 # # 删除浏览量，不存在的key会被忽略
                 redis_client.delete(key)
@@ -380,16 +314,26 @@ def delete_post():
         # 管理员删帖或用户自身删帖
         if l is not None and (l.user_id == current_user.id or current_user.kind > u.kind):
             if l.images != "":
-                l.images = l.images.replace('[', '').replace(']', '').replace(' \'', '').replace('\'', '')
+                # l.images = l.images.replace('[', '').replace(']', '').replace(' \'', '').replace('\'', '')
                 imglist = l.images.strip().split(',')
-                remove_imglist(imglist)
+                # print("删除之前",imglist)
+                # if isinstance(imglist, list):
+                #     print(type(imglist), imglist)
+                #     print("图片是列表")
+                # elif isinstance(imglist, str):
+                #     print(type(imglist), imglist)
+                #     imglist = [imglist]
+                #     print("图片是字符串")
+                remove_files(imglist,0)
+            # else:
+            #     print("l.images != """,l.images,type(l.images))
             key = str(l.id) + PostConfig.POST_REDIS_PREFIX
             # # 删除浏览量，不存在的key会被忽略
             redis_client.delete(key)
-            delete_post_notice(current_user.kind, current_user.id, l.to_dict())
+            # delete_post_notice(current_user.kind, current_user.id, l.to_dict())
             db.session.delete(l)
             db.session.commit()
-            # db.session.close()
+            db.session.close()
             return restful.success(msg='删除成功')
         else:
             return restful.params_error()
@@ -406,16 +350,6 @@ def compress():
     return restful.success(msg="压缩成功")
 
 
-@celery.task
-def compress_imgs_in_freetime():
-    big_img = find_big_img()
-    if big_img:
-        tinypng(big_img)
-    else:
-        print("没有图片无需压缩")
-    return restful.success(msg="压缩成功")
-
-
 # 通过接口进行无损压缩
 @found.route('/tinypng', methods=['GET'])
 @login_required
@@ -424,35 +358,3 @@ def compress_imgs_in_freetime():
 def compress_from_api():
     compress_imgs_in_freetime()
     return restful.success(msg="压缩成功")
-
-
-@celery.task  # 删除帖子给用户发送通知
-def delete_post_notice(kind, id, l):
-    # 管理删除的和自己删除的不通知
-    if kind > 1 and l['user_id'] != id:
-        u = User.query.get_or_404(l['user_id'])
-        op = OpenID.query.filter_by(user_id=u.id).first_or_404()
-        if op is not None:
-            dict = {
-                'post_user': u.real_name,
-                'post_title': l['title'],
-                'post_content': l['about'],
-                'handle_time': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-                'qq_group': '878579883',
-                'url': os.getenv('SITE_URL')
-            }
-            print('删除帖子要发送的消息', dict)
-            print('管理员删帖发送消息')
-            uids = [op.wx_id]
-            send_message_by_pusher(msg=dict, uid=uids, kind=2)
-
-
-@celery.task
-def remove_imglist(imgs):
-    for img in imgs:
-        file = os.path.join(os.getenv("PATH_OF_UPLOAD"), img)
-        try:
-            os.remove(file)
-            os.remove(os.path.join(os.getenv("MINI_IMG_PATH"), img))
-        except Exception as e:
-            print('删除文件', str(e))

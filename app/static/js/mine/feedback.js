@@ -76,7 +76,7 @@ function deleteFeedback(id) {
         url: baseUrl + "/feedback.html/delete?id=" + id,
         method: "POST",
         //data: JSON.stringify(data),
-        success: function (res, status) {
+        success: function (res) {
             console.log(res);
                 if (res.success) {
                     showOK(res.msg);
@@ -94,19 +94,14 @@ function markFeedback(id) {
         url: baseUrl + "/feedback.html/mark?id=" + id,
         method: "POST",
         //data: JSON.stringify(data),
-        success: function (res, status) {
+        success: function (res) {
             console.log(res);
-            if (status == "success") {
                 if (res.success) {
                     showOK(res.msg);
                     getFeedbackList(app);
                 } else {
                     showAlertError(res.msg)
                 }
-            } else {
-                console.log(res);
-                showAlertError(res)
-            }
         }
     });
 }

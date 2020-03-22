@@ -21,8 +21,8 @@ from app.models.user_model import User
 from app.page import userlist
 from app.utils import restful
 from app.utils.auth_token import generate_password
+from app.utils.delete_file import remove_files
 from app.utils.mail_sender import send_email
-from app.views import found_view
 
 
 @userlist.route('/', methods=['POST', 'GET', 'OPTIONS'], strict_slashes=False)
@@ -171,6 +171,31 @@ def reset_pssword():
     return restful.success()
 
 
+def delete_img_and_report(posts, reports):
+    del_imgs = []
+    del_reports = []
+    if posts:
+        for lost in posts:
+            key = str(lost.id) + PostConfig.POST_REDIS_PREFIX
+            redis_client.delete(key)
+            print(lost.images)
+            if  lost.images != "":
+                print("判断图片类型",lost.images,type(lost.images))
+                # images =eval(lost.images)
+                # print("反序列化对象",ev,type(ev))
+                # lost.images = lost.images.replace('[', '').replace(']', '').replace(' \'', '').replace('\'', '')
+                temp_imglist = lost.images.strip().split(',')
+                del_imgs +=temp_imglist
+            else:
+                print("判断图片类型",lost.images,type(lost.images))
+        print(del_imgs,type(del_imgs))
+        remove_files(del_imgs, 0)
+    if reports:
+        for report in reports:
+            del_reports.append(report.id + ".xlsx")
+        remove_files(del_reports, 2)
+
+
 @userlist.route('/deleteAll', methods=['POST'], strict_slashes=False)
 @super_admin_required
 def delete_users():
@@ -181,21 +206,9 @@ def delete_users():
         for u in users:
             if u.kind != 3:
                 posts = u.posts
-                print(posts, type(posts))
-                del_imgs = []
-                for lost in posts:
-                    # 删除redis中的浏览量数据
-                    key = str(lost.id) + PostConfig.POST_REDIS_PREFIX
-                    redis_client.delete(key)
-                    print(lost.images)
-                    if lost.images == "":
-                        temp_imglist = []
-                    else:
-                        lost.images = lost.images.replace('[', '').replace(']', '').replace(' \'', '').replace('\'', '')
-                        temp_imglist = lost.images.strip().split(',')
-                    del_imgs += temp_imglist
-                print("删除用户的所有图片")
-                found_view.remove_imglist(del_imgs)
+                reports = u.reports
+                # 删除图片和报告
+                delete_img_and_report(posts, reports)
                 try:
                     db.session.delete(u)
                     db.session.commit()
@@ -220,26 +233,16 @@ def delete_user():
     if u and u.kind != 3:
         try:
             posts = u.posts
-            print(posts, type(posts))
-            del_imgs = []
-            for lost in posts:
-                # 删除redis中的浏览量数据
-                key = str(lost.id) + PostConfig.POST_REDIS_PREFIX
-                redis_client.delete(key)
-                print(lost.images)
-                if lost.images == "":
-                    temp_imglist = []
-                else:
-                    lost.images = lost.images.replace('[', '').replace(']', '').replace(' \'', '').replace('\'', '')
-                    temp_imglist = lost.images.strip().split(',')
-                del_imgs += temp_imglist
-            print("删除用户的所有图片")
-            found_view.remove_imglist.delay(del_imgs)
+            reports = u.reports
+            print("删除用户的所有图片和报告")
+            delete_img_and_report(posts, reports)
             db.session.delete(u)
             db.session.commit()
         except Exception as e:
             db.session.rollback()
-            return restful.params_error(success=False, msg=str(e))
+            msg=str(e)
+            print(msg)
+            return restful.params_error(success=False, msg=msg)
     else:
         if u.kind == 3:
             return restful.params_error(False, msg="超级管理员无法直接删除")

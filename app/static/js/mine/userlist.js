@@ -53,16 +53,15 @@ var app = new Vue({
                     data: JSON.stringify(data),
                     success: function (res) {
                         console.log(res);
-
-                            if (res.success) {
-                                showOK(res.msg);
-                                //数据置空
-                                app.checked = false;
-                                app.checkedList = [];
-                                getUserList(app.search, app, false);
-                            } else {
-                                showAlertError(res.msg)
-                            }
+                        if (res.success) {
+                            app.checked = false;
+                            app.checkedList = [];
+                            showOK(res.msg);
+                            //数据置空
+                            getUserList(app.search, app, false);
+                        } else {
+                            showAlertError(res.msg)
+                        }
                     }
                 });
             }, function () {

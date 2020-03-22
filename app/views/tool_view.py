@@ -20,7 +20,7 @@ from app.decorators import admin_required
 from app.page import tool
 # 通过接口进行无损压缩
 from app.utils import restful
-from app.utils.img_compress import find_big_img
+from app.utils.img_process import find_big_img
 from app.utils.tinify_tool import tinypng
 
 

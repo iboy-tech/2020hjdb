@@ -10,7 +10,7 @@ var app = new Vue({
         user: getLocal("user") ? JSON.parse(getLocal("user")) : {},
         category: getCategory() || [],
         userIcon: "https://ae01.alicdn.com/kf/H26181ae0390643b6850ad4c46341f8bcV.png",
-        api: 'https://api.uomg.com/api/qq.talk?qq=',
+        api: 'https://wpa.qq.com/msgrd?v=3&site=qq&menu=yes&uin=',
         imgPrefix: staticUrl,
         tab: [
             {//主页
@@ -47,7 +47,7 @@ var app = new Vue({
                     "keyword": "",
                     "username": (getLocal("user") ? JSON.parse(getLocal("user")) : {}).studentNum,
                     "pageNum": 0,
-                    "pageSize": 15
+                    "pageSize": 5
                 },
                 totalPage: 0,
                 total: 0,
@@ -135,9 +135,12 @@ var app = new Vue({
             } else if (index == 1) {//搜索
                 console.log(app.tab[1].list.length)
             } else if (index == 2) {//我发布的
-                console.log(app.tab[2].list.length)
-                console.log(this.tab[2].search.username);
-                pageLostFound(this.tab[2].search, this.tab[2], true);
+                app.tab[2].search.pageNum=0;
+                // saveSession("pageNum",app.tab[2].search.pageNum);
+                app.nextPage(2);
+                // console.log(app.tab[2].list.length)
+                // console.log(this.tab[2].search.username);
+                // pageLostFound(this.tab[2].search, this.tab[2], true);
             } else if (index == 3) {//我的消息
                 getMessages(this);
             } else if (index == 4) {
@@ -286,6 +289,7 @@ var app = new Vue({
             // 记住当前数据
             saveSession("pageNum",app.tab[app.tabIndex].search.pageNum);
             saveSession("data", app.tab[app.tabIndex].list);
+            saveSession("toIndex",false);
             if (app.tabIndex == 0) {
                 saveSession("category", app.tab[0].search.category);
                 saveSession("kind", app.tab[0].search.kind)
@@ -319,7 +323,7 @@ var app = new Vue({
         setPassword() {
             app.showMenu = false;
             layer.open({
-                btn: ['确定'],
+                btn: ['确定','取消'],
                 type: 1,
                 area: ['300px', 'auto'],
                 //shade: true,
