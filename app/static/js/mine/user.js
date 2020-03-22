@@ -1,8 +1,5 @@
 var app = new Vue({
     el: "#app",
-    created() {
-        console.log("appcreated()方法");
-    },
     data: {
         showMenu: false,
         tabIndex: 0,
@@ -70,8 +67,8 @@ var app = new Vue({
         notice: [
             {
                 id: "1",
-                title: "使用须知（必看）",
-                content: "本程序使用时会采集部分个人信息，所私密信息都加密处理，请放心使用!",
+                title: "上线啦",
+                content: "欢迎使用三峡大学失物招领平台",
                 time: "2020-01-23 18:45",
                 fixTop: 1,
             }
@@ -107,31 +104,14 @@ var app = new Vue({
             }
             app.tabIndex = index;
             saveSession("tabIndex", index);
-            console.log("删除缓存");
             deleteSession("data");
-            console.log("搜索状态置空");
             saveSession("isSearched", false);
-            console.log("--------------------------------------------");
-            console.log("我是 changeTab(index)");
-            console.log("getSession", getSession("scroll"));
-            console.log("getLocal(isBack)", getLocal("isBack"));
-            console.log("getSession(isSearched)", getSession("isSearched"));
-            console.log("getSession(tabIndex)", getSession("tabIndex"));
-            console.log("getSession(data)", getSession("data"));
-            console.log("--------------------------------------------");
             if (index == 0) {//主页
-                console.log(app.tab[0].list.length)
-                app.nextPage(0,true);
-                // pageLostFound(app.tab[0].search, app.tab[0], true);
+                app.nextPage(0,false);
             } else if (index == 1) {//搜索
-                console.log(app.tab[1].list.length)
             } else if (index == 2) {//我发布的
                 app.tab[2].search.pageNum=0;
-                // saveSession("pageNum",app.tab[2].search.pageNum);
                 app.nextPage(2,false);
-                // console.log(app.tab[2].list.length)
-                // console.log(this.tab[2].search.username);
-                // pageLostFound(this.tab[2].search, this.tab[2], true);
             } else if (index == 3) {//我的消息
                 getMessages(this);
             } else if (index == 4) {
@@ -157,7 +137,6 @@ var app = new Vue({
             this.tab[0].search.kind = index;
             deleteSession("data");
             app.nextPage(0,false);
-            // pageLostFound(this.tab[0].search, this.tab[0], false);
             console.log(this.tab[0].search, this.tab[0]);
         },
         changeTab0Category(index) {
@@ -170,7 +149,6 @@ var app = new Vue({
                 this.tab[0].search.category = this.category[index].name;
             }
             app.nextPage(0,false);
-            // pageLostFound(this.tab[0].search, this.tab[0], false);
             console.log(this.tab[0].search, this.tab[0]);
         },
         nextPage(tabIndex,append) {
@@ -178,7 +156,6 @@ var app = new Vue({
             if (tabIndex == 0 || tabIndex == 2) {//这有主页，和我的需要无限滚动
                 pageLostFound(app.tab[tabIndex].search, app.tab[tabIndex], append);
                 app.tab[tabIndex].search.pageNum++;
-                console.log("当前的页数app.tab[tabIndex].search.pageNum",app.tab[tabIndex].search.pageNum);
             }
         },
 
@@ -263,7 +240,6 @@ var app = new Vue({
                 });
             } else {
                 pubLostFound(data);
-                console.log("删除缓存");
                 deleteSession("data");
                 $("button[type='submit']").attr('disabled', 'disabled');
             }
@@ -285,6 +261,7 @@ var app = new Vue({
             saveSession("pageNum",app.tab[app.tabIndex].search.pageNum);
             saveSession("data", app.tab[app.tabIndex].list);
             saveSession("toIndex",false);
+            saveSession("notice",app.notice);
             if (app.tabIndex == 0) {
                 saveSession("category", app.tab[0].search.category);
                 saveSession("kind", app.tab[0].search.kind)
@@ -372,7 +349,7 @@ var app = new Vue({
         },
         showAbout() {
             app.showMenu = false;
-            showAlert("CTGU失物招领系统", "关于");
+            showAlert("三峡大学失物招领中心", "关于");
         },
         titleAlert(title) {
             console.log(title);
@@ -382,7 +359,6 @@ var app = new Vue({
     mounted() {
         // console.log("我是监控的mounted", app.tabIndex);
         var io = new IntersectionObserver((entries) => {
-            console.log("我是监控的mounted", app.tabIndex);
             if (app.tabIndex == 1) {
                 let mysearch = getSession("isSearched");
                 if (mysearch != "false") {
@@ -391,30 +367,10 @@ var app = new Vue({
                     // 搜索页面没有滚动加载
                 }
             } else if (app.tabIndex == 0 || app.tabIndex == 2) {
-                 console.log("需要请求下一页", getSession("tabIndex"));
                  app.nextPage(app.tabIndex,true);
             }
-            console.log("--------------------------------------------");
-            console.log("我是mouted()");
-            console.log("getSession", getSession("scroll"));
-            console.log("getLocal(isBack)", getLocal("isBack"));
-            console.log("getSession(isSearched)", getSession("isSearched"));
-            console.log("getSession(tabIndex)", getSession("tabIndex"));
-            console.log("getSession(data)", getSession("data"));
-            console.log("--------------------------------------------");
-            // 存储数据，还没去详情页
-            if (getLocal("isBack") == null) {
-                console.log($(window).scrollTop());
-                // var scroll_top=$(window).scrollTop()
-                mylist = JSON.parse(getSession("data"))
-                console.log(mylist, typeof (mylist));
-            }
         });
-        // this.$nextTick(() => {
             io.observe(document.getElementById('flag'));
-            /* code */
-        // });
-
     },
 
 });
@@ -480,8 +436,8 @@ function setPassword(data) {
         url: baseUrl + "/user.html/setPassword",
         data: JSON.stringify(data),
         method: "POST",
-        success: function (res, status) {
-            console.log(res);
+        success: function (res) {
+
             if (res.success) {
                 layer.closeAll();
                 showOK();
@@ -518,11 +474,7 @@ function deletePub(id) {
             console.log(res);
             if (res.success) {
                 showOK(res.msg);
-                // saveSession("category", "");
-                // saveSession("kind", -1);
                 saveSession("tabIndex", 2);
-                // saveLocal("isBack",false);
-                // location.reload();
                 pageLostFound(app.tab[2].search, app.tab[2], false);
             } else {
                 showAlertError(res.msg)
@@ -537,20 +489,12 @@ function getNoticeList(app) {
         url: baseUrl + "/notice.html/getall",
         //data: JSON.stringify(data),
         method: "POST",
-        success: function (res, status) {
-            // showAlertError(res)
-            // alert(status)
-            console.log(res);
-            if (status == "success") {
-                if (res.success) {
+        success: function (res) {
+            if (res.success) {
                     app.notice = res.data.list;
                 } else {
                     showAlertError(res.msg)
                 }
-            } else {
-                console.log(res);
-                showAlertError(res)
-            }
         }
     });
 }
@@ -653,7 +597,7 @@ function pubLostFound(data) {
         url: baseUrl + "/user.html/pub",
         data: JSON.stringify(data),
         method: "POST",
-        success: function (res, status) {
+        success: function (res) {
             console.log(res);
                 if (res.success) {
                     showOK(res.msg);
@@ -680,14 +624,14 @@ function pubLostFound(data) {
         url: baseUrl + "/found.html/pub",
         data: JSON.stringify(data),
         method: "POST",
-        success: function (res, status) {
+        success: function (res) {
             console.log(res);
-            if (status == "success") {
                 if (res.success) {
                     showOK(res.msg);
-                    saveSession("category", "");
-                    saveSession("kind", -1);
-                    saveSession("tabIndex", 0);
+                    app.tab[0].list=[];
+                    app.tab[0].search.pageNum=0;
+                    app.tab[0].search.category="";
+                    app.tab[0].search.kind=-1
                     app.tab4 = {
                         applyKind: 0,
                         categoryIndex: -1,
@@ -697,14 +641,11 @@ function pubLostFound(data) {
                         location: null,
                         images: [],//srcList
                     };
-                    location.reload();
+                    app.changeTab(0);
                 } else {
                     showAlertError(res.msg)
                 }
-            } else {
-                console.log(res);
-                showAlertError(res)
-            }
+
         }
     });
 }
@@ -760,7 +701,12 @@ function getCategory() {
 }
 
 $(function () {
-    getNoticeList(app);
+    if(getSession("notice")!=null){
+        app.notice=JSON.parse(getSession("notice"));
+    }
+    else {
+        getNoticeList(app);
+    }
     //从详情页返回
     if (getLocal("isBack") == "true") {
         app.tabIndex = JSON.parse(getSession("tabIndex"));
@@ -783,28 +729,11 @@ $(function () {
         $("html,body").scrollTop(JSON.parse(getSession("scroll")))
         deleteLocal("isBack");
         deleteSession("data");
-        // app.notice=JSON.parse(getSession("notice"));
     } else {
-        if ((app.tabIndex == 0 || app.tabIndex == 2 )) {
-            console.log("我是正常加载，不进入详情",getLocal("isBack"));
-            // app.nextPage(app.tabIndex);
-            // pageLostFound(app.tab[app.tabIndex].search, app.tab[app.tabIndex], true);
-        }
-        else if(app.tabIndex == 3){
+        if(app.tabIndex == 3){
              getMessages(app);
         }
-        // saveSession("notice",getNoticeList(app)["data"]["list"]);
     }
-    console.log("--------------------------------------------");
-    console.log("我一定是最先加载的");
-    console.log("getSession", getSession("scroll"));
-    console.log("getLocal(isBack)", getLocal("isBack"));
-    console.log("getSession(isSearched)", getSession("isSearched"));
-    console.log("getSession(tabIndex)", getSession("tabIndex"));
-    console.log("getSession(data)", getSession("data"));
-    console.log("getSession(category)", getSession("category"));
-    console.log("getSession(kind)", getSession("kind"));
-    console.log("--------------------------------------------");
     let sessionIndex = getSession("tabIndex");
     if (sessionIndex != null) {
         app.tabIndex = JSON.parse(sessionIndex);
