@@ -75,7 +75,7 @@ def import_keys():
         with open("app/static/temp/tiny_keys.txt") as f:
             for api_key in f:
                 api_key = api_key[:-1]  # 去掉换行符
-                print(api_key)
+                # print(api_key)
                 key = PostConfig.TINYPNG_REDIS_KEY
                 mapping = {api_key: 500}
                 res = redis_client.zadd(key, mapping)
@@ -120,7 +120,7 @@ def getall():
                 'count': int(k[1])
             }
             list.append(dict)
-            print(keys, type(keys), type(keys[0]), bytes.decode(keys[0][0]))
+            # print(keys, type(keys), type(keys[0]), bytes.decode(keys[0][0]))
     data = {
         'list': list
     }

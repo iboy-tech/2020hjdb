@@ -63,8 +63,6 @@ def get_all():
             # 不是搜索页面的请求
             if req.get("isSearch") is None:
                 return restful.params_error()
-
-    print('我是前端获取的分页数据', req)
     # print('get_users收到请求')
     keyword = req['keyword']
     if req['kind'] == -1 and req['category'] == '' and req['username'] == '' and keyword == '':

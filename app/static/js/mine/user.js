@@ -89,15 +89,6 @@ var app = new Vue({
         }
     },
     methods: {
-        share() {
-            //捕获页
-            layer.open({
-                type: 1,
-                //shade: true,
-                title: "<h4>微信扫一扫分享</h4>", //不显示标题
-                content: $('#shareDiv') //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
-            });
-        },
         showAllNotice(b) {
             this.noticeAll = b;
         },
@@ -130,14 +121,14 @@ var app = new Vue({
             console.log("--------------------------------------------");
             if (index == 0) {//主页
                 console.log(app.tab[0].list.length)
-                app.nextPage(0);
+                app.nextPage(0,true);
                 // pageLostFound(app.tab[0].search, app.tab[0], true);
             } else if (index == 1) {//搜索
                 console.log(app.tab[1].list.length)
             } else if (index == 2) {//我发布的
                 app.tab[2].search.pageNum=0;
                 // saveSession("pageNum",app.tab[2].search.pageNum);
-                app.nextPage(2);
+                app.nextPage(2,false);
                 // console.log(app.tab[2].list.length)
                 // console.log(this.tab[2].search.username);
                 // pageLostFound(this.tab[2].search, this.tab[2], true);
@@ -162,28 +153,30 @@ var app = new Vue({
         },
         changeTab0Kind(index) {
             this.tab[0].search.pageNum = 0;
-            // this.tab[0].list = [];
+            this.tab[0].list = [];
             this.tab[0].search.kind = index;
-            app.nextPage(0);
+            deleteSession("data");
+            app.nextPage(0,false);
             // pageLostFound(this.tab[0].search, this.tab[0], false);
             console.log(this.tab[0].search, this.tab[0]);
         },
         changeTab0Category(index) {
             this.tab[0].search.pageNum = 0;
-            // this.tab[0].list = [];
+            deleteSession("data");
+            this.tab[0].list = [];
             if (index < 0) {
                 this.tab[0].search.category = "";
             } else {
                 this.tab[0].search.category = this.category[index].name;
             }
-            app.nextPage(0);
+            app.nextPage(0,false);
             // pageLostFound(this.tab[0].search, this.tab[0], false);
             console.log(this.tab[0].search, this.tab[0]);
         },
-        nextPage(tabIndex) {
+        nextPage(tabIndex,append) {
             console.log("当前tabIndex",tabIndex)
             if (tabIndex == 0 || tabIndex == 2) {//这有主页，和我的需要无限滚动
-                pageLostFound(app.tab[tabIndex].search, app.tab[tabIndex], true);
+                pageLostFound(app.tab[tabIndex].search, app.tab[tabIndex], append);
                 app.tab[tabIndex].search.pageNum++;
                 console.log("当前的页数app.tab[tabIndex].search.pageNum",app.tab[tabIndex].search.pageNum);
             }
@@ -399,7 +392,7 @@ var app = new Vue({
                 }
             } else if (app.tabIndex == 0 || app.tabIndex == 2) {
                  console.log("需要请求下一页", getSession("tabIndex"));
-                 app.nextPage(app.tabIndex);
+                 app.nextPage(app.tabIndex,true);
             }
             console.log("--------------------------------------------");
             console.log("我是mouted()");
@@ -726,12 +719,10 @@ function pageLostFound(data, result, append) {
         success: function (res) {
             console.log(res);
                 if (res.success) {
-
                     // result.search.pageNum = res.data.page.pageNum;
                     result.search.pageSize = res.data.page.pageSize;
                     result.totalPage = res.data.page.totalPage;
                     result.total = res.data.page.total;
-
                     if (append) {
                         for (let v in res.data.page.list) {
                             //console.log(v);
