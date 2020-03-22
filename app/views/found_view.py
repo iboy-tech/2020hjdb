@@ -328,7 +328,7 @@ def delete_post():
             key = str(l.id) + PostConfig.POST_REDIS_PREFIX
             # # 删除浏览量，不存在的key会被忽略
             redis_client.delete(key)
-            # delete_post_notice(current_user.kind, current_user.id, l.to_dict())
+            delete_post_notice(current_user.kind, current_user.id, l.to_dict())
             db.session.delete(l)
             db.session.commit()
             db.session.close()

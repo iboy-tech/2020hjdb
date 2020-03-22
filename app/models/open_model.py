@@ -23,7 +23,6 @@ class OpenID(db.Model):
     # 一对一外键关系使用
     user_id = db.Column(db.Integer, db.ForeignKey('t_user.id', ondelete='CASCADE'), unique=True)
     user = relationship("User", back_populates="wx_open")
-
     create_time = db.Column(db.DateTime, default=datetime.now, nullable=False)
 
     def __repr__(self):
