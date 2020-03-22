@@ -10,8 +10,8 @@ class Notice(db.Model):
     __tablename__ = 't_notice'
     __table_args__ = {'mysql_charset': 'utf8mb4','mysql_collate': 'utf8mb4_unicode_ci'}
     id = db.Column(db.Integer, primary_key=True, info='主键')
-    title = db.Column(db.String(128), nullable=False, info='标题')
-    content = db.Column(db.String(1024), nullable=False, info='内容')
+    title = db.Column(db.String(40), nullable=False, info='标题')
+    content = db.Column(db.String(200), nullable=False, info='内容')
     fix_top = db.Column(db.Integer, nullable=False, server_default=text('0'), info='是否置顶')
     create_time = db.Column(db.DateTime, default=datetime.now, nullable=False, info='创建时间')
 

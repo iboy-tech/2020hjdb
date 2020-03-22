@@ -252,7 +252,7 @@
 
     <div class="panel-body" id="replyDiv" style="display: none;">
         <div class="com-mail" style=" width: 50vw;">
-            <textarea rows="6" v-model="reply.content" placeholder="说明" maxlength="1024" class="form-control1 control2"></textarea>
+            <textarea rows="6" v-model="reply.content"  minlength="300"  placeholder="说明(最多300字)" maxlength="1024" class="form-control1 control2"></textarea>
         </div>
     </div>
     <!--//footer-->

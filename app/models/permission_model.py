@@ -14,5 +14,5 @@ from app import db
 class Permission(db.Model):
     __tablename__ = 't_permission'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(30), nullable=False, unique=True)
+    name = db.Column(db.String(15), nullable=False, unique=True)
     roles = db.relationship('Role', secondary='roles_permissions', back_populates='permissions')

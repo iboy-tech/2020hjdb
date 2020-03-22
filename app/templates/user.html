@@ -693,7 +693,7 @@
 
                                             <div class="field">
                                                 <label>标题：</label>
-                                                <input type="text" v-model="tab4.title" placeholder="eg:校园卡掉了">
+                                                <input type="text" v-model="tab4.title" placeholder="校园卡掉了(最多40字)" maxlength="40">
                                             </div>
                                             <div class="field">
                                                 <label>图片：</label>
@@ -721,14 +721,14 @@
 
                                             <div class=" field">
                                                 <label class="inline">详情：</label>
-                                                <textarea class="field" v-model="tab4.about" rows="5"
-                                                          placeholder="eg:校园卡掉了，学号：2018100000,姓名:小招同学
-(如有物品有学号或姓名，请务必填写)"></textarea>
+                                                <textarea class="field" maxlength="350" v-model="tab4.about" rows="5"
+                                                          placeholder="校园卡掉了，学号：2018100000,姓名:小招同学
+(如有物品有学号或姓名，请务必填写)(最多350字)"></textarea>
                                             </div>
 
                                             <div class="field">
                                                 <label>地点：</label>
-                                                <input type="text" v-model="tab4.location" placeholder="选填">
+                                                <input type="text" maxlength="25" v-model="tab4.location" placeholder="选填">
                                             </div>
 
                                             <div class="field" v-if="tab4.applyKind==1">
@@ -785,11 +785,11 @@
     <div class="editor-wrapper" style="display: none; padding: 10px;" id="editorDiv">
         <div class="ui form" style="width: 100%; height: 100%;">
             <div class="field">
-                <input v-model="feedback.subject" placeholder="主题" maxlength="256"
+                <input v-model="feedback.subject" placeholder="主题（最多40字）" maxlength="50"
                        class="tweet-textarea disabled-resize" autofocus/>
             </div>
             <div class="field">
-                <textarea v-model="feedback.content" rows="5" placeholder="详情" maxlength="1024"
+                <textarea v-model="feedback.content" rows="5" placeholder="详情（最多300字）" maxlength="300"
                           class="tweet-textarea disabled-resize"></textarea>
             </div>
         </div>
@@ -813,10 +813,8 @@
         </div>
     </div>
 
-
-
 </div>
-<script src="{{ cdnUrl }}/static/public/layer.js"></script>
+<script src="{{ cdnUrl }}/static/js/layer.js"></script>
 <script src="../static/js/mine/common.js"></script>
 <script src="{{ cdnUrl }}/static/public/semantic.min.js"></script>
 <script src="../static/js/mine/user.js"></script>
