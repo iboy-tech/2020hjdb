@@ -164,7 +164,8 @@ var app = new Vue({
             this.tab[0].search.pageNum = 0;
             // this.tab[0].list = [];
             this.tab[0].search.kind = index;
-            pageLostFound(this.tab[0].search, this.tab[0], false);
+            app.nextPage(0);
+            // pageLostFound(this.tab[0].search, this.tab[0], false);
             console.log(this.tab[0].search, this.tab[0]);
         },
         changeTab0Category(index) {
@@ -175,7 +176,8 @@ var app = new Vue({
             } else {
                 this.tab[0].search.category = this.category[index].name;
             }
-            pageLostFound(this.tab[0].search, this.tab[0], false);
+            app.nextPage(0);
+            // pageLostFound(this.tab[0].search, this.tab[0], false);
             console.log(this.tab[0].search, this.tab[0]);
         },
         nextPage(tabIndex) {

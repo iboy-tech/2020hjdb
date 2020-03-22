@@ -2,7 +2,6 @@ var app = new Vue({
     el: "#app",
     data: {
         imgPrefix: staticUrl,
-        schoolIcon: './go/icon-school.png',
         user: getLocal("user") ? JSON.parse(getLocal("user")) : {},
         result: {
             search: {//tab0
