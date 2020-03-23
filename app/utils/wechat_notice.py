@@ -31,7 +31,7 @@ def delete_post_notice(kind, id, l):
                 'post_user': u.real_name,
                 'post_title': l['title'],
                 'post_content': l['about'],
-                'handle_time': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+                'handle_time': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
                 'qq_group': '878579883',
                 'url': os.getenv('SITE_URL')
             }

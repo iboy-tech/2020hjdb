@@ -10,3 +10,4 @@ app/static/upload/*
 app/static/thumb/*
 *.log
 *.txt
+tests/*

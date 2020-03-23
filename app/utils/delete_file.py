@@ -30,4 +30,4 @@ def remove_files(filenames, kind):
                 else:
                     os.remove(os.path.join(file_path.get(2), file))
             except Exception as e:
-                print('删除文件', str(e))
+                print('文件不存在', str(e))

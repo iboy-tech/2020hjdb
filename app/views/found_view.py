@@ -275,15 +275,7 @@ def delete_posts():
             # 管理员删帖或用户自身删帖
             if l is not None and (l.user_id == current_user.id or current_user.kind > u.kind):
                 if l.images != "":
-                    # l.images = l.images.replace('[', '').replace(']', '').replace(' \'', '').replace('\'', '')
                     imglist = l.images.strip().split(',')
-                    # print("删除的图片",imglist)
-                    # if  isinstance(imglist,list):
-                    #     print(type(imglist),imglist)
-                    # elif isinstance(imglist,str):
-                    #     print(type(imglist),imglist)
-                    #     imglist=[imglist]
-                    #     print("图片是字符串")
                     remove_files(imglist,0)
                 key = str(l.id) + PostConfig.POST_REDIS_PREFIX
                 # # 删除浏览量，不存在的key会被忽略
@@ -308,23 +300,14 @@ def delete_post():
         return restful.params_error()
     else:
         l = LostFound.query.get_or_404(int(req))
+        print("帖子：",l)
         u = User.query.get_or_404(l.user_id)
+        print("用户：",u)
         # 管理员删帖或用户自身删帖
         if l is not None and (l.user_id == current_user.id or current_user.kind > u.kind):
             if l.images != "":
-                # l.images = l.images.replace('[', '').replace(']', '').replace(' \'', '').replace('\'', '')
                 imglist = l.images.strip().split(',')
-                # print("删除之前",imglist)
-                # if isinstance(imglist, list):
-                #     print(type(imglist), imglist)
-                #     print("图片是列表")
-                # elif isinstance(imglist, str):
-                #     print(type(imglist), imglist)
-                #     imglist = [imglist]
-                #     print("图片是字符串")
                 remove_files(imglist,0)
-            # else:
-            #     print("l.images != """,l.images,type(l.images))
             key = str(l.id) + PostConfig.POST_REDIS_PREFIX
             # # 删除浏览量，不存在的key会被忽略
             redis_client.delete(key)

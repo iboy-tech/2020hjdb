@@ -106,7 +106,12 @@ var app = new Vue({
             saveSession("tabIndex", index);
             deleteSession("data");
             saveSession("isSearched", false);
+            saveSession("pageNum",0);
             if (index == 0) {//主页
+                app.tab[0].list=[];
+                app.tab[0].search.pageNum=0;
+                app.tab[0].search.category="";
+                app.tab[0].search.kind=-1
                 app.nextPage(0,false);
             } else if (index == 1) {//搜索
             } else if (index == 2) {//我发布的
@@ -276,7 +281,7 @@ var app = new Vue({
             layer.open({
                 btn: ['确定', '取消'],
                 type: 1,
-                area: ['50vw', 'auto'],
+                area: ['70%', 'auto'],
                 //shade: true,
                 title: "反馈", //不显示标题
                 content: $('#editorDiv') //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响

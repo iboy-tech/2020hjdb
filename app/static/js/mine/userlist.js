@@ -160,14 +160,11 @@ function getUserList(data, app, append) {
         method: "POST",
         success: function (res, status) {
             console.log(res);
-            // alert('我是userlist'+res)
-            if (status == "success") {
                 if (res.success) {
                     app.search.pageNum = res.data.page.pageNum;
                     app.search.pageSize = res.data.page.pageSize;
                     app.result.totalPage = res.data.page.totalPage;
                     app.result.total = res.data.page.total;
-
                     if (append) {
                         for (let v in res.data.page.list) {
                             //console.log(v);
@@ -176,13 +173,7 @@ function getUserList(data, app, append) {
                     } else {
                         app.result.list = res.data.page.list;
                     }
-                } else {
-                    showAlertError(res.msg)
                 }
-            } else {
-                console.log(res);
-                showAlertError(res)
-            }
         }
     });
 }
@@ -264,7 +255,7 @@ function freezeUser(userId) {
     });
 }
 
-//冻结用户
+//删除用户
 function deleteUser(userId) {
     $.ajax({
         url: baseUrl + "/userlist.html/delete?userId=" + userId,
