@@ -49,9 +49,26 @@ def check_feedback(func):
             if req["subject"].isspace() or req['content'].isspace():  # 全部是空格
                 return restful.params_error(msg="请认真填写反馈信息")
         except:
-            return  restful.params_error()
+            return restful.params_error()
         return func(*args, **kwargs)
 
+    return decorated_view
+
+
+# 检查学号格式
+def check_username(func):
+    @wraps(func)
+    def decorated_view(*args, **kwargs):
+        req = request.json
+        try:
+            username = req['username']
+            if not username.isnumeric():
+                return restful.params_error(msg="学号格式错误")
+            else:
+                return func(*args, **kwargs)
+        except Exception as e:
+            print(str(e))
+            return restful.params_error()
     return decorated_view
 
 
@@ -61,9 +78,6 @@ def check_qq(func):
     def decorated_view(*args, **kwargs):
         req = request.json
         try:
-            username=req['username']
-            if not username.isnumeric():
-                return restful.params_error(msg="学号格式错误")
             qq = req['qq']
             # 正则表达式
             pattern = "^[1-9]\\d{4,10}$"

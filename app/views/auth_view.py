@@ -26,7 +26,7 @@ from app.models.user_model import User
 from app.page import auth
 from app.utils import restful
 from app.utils.auth_token import generate_token, validate_token
-from app.utils.check_data import check_qq
+from app.utils.check_data import check_qq, check_username
 from app.utils.mail_sender import send_email
 from app.views.found_view import send_message_by_pusher
 
@@ -57,6 +57,7 @@ def index():
     data = request.json
     print('user页面收到请求', data)
     return render_template('user.html')  # 所有参数都要
+
 
 def login_user_longtime(user):
     session.permanent = True
@@ -214,6 +215,7 @@ def logout():
 
 @auth.route('/recognize', methods=['POST', 'OPTIONS'])
 @check_qq
+@check_username
 @cross_origin()
 def recognize():
     data = request.json
