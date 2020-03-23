@@ -61,6 +61,9 @@ def check_qq(func):
     def decorated_view(*args, **kwargs):
         req = request.json
         try:
+            username=req['username']
+            if not username.isnumeric():
+                return restful.params_error(msg="学号格式错误")
             qq = req['qq']
             # 正则表达式
             pattern = "^[1-9]\\d{4,10}$"

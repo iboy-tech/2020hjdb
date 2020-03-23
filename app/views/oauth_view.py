@@ -50,6 +50,7 @@ def index():
         wx_open_id = data['uid']
         user_id = data['extra']
         # print('用户的ID', user_id,type(user_id))
+        # 如果是数字说明是初始扫码绑定
         if user_id.isnumeric():
             op = OpenID(user_id=user_id, wx_id=wx_open_id)
             db.session.add(op)
