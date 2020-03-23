@@ -39,8 +39,8 @@ class User(db.Model, UserMixin):
     status = db.Column(db.Integer, nullable=False, server_default=text('1'), info='用户状态01')
     create_time = db.Column(db.DateTime, default=datetime.now, info='时间')
     last_login = db.Column(db.DateTime, default=datetime.now, info='最后登录时间')
-    # 一对一关系
-    wx_open = relationship("OpenID", back_populates="user",cascade='all, delete-orphan')
+    # 一对一关系要 在relationship里面lazy变量 uselist=False
+    wx_open = relationship("OpenID", back_populates="user", uselist=False,cascade='all, delete-orphan')
     # 一对多关系删除
     posts = db.relationship('LostFound', backref='post_user', order_by=desc('create_time'),cascade='all, delete-orphan', lazy='dynamic',
                             passive_deletes=True)
