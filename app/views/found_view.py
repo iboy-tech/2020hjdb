@@ -185,10 +185,6 @@ def pub():
     if info != '':
         lost_users = User.query.filter(or_(User.username == info, User.real_name == info))
         if lost_users:
-            print('失主没有注册')
-            print('可能的失主', lost_users)
-            print('有人捡到您的东西了')
-            print('微信公众号和邮件通知失主')
             for u in lost_users:
                 print(u)
                 dict = {

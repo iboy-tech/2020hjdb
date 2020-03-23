@@ -26,7 +26,7 @@ def index():
     return render_template('category.html')
 
 
-@category.route('/getall', methods=['GET', 'POST', 'OPTIONS'], strict_slashes=False)
+@category.route('/getall', methods=['POST', 'OPTIONS'], strict_slashes=False)
 @login_required
 def get_all():
     # print('category页面收到请求', data)

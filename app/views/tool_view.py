@@ -29,6 +29,9 @@ from app.utils.tinify_tool import tinypng
 @admin_required
 @cross_origin()
 def index():
+    # mykey = redis_client.keys(pattern='*post*')
+    # print(mykey, type(mykey))
+    # print(redis_client.get(mykey))
     return render_template('tool.html')
 
 
@@ -37,9 +40,9 @@ def index():
 @admin_required
 @cross_origin()
 def add():
-    req = request.args.get('key');
+    req = request.args.get('key')
     print(req)
-    if not re.match(r"^[a-z0-9A-Z]+$", req):
+    if not re.match(r"^[a-z0-9A-Z]+$",req):
         return restful.success(False, msg="秘钥格式错误")
     key = PostConfig.TINYPNG_REDIS_KEY
     mapping = {req: 500}
@@ -70,7 +73,7 @@ def delete():
 @admin_required
 @cross_origin()
 def import_keys():
-    cnt=0
+    cnt = 0
     try:
         with open("app/static/temp/tiny_keys.txt") as f:
             for api_key in f:
@@ -81,11 +84,11 @@ def import_keys():
                 res = redis_client.zadd(key, mapping)
                 print("插入的结果", res)
                 if res is not 0:
-                    cnt=cnt+1
+                    cnt = cnt + 1
         f.close()
     except Exception as e:
-        return restful.success(False,msg="请把秘钥文件(tiny_keys.txt)放在app/static/temp/目录下")
-    return restful.success(msg="恭喜，成功导入"+str(cnt)+"个秘钥")
+        return restful.success(False, msg="请把秘钥文件(tiny_keys.txt)放在app/static/temp/目录下")
+    return restful.success(msg="恭喜，成功导入" + str(cnt) + "个秘钥")
 
 
 @tool.route('/compress', methods=['GET', 'POST'])
@@ -107,7 +110,7 @@ def compress():
 @admin_required
 @cross_origin()
 def getall():
-    req = request.args.get('key');
+    req = request.args.get('key')
     print(req)
     key = PostConfig.TINYPNG_REDIS_KEY
     keys = redis_client.zrange(key, 0, -1, desc=True, withscores=True)

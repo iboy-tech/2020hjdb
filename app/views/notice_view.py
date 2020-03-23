@@ -33,7 +33,7 @@ def index():
     return render_template('notice.html')
 
 
-@notice.route('/getall', methods=['GET', 'POST', 'OPTIONS'], strict_slashes=False)
+@notice.route('/getall', methods=['POST', 'OPTIONS'], strict_slashes=False)
 @login_required
 def get_all():
     # notices=Notice.query.limit(10).order_by(Notice.create_time.desc()).all()

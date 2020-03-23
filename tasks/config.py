@@ -46,6 +46,6 @@ task_queues = (
 task_routes= {
     "app.utils.mail_sender.send_mail": {'queue': 'send_mail', 'routing_key': 'send_mail'},
     "app.utils.tinify_tool.tinypng": {'queue': 'img_compress', 'routing_key': 'img_compress'},
-    'app.views.found_view.send_message_by_pusher': {'queue': 'send_wechat_msg', 'routing_key': 'send_wechat_msg'},
+    'app.utils.wechat_notice.send_message_by_pusher': {'queue': 'send_wechat_msg', 'routing_key': 'send_wechat_msg'},
     '*': {'queue': 'default', 'routing_key': 'default'},
 }

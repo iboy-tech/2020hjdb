@@ -14,9 +14,7 @@ import base64
 import uuid
 from io import BytesIO
 
-from app import redis_client
 from app.config import PostConfig
-from app.utils import restful
 from app.utils.tinify_tool import tinypng
 from tasks import celery
 

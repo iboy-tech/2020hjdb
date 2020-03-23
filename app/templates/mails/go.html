@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title>消息提醒</title>
+        <title>请等待...</title>
         <link href="../static/css/404.css" rel="stylesheet" type="text/css" />
         <script src="../static/js/jquery-1.7.2.min.js"></script>
         <script type="text/javascript">
@@ -46,6 +46,12 @@
                 background-size: 50px 50px;
                 font-size: 20px !important;
             }
+            #error{
+                background:url(https://ae01.alicdn.com/kf/H5caff2862d0d44098377454129389450L.png) no-repeat left center;
+                text-indent: 50px;
+                background-size: 50px 50px;
+                font-size: 20px !important;
+            }
         </style>
     </head>
     {% autoescape false %}
@@ -60,7 +66,7 @@
                 <div class="in">
                     <div class="textThis">
                         {% if messages.success==False %}
-                        <h2 >{{ messages.msg }}</h2>
+                        <h2 id="error" >{{ messages.msg }}</h2>
                         {% else %}
                         <h2 id="success"style="color: #61cc52;">{{ messages.msg }}</h2>
                         {% endif %}

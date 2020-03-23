@@ -72,7 +72,7 @@ def login_user_longtime(user):
     print('更新用户登陆时间')
 
 
-def get_login_info(user):
+def get_login_info(user, kind):
     ip = request.remote_addr
     print("我是转发的ip", ip)
     try:
@@ -93,8 +93,14 @@ def get_login_info(user):
         "time": datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
         "is_admin": user.kind > 1,
     }
-    send_message_by_pusher(info, [user.wx_open.wx_id], 6)
-    print(info)
+    if kind == 0:  # 登录异常检测，需要发送信息
+        send_message_by_pusher(info, [user.wx_open.wx_id], 6)
+        print(info)
+    else:
+        return info
+
+
+
 
 
 @auth.route('/login', methods=['GET', 'POST', 'OPTIONS'])
@@ -183,14 +189,14 @@ def login():
                     if user.kind == 1:
                         if left_times == 0:
                             # 只在刚好达到阈值的时候提醒
-                            get_login_info(user)
+                            get_login_info(user, 0)
                             return restful.success(success=False, msg="您的账户已被冻结，请1小时后重试")
                         else:
                             return restful.success(success=False, msg="用户名或密码错误,您还能尝试 %s 次" % str(left_times))
                     else:
                         if cnt == LoginConfig.LOGIN_ERROR_MAX_TIMES:
                             # 只在刚好达到阈值的时候提醒
-                            get_login_info(user)
+                            get_login_info(user, 0)
                         return restful.success(success=False, msg="用户名或密码错误")
                 else:
                     redis_client.incr(key)  # 把数据存入redis

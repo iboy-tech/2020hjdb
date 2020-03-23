@@ -8,15 +8,18 @@
 @Description : 构造文件
 @Software: PyCharm
 """
+import json
 import logging
 import os
+import uuid
 from logging.handlers import RotatingFileHandler, SMTPHandler
 
 import click
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, url_for
+from flask_login import current_user
 from flask_wtf.csrf import CSRFError
 
-from app.config import BaseConfig, basedir, PostConfig
+from app.config import BaseConfig, basedir, PostConfig, LogConfig
 # .表示当前路径
 from app.config import config  # 导入存储配置的字典
 from tasks import celery
@@ -27,6 +30,8 @@ from .models.open_model import OpenID
 from .models.report_model import Report
 from .models.role_model import Role
 from .models.user_model import Guest, User
+from .views.auth_view import get_login_info
+from .views.log_view import get_log
 
 login_manager.session_protection = 'basic'
 
@@ -241,20 +246,54 @@ def register_commands(app):
 def register_errors(app):
     @app.errorhandler(400)
     def bad_request(e):
-        return render_template('errors/400.html', ), 400
+        if not isinstance(current_user._get_current_object(), Guest):
+            data = get_log()
+            return render_template('errors/400.html', data=data), 400
+        else:
+            return redirect(url_for('auth.login')), 301
 
     @app.errorhandler(404)
     def page_not_found(e):
-        return render_template('errors/404.html'), 404
+        if not isinstance(current_user._get_current_object(), Guest):
+            print(e)
+            return render_template('errors/404.html'), 404
+        else:
+            return redirect(url_for('auth.login')), 301
 
+    # 捕获并记录错误信息
+    @app.errorhandler(405)
+    def method_not_allowed(e):
+        # 当前用户不是匿名用户的时候执行
+        if not isinstance(current_user._get_current_object(), Guest):
+            print("当前用户信息")
+            print(current_user.real_name)
+            data = get_log()
+            key = uuid.uuid4().hex + LogConfig.REDIS_INFO_LOG_KEY
+            redis_client.set(key, json.dumps(data))
+            redis_client.expire(key, LogConfig.REDIS_EXPIRE_TIME)
+            return render_template('errors/405.html', data=data), 405
+        else:
+            return redirect(url_for('auth.login')), 301
+
+    # 捕获并记录错误信息
     @app.errorhandler(500)
     def internal_server_error(e):
-        return render_template('errors/500.html'), 500
+        if not isinstance(current_user._get_current_object(), Guest):
+            data = get_log()
+            key = uuid.uuid4().hex + LogConfig.REDIS_ERROR_LOG_KEY
+            redis_client.set(key, json.dumps(data))
+            redis_client.expire(key, LogConfig.REDIS_EXPIRE_TIME)
+            return render_template('errors/500.html', data=data), 500
+        else:
+            return redirect(url_for('auth.login')), 301
 
     @app.errorhandler(CSRFError)
     def handle_csrf_error(e):
-        return render_template(
-            'errors/400.html', description=e.description), 400
+        if not isinstance(current_user._get_current_object(), Guest):
+            return render_template(
+                'errors/400.html', description=e.description), 400
+        else:
+            return redirect(url_for('auth.login')), 301
 
 
 def register_interceptor(app):
