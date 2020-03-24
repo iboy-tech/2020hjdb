@@ -1,5 +1,10 @@
 var app = new Vue({
     el: "#app",
+    created(){
+        if(getSession("tabIndex")=="3"){
+            getMessages(this);
+        }
+    },
     data: {
         showMenu: false,
         tabIndex: 0,
@@ -732,11 +737,15 @@ $(function () {
         $("html,body").scrollTop(JSON.parse(getSession("scroll")))
         deleteLocal("isBack");
         deleteSession("data");
-    } else {
+    }
+/**
+    else {
         if(app.tabIndex == 3){
-             getMessages(app);
+            console.log("页面加载的时候获取消息");
+             app.changeTab(3);
         }
     }
+ */
     let sessionIndex = getSession("tabIndex");
     if (sessionIndex != null) {
         app.tabIndex = JSON.parse(sessionIndex);

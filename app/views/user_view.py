@@ -29,7 +29,7 @@ from ..decorators import wechat_required
 from ..utils.check_data import check_qq
 
 
-@user.route('/messages', methods=['POST', 'OPTIONS', 'GET'])
+@user.route('/messages', methods=['POST', 'OPTIONS'])
 @cross_origin()
 @login_required
 @wechat_required
