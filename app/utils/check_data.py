@@ -69,6 +69,7 @@ def check_username(func):
         except Exception as e:
             print(str(e))
             return restful.params_error()
+
     return decorated_view
 
 
@@ -108,7 +109,13 @@ def check_post(func):
                 return restful.success(False, msg="内容或标题无效")
             if len(req['images']) > PostConfig.MAX_UPLOAD_IMG_NUM:
                 return restful.params_error(msg="最多上传{}张图片".format(PostConfig.MAX_UPLOAD_IMG_NUM))
+            if req['images']:  # 对文件类型进行判断
+                for imgbs4 in req['images']:
+                    file_type = imgbs4.split(";")[0].split(":")[1].split("/")
+                    if file_type[1] not in PostConfig.ALLOW_UPLOAD_FILE_TYPE:
+                        return restful.params_error(msg="只能上传JPG或PNG格式的图片")
         except:
+            print("ces")
             return restful.params_error()
         return func(*args, **kwargs)
 

@@ -72,6 +72,26 @@ def server(data):
             # print('当前用户姓名', current_user.real_name)
             # db.session.remove()
             if op != 'null':
+                if op == "guest":  # 找回密码的扫码的不是系统用户
+                    res = {
+                        'success': 'false',
+                        'data': {'msg': '此微信尚未绑定',
+                                 'bg': '0'
+                        }
+                    }
+                    emit('server', res)
+                    break
+                    redis_client.delete(key)  # 删除key
+                if op=="exist":
+                    res = {
+                        'success': 'false',
+                        'data': {'msg': '此微信已经绑定过了',
+                                 'bg': '0'
+                         }
+                    }
+                    emit('server', res)
+                    break
+                    redis_client.delete(key)  # 删除key
                 data = eval(op)
                 # print('data的数据类型', type(data),data['uid'])
                 # op = OpenID.query.filter_by(user_id=current_user.id).first()
@@ -88,7 +108,7 @@ def server(data):
                 }
                 print('background_thread我是查询结果', res)
                 emit('server', res)
-                break;
+                break
             else:
                 res = {
                     'success': 'false',

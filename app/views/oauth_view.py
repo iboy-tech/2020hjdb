@@ -30,7 +30,7 @@ def index():
     print("用户要绑定位置")
     if current_user.is_authenticated and request.method == 'GET':
         op = OpenID.query.filter_by(user_id=current_user.id).first()
-        if op is not None:
+        if op:  # 已经绑定过了
             return redirect(url_for('auth.index')), 301
         data = (WxPusher.create_qrcode(extra=current_user.id, valid_time=180))
         # print(type(data), data)
@@ -52,10 +52,15 @@ def index():
         # print('用户的ID', user_id,type(user_id))
         # 如果是数字说明是初始扫码绑定
         if user_id.isnumeric():
-            op = OpenID(user_id=user_id, wx_id=wx_open_id)
-            db.session.add(op)
-            db.session.commit()
-            db.session.close()
+            try:
+                op = OpenID(user_id=user_id, wx_id=wx_open_id)
+                db.session.add(op)
+                db.session.commit()
+                db.session.close()
+            except:
+                key = '{}-pusher-post-data'.format(user_id)
+                redis_client.setrange(key, 0, "exist")  # 不是系统用户重置密码
+                return "false"
             """
             redis_store = FlaskReis()
             redis_store.get(key)
@@ -89,6 +94,10 @@ def index():
                 db.session.add(op)
                 db.session.commit()
                 db.session.close()
+            else:
+                key = '{}-pusher-post-data'.format(user_id)
+                redis_client.setrange(key, 0, "guest")  # 不是系统用户重置密码
+                return "false"
     print('我是key的后缀', os.getenv('QR_CODE_SUFFIX'))
     key = '{}-pusher-post-data'.format(user_id)
     redis_client.setrange(key, 0, str(data))  # 把数据存入redis
@@ -101,6 +110,3 @@ def index():
 @login_required
 def open_qq():
     pass
-
-
-
