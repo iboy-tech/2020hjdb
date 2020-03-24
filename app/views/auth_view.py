@@ -10,7 +10,6 @@
 """
 import json
 import os
-import re
 from datetime import datetime, timedelta
 from random import randint
 

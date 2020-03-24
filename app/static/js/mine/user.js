@@ -121,8 +121,10 @@ var app = new Vue({
                 getMessages(this);
             } else if (index == 4) {
             } else if (index == 5) {
+                app.showMenu=false;
                 // 常见问题
             } else if (index == 6) {
+                app.showMenu=false;
                 // 关于我们
             }
         },
@@ -351,10 +353,6 @@ var app = new Vue({
         setIcon() {
             app.showMenu = false;
             $("#iconInput").click();
-        },
-        showAbout() {
-            app.showMenu = false;
-            showAlert("三峡大学失物招领中心", "关于");
         },
         titleAlert(title) {
             console.log(title);

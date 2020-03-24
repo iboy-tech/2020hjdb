@@ -82,7 +82,7 @@
     line-height: 35px;
 }
 
-.faq h4 {
+.faq-bak h4 {
     font-size: 15px;
     margin: 15px 0 15px;
     padding: 0 10px;
@@ -90,12 +90,28 @@
     background-color: #f9f9f9;
     line-height: 35px;
 }
-.about-us p,.faq  p{
+{#,.faq  p#}
+.about-us p{
     text-indent:2em;
     line-height: 2em;
 }
+.faq p{
+    margin-top: 0;
+    margin-bottom: 1.46em;
+    line-height: 2em;
+}
+.faq blockquote{
+    margin: 0 0 1.64em 0;
+    border-left: 3px solid #dadada;
+    color: #666664;
+    margin-left: -24px;
+    padding-left: 20px;
+    border-width: 4px;
+}
 
-.about-us ul,.faq  ul{
+
+{#.faq  ul#}
+.about-us ul{
         text-decoration: none;
         list-style: none;
     line-height: 2em;
@@ -135,7 +151,6 @@
                                 </div>
                                 <div class="ui header">
                                     <h3>{{user.realName}}</h3>
-                                    <div class="sub header user-signature">{{user.schoolName}}</div>
                                 </div>
 
                             </div>
@@ -163,7 +178,11 @@
                                         <a class="item" @click="showFeedback">
                                             <i class="envelope icon"></i>反馈
                                         </a>
-                                        <a class="item" @click="showAbout">
+                                        <a class="item" @click="changeTab(5)">
+                                            <i class="question circle icon"></i>帮助
+                                        </a>
+
+                                        <a class="item" @click="changeTab(6)">
                                             <i class="info circle icon"></i>关于
                                         </a>
                                     </div>
@@ -176,7 +195,7 @@
                                 <div class="ui list">
                                     <div class="item">学号：{{user.studentNum}}</div>
                                     <div class="item">邮箱：{{user.email}}</div>
-                                    <div class="item">QQ：<a style="color: rgba(0,0,0,.87);" class="item" :href="api+user.qq">{{user.qq}}</a></div>
+                                    <div class="item">QQ：{{user.qq}}</div>
                                     <div class="item">加入时间：{{user.createTime}}</div>
                                     <div class="item">最近登录：{{user.lastLogin}}</div>
                                 </div>
@@ -618,18 +637,18 @@
                                     </div>
                                                                         <!--常见问题-->
                                     <block class="faq" v-else-if="tabIndex==5">
-                                      <h4>收不到通知邮件？</h4>
-                                        <p>邮件延迟发送，一般10分钟之内送达，若长时间没有收到，请登录QQ邮箱，检查是否在垃圾箱中，为了保证您能及时收到我们的通知，强烈建议您将<span style="font-weight: bold">（ctguswzl.cn）</span>添加到QQ邮箱的域名白名单中，<a target="_blank" href="https://service.mail.qq.com/cgi-bin/help?subtype=1&id=16&no=113" rel="nofollow">设置方法</a></p>
-                                    <h4>公众号没有收到推送通知？</h4>
-                                        <p>绑定微信时关注的公众号提供<span style="font-weight: bold">失物招领的消息通知服务</span>，请您不要取消关注，该公众号的运营者是<span style="font-weight: bold">第三方平台，与失物招领中心无关,一切与失物招领无关的消息，请不要相信!</span>为保证消息送达的时效性，重要消息，邮件和公众号都会发送通知，如果您无法收到公众号消息，请查看 <a target="_blank" href="https://ae01.alicdn.com/kf/H322ace2821564976ba43001656bf4885I.png" rel="nofollow">解决办法</a></p>
-                                     <h4>发帖无法上传图片？</h4>
-                                        <p>考虑到服务器的压力，我们对发帖上传图片的数量以及大小做了限制，单个图片大小不得超过<span style="font-weight: bold">1MB</span>,图片数量不得超过<span style="font-weight: bold">3张</span></span>，所以您通常需要对上传的图片预先处理，比如<span style="font-weight: bold">隐私信息打码,把拍摄的照片截图上传</span></p>
- <h4>发帖被删除？</h4>
-                                        <p>我们会对很久之前的发布的帖子进行清理，届时您会收到微信通知，如果您还需要帮助，可以再次发帖，日常使用时，若您的问题已经解决，<span style="font-weight: bold">希望您主动删除帖子</span>，感谢您的配合！</p>
-  <h4>账户无法登陆？</h4>
-                                        <p>对于发帖或评论不遵守规范的用户，我们会对账户进行冻结或者注销，届时会发送邮件通知,如果您对我们的处理有异议，可选择向管理员申诉，或者系统检测到您的账户有异常登录行为，为了您的账户安全，暂时限制您的登录</p>
-    <h4>其他问题？</h4>
-                                        <p>虽然上线前已经过大量测试，但由于技术有限，难免会遇到一些问题，您可以通过前台表单或QQ<a href="https://api.uomg.com/api/qq.talk?qq=547142436">(547142436)</a>进行反馈进行反馈，我们会及时进行处理，并将结果反馈给您！谢谢您的合作</p>
+                                      <h4>Q：收不到通知邮件？</h4>
+                                       <blockquote><p>A：邮件延迟发送，一般10分钟之内送达，若长时间没有收到，请登录QQ邮箱，检查是否在垃圾箱中，为了保证您能及时收到我们的通知，强烈建议您将<span style="font-weight: bold">（ctguswzl.cn）</span>添加到QQ邮箱的域名白名单中，<a target="_blank" href="https://service.mail.qq.com/cgi-bin/help?subtype=1&id=16&no=113" rel="nofollow">设置方法</a></p></blockquote>
+                                    <h4>Q：公众号没有收到推送通知？</h4>
+                                        <blockquote><p>A：绑定微信时关注的公众号提供<span style="font-weight: bold">失物招领的消息通知服务</span>，请您不要取消关注，该公众号的运营者是<span style="font-weight: bold">第三方平台，与失物招领中心无关,一切与失物招领无关的消息，请不要相信!</span>为保证消息送达的时效性，重要消息，邮件和公众号都会发送通知，如果您无法收到公众号消息，请查看 <a target="_blank" href="https://ae01.alicdn.com/kf/H322ace2821564976ba43001656bf4885I.png" rel="nofollow">解决办法</a></p></blockquote>
+                                     <h4>Q：发帖无法上传图片？</h4>
+                                        <blockquote><p>A：考虑到服务器的压力，我们对发帖上传图片的数量以及大小做了限制，单个图片大小不得超过<span style="font-weight: bold">1MB</span>,图片数量不得超过<span style="font-weight: bold">3张</span></span>，所以您通常需要对上传的图片预先处理，比如<span style="font-weight: bold">隐私信息打码,把拍摄的照片截图上传</span></p></blockquote>
+                                         <h4>Q：发帖被删除？</h4>
+                                       <blockquote> <p>A：我们会对很久之前的发布的帖子进行清理，届时您会收到微信通知，如果您还需要帮助，可以再次发帖，日常使用时，若您的问题已经解决，<span style="font-weight: bold">希望您主动删除帖子</span>，感谢您的配合！</p></blockquote>
+                                        <h4>Q：账户无法登陆？</h4>
+                                        <blockquote><p>A：对于发帖或评论不遵守规范的用户，我们会对账户进行冻结或者注销，届时会发送邮件通知,如果您对我们的处理有异议，可选择向管理员申诉，或者系统检测到您的账户有异常登录行为，为了您的账户安全，暂时限制您的登录</p></blockquote>
+                                    <h4>Q：其他问题？</h4>
+                                      <blockquote><p>A：虽然上线前已经过大量测试，但由于技术有限，难免会遇到一些问题，您可以通过前台表单或QQ<a  href="https://wpa.qq.com/msgrd?v=3&site=qq&menu=yes&uin=547142436">(547142436)</a>进行反馈进行反馈，我们会及时进行处理，并将结果反馈给您！谢谢您的合作</p></blockquote>
                                     </block>
                                     <block class="about-us" v-else-if="tabIndex==6">
                                         <h4>关于我们：</h4>

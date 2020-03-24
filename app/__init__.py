@@ -255,7 +255,7 @@ def register_errors(app):
     @app.errorhandler(404)
     def page_not_found(e):
         if not isinstance(current_user._get_current_object(), Guest):
-            print(e)
+            # print(e)
             return render_template('errors/404.html'), 404
         else:
             return redirect(url_for('auth.login')), 301
