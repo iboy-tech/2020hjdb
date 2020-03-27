@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>报表导出</title>
+    <title>操作日志</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="keywords" content="三峡大学失物招领中心"/>
@@ -20,7 +20,6 @@
     <!-- font CSS -->
     <!-- font-awesome icons -->
     <link href="../static/css/font-awesome.css" rel="stylesheet">
-    <link href="../static/css/date/vue.datepicker.css" rel="stylesheet">
     <!-- //font-awesome icons -->
     <!-- js-->
         <script src="https://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
@@ -97,9 +96,8 @@
                         <a href="/feedback.html"><i class="fa fa-envelope nav_icon"></i>反馈管理
                             <!--<span class="nav-badge-btm">08</span>-->
                         </a>
-                        <!-- //nav-second-level -->
                     </li>
-                     <li v-if="user.kind==3">
+                    <li v-if="user.kind==3">
                         <a href="#"><i class="fa fa-dashboard nav_icon "></i>日志管理<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level collapse">
                                                              <li><a href="/log.html?type=admin">操作日志</a></li>
@@ -167,60 +165,39 @@
         <!-- page content start-->
     <div id="page-wrapper">
         <div class="main-page">
-            <div class="col-md-12">
-                <div class="col-lg-8" style="padding: 0px 0px 20px 0px;">
-                    <div class="input-group">
-                        <div class="col-sm-6 ">
-                           <mz-datepicker format="yyyy-MM-dd" :start-time.sync="startTime" :end-time.sync="endTime" range
-                                       cn confirm :on-confirm="confrim"></mz-datepicker>
-                        </div>
-                     <div style="" class="col-sm-6">
-                     <select v-model="flag" style="height: 31.5px;border: 1px solid #d9d9d9;">
-                        <option v-for="x in choice" selected="selected"  :value="x.value">{{x.name}}</option>
-                        <input class="btn btn-primary glyphicon glyphicon-download-alt" type="button" style="display: inline-block;margin-left: 20px;" @click="execute" value="导出" />
-                    </select>
-                     </div>
-                    </div>
+            <div class="col-md-12" style="padding: 0px 0px 20px 0px;">
+                <div class="col-sm-2 col-lg-2 col-lg-offset-10">
+                    <div class="input-group right">
+<button class="btn btn-primary glyphicon glyphicon-trash
+" type="button" style="margin-right: 20px;" @click="delete('info')" >清空</button>
+</div>
+                </div>
                 </div>
 
             </div>
             <div class="tables col-md-12">
                 <div class="bs-example widget-shadow" style="margin-top: 0px;">
                     <table class="table table-bordered table-hover table-condensed">
-                        <thead>
+                                               <thead>
                         <tr>
                             <th>ID</th>
-                            <th>名称</th>
-                            <th>创建人</th>
-                            <th>创建时间</th>
-                            <th>
-                                <span class="glyphicon glyphicon-th-list"></span>
-                            </th>
+                            <th>用户</th>
+                            <th>IP</th>
+                            <th>地址</th>
+                            <th>路径</th>
+                            <th>时间</th>
                         </tr>
                         </thead>
                         <tbody>
                          <tr v-for=" (index,item) in list">
                                     <th scope="row">{{index+1}}</th>
-                                    <td>{{item.filename}}</td>
-                                    <td>{{item.creater}}</td>
-                                    <td>{{item.create_time}}</td>
-                             <td>
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-default btn-xs dropdown-toggle"
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <span class="glyphicon glyphicon-menu-hamburger"></span>
-                                    </button>
-                                  <ul class="dropdown-menu">
-                                    <li><a :href="api+path+item.id+'.xlsx'" target="_blank">预览</a>
-                                    </li>
-                                    <li><a :href="'/static/file/'+item.id+'.xlsx'" target="_self">下载</a></li>
-                                    <li><a @click="deleteFile(item.id)">删除</a></li>
-                                </ul>
-                                </div>
-                             </td>
+                                    <td>{{item.username}}</td>
+                                    <td>{{item.ip}}</td>
+                                    <td>{{item.addr}}</td>
+                                    <td>{{item.url}}</td>
+                                    <td>{{item.time}}</td>
                             </tr>
                         </tr>
-
                         </tbody>
                     </table>
                     <p v-if="list.length == 0" class="text-center">无内容</p>
@@ -248,12 +225,12 @@
 <script src="https://cdn.bootcss.com/twitter-bootstrap/3.3.4/js/bootstrap.js"></script>
 <script src="https://cdn.bootcss.com/layer/2.3/layer.js"></script>
 <script src="../static/js/mine/common.js"></script>
-<script src="../static/js/date/vue.datepicker.js"></script>
-<script src="../static/js/mine/report.js"></script>
+<script src="../static/js/mine/log.js"></script>
 <script>
      // hideLoading();
      $(function () {
         isAnonymous();
+        getLogs(app, "info",false);
      })
 </script>
 </body>

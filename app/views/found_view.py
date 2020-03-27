@@ -30,6 +30,7 @@ from app.utils.check_data import check_post
 from app.utils.delete_file import remove_files
 from app.utils.img_process import change_all_img_scale, change_all_img_to_jpg, compress_imgs_in_freetime, \
     change_bs4_to_png
+from app.utils.log_utils import insert_delete_log
 from app.utils.mail_sender import send_email
 from app.utils.time_util import get_time_str
 from app.utils.wechat_notice import delete_post_notice, send_message_by_pusher
@@ -180,7 +181,8 @@ def pub():
         print(str(e))
         db.session.rollback()
         # 出现异常删除照片
-        remove_files(imgstr)
+        imglist = imgstr.split(",")
+        remove_files(imglist, 0)
         return restful.params_error()
     if info != '':
         lost_users = User.query.filter(or_(User.username == info, User.real_name == info))
@@ -213,8 +215,8 @@ def get_search_data(pagination, pageNum, pagesize):
         if l.images == "":
             imglist = []
         else:
-            l.images = l.images.replace('[', '').replace(']', '').replace(' \'', '').replace('\'', '')
-            imglist = l.images.strip().split(',')
+            # l.images = l.images.replace('[', '').replace(']', '').replace(' \'', '').replace('\'', '')
+            imglist = l.images.split(',')
         # print(imglist, type(imglist))
         user = User.query.get(l.user_id)
         key = str(l.id) + PostConfig.POST_REDIS_PREFIX
@@ -227,7 +229,7 @@ def get_search_data(pagination, pageNum, pagesize):
             look_count = int(bytes.decode(view_count))
         dict = {
             "id": l.id,
-            "icon": PostConfig.AVATER_API.replace("{}",user.qq),
+            "icon": PostConfig.AVATER_API.replace("{}", user.qq),
             "kind": l.kind,
             "status": l.status,
             "claimantId": l.claimant_id,
@@ -271,8 +273,8 @@ def delete_posts():
             # 管理员删帖或用户自身删帖
             if l is not None and (l.user_id == current_user.id or current_user.kind > u.kind):
                 if l.images != "":
-                    imglist = l.images.strip().split(',')
-                    remove_files(imglist,0)
+                    imglist = l.images.split(',')
+                    remove_files(imglist, 0)
                 key = str(l.id) + PostConfig.POST_REDIS_PREFIX
                 # # 删除浏览量，不存在的key会被忽略
                 redis_client.delete(key)
@@ -280,6 +282,8 @@ def delete_posts():
             db.session.delete(l)
     try:
         db.session.commit()
+        # 记录删除日志
+        insert_delete_log(current_user, len(req))
         print("try块内")
     except Exception as e:
         db.session.rollback()
@@ -296,17 +300,20 @@ def delete_post():
         return restful.params_error()
     else:
         l = LostFound.query.get_or_404(int(req))
-        print("帖子：",l)
+        print("帖子：", l)
         u = User.query.get_or_404(l.user_id)
-        print("用户：",u)
+        print("用户：", u)
         # 管理员删帖或用户自身删帖
         if l is not None and (l.user_id == current_user.id or current_user.kind > u.kind):
             if l.images != "":
                 imglist = l.images.strip().split(',')
-                remove_files(imglist,0)
+                remove_files(imglist, 0)
             key = str(l.id) + PostConfig.POST_REDIS_PREFIX
             # # 删除浏览量，不存在的key会被忽略
             redis_client.delete(key)
+            if current_user.kind > 1:
+                # 记录删除日志
+                insert_delete_log(current_user, 1)
             delete_post_notice(current_user.kind, current_user.id, l.to_dict())
             db.session.delete(l)
             db.session.commit()

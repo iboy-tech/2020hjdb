@@ -13,7 +13,6 @@ import os
 from datetime import datetime, timedelta
 from random import randint
 
-import requests
 from flask import render_template, request, url_for, session, send_from_directory, current_app
 from flask_cors import cross_origin
 from flask_login import logout_user, login_user, login_required, current_user
@@ -26,8 +25,8 @@ from app.page import auth
 from app.utils import restful
 from app.utils.auth_token import generate_token, validate_token
 from app.utils.check_data import check_qq, check_username
+from app.utils.log_utils import get_login_info
 from app.utils.mail_sender import send_email
-from app.views.found_view import send_message_by_pusher
 
 
 # 隐私协议
@@ -69,37 +68,6 @@ def login_user_longtime(user):
     db.session.add(user)
     db.session.commit()
     print('更新用户登陆时间')
-
-
-def get_login_info(user, kind):
-    ip = request.remote_addr
-    print("我是转发的ip", ip)
-    try:
-        _ip = request.headers.get("X-Real-IP")
-        print("X-Real-IP", _ip)
-        if _ip is not None:
-            ip = _ip
-    except Exception as e:
-        print(e)
-    print("我是最终的ip", ip)
-    data = requests.get(LoginConfig.LOGIN_INFO_API.replace("{}", ip)).text
-    data = eval(data)
-    print(data)
-    info = {
-        "real_name": user.real_name,
-        "ip": data.get("ip"),
-        "addr": data.get("addr"),
-        "time": datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-        "is_admin": user.kind > 1,
-    }
-    if kind == 0:  # 登录异常检测，需要发送信息
-        send_message_by_pusher(info, [user.wx_open.wx_id], 6)
-        print(info)
-    else:
-        return info
-
-
-
 
 
 @auth.route('/login', methods=['GET', 'POST', 'OPTIONS'])
@@ -310,6 +278,7 @@ def confirm():
     data = validate_token(token)
     messages = {
         'msg': json.loads(data)['msg'],
-        'success': True
+        'success': json.loads(data)['success']
     }
+    print(messages)
     return render_template('mails/go.html', messages=messages)

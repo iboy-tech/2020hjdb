@@ -82,7 +82,7 @@
                         <!--<a href="report1.html"><i class="fa fa-university nav_icon"></i>校区管理</a>-->
                     <!--</li>-->
                     <li>
-                        <a href="/notice.html"><i class="fa fa-rss nav_icon"></i>&nbsp;公告管理</a>
+                        <a href="/notice.html"><i class="fa fa-send-o nav_icon"></i>公告管理</a>
                     </li>
                     <li>
                         <a href="/#"><i class="fa fa-university nav_icon"></i>用户主页</a>
@@ -91,7 +91,15 @@
                         <a href="/feedback.html"><i class="fa fa-envelope nav_icon"></i>反馈管理
                             <!--<span class="nav-badge-btm">08</span>-->
                         </a>
-                        <!-- //nav-second-level -->
+                    </li>
+                    <li v-if="user.kind==3">
+                        <a href="#"><i class="fa fa-dashboard nav_icon "></i>日志管理<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level collapse">
+                                <li><a href="/log.html?type=admin">操作日志</a></li>
+                               <li><a href="/log.html?type=error">错误日志</a></li>
+                                <li><a href="/log.html?type=info">请求日志</a></li>
+
+                        </ul>
                     </li>
                     <li class="visible-xs-block">
                         <a href="#" @click="logout"><i class="fa fa-sign-out nav_icon"></i>安全退出</a>

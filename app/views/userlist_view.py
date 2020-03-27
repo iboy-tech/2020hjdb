@@ -184,7 +184,7 @@ def delete_img_and_report(posts, reports):
                 # images =eval(lost.images)
                 # print("反序列化对象",ev,type(ev))
                 # lost.images = lost.images.replace('[', '').replace(']', '').replace(' \'', '').replace('\'', '')
-                temp_imglist = lost.images.strip().split(',')
+                temp_imglist = lost.images.split(',')
                 del_imgs +=temp_imglist
             else:
                 print("判断图片类型",lost.images,type(lost.images))

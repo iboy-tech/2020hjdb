@@ -31,7 +31,7 @@ from .models.report_model import Report
 from .models.role_model import Role
 from .models.user_model import Guest, User
 from .views.auth_view import get_login_info
-from .views.log_view import get_log
+from .utils.log_utils import get_log
 
 login_manager.session_protection = 'basic'
 
@@ -49,6 +49,7 @@ from app.page import auth as auth_bp
 from app.page import chart as admin_bp
 from app.page import report as report_bp
 from app.page import tool as tool_bp
+from app.page import log as log_bp
 
 
 # 工厂函数
@@ -85,6 +86,7 @@ def register_blueprints(app):
     app.register_blueprint(cache_bp)
     app.register_blueprint(report_bp)
     app.register_blueprint(tool_bp)
+    app.register_blueprint(log_bp)
 
 
 def register_extensions(app):  # 实例化扩展

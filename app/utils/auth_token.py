@@ -41,7 +41,7 @@ def validate_token(token):  # 验证邮箱
         if user is None:
             return restful.params_error(msg='验证信息有误')
     except (SignatureExpired, BadSignature):
-        return restful.params_error(msg='验证信息错误或已过期，请重新验证')
+        return restful.params_error(msg='验证信息错误或已过期')
     # if data.get('operation') != 'confirm' or user.qq != data.get('qq'):
     #     return restful.params_error(msg='验证途径非法')
     if data.get('operation') == Operations.CONFIRM_QQ:

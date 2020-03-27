@@ -29,9 +29,6 @@ from app.utils.tinify_tool import tinypng
 @admin_required
 @cross_origin()
 def index():
-    # mykey = redis_client.keys(pattern='*post*')
-    # print(mykey, type(mykey))
-    # print(redis_client.get(mykey))
     return render_template('tool.html')
 
 

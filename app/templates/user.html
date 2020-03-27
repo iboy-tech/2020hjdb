@@ -484,7 +484,7 @@
                                                 </div>
                                             </div>
                                             <div v-if="isSearched" class="page-load-status" style="display:block">
-                                            <p class="infinite-scroll-last">没有更多内容</p>
+                                            <p class="infinite-scroll-last">---我是有底线的---</p>
                                         </div>
                                         </block>
                                         <div v-else class="ui basic segment article-list">
@@ -629,13 +629,13 @@
                                             </div>
                                         </div>
                                         <div class="page-load-status">
-                                            <p class="infinite-scroll-last">没有更多内容</p>
+                                            <p class="infinite-scroll-last">---我是有底线的---</p>
                                         </div>
                                     </div>
                                                                         <!--常见问题-->
                                     <block class="faq" v-else-if="tabIndex==5">
                                       <h4>Q：收不到通知邮件？</h4>
-                                       <blockquote><p>A：邮件延迟发送，一般10分钟之内送达，若长时间没有收到，请登录QQ邮箱，检查是否在垃圾箱中，为了保证您能及时收到我们的通知，强烈建议您将<span style="font-weight: bold">（ctguswzl.cn）</span>添加到QQ邮箱的域名白名单中，<a target="_blank" href="https://service.mail.qq.com/cgi-bin/help?subtype=1&id=16&no=113" rel="nofollow">设置方法</a></p></blockquote>
+                                       <blockquote><p>A：邮件延时发送，一般3分钟之内送达，若长时间没有收到，请登录QQ邮箱，检查是否在垃圾箱中，为了保证您能及时收到我们的通知，强烈建议您将<span style="font-weight: bold">（ctguswzl.cn）</span>添加到QQ邮箱的域名白名单中，<a target="_blank" href="https://service.mail.qq.com/cgi-bin/help?subtype=1&id=16&no=113" rel="nofollow">设置方法</a></p></blockquote>
                                     <h4>Q：公众号没有收到推送通知？</h4>
                                         <blockquote><p>A：绑定微信时关注的公众号提供<span style="font-weight: bold">失物招领的消息通知服务</span>，请您不要取消关注，该公众号的运营者是<span style="font-weight: bold">第三方平台，与失物招领中心无关,一切与失物招领无关的消息，请不要相信!</span>为保证消息送达的时效性，重要消息，邮件和公众号都会发送通知，如果您无法收到公众号消息，请查看 <a target="_blank" href="https://ae01.alicdn.com/kf/H322ace2821564976ba43001656bf4885I.png" rel="nofollow">解决办法</a></p></blockquote>
                                      <h4>Q：发帖无法上传图片？</h4>
@@ -645,7 +645,7 @@
                                         <h4>Q：账户无法登陆？</h4>
                                         <blockquote><p>A：对于发帖或评论不遵守规范的用户，我们会对账户进行冻结或者注销，届时会发送邮件通知,如果您对我们的处理有异议，可选择向管理员申诉，或者系统检测到您的账户有异常登录行为，为了您的账户安全，暂时限制您的登录</p></blockquote>
                                     <h4>Q：其他问题？</h4>
-                                      <blockquote><p>A：虽然上线前已经过大量测试，但由于技术有限，难免会遇到一些问题，您可以通过前台表单或QQ<a  href="https://wpa.qq.com/msgrd?v=3&site=qq&menu=yes&uin=547142436">(547142436)</a>进行反馈进行反馈，我们会及时进行处理，并将结果反馈给您！谢谢您的合作</p></blockquote>
+                                      <blockquote><p>A：虽然上线前已经过大量测试，但由于技术有限，难免会遇到一些问题，您可以通过前台表单或QQ<i class="qq icon"></i><a  href="https://wpa.qq.com/msgrd?v=3&site=qq&menu=yes&uin=547142436">(547142436)</a>进行反馈进行反馈，我们会及时进行处理，并将结果反馈给您！谢谢您的合作</p></blockquote>
                                     </block>
                                     <block class="about-us" v-else-if="tabIndex==6">
                                         <h4>关于我们：</h4>
@@ -670,10 +670,10 @@
         <ul>
 		<li><span>您可以通过以下方式联系我们</span></li>
 		<li><span><i class="weibo icon"></i>微博 ：<wb:follow-button uid="3224639237" type="red_1" width="67" height="24"><iframe src="https://widget.weibo.com/relationship/followbutton.php?btn=red&amp;style=1&amp;uid=3224639237&amp;width=67&amp;height=24&amp;language=zh_cn" width="67" height="24" frameborder="0" scrolling="no" marginheight="0"></iframe></wb:follow-button></span></li>
-		<li><span><i class="qq icon"></i>官方QQ：<a target="_blank" href="https://wpa.qq.com/msgrd?v=3&uin=1994124775&site=qq&menu=yes"><img border="0" src="https://pub.idqqimg.com/qconn/wpa/button/button_111.gif" alt="点击这里给我发消息" title="点击这里给我发消息"/></a></span></li>
+		<li><span><i class="qq icon"></i>官方QQ：<a target="_blank" href="https://wpa.qq.com/msgrd?v=3&uin=1994124775&site=qq&menu=yes"><img border="0"  src="https://pub.idqqimg.com/qconn/wpa/button/button_111.gif" alt="点击这里给我发消息" title="点击这里给我发消息"/></a></span></li>
         <li><span><i class="qq icon"></i>QQ群：<a target="_blank" href="https://shang.qq.com/wpa/qunwpa?idkey=6c652bd1073f3bbb87913503b6c36b89dd89cf7fb4b7b28593f971974d1cc1ef"><img border="0" src="https://pub.idqqimg.com/wpa/images/group.png" alt="三峡大学失物招领③群" title="三峡大学失物招领③群"></a></span></li>
-        <li><span><i class="envelope outline icon"></i>Email：<a target="_blank" href="https://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=service@ctguswzl.cn" style="color: rgba(0, 0, 0, 0.87);">service@ctguswzl.cn</a></span></li>
-        抖音:  dyeezcqqm1bt
+        <li><span><i class="envelope outline icon"></i>Email：<a target="_blank" href="https://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=HG95bmp1f3lcf2h7aW9rZnAyf3I" style="text-decoration:none;"><img style="width: 90px;height: 22px;" src="https://rescdn.qqmail.com/zh_CN/htmledition/images/function/qm_open/ico_mailme_02.png"/></a></span></li>
+         <li>抖音:  dyeezcqqm1bt</li>
         </ul>
     </div>
 </block>
@@ -771,7 +771,7 @@ placeholder="校园卡掉了，
                                             <a v-if="tab[tabIndex].search.pageNum+1 < tab[tabIndex].totalPage" @click="nextPage(0)" class="ui fluid button load-more-button"  style="display: block;">
                                             Loading</a>
                                         <div v-else class="page-load-status" style="display:block">
-                                            <p class="infinite-scroll-last">没有更多内容</p>
+                                            <p class="infinite-scroll-last">---我是有底线的---</p>
                                         </div>
                                     </block>
                                 </span>

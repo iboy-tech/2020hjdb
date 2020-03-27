@@ -77,21 +77,22 @@ def server(data):
                         'success': 'false',
                         'data': {'msg': '此微信尚未绑定',
                                  'bg': '0'
-                        }
+                                 }
                     }
+                    redis_client.delete(key)  # 删除key
                     emit('server', res)
                     break
-                    redis_client.delete(key)  # 删除key
-                if op=="exist":
+                if op == "exist":
                     res = {
                         'success': 'false',
                         'data': {'msg': '此微信已经绑定过了',
                                  'bg': '0'
-                         }
+                                 }
                     }
+                    redis_client.delete(key)  # 删除key
                     emit('server', res)
                     break
-                    redis_client.delete(key)  # 删除key
+
                 data = eval(op)
                 # print('data的数据类型', type(data),data['uid'])
                 # op = OpenID.query.filter_by(user_id=current_user.id).first()
@@ -126,7 +127,7 @@ def server(data):
             print('background_thread我是查询结果', res)
             socketio.emit('server', res)
             break;
-        socketio.sleep(3)
+        socketio.sleep(5)
 
 
 @socketio.on('qrcode')
