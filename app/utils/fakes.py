@@ -14,7 +14,7 @@
 # 忘记密码可通过命令行重置
 from app.models.user_model import User, db
 
-user = User.query.filter(User.username == "2018171109").first()
+user = User.query.filter(User.username == "2017109835").first()
 print(user)
 user.password = "123456"
 db.session.add(user)

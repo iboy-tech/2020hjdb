@@ -9,6 +9,7 @@ app/static/thumb/*
 migrations/*
 .env
 .flaskenv
+app/config.py
 *.xlsx
 *.log
 *.txt
@@ -16,6 +17,5 @@ migrations/*
 *.pid
 *.spec
 *.dir
-app/config.py
-!/.flaskenv
-!/.flaskenv
+*.dat
+

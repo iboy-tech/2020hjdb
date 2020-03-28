@@ -28,8 +28,7 @@ from app.page import found
 from app.utils import restful
 from app.utils.check_data import check_post
 from app.utils.delete_file import remove_files
-from app.utils.img_process import change_all_img_scale, change_all_img_to_jpg, compress_imgs_in_freetime, \
-    change_bs4_to_png
+from app.utils.img_process import change_bs4_to_png
 from app.utils.log_utils import insert_delete_log
 from app.utils.mail_sender import send_email
 from app.utils.time_util import get_time_str
@@ -268,6 +267,7 @@ def delete_posts():
     print(req)
     if req:
         lost_founds = LostFound.query.filter(LostFound.id.in_(req))
+    try:
         for l in lost_founds:
             u = User.query.get_or_404(l.user_id)
             # 管理员删帖或用户自身删帖
@@ -280,8 +280,7 @@ def delete_posts():
                 redis_client.delete(key)
                 delete_post_notice.delay(current_user.kind, current_user.id, l.to_dict())
             db.session.delete(l)
-    try:
-        db.session.commit()
+            db.session.commit()
         # 记录删除日志
         insert_delete_log(current_user, len(req))
         print("try块内")
@@ -323,22 +322,3 @@ def delete_post():
             return restful.params_error()
 
 
-# 对之前的图片进行批量裁剪
-@found.route('/compress', methods=['GET'])
-@login_required
-@admin_required
-@cross_origin()
-def compress():
-    change_all_img_to_jpg()
-    change_all_img_scale()
-    return restful.success(msg="压缩成功")
-
-
-# 通过接口进行无损压缩
-@found.route('/tinypng', methods=['GET'])
-@login_required
-@admin_required
-@cross_origin()
-def compress_from_api():
-    compress_imgs_in_freetime()
-    return restful.success(msg="压缩成功")

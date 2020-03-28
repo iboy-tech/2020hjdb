@@ -11,12 +11,12 @@
 import datetime
 import os
 
-from flask import render_template, request, redirect, url_for, session
-from flask_login import login_required, current_user, login_user
+from flask import render_template, request, redirect, url_for
+from flask_login import login_required, current_user
 
-from app import db, OpenID, redis_client
+from app import db, OpenID, redis_client, PostConfig
 from app.page import oauth
-from app.utils import restful, mail_sender
+from app.utils import mail_sender
 from app.utils.auth_token import generate_password
 from app.utils.wxpusher import WxPusher
 from app.views.found_view import send_message_by_pusher
@@ -58,7 +58,7 @@ def index():
                 db.session.commit()
                 db.session.close()
             except:
-                key = '{}-pusher-post-data'.format(user_id)
+                key = '{}'.format(user_id)+PostConfig.PUSHER_REDIS_PREFIX
                 redis_client.setrange(key, 0, "exist")  # 不是系统用户重置密码
                 return "false"
             """
@@ -95,11 +95,10 @@ def index():
                 db.session.commit()
                 db.session.close()
             else:
-                key = '{}-pusher-post-data'.format(user_id)
+                key = '{}'.format(user_id)+PostConfig.PUSHER_REDIS_PREFIX
                 redis_client.setrange(key, 0, "guest")  # 不是系统用户重置密码
                 return "false"
-    print('我是key的后缀', os.getenv('QR_CODE_SUFFIX'))
-    key = '{}-pusher-post-data'.format(user_id)
+    key = '{}'.format(user_id)+PostConfig.PUSHER_REDIS_PREFIX
     redis_client.setrange(key, 0, str(data))  # 把数据存入redis
     print('key的过期时间：', os.getenv('QR_CODE_VALID_TIME'))
     print('redis中的值', redis_client.get('key'), type(redis_client.get('key')))

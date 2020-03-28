@@ -42,7 +42,7 @@ def get_file():
     mylist = []
     if list:
         for file in list:
-            print(type(file))
+            # print(type(file))
             # print(file.file_name)
             u = User.query.get(file.user_id)
             if u:
@@ -57,7 +57,7 @@ def get_file():
             }
             mylist.append(dict)
     data = {"list": mylist}
-    print(data)
+    # print(data)
     return restful.success(data=data)
 
 
@@ -67,7 +67,7 @@ def get_file():
 @admin_required
 def create_report():
     req = request.json
-    print('生成数据的条件', req)
+    # print('生成数据的条件', req)
     if req.get('type') == '1':  # 失物登记表
         get_lost_record(req.get("start"), req.get("end"))
     elif req.get('type') == '2':  # 失物统计表
@@ -83,7 +83,7 @@ def create_report():
 @admin_required
 def delete_report():
     id = request.json
-    print('要删除的文件', id, type(id))
+    # print('要删除的文件', id, type(id))
     file = Report.query.filter_by(id=id).first()
     if file:
         filename = os.path.join(os.getenv('PATH_OF_REPORT'), id + '.xlsx')
@@ -111,7 +111,7 @@ def get_lost_record(start_time, end_time):
         and_(LostFound.create_time.between(start_time, end_time + timedelta(days=1)),
              LostFound.kind == 1)) \
         .order_by(LostFound.create_time).all()
-    print('我是查询的报表', found_list)
+    # print('我是查询的报表', found_list)
     lost_xlsx = load_workbook(os.path.join(os.getenv('PATH_OF_TEMP'), '失物登记表.xlsx'))
     sheet_names = lost_xlsx.sheetnames
     """
@@ -132,7 +132,7 @@ def get_lost_record(start_time, end_time):
         and_(LostFound.create_time.between(start_time, end_time + timedelta(days=1)),
              LostFound.kind == 0)) \
         .order_by(LostFound.create_time).all()
-    print('我是查询的报表', found_list)
+    # print('我是查询的报表', found_list)
     """
     失主	失物	失物详情	遗失地点	遗失时间	失主联系方式
     """
@@ -197,22 +197,22 @@ def get_lost_summary(start_time, end_time):
         found_list = db.session.query(LostFound).filter(
             and_(LostFound.category_id == c.id, LostFound.kind == 0, LostFound.status == 0,
                  LostFound.create_time.between(start_time, end_time + timedelta(days=1)))).count()
-        print(start_time, end_time, '失物数量查询', found_list)
+        # print(start_time, end_time, '失物数量查询', found_list)
         mylist.append(found_list)
         found_list = db.session.query(LostFound).filter(
             and_(LostFound.category_id == c.id, LostFound.kind == 0, LostFound.status == 1,
                  LostFound.create_time.between(start_time, end_time + timedelta(days=1)))).count()
-        print(start_time, end_time, '找回数量查询', found_list)
+        # print(start_time, end_time, '找回数量查询', found_list)
         mylist.append(found_list)
         found_list = db.session.query(LostFound).filter(
             and_(LostFound.category_id == c.id, LostFound.kind == 1, LostFound.status == 0,
                  LostFound.create_time.between(start_time, end_time + timedelta(days=1)))).count()
-        print(start_time, end_time, '拾取数量查询', found_list)
+        # print(start_time, end_time, '拾取数量查询', found_list)
         mylist.append(found_list)
         found_list = db.session.query(LostFound).filter(
             and_(LostFound.category_id == c.id, LostFound.kind == 1, LostFound.status == 1,
                  LostFound.create_time.between(start_time, end_time + timedelta(days=1)))).count()
-        print(start_time, end_time, '归还数量查询', found_list)
+        # print(start_time, end_time, '归还数量查询', found_list)
         mylist.append(found_list)
         for i in range(1, 6):
             ws.cell(row=star_row, column=i, value=mylist[i - 1])
@@ -224,7 +224,7 @@ def get_lost_summary(start_time, end_time):
     found_list = db.session.query(LostFound).filter(
         and_(LostFound.create_time.between(start_time, end_time + timedelta(days=1)))) \
         .order_by(LostFound.create_time).all()
-    print('我是查询的报表', found_list)
+    # print('我是查询的报表', found_list)
     star_row = 4
     if found_list:
         for f in found_list:

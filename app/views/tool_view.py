@@ -8,19 +8,23 @@
 @Description : 
 @Software: PyCharm
 """
+import os
 import re
 
 from flask import render_template, request
 from flask_cors import cross_origin
 from flask_login import login_required
+from sqlalchemy import or_
 
 from app import redis_client
-from app.config import PostConfig
+from app.config import PostConfig, LoginConfig
 from app.decorators import admin_required
+from app.models.lostfound_model import LostFound
 from app.page import tool
 # 通过接口进行无损压缩
 from app.utils import restful
-from app.utils.img_process import find_big_img
+from app.utils.delete_file import remove_files
+from app.utils.img_process import find_big_img, change_all_img_to_jpg, compress_imgs_in_freetime, change_all_img_scale
 from app.utils.tinify_tool import tinypng
 
 
@@ -39,7 +43,7 @@ def index():
 def add():
     req = request.args.get('key')
     print(req)
-    if not re.match(r"^[a-z0-9A-Z]+$",req):
+    if not re.match(r"^[a-z0-9A-Z]+$", req):
         return restful.success(False, msg="秘钥格式错误")
     key = PostConfig.TINYPNG_REDIS_KEY
     mapping = {req: 500}
@@ -101,6 +105,44 @@ def compress():
         return restful.success(msg="恭喜，所有图片都达到要求了")
 
 
+@tool.route('/clear', methods=['GET', 'POST'])
+@login_required
+@admin_required
+@cross_origin()
+def clear():
+    dir_path1 = os.getenv("PATH_OF_UPLOAD")
+    dir_path2 = os.getenv("MINI_IMG_PATH")
+    file_names1 = os.listdir(dir_path1)
+    file_names2 = os.listdir(dir_path2)
+    scan_list = file_names1 if len(file_names1) >= len(file_names2) else file_names2
+    print(len(scan_list), len(file_names1), len(file_names2))
+    delete_list = []
+    # 清理redis垃圾数据
+    keys1 = redis_client.keys(pattern='*{}*'.format(PostConfig.PUSHER_REDIS_PREFIX))
+    print("redis垃圾数据 PUSHER_REDIS_PREFIX", keys1)
+    if keys1:
+        for key in keys1:
+            print(key)
+            redis_client.delete(key.decode())
+    # 清理redis垃圾数据
+    keys2 = redis_client.keys(pattern='*{}*'.format(LoginConfig.LOGIN_REDIS_PREFIX))
+    print("redis登录限制垃圾数据 LOGIN_REDIS_PREFIX", keys2)
+    if keys2:
+        for key in keys2:
+            print(key)
+            redis_client.delete(key.decode())
+    # 查询数据库
+    for file in scan_list:
+        # print("检查文件", file)
+        res = LostFound.query.filter(LostFound.images.like("%" + file + "%")).first()
+        if not res:
+            delete_list.append(file)
+    # 缩略图与上传的文件夹相互比较
+    print("待删除的图片", delete_list)
+    remove_files(delete_list, 0)
+    return restful.success(msg="恭喜，脏数据清理完成")
+
+
 # 通过接口进行无损压缩
 @tool.route('/getall', methods=['GET', 'POST'])
 @login_required
@@ -125,3 +167,26 @@ def getall():
         'list': list
     }
     return restful.success(data=data)
+
+
+# 对之前的图片进行批量裁剪
+@tool.route('/resize', methods=['GET'])
+@login_required
+@admin_required
+@cross_origin()
+def resize():
+    # 转化所有png图片为jpg
+    # change_all_img_to_jpg()
+    # 裁剪upload文件夹下的图片生成缩略图
+    change_all_img_scale()
+    return restful.success(msg="压缩成功")
+
+
+# 通过接口进行无损压缩
+@tool.route('/tinypng', methods=['GET'])
+@login_required
+@admin_required
+@cross_origin()
+def compress_from_api():
+    compress_imgs_in_freetime()
+    return restful.success(msg="压缩成功")

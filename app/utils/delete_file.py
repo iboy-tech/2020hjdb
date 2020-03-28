@@ -23,11 +23,18 @@ def remove_files(filenames, kind):
     }
     if filenames:
         for file in filenames:
-            try:
                 if kind != 2:
-                    os.remove(os.path.join(file_path.get(0), file))
-                    os.remove(os.path.join(file_path.get(1), file))
+                    try:
+                        os.remove(os.path.join(file_path.get(0), file))
+                    except:
+                        pass
+                    try:
+                        os.remove(os.path.join(file_path.get(1), file))
+                    except:
+                        pass
                 else:
-                    os.remove(os.path.join(file_path.get(2), file))
-            except Exception as e:
-                print('文件不存在', str(e))
+                    try:
+                        os.remove(os.path.join(file_path.get(2), file))
+                    except :
+                        pass
+

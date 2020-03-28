@@ -23,7 +23,7 @@ from tasks import celery
 @Time    : 2020/3/9 23:04
 @Author  : iBoy
 @Email   : iboy@iboy.tech
-@Description : 
+@Description : 图片处理
 @Software: PyCharm
 """
 import os

@@ -83,7 +83,6 @@ class BaseConfig:
     # 缓存配置
     # 默认31天过期
     # PERMANENT_SESSION_LIFETIME = timedelta(days=31)  # session 的有效期，单位是秒
-    QR_CODE_SUFFIX = '-pusher-post-data'  # 微信公众号后缀
     SESSION_KEY_PREFIX = 'flask'
     MONGODB_SETTINGS = {
         'db': 'swzl',

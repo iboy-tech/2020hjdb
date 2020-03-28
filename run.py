@@ -19,7 +19,7 @@ from flask_cors import CORS
 from flask_login import current_user
 from flask_socketio import emit, SocketIO
 
-from app import create_app, create_celery, redis_client, OpenID
+from app import create_app, create_celery, redis_client, OpenID, PostConfig
 from app.utils.wxpusher import WxPusher
 
 # os.environ.setdefault('FORKED_BY_MULTIPROCESSING', '1')
@@ -51,11 +51,11 @@ def server(data):
     msg = data.get("msg")
     if msg == 'login':
         client_id = request.sid
-        key = client_id + '-pusher-post-data'
+        key = client_id + PostConfig.PUSHER_REDIS_PREFIX
         redis_client.set(key, 'null')  # 把数据存入redis
         redis_client.expire(key, 180)
     elif msg == 'wx':
-        key = str(current_user.id) + '-pusher-post-data'
+        key = str(current_user.id) + PostConfig.PUSHER_REDIS_PREFIX
         redis_client.set(key, 'null')  # 把数据存入redis
         redis_client.expire(key, 180)
     else:

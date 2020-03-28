@@ -18,7 +18,7 @@ from flask_cors import cross_origin
 from flask_login import logout_user, login_user, login_required, current_user
 
 from app import db, OpenID, redis_client
-from app.config import LoginConfig
+from app.config import LoginConfig, PostConfig
 from app.decorators import wechat_required, unfreeze_user
 from app.models.user_model import User
 from app.page import auth
@@ -76,7 +76,7 @@ def login():
     socket_id = request.args.get('token')
     print("我是登录的token", socket_id)
     if socket_id:
-        key = socket_id + '-pusher-post-data'
+        key = socket_id + PostConfig.PUSHER_REDIS_PREFIX
         op = redis_client.get(key)
         if op != 'null':
             # redies中为byte类型

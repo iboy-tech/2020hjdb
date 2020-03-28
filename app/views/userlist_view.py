@@ -225,7 +225,7 @@ def delete_users():
                 flag = True
         print("删除结果",users)
         if flag:
-            return restful.params_error(False, msg="超级管理员无法直接删除")
+            return restful.success(msg="已删除除超级管理员之外的用户")
         return restful.success(msg="删除成功")
     else:
         return restful.params_error(msg="参数错误")

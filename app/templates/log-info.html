@@ -90,15 +90,15 @@
                         <a href="/notice.html"><i class="fa fa-send-o nav_icon"></i>公告管理</a>
                     </li>
                     <li>
-                        <a href="/#"><i class="fa fa-university nav_icon"></i>用户主页</a>
+                        <a href="/#"><i class="fa fa-university nav_icon"></i>进入主页</a>
                     </li>
                     <li>
                         <a href="/feedback.html"><i class="fa fa-envelope nav_icon"></i>反馈管理
                             <!--<span class="nav-badge-btm">08</span>-->
                         </a>
                     </li>
-                    <li v-if="user.kind==3">
-                        <a href="#"><i class="fa fa-dashboard nav_icon "></i>日志管理<span class="fa arrow"></span></a>
+                    <li>
+                        <a href="#"><i class="fa fa-dashboard nav_icon "></i>系统日志<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level collapse">
                                                              <li><a href="/log.html?type=admin">操作日志</a></li>
                                <li><a href="/log.html?type=error">错误日志</a></li>
@@ -164,17 +164,15 @@
     <!-- //header-ends -->
         <!-- page content start-->
     <div id="page-wrapper">
-        <div class="main-page">
-            <div class="col-md-12" style="padding: 0px 0px 20px 0px;">
-                <div class="col-sm-2 col-lg-2 col-lg-offset-10">
-                    <div class="input-group right">
+
+<div class="main-page" style="min-height:50px;">
+       <div class="col-md-12">
+ <div class="input-group" style="float: right;">
 <button class="btn btn-primary glyphicon glyphicon-trash
 " type="button" style="margin-right: 20px;" @click="delete('info')" >清空</button>
 </div>
-                </div>
-                </div>
-
-            </div>
+       </div>
+</div>
             <div class="tables col-md-12">
                 <div class="bs-example widget-shadow" style="margin-top: 0px;">
                     <table class="table table-bordered table-hover table-condensed">
@@ -203,12 +201,8 @@
                     <p v-if="list.length == 0" class="text-center">无内容</p>
                 </div>
             </div>
-            <div class="row">
-
-                <div class="col-md-7">
-                </div>
-                <div class="col-md-5">
-                </div>
+            <div class="col-md-12" style="margin-top: 15px;">
+           <span>说明：请求日志用于记录用户的非法请求，如果某个用户有多次非法请求，需要采取限制措施</span>
             </div>
         </div>
     </div>
