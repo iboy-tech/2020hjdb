@@ -14,7 +14,6 @@ import re
 from flask import render_template, request
 from flask_cors import cross_origin
 from flask_login import login_required
-from sqlalchemy import or_
 
 from app import redis_client
 from app.config import PostConfig, LoginConfig
@@ -24,8 +23,10 @@ from app.page import tool
 # 通过接口进行无损压缩
 from app.utils import restful
 from app.utils.delete_file import remove_files
-from app.utils.img_process import find_big_img, change_all_img_to_jpg, compress_imgs_in_freetime, change_all_img_scale
-from app.utils.tinify_tool import tinypng
+from app.utils.img_process import find_big_img, change_all_img_scale
+from app.utils.tinypng_util import tinypng
+
+from tasks import celery
 
 
 @tool.route('/', methods=['GET', 'POST'])

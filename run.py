@@ -187,6 +187,7 @@ if __name__ == '__main__':
    set ff=unix
    celery worker -E -l INFO -A run.celery -n send_mail -Q send_mail -P eventlet
     celery worker -E -l INFO -A run.celery -n img_compress -Q img_compress -P eventlet
+   celery beat -A run.celery -l INFO -f logs/schedule_tasks.log --detach
 
  celery worker -E -l INFO -n worker_compute -Q for_task_compute
 celery -A 项目名 worker -loglevel=info ： 前台启动命令
@@ -194,5 +195,7 @@ celery multi start w1 -A 项目名 -l info ： 后台启动命令
 celery multi restart img_compress -A run.celery -l info ： 后台重启命令
 celery multi stop w1 -A 项目名 -l info ： 后台停止命令
    重启celery multi restart 1 --pidfile=%n.pid
+
+
     """
     socketio.run(app=app, host='0.0.0.0', port='8888')

@@ -15,7 +15,7 @@ import uuid
 from io import BytesIO
 
 from app.config import PostConfig
-from app.utils.tinify_tool import tinypng
+from app.utils.tinypng_util import tinypng
 from tasks import celery
 
 """
@@ -81,6 +81,7 @@ def change_all_img_scale():
             print(min_dir + file)
         except Exception as e:
             print("错误", str(e), file)
+
 
 
 def find_big_img():

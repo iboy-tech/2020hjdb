@@ -6,7 +6,8 @@ export C_FORCE_ROOT="True"
 
 rm -rf *.pid
 rm -rf *.log
-celery multi start celery worker -B -A run.celery  DEBUG -E -P eventlet -Q default
+celery beat -A run.celery -l INFO -f logs/schedule_tasks.log --detach
+
 celery multi start celery worker -A run.celery -l   DEBUG -E -P eventlet -Q default --logfile=logs/celery/default.log --pidfile=logs/celery/default.pid
 
 celery multi start celery worker -A run.celery -n send_mail -l  DEBUG -E -P eventlet -Q send_mail --logfile=logs/celery/send_mail.log --pidfile=logs/celery/send_mail.pid
