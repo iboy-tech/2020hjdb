@@ -17,3 +17,5 @@ migrations/*
 *.spec
 *.dir
 app/config.py
+!/.flaskenv
+!/.flaskenv
