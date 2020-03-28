@@ -41,9 +41,8 @@ class User(db.Model, UserMixin):
     last_login = db.Column(db.DateTime, default=datetime.now, info='最后登录时间')
     # 一对一关系要 在relationship里面lazy变量 uselist=False
     wx_open = relationship("OpenID", back_populates="user", uselist=False,cascade='all, delete-orphan')
-    # 一对多关系删除
-    posts = db.relationship('LostFound', backref='post_user', order_by=desc('create_time'),cascade='all, delete-orphan', lazy='dynamic',
-                            passive_deletes=True)
+    # 一对多关系删除其实lazy属性默认的是lazy="select"，它默认返回最终结果，等同于上面的.all()
+    posts = db.relationship('LostFound', backref='post_user', order_by=desc('create_time'),cascade='all, delete-orphan',passive_deletes=True)
     comments = db.relationship('Comment', backref='comment_user', cascade='all, delete-orphan', passive_deletes=True)
     reports = db.relationship('Report', backref='report_user', cascade='all, delete-orphan', passive_deletes=True)
     # 发布反馈

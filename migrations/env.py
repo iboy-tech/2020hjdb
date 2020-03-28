@@ -8,7 +8,7 @@ from sqlalchemy import pool
 
 from alembic import context
 
-# this is the Alembic Config object, which provides
+# this is the Alembic BaseConfig object, which provides
 # access to the values within the .ini file in use.
 config = context.config
 
@@ -47,7 +47,8 @@ def run_migrations_offline():
     """
     url = config.get_main_option("sqlalchemy.url")
     context.configure(
-        url=url, target_metadata=target_metadata, literal_binds=True
+        url=url, target_metadata=target_metadata, literal_binds=True,
+
     )
 
     with context.begin_transaction():
@@ -83,6 +84,8 @@ def run_migrations_online():
             connection=connection,
             target_metadata=target_metadata,
             process_revision_directives=process_revision_directives,
+            compare_type=True,  # 检查字段类型
+            compare_server_default=True, # 比较默认值
             **current_app.extensions['migrate'].configure_args
         )
 

@@ -178,17 +178,15 @@ def delete_img_and_report(posts, reports):
         for lost in posts:
             key = str(lost.id) + PostConfig.POST_REDIS_PREFIX
             redis_client.delete(key)
-            print(lost.images)
-            if  lost.images != "":
-                print("判断图片类型",lost.images,type(lost.images))
+            # print(lost.images)
+            if lost.images != "":
+                # print("判断图片类型", lost.images, type(lost.images))
                 # images =eval(lost.images)
                 # print("反序列化对象",ev,type(ev))
                 # lost.images = lost.images.replace('[', '').replace(']', '').replace(' \'', '').replace('\'', '')
                 temp_imglist = lost.images.split(',')
-                del_imgs +=temp_imglist
-            else:
-                print("判断图片类型",lost.images,type(lost.images))
-        print(del_imgs,type(del_imgs))
+                del_imgs += temp_imglist
+        # print(del_imgs, type(del_imgs))
         remove_files(del_imgs, 0)
     if reports:
         for report in reports:
@@ -202,9 +200,13 @@ def delete_users():
     req = request.json
     print(req)
     if req:
-        users = User.query.filter(User.id.in_(req))
+        users = User.query.filter(User.id.in_(req)).all()
+        print("删除前",len(users),users)
+        flag = False
         for u in users:
             if u.kind != 3:
+                print("当前要删除的用户",u)
+                u=db.session.merge(u)
                 posts = u.posts
                 reports = u.reports
                 # 删除图片和报告
@@ -212,15 +214,21 @@ def delete_users():
                 try:
                     db.session.delete(u)
                     db.session.commit()
+                    # db.session.close()
+                    # users.remove(u)
+                    print("删除后",len(users),users)
                 except Exception as e:
                     db.session.rollback()
                     return restful.params_error(success=False, msg=str(e))
             # 无法直接删除超级管理员
             else:
-                return restful.params_error(False, msg="超级管理员无法直接删除")
+                flag = True
+        print("删除结果",users)
+        if flag:
+            return restful.params_error(False, msg="超级管理员无法直接删除")
         return restful.success(msg="删除成功")
     else:
-        return restful.params_error(False, msg="参数错误")
+        return restful.params_error(msg="参数错误")
     return restful.success(msg="删除失败")
 
 
@@ -240,7 +248,7 @@ def delete_user():
             db.session.commit()
         except Exception as e:
             db.session.rollback()
-            msg=str(e)
+            msg = str(e)
             print(msg)
             return restful.params_error(success=False, msg=msg)
     else:

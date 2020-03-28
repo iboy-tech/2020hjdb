@@ -1,7 +1,7 @@
 var app = new Vue({
     el: "#app",
-    created(){
-        if(getSession("tabIndex")=="3"){
+    created() {
+        if (getSession("tabIndex") == "3") {
             getMessages(this);
         }
     },
@@ -11,7 +11,6 @@ var app = new Vue({
         isSearched: getSession("isSearched") ? JSON.parse(getSession("isSearched")) : false,
         user: getLocal("user") ? JSON.parse(getLocal("user")) : {},
         category: getCategory() || [],
-        userIcon: "https://ae01.alicdn.com/kf/H26181ae0390643b6850ad4c46341f8bcV.png",
         api: 'https://wpa.qq.com/msgrd?v=3&site=qq&menu=yes&uin=',
         imgPrefix: staticUrl,
         tab: [
@@ -83,7 +82,6 @@ var app = new Vue({
             subject: "",
             content: "",
         },
-        icon: "https://ae01.alicdn.com/kf/U89b7be7d8d234a38b9a4b0d4258de362X.jpg",
         password: {
             oldPassword: "",
             newPassword: "",
@@ -111,25 +109,25 @@ var app = new Vue({
             saveSession("tabIndex", index);
             deleteSession("data");
             saveSession("isSearched", false);
-            saveSession("pageNum",0);
+            saveSession("pageNum", 0);
             if (index == 0) {//主页
-                app.tab[0].list=[];
-                app.tab[0].search.pageNum=0;
-                app.tab[0].search.category="";
-                app.tab[0].search.kind=-1
-                app.nextPage(0,false);
+                app.tab[0].list = [];
+                app.tab[0].search.pageNum = 0;
+                app.tab[0].search.category = "";
+                app.tab[0].search.kind = -1
+                app.nextPage(0, false);
             } else if (index == 1) {//搜索
             } else if (index == 2) {//我发布的
-                app.tab[2].search.pageNum=0;
-                app.nextPage(2,false);
+                app.tab[2].search.pageNum = 0;
+                app.nextPage(2, false);
             } else if (index == 3) {//我的消息
                 getMessages(this);
             } else if (index == 4) {
             } else if (index == 5) {
-                app.showMenu=false;
+                app.showMenu = false;
                 // 常见问题
             } else if (index == 6) {
-                app.showMenu=false;
+                app.showMenu = false;
                 // 关于我们
             }
         },
@@ -148,7 +146,7 @@ var app = new Vue({
             this.tab[0].list = [];
             this.tab[0].search.kind = index;
             deleteSession("data");
-            app.nextPage(0,false);
+            app.nextPage(0, false);
             console.log(this.tab[0].search, this.tab[0]);
         },
         changeTab0Category(index) {
@@ -160,11 +158,11 @@ var app = new Vue({
             } else {
                 this.tab[0].search.category = this.category[index].name;
             }
-            app.nextPage(0,false);
+            app.nextPage(0, false);
             console.log(this.tab[0].search, this.tab[0]);
         },
-        nextPage(tabIndex,append) {
-            console.log("当前tabIndex",tabIndex)
+        nextPage(tabIndex, append) {
+            console.log("当前tabIndex", tabIndex)
             if (tabIndex == 0 || tabIndex == 2) {//这有主页，和我的需要无限滚动
                 pageLostFound(app.tab[tabIndex].search, app.tab[tabIndex], append);
                 app.tab[tabIndex].search.pageNum++;
@@ -270,10 +268,10 @@ var app = new Vue({
             //跳转详情页面
             saveLocal("isBack", true);
             // 记住当前数据
-            saveSession("pageNum",app.tab[app.tabIndex].search.pageNum);
+            saveSession("pageNum", app.tab[app.tabIndex].search.pageNum);
             saveSession("data", app.tab[app.tabIndex].list);
-            saveSession("toIndex",false);
-            saveSession("notice",app.notice);
+            saveSession("toIndex", false);
+            saveSession("notice", app.notice);
             if (app.tabIndex == 0) {
                 saveSession("category", app.tab[0].search.category);
                 saveSession("kind", app.tab[0].search.kind)
@@ -307,7 +305,7 @@ var app = new Vue({
         setPassword() {
             app.showMenu = false;
             layer.open({
-                btn: ['确定','取消'],
+                btn: ['确定', '取消'],
                 type: 1,
                 area: ['300px', 'auto'],
                 //shade: true,
@@ -340,7 +338,7 @@ var app = new Vue({
         },
         setQQ() {
             app.showMenu = false;
-            layer.prompt({title: '请输入新的QQ：'}, function (qq, index) {
+            layer.prompt({title: '请输入新的QQ：'}, function (qq) {
                 if (qq == '') {
                     showAlertError('QQ号不可为空！');
                     return false;
@@ -354,10 +352,6 @@ var app = new Vue({
                 //layer.close(index);
                 setQQ(qq);
             });
-        },
-        setIcon() {
-            app.showMenu = false;
-            $("#iconInput").click();
         },
         titleAlert(title) {
             console.log(title);
@@ -375,10 +369,10 @@ var app = new Vue({
                     // 搜索页面没有滚动加载
                 }
             } else if (app.tabIndex == 0 || app.tabIndex == 2) {
-                 app.nextPage(app.tabIndex,true);
+                app.nextPage(app.tabIndex, true);
             }
         });
-            io.observe(document.getElementById('flag'));
+        io.observe(document.getElementById('flag'));
     },
 
 });
@@ -388,7 +382,7 @@ function setQQ(qq) {
     //console.log(data);
     $.ajax({
         url: baseUrl + "/user.html/setQQ",
-        data: JSON.stringify({'qq':qq}),
+        data: JSON.stringify({'qq': qq}),
         method: "POST",
         success: function (res, status) {
             console.log(res);
@@ -416,22 +410,17 @@ function pubFeedback(data) {
         url: baseUrl + "/feedback.html/add",
         data: JSON.stringify(data),
         method: "POST",
-        success: function (res, status) {
+        success: function (res) {
             console.log(res);
-            if (status == "success") {
-                if (res.success) {
-                    layer.closeAll();
-                    showOK(res.msg);
-                    app.feedback = {
-                        subject: "",
-                        content: ""
-                    }
-                } else {
-                    showAlertError(res.msg)
+            if (res.success) {
+                layer.closeAll();
+                showOK(res.msg);
+                app.feedback = {
+                    subject: "",
+                    content: ""
                 }
             } else {
-                console.log(res);
-                showAlertError(res)
+                showAlertError(res.msg)
             }
         }
     });
@@ -445,7 +434,6 @@ function setPassword(data) {
         data: JSON.stringify(data),
         method: "POST",
         success: function (res) {
-
             if (res.success) {
                 layer.closeAll();
                 showOK();
@@ -499,10 +487,10 @@ function getNoticeList(app) {
         method: "POST",
         success: function (res) {
             if (res.success) {
-                    app.notice = res.data.list;
-                } else {
-                    showAlertError(res.msg)
-                }
+                app.notice = res.data.list;
+            } else {
+                showAlertError(res.msg)
+            }
         }
     });
 }
@@ -549,31 +537,6 @@ function getMessages(app) {
 }
 
 
-function setIcon(icon) {
-    $.ajax({
-        url: baseUrl + "/user.html/setIcon",
-        data: {icon: icon},
-        contentType: "application/x-www-form-urlencoded",
-        method: "POST",
-        success: function (res, status) {
-            console.log(res);
-            if (status == "success") {
-                if (res.success) {
-                    layer.closeAll();
-                    showOK();
-                    app.user.icon = res.data.icon;
-                    saveLocal("user", app.user);
-                } else {
-                    showAlertError(res.msg)
-                }
-            } else {
-                console.log(res);
-                showAlertError(res)
-            }
-        }
-    });
-}
-
 //选择上传图片
 function changeInput(obj) {
     console.log('change img')
@@ -607,20 +570,20 @@ function pubLostFound(data) {
         method: "POST",
         success: function (res) {
             console.log(res);
-                if (res.success) {
-                    showOK(res.msg);
-                    app.tab4 = {
-                        applyKind: 0,
-                        categoryIndex: -1,
-                        title: "",
-                        about: "",
-                        location: null,
-                        images: [],//srcList
-                    };
-                    console.log("删除缓存");
-                } else {
-                    showAlertError(res.msg)
-                }
+            if (res.success) {
+                showOK(res.msg);
+                app.tab4 = {
+                    applyKind: 0,
+                    categoryIndex: -1,
+                    title: "",
+                    about: "",
+                    location: null,
+                    images: [],//srcList
+                };
+                console.log("删除缓存");
+            } else {
+                showAlertError(res.msg)
+            }
         }
     });
 }
@@ -634,25 +597,25 @@ function pubLostFound(data) {
         method: "POST",
         success: function (res) {
             console.log(res);
-                if (res.success) {
-                    showOK(res.msg);
-                    app.tab[0].list=[];
-                    app.tab[0].search.pageNum=0;
-                    app.tab[0].search.category="";
-                    app.tab[0].search.kind=-1
-                    app.tab4 = {
-                        applyKind: 0,
-                        categoryIndex: -1,
-                        categoryId: 13,
-                        title: "",
-                        about: "",
-                        location: null,
-                        images: [],//srcList
-                    };
-                    app.changeTab(0);
-                } else {
-                    showAlertError(res.msg)
-                }
+            if (res.success) {
+                showOK(res.msg);
+                app.tab[0].list = [];
+                app.tab[0].search.pageNum = 0;
+                app.tab[0].search.category = "";
+                app.tab[0].search.kind = -1
+                app.tab4 = {
+                    applyKind: 0,
+                    categoryIndex: -1,
+                    categoryId: 13,
+                    title: "",
+                    about: "",
+                    location: null,
+                    images: [],//srcList
+                };
+                app.changeTab(0);
+            } else {
+                showAlertError(res.msg)
+            }
 
         }
     });
@@ -667,22 +630,22 @@ function pageLostFound(data, result, append) {
         method: "POST",
         success: function (res) {
             console.log(res);
-                if (res.success) {
-                    // result.search.pageNum = res.data.page.pageNum;
-                    result.search.pageSize = res.data.page.pageSize;
-                    result.totalPage = res.data.page.totalPage;
-                    result.total = res.data.page.total;
-                    if (append) {
-                        for (let v in res.data.page.list) {
-                            //console.log(v);
-                            result.list.push(res.data.page.list[v]);
-                        }
-                    } else {
-                        result.list = res.data.page.list;
+            if (res.success) {
+                // result.search.pageNum = res.data.page.pageNum;
+                result.search.pageSize = res.data.page.pageSize;
+                result.totalPage = res.data.page.totalPage;
+                result.total = res.data.page.total;
+                if (append) {
+                    for (let v in res.data.page.list) {
+                        //console.log(v);
+                        result.list.push(res.data.page.list[v]);
                     }
                 } else {
-                    showAlertError(res.msg)
+                    result.list = res.data.page.list;
                 }
+            } else {
+                showAlertError(res.msg)
+            }
         }
     });
 }
@@ -692,31 +655,25 @@ function getCategory() {
     $.ajax({
         url: baseUrl + "/category.html/getall",
         method: "POST",
-        success: function (res, status) {
+        success: function (res) {
             console.log(res);
-            if (status == "success") {
                 if (res.success) {
                     app.category = res.data.list
                 } else {
                     showAlertError(res.msg)
                 }
-            } else {
-                console.log(res);
-                showAlertError(res)
-            }
         }
     });
 }
 
 $(function () {
-    if(getSession("notice")!=null){
-        app.notice=JSON.parse(getSession("notice"));
-    }
-    else {
+    if (getSession("notice") != null) {
+        app.notice = JSON.parse(getSession("notice"));
+    } else {
         getNoticeList(app);
     }
-    //从详情页返回
-    if (getLocal("isBack") == "true") {
+    //从详情页返回,还要考虑中途退出的情况
+    if (getLocal("isBack") == "true" && JSON.parse(getSession("tabIndex"))!=null) {
         app.tabIndex = JSON.parse(getSession("tabIndex"));
         console.log("我是现在的tab", app.tabIndex);
         if (app.tabIndex == 1) {
@@ -726,26 +683,26 @@ $(function () {
         }
         if (app.tabIndex == 0) {
             //主页的搜索数据
-            app.tab[0].search.pageNum=JSON.parse(getSession("pageNum"));
+            app.tab[0].search.pageNum = JSON.parse(getSession("pageNum"));
             app.tab[0].search.category = getSession("category");
             app.tab[0].search.kind = JSON.parse(getSession("kind"));
         }
-        if(app.tabIndex==2){
-            app.tab[2].search.pageNum=JSON.parse(getSession("pageNum"));
+        if (app.tabIndex == 2) {
+            app.tab[2].search.pageNum = JSON.parse(getSession("pageNum"));
         }
         app.tab[app.tabIndex].list = JSON.parse(getSession("data"));
         $("html,body").scrollTop(JSON.parse(getSession("scroll")))
         deleteLocal("isBack");
         deleteSession("data");
     }
-/**
-    else {
+    /**
+     else {
         if(app.tabIndex == 3){
             console.log("页面加载的时候获取消息");
              app.changeTab(3);
         }
     }
- */
+     */
     let sessionIndex = getSession("tabIndex");
     if (sessionIndex != null) {
         app.tabIndex = JSON.parse(sessionIndex);

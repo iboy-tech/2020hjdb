@@ -1,8 +1,8 @@
-"""对部分表加入索引
+"""加入索引
 
-Revision ID: 90504143ccfd
-Revises: 393b0a79dfc0
-Create Date: 2020-03-21 17:45:29.158642
+Revision ID: 867d6e68873c
+Revises: 65f4e2fa1a95
+Create Date: 2020-03-21 17:47:25.356530
 
 """
 from alembic import op
@@ -10,8 +10,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '90504143ccfd'
-down_revision = '393b0a79dfc0'
+revision = '867d6e68873c'
+down_revision = '65f4e2fa1a95'
 branch_labels = None
 depends_on = None
 
@@ -23,6 +23,12 @@ def upgrade():
     op.create_index(op.f('ix_t_category_name'), 't_category', ['name'], unique=True)
     op.drop_index('name', table_name='t_category')
     op.create_index(op.f('ix_t_feedback_user_id'), 't_feedback', ['user_id'], unique=False)
+    op.create_index(op.f('ix_t_lost_found_category_id'), 't_lost_found', ['category_id'], unique=False)
+    op.create_index(op.f('ix_t_lost_found_claimant_id'), 't_lost_found', ['claimant_id'], unique=False)
+    op.create_index(op.f('ix_t_lost_found_create_time'), 't_lost_found', ['create_time'], unique=False)
+    op.create_index(op.f('ix_t_lost_found_title'), 't_lost_found', ['title'], unique=False)
+    op.create_index(op.f('ix_t_lost_found_user_id'), 't_lost_found', ['user_id'], unique=False)
+    op.drop_index('INDEX_LF', table_name='t_lost_found')
     op.create_index(op.f('ix_t_report_user_id'), 't_report', ['user_id'], unique=False)
     op.create_index(op.f('ix_t_user_qq'), 't_user', ['qq'], unique=True)
     op.create_index(op.f('ix_t_user_real_name'), 't_user', ['real_name'], unique=False)
@@ -40,6 +46,12 @@ def downgrade():
     op.drop_index(op.f('ix_t_user_real_name'), table_name='t_user')
     op.drop_index(op.f('ix_t_user_qq'), table_name='t_user')
     op.drop_index(op.f('ix_t_report_user_id'), table_name='t_report')
+    op.create_index('INDEX_LF', 't_lost_found', ['title', 'category_id'], unique=False)
+    op.drop_index(op.f('ix_t_lost_found_user_id'), table_name='t_lost_found')
+    op.drop_index(op.f('ix_t_lost_found_title'), table_name='t_lost_found')
+    op.drop_index(op.f('ix_t_lost_found_create_time'), table_name='t_lost_found')
+    op.drop_index(op.f('ix_t_lost_found_claimant_id'), table_name='t_lost_found')
+    op.drop_index(op.f('ix_t_lost_found_category_id'), table_name='t_lost_found')
     op.drop_index(op.f('ix_t_feedback_user_id'), table_name='t_feedback')
     op.create_index('name', 't_category', ['name'], unique=True)
     op.drop_index(op.f('ix_t_category_name'), table_name='t_category')

@@ -30,7 +30,7 @@ def get_log():
     data.pop("is_admin")
     data.pop("real_name")
     ext = {
-        "url": request.url.replace(os.getenv("SITE_URL"),""),
+        "url": request.url.replace(os.getenv("SITE_URL").replace("https","http"),""),
         "username": current_user.username
     }
     data.update(ext)
