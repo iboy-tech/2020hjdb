@@ -8,6 +8,7 @@ app/static/upload/*
 app/static/thumb/*
 migrations/*
 .env
+.flaskenv
 *.xlsx
 *.log
 *.txt
