@@ -5,9 +5,10 @@ logs/*
 venv/
 app/config.py
 *.xlsx
-total.xlsx
 app/static/upload/*
 app/static/thumb/*
 *.log
 *.txt
 tests/*
+__pycache__
+migrations
