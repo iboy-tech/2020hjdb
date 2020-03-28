@@ -11,4 +11,8 @@ migrations/*
 *.xlsx
 *.log
 *.txt
+*.bak
+*.pid
+*.spec
+*.dir
 app/config.py
