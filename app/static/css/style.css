@@ -2045,6 +2045,7 @@ h4.modal-title {
     font-size: 1.2em;
     background-color: #F5F5F5;
 }
+/**
 .compose-left ul li a {
     display: block;
     font-size: 1em;
@@ -2055,6 +2056,8 @@ h4.modal-title {
 .compose-left ul li a:hover {
     background-color: rgb(241, 241, 241);
 }
+*/
+
 .compose-left span {
     float: right;
     background-color: rgba(233, 78, 2, 0.73);

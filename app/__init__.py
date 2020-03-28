@@ -50,6 +50,7 @@ from app.page import chart as admin_bp
 from app.page import report as report_bp
 from app.page import tool as tool_bp
 from app.page import log as log_bp
+from app.page import lab as lab_bp
 
 
 # 工厂函数
@@ -87,7 +88,7 @@ def register_blueprints(app):
     app.register_blueprint(report_bp)
     app.register_blueprint(tool_bp)
     app.register_blueprint(log_bp)
-
+    app.register_blueprint(lab_bp)
 
 def register_extensions(app):  # 实例化扩展
     print('注册扩展')

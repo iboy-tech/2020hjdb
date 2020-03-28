@@ -143,7 +143,6 @@ def clear():
     return restful.success(msg="恭喜，脏数据清理完成")
 
 
-# 通过接口进行无损压缩
 @tool.route('/getall', methods=['GET', 'POST'])
 @login_required
 @admin_required
@@ -179,14 +178,6 @@ def resize():
     # change_all_img_to_jpg()
     # 裁剪upload文件夹下的图片生成缩略图
     change_all_img_scale()
-    return restful.success(msg="压缩成功")
+    return restful.success(msg="裁剪成功")
 
 
-# 通过接口进行无损压缩
-@tool.route('/tinypng', methods=['GET'])
-@login_required
-@admin_required
-@cross_origin()
-def compress_from_api():
-    compress_imgs_in_freetime()
-    return restful.success(msg="压缩成功")

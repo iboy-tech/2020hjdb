@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-<title>物品分类</title>
+    <title>实验室</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="keywords" content="三峡大学失物招领中心"/>
@@ -15,7 +15,6 @@
     <!-- Bootstrap Core CSS -->
         <link href=" https://cdn.bootcss.com/twitter-bootstrap/3.3.4/css/bootstrap.min.css" rel='stylesheet' type='text/css'/>
 
-
     <!-- Custom CSS -->
     <link href="../static/css/style.css" rel='stylesheet' type='text/css'/>
     <!-- font CSS -->
@@ -25,6 +24,9 @@
     <!-- js-->
         <script src="https://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
     <script src="../static/js/modernizr.custom.js"></script>
+    <script src="https://cdn.bootcss.com/moment.js/2.19.4/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.26/vue.min.js"></script>
+
     <!--webfonts-->
     <!-- <link href='//fonts.googleapis.com/css?family=Roboto+Condensed:400,300,300italic,400italic,700,700italic' rel='stylesheet' type='text/css'> -->
     <!--//webfonts-->
@@ -41,9 +43,21 @@
     <link href="../static/css/custom.css" rel="stylesheet">
     <!--//Metis Menu -->
     <style>
-        .compose-left span {
-            background-color: inherit;
-            clear: both;
+        a {
+            cursor: pointer;
+        }
+        td, th {
+            padding: 2px !important;
+        }
+.lab {
+    display: block;
+    font-size: 1em;
+    color: #555;
+    border-bottom: 1px solid #DCDCDC;
+    padding: 0.7em 1.5em;
+}
+        .widget-shadow a{
+            color: white !important;
         }
     </style>
 </head>
@@ -63,24 +77,24 @@
                             <li>
                                 <a href="/found.html">招领启事</a>
                             </li>
-                            <li>
+                          <li>
                                 <a href="/report.html">报表导出</a>
                             </li>
-                          <li>
+                              <li>
                                 <a href="/tool.html">图片压缩</a>
                             </li>
                             <li>
-                                <a href="/category.html">类别管理</a>
+                                <a href="/category.html">类别管理
+                                    <!--<span class="nav-badge-btm">8</span>-->
+                                </a>
                             </li>
                         </ul>
                         <!-- /nav-second-level -->
                     </li>
+
                     <li>
                         <a href="/userlist.html"><i class="fa fa-users nav_icon"></i>用户管理</a>
                     </li>
-                    <!--<li>-->
-                        <!--<a href="report1.html"><i class="fa fa-university nav_icon"></i>校区管理</a>-->
-                    <!--</li>-->
                     <li>
                         <a href="/notice.html"><i class="fa fa-send-o nav_icon"></i>公告管理</a>
                     </li>
@@ -95,19 +109,18 @@
                     <li>
                         <a href="#"><i class="fa fa-dashboard nav_icon "></i>系统日志<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level collapse">
-                                <li><a href="/log.html?type=admin">操作日志</a></li>
+                                                             <li><a href="/log.html?type=admin">操作日志</a></li>
                                <li><a href="/log.html?type=error">错误日志</a></li>
                                 <li><a href="/log.html?type=info">请求日志</a></li>
 
                         </ul>
                     </li>
-              <li>
+               <li>
                  <a href="/lab.html"><i class="fa fa-flask nav_icon"></i>实验室</a>
                </li>
-                    <li class="visible-xs-block">
+           <li class="visible-xs-block">
                         <a href="#" @click="logout"><i class="fa fa-sign-out nav_icon"></i>安全退出</a>
                     </li>
-
                 </ul>
                 <!-- //sidebar-collapse -->
             </nav>
@@ -151,8 +164,6 @@
                             </div>
                         </a>
                         <ul class="dropdown-menu drp-mnu">
-                            <!--<li><a ><i class="fa fa-cog"></i> Settings</a></li>-->
-                            <!--<li><a ><i class="fa fa-user"></i> Profile</a></li>-->
                             <li><a @click="logout"><i class="fa fa-sign-out"></i>退出</a></li>
                         </ul>
                     </li>
@@ -163,58 +174,56 @@
         <div class="clearfix"></div>
     </div>
     <!-- //header-ends -->
-    <!-- page content start-->
-    <div id="page-wrapper">
-        <div class="main-page compose">
-            <div class="col-md-4 compose-left">
-                <div class="folder widget-shadow" style="max-height: 420px; overflow: hidden; overflow-y: scroll;">
-                    <ul>
-                        <li class="head">所有类别（{{categoryList.length}}）：</li>
-                        <block v-for="(item, index) in categoryList">
-                            <li>
-                                <a @click="showAbout(index)">
-                                    {{item.name}}
-                                    <span v-if="item.count > 0" style="background-color: rgba(233, 78, 2, 0.73);">{{item.count}}</span>
-                                    <span v-else @click.stop="deleteCategory(item.name)" style="background-color: #d9534f;"
-                                          class="glyphicon glyphicon-remove"></span>
-                                </a>
+        <!-- page content start-->
+   <div id="page-wrapper">
+			<div class="main-page compose">
+				<div class="col-md-12 compose-left" style="width: 100%;">
+					<div class="folder widget-shadow" style="margin-left: 10px;">
+						<ul>
+							<li class="head">介绍</li>
+							<li>
+								<div class="chat-right">
+									<p style="line-height: 2em;text-indent: 2em;padding: 10px;">
+										这里的功能是一些工具接口，用于无缝迁移，比如早期图片格式是png，后来改成了jpg，为了不影响已上传的图片，
+                                        所以写了png转jpg的接口，还有后来采用缩略图显示，为了生成对应的缩略图，写了图片批量裁剪的接口，这些接口可能还会用上，但是在其他页面没有显式的提供调用方式，所以集中
+                                        把一些可能还会用到的接口写在这里，有需要可以调用
+									</p>
+								</div>
+								<div class="clearfix"> </div>
+							</li>
+						</ul>
+					</div>
+				</div>
+
+				<div class="col-md-4 compose-left" style="margin-top: 24px;">
+					<div class="folder widget-shadow" style="margin-left: 10px;">
+						<ul>
+							<li class="head">图片裁剪</li>
+							<li class="lab">地址：tool.html/resize<span class="label label-info" style="padding: 4px 8px;"><a href="/tool.html/resize" target="_blank">执行</a></span></li>
+							<li  class="lab">
+                                说明：生产环境，基本无需使用
                             </li>
-                        </block>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-md-8 compose-right widget-shadow">
-                <div class="panel-default">
-                    <div class="panel-heading">
-                        新增类别：
-                    </div>
-                    <div class="panel-body">
-                        <!--<div class="alert alert-info">-->
-                        <!--Please fill details to send a new message-->
-                        <!--</div>-->
-                        <div class="com-mail">
-                            <input v-model="category.name" type="text" class="form-control1 control3"
-                                   maxlength="128" placeholder="名称">
-                            <!--<input type="text" class="form-control1 control3" placeholder="Subject :">-->
-                            <textarea v-model="category.about" rows="6" class="form-control1 control2"
-                                      placeholder="说明" maxlength="256"></textarea>
-                            <!--<div class="form-group">-->
-                            <!--<div class="btn btn-default btn-file">-->
-                            <!--<i class="fa fa-paperclip"></i> Attachment-->
-                            <!--<input type="file" name="attachment">-->
-                            <!--</div>-->
-                            <!--<p class="help-block">Max. 32MB</p>-->
-                            <!--</div>-->
-                            <input :disabled="category.name.length==0" type="submit" @click="submit" value="确定">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="clearfix"></div>
+                            <li  class="lab">备注：同步执行，耗时较长</li>
+						</ul>
+					</div>
+				</div>
+
+				<div class="col-md-4 compose-left"  style="margin-top: 24px;">
+					<div class="folder widget-shadow" style="margin-left: 10px;">
+						<ul>
+							<li class="head">垃圾清理</li>
+<li class="lab">地址：tool.html/clear<span class="label label-info" style="padding: 4px 8px;"><a href="/tool.html/clear" target="_blank">执行</a></span></li>
+							<li  class="lab">
+                                说明：图片删除,REDIS过期删除会由于一些原因失败,比如发帖删除而帖子的配图还在，这就产生了脏数据，通过此接口可以删除那些无用数据
+                            </li>
+                            <li  class="lab">备注：同步执行，耗时较长，推荐使用</li>
+						</ul>
+					</div>
+				</div>
         </div>
     </div>
     <!--footer-->
-    <div class="footer">
+        <div class="footer">
         <p>&copy; 三峡大学失物招领中心 | <a href="https://tongji.baidu.com/web/welcome/ico?s=cadc146ea11d785cac889d32e36f336b" target="_blank">访问统计</a></p>
     </div>
     <!--//footer-->
@@ -222,18 +231,16 @@
 <!-- Classie -->
 <script src="../static/js/classie.js"></script>
 
-
 <!-- Bootstrap Core JavaScript -->
 <script src="https://cdn.bootcss.com/twitter-bootstrap/3.3.4/js/bootstrap.js"></script>
-
-<script src="https://cdn.bootcss.com/vue/2.4.2/vue.min.js"></script>
 <script src="https://cdn.bootcss.com/layer/2.3/layer.js"></script>
 <script src="../static/js/mine/common.js"></script>
-<script src="../static/js/mine/category.js"></script>
+<script src="../static/js/mine/log.js"></script>
 <script>
      // hideLoading();
      $(function () {
         isAnonymous();
+        getLogs(app, "admin",false);
      })
 </script>
 </body>
