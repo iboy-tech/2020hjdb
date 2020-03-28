@@ -1,0 +1,59 @@
+
+<html>
+<head>
+  <title>三峡大学失物招领中心</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- 引入 Bootstrap -->
+<link href="https://cdn.bootcss.com/twitter-bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet"> 
+<style type="text/css">
+	body {
+    font-family: "Helvetica Neue","Luxi Sans","DejaVu Sans",Tahoma,"Hiragino Sans GB","Microsoft Yahei",sans-serif;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #333;
+    background-color: #fff;
+}
+.panel-body {
+    padding: 15px;
+}
+	.panel {
+    border: 1px solid #d1d5da;
+    margin-bottom: 10px;
+     background-color: #fff;
+    border-radius: 4px;
+}
+h1, h2, h3, h4, h5, h6 {
+    margin-top: 1em;
+    margin-bottom: 16px;
+    font-weight: 700;
+    line-height: 1.4;
+}
+h3 {
+    font-size: 1.5em;
+    line-height: 1.43;
+}
+h1 {
+    padding-bottom: .3em;
+    font-size: 2.25em;
+    line-height: 1.2;
+    border-bottom: 1px solid #eee;
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <br>
+  <br>
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <h1>: (</h1>
+      <h3>Bad Request</h3>
+        <p>IP：{{ data.ip }}</p>
+<p>ADDR：{{ data.addr }}</p>
+<p>URL：{{ data.url }}</p>
+<p>TIME：{{ data.time }}</p>
+    </div>
+  </div>
+</div>
+</body>
+</html>

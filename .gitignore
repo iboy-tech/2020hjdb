@@ -1,0 +1,14 @@
+# Environments
+.idea
+__pycache__
+logs/*
+venv/*
+tests/*
+app/static/upload/*
+app/static/thumb/*
+migrations/*
+.env
+*.xlsx
+*.log
+*.txt
+app/config.py

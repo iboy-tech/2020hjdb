@@ -1,0 +1,262 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>通知管理</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="keywords" content="三峡大学失物招领中心"/>
+    <script type="application/x-javascript"> addEventListener("load", function () {
+        setTimeout(hideURLbar, 0);
+    }, false);
+
+    function hideURLbar() {
+        window.scrollTo(0, 1);
+    } </script>
+    <!-- Bootstrap Core CSS -->
+        <link href=" https://cdn.bootcss.com/twitter-bootstrap/3.3.4/css/bootstrap.min.css" rel='stylesheet' type='text/css'/>
+
+    <!-- Custom CSS -->
+    <link href="../static/css/style.css" rel='stylesheet' type='text/css'/>
+    <!-- font CSS -->
+    <!-- font-awesome icons -->
+    <link href="../static/css/font-awesome.css" rel="stylesheet">
+    <!-- //font-awesome icons -->
+    <!-- js-->
+        <script src="https://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+    <script src="../static/js/modernizr.custom.js"></script>
+    <!--webfonts-->
+    <!-- <link href='//fonts.googleapis.com/css?family=Roboto+Condensed:400,300,300italic,400italic,700,700italic' rel='stylesheet' type='text/css'> -->
+    <!--//webfonts-->
+    <!--animate-->
+    <link href="../static/css/animate.css" rel="stylesheet" type="text/css" media="all">
+    <script src="../static/js/wow.min.js"></script>
+    <script>
+        new WOW().init();
+    </script>
+    <!--//end-animate-->
+    <!-- Metis Menu -->
+    <script src="../static/js/metisMenu.min.js"></script>
+    <script src="../static/js/custom.js"></script>
+    <link href="../static/css/custom.css" rel="stylesheet">
+    <!--//Metis Menu -->
+</head>
+<body class="cbp-spmenu-push">
+<div class="main-content" id="app">
+    <!--left-fixed -navigation-->
+    <div class=" sidebar" role="navigation">
+        <div class="navbar-collapse">
+            <nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-left" id="cbp-spmenu-s1">
+                <ul class="nav" id="side-menu">
+                    <li>
+                        <a href="/chart.html"><i class="fa fa-bar-chart nav_icon"></i>数据统计</a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-list-ul nav_icon"></i>招领管理<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level collapse">
+                            <li>
+                                <a href="/found.html">招领启事</a>
+                            </li>
+                            <li>
+                                <a href="/report.html">报表导出</a>
+                            </li>
+                              <li>
+                                <a href="/tool.html">图片压缩</a>
+                            </li>
+                            <li>
+                                <a href="/category.html">类别管理
+                                    <!--<span class="nav-badge-btm">8</span>-->
+                                </a>
+                            </li>
+                        </ul>
+                        <!-- /nav-second-level -->
+                    </li>
+                    <li>
+                        <a href="/userlist.html"><i class="fa fa-users nav_icon"></i>用户管理</a>
+                    </li>
+                    <!--<li>-->
+                    <!--<a href="report1.html"><i class="fa fa-university nav_icon"></i>校区管理</a>-->
+                    <!--</li>-->
+                    <li>
+                        <a href="/notice.html"><i class="fa fa-send-o nav_icon"></i>公告管理</a>
+                    </li>
+                    <li>
+     <a href="/#"><i class="fa fa-university nav_icon"></i>用户主页</a>
+                    </li>
+                    <li>
+                        <a href="/feedback.html"><i class="fa fa-envelope nav_icon"></i>反馈管理
+                            <!--<span class="nav-badge-btm">08</span>-->
+                        </a>
+                        <!-- //nav-second-level -->
+                    </li>
+                             <li v-if="user.kind==3">
+                        <a href="#"><i class="fa fa-dashboard nav_icon "></i>日志管理<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level collapse">
+                                                             <li><a href="/log.html?type=admin">操作日志</a></li>
+                               <li><a href="/log.html?type=error">错误日志</a></li>
+                                <li><a href="/log.html?type=info">请求日志</a></li>
+
+                        </ul>
+                    </li>
+           <li class="visible-xs-block">
+                        <a href="#" @click="logout"><i class="fa fa-sign-out nav_icon"></i>安全退出</a>
+                    </li>
+                </ul>
+                <!-- //sidebar-collapse -->
+            </nav>
+        </div>
+    </div>
+    <!--left-fixed -navigation-->
+    <!-- header-starts -->
+    <div class="sticky-header header-section ">
+        <div class="header-left">
+            <!--toggle button start-->
+            <button id="showLeftPush"><i class="fa fa-bars"></i></button>
+            <!--toggle button end-->
+            <!--logo -->
+            <div class="logo">
+                <a href="/chart.html">
+                    <h1>三峡大学失物招领中心</h1>
+                    <span>管理控制台</span>
+                </a>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <div class="header-right">
+
+            <!--notification menu end -->
+            <div class="profile_details visible-lg-block">
+                <ul>
+                    <li class="dropdown profile_details_drop">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                            <div class="profile_img">
+									<span class="prfil-img">
+										<img :src="user.icon"
+                                             style="max-width: 50px; max-height: 50px;">
+									</span>
+                                <div class="user-name">
+                                    <p v-if="user.kind==2 ">{{"管理员 "+user.realName}}</p>
+                                    <p v-else="user.kind==3 ">{{"超级管理员 "+user.realName}}</p>
+                                    <span>{{user.studentNum}}</span>
+                                </div>
+                                <i class="fa fa-angle-down lnr"></i>
+                                <i class="fa fa-angle-up lnr"></i>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                        <ul class="dropdown-menu drp-mnu">
+                            <!--<li><a ><i class="fa fa-cog"></i> Settings</a></li>-->
+                            <!--<li><a ><i class="fa fa-user"></i> Profile</a></li>-->
+                            <li><a @click="logout"><i class="fa fa-sign-out"></i>退出</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <!-- //header-ends -->
+    <!-- page content start-->
+    <div id="page-wrapper">
+        <div class="main-page general">
+            <!--<h3 class="title1">General Elements</h3>-->
+            <div class="panel-info widget-shadow">
+                <h4 class="title2">
+                    公告一览：
+                    <button @click="showAdd" type="button" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span>
+                    </button>
+                </h4>
+                <div class="col-md-6 panel-grids">
+                    <div class="panel panel-info" v-for="(item,index) in list">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">{{item.title}}</h3>
+                        </div>
+                        <div class="panel-body">
+                            {{item.content}}
+                        </div>
+                        <div class="panel-footer">
+                            <!--<p>-->
+                            <h5 style="display: inline-block;">{{item.time}}</h5>
+
+                            <button @click="deleteNotice(item.id)" style="float: right;" type="button" class="btn btn-danger btn-xs">
+                                <!--<span class="thumbtack icon"></span>-->
+                                <span class="glyphicon glyphicon-trash"></span>
+                            </button>
+                            <button @click="switchFix(item.id, index)" :title="item.fixTop==1?'已置顶':'未置顶'"
+                                    :class="{'btn-primary': item.fixTop==1, 'btn-default': item.fixTop==0}"
+                                    style="float: right; margin-right: 4px;" type="button" class="btn btn-xs">
+                                <!--<span class="thumbtack icon"></span>-->
+                                <span class="glyphicon glyphicon-pushpin"></span>
+                            </button>
+                            <!--</p>-->
+                            <!--<h6>2019-04-13 16:48:55</h6>-->
+                            <!--<span style="float: right;" class="label label-info">2019-04-13 16:48:55</span>-->
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="clearfix"></div>
+            </div>
+
+        </div>
+        <class class="row" id="addDiv" style="display: none;">
+            <div class="form-three widget-shadow">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label for="focusedinput" class="col-sm-2 control-label">标题</label>
+                        <div class="col-sm-10">
+                            <input type="text" v-model="notice.title" class="form-control1" id="focusedinput" maxlength="30" placeholder="标题(最多30字)">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="txtarea1" class="col-sm-2 control-label">内容</label>
+                        <div class="col-sm-10">
+                            <textarea v-model="notice.content" id="txtarea1" cols="50" maxlength="200" rows="5" placeholder="内容(最多200字)"
+                                                        class="form-control1" style="height: auto;"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">设置</label>
+                        <div class="col-sm-10">
+                            <div class="checkbox-inline"><label><input type="checkbox" v-model="notice.fixTop">置顶</label></div>
+                            <div class="checkbox-inline" v-if="user.kind==3"><label><input type="checkbox" v-model="notice.pusher">微信群发(重要通知)</label></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label"></label>
+                        <div class="col-sm-10">
+                            <button type="button" class="btn btn-default" style="background-color: #6164C1;
+                                color: #fff;" @click="submit">确定</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </class>
+    </div>
+    <!--footer-->
+        <div class="footer">
+        <p>&copy; 三峡大学失物招领中心 | <a href="https://tongji.baidu.com/web/welcome/ico?s=cadc146ea11d785cac889d32e36f336b" target="_blank">访问统计</a></p>
+    </div>
+    <!--//footer-->
+</div>
+<!-- Classie -->
+<script src="../static/js/classie.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="https://cdn.bootcss.com/twitter-bootstrap/3.3.4/js/bootstrap.js"></script>
+<script src="https://cdn.bootcss.com/vue/2.4.2/vue.min.js"></script>
+<script src="https://cdn.bootcss.com/layer/2.3/layer.js"></script>
+<script src="../static/js/mine/common.js"></script>
+<script src="../static/js/mine/notice.js"></script>
+<script>
+     // hideLoading();
+     $(function () {
+        isAnonymous();
+     })
+</script>
+</body>
+</html>
