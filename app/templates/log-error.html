@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>操作日志</title>
+    <title>错误日志</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="keywords" content="三峡大学失物招领中心"/>
@@ -96,8 +96,9 @@
                         <a href="/feedback.html"><i class="fa fa-envelope nav_icon"></i>反馈管理
                             <!--<span class="nav-badge-btm">08</span>-->
                         </a>
+                        <!-- //nav-second-level -->
                     </li>
-                    <li>
+                    <li v-if="user.kind==3">
                         <a href="#"><i class="fa fa-dashboard nav_icon "></i>系统日志<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level collapse">
                                                              <li><a href="/log.html?type=admin">操作日志</a></li>
@@ -106,7 +107,7 @@
 
                         </ul>
                     </li>
-                    <li>
+                                <li v-if="user.kind==3">
                  <a href="/lab.html"><i class="fa fa-flask nav_icon"></i>实验室</a>
                </li>
            <li class="visible-xs-block">
@@ -167,35 +168,33 @@
     <!-- //header-ends -->
         <!-- page content start-->
     <div id="page-wrapper">
-        <div class="main-page" style="min-height:50px;">
-               <div class="col-md-12">
- <div class="input-group" style="float: right;">
+        <div class="main-page" style="min-height: 50px;">
+    <div class="col-md-12">
+         <div class="input-group" style="float: right;">
 <button class="btn btn-primary glyphicon glyphicon-trash
 " type="button" style="margin-right: 20px;" @click="delete('error')" >清空</button>
 </div>
- </div>
-</div>
+    </div>
 
+            </div>
             <div class="tables col-md-12">
                 <div class="bs-example widget-shadow" style="margin-top: 0px;">
                     <table class="table table-bordered table-hover table-condensed">
                         <thead>
                         <tr>
                             <th>ID</th>
-                            <th>用户</th>
-                            <th>IP</th>
-                            <th>地址</th>
-                            <th>路径</th>
+                            <th>管理员</th>
+                            <th>操作类型</th>
+                            <th>详情</th>
                             <th>时间</th>
                         </tr>
                         </thead>
                         <tbody>
                          <tr v-for=" (index,item) in list">
                                     <th scope="row">{{index+1}}</th>
-                                    <td>{{item.username}}</td>
-                                    <td>{{item.ip}}</td>
-                                    <td>{{item.addr}}</td>
-                                    <td>{{item.url}}</td>
+                                    <td>{{item.real_name}}</td>
+                                    <td>{{item.type}}</td>
+                                    <td>{{item.detail}}</td>
                                     <td>{{item.time}}</td>
                             </tr>
                         </tr>
@@ -205,8 +204,10 @@
                     <p v-if="list.length == 0" class="text-center">无内容</p>
                 </div>
             </div>
-            <div class="col-md-12" style="margin-top: 15px;">
-           <span>说明：错误日志用于记录那些让服务器内部出错的请求，方便问题定位</span>
+            <div class="row">
+ <div class="col-md-12" style="margin-top: 15px;">
+           <span>说明：错误日志用于记录那些让服务器内部出错的请求，方便问题定位 (此页面仅超级管理员可见)</span>
+            </div>
             </div>
         </div>
     </div>

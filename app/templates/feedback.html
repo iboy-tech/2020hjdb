@@ -84,7 +84,7 @@
                     <li>
                         <a href="/feedback.html"><i class="fa fa-envelope nav_icon"></i>反馈管理</a>
                     </li>
-                                        <li>
+                     <li v-if="user.kind==3">
                         <a href="#"><i class="fa fa-dashboard nav_icon "></i>系统日志<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level collapse">
                              <li><a href="/log.html?type=admin">操作日志</a></li>
@@ -93,7 +93,7 @@
 
                         </ul>
                     </li>
-               <li>
+               <li v-if="user.kind==3">
                  <a href="/lab.html"><i class="fa fa-flask nav_icon"></i>实验室</a>
                </li>
 

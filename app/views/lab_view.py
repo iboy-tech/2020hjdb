@@ -11,7 +11,7 @@
 from flask import render_template
 from flask_login import login_required
 
-from app.decorators import admin_required, super_admin_required
+from app.decorators import super_admin_required
 from app.page import lab
 
 

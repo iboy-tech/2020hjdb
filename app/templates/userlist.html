@@ -43,7 +43,10 @@
         a {
             cursor: pointer;
         }
-
+        td a{
+            color: #333;
+            text-decoration: none;
+        }
         td, th {
             padding: 2px !important;
         }
@@ -97,7 +100,7 @@
                         </a>
                         <!-- //nav-second-level -->
                     </li>
-                 <li>
+                 <li v-if="user.kind==3">
                         <a href="#"><i class="fa fa-dashboard nav_icon "></i>系统日志<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level collapse">
                                                              <li><a href="/log.html?type=admin">操作日志</a></li>
@@ -106,7 +109,7 @@
 
                         </ul>
                     </li>
-               <li>
+               <li v-if="user.kind==3">
                  <a href="/lab.html"><i class="fa fa-flask nav_icon"></i>实验室</a>
                </li>
            <li class="visible-xs-block">
@@ -216,7 +219,7 @@
                             <td>{{item.major}}</td>
                             <td>{{item.classNum}}</td>
                             <td>{{item.academy}}</td>
-                            <td>{{item.qq}}</td>
+                            <td><a :href="api+item.qq" target="_blank">{{item.qq}}</a></td>
                             <td>{{item.lastLogin}}</td>
                             <td>
                                 <span v-if="item.status=='2'" class="label-success label">正常</span>

@@ -16,6 +16,7 @@ var app = new Vue({
         },
         checkedList: [],
         checked: false,
+        api: 'https://wpa.qq.com/msgrd?v=3&site=qq&menu=yes&uin=',
     },
     computed: {
         currentPage: function () {

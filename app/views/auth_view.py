@@ -30,9 +30,9 @@ from app.utils.mail_sender import send_email
 
 
 # 隐私协议
-@auth.route('/private')
+@auth.route('/policy')
 def private():
-    return render_template('private.html')
+    return render_template('policy.html')
 
 
 @auth.route('/favicon.ico')

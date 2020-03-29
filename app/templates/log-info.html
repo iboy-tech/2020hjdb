@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>操作日志</title>
+    <title>请求日志</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="keywords" content="三峡大学失物招领中心"/>
@@ -96,8 +96,9 @@
                         <a href="/feedback.html"><i class="fa fa-envelope nav_icon"></i>反馈管理
                             <!--<span class="nav-badge-btm">08</span>-->
                         </a>
+                        <!-- //nav-second-level -->
                     </li>
-                    <li>
+                    <li v-if="user.kind==3">
                         <a href="#"><i class="fa fa-dashboard nav_icon "></i>系统日志<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level collapse">
                                                              <li><a href="/log.html?type=admin">操作日志</a></li>
@@ -106,7 +107,7 @@
 
                         </ul>
                     </li>
-                <li>
+                 <li v-if="user.kind==3">
                  <a href="/lab.html"><i class="fa fa-flask nav_icon"></i>实验室</a>
                </li>
            <li class="visible-xs-block">
@@ -167,19 +168,19 @@
     <!-- //header-ends -->
         <!-- page content start-->
     <div id="page-wrapper">
-
-<div class="main-page" style="min-height:50px;">
-       <div class="col-md-12">
- <div class="input-group" style="float: right;">
+        <div class="main-page" style="min-height: 50px;">
+    <div class="col-md-12">
+         <div class="input-group" style="float: right;">
 <button class="btn btn-primary glyphicon glyphicon-trash
 " type="button" style="margin-right: 20px;" @click="delete('info')" >清空</button>
 </div>
-       </div>
-</div>
+    </div>
+
+            </div>
             <div class="tables col-md-12">
                 <div class="bs-example widget-shadow" style="margin-top: 0px;">
                     <table class="table table-bordered table-hover table-condensed">
-                                               <thead>
+                        <thead>
                         <tr>
                             <th>ID</th>
                             <th>用户</th>
@@ -199,14 +200,18 @@
                                     <td>{{item.time}}</td>
                             </tr>
                         </tr>
+
                         </tbody>
                     </table>
                     <p v-if="list.length == 0" class="text-center">无内容</p>
                 </div>
             </div>
+            <div class="row">
             <div class="col-md-12" style="margin-top: 15px;">
-           <span>说明：请求日志用于记录用户的非法请求，如果某个用户有多次非法请求，需要采取限制措施</span>
+           <span> 说明：请求日志用于记录用户的非法请求，如果某个用户有多次非法请求，需要采取限制措施 (此页面仅超级管理员可见)</span>
             </div>
+            </div>
+
         </div>
     </div>
     <!--footer-->

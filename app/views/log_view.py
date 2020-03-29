@@ -14,7 +14,7 @@ from flask import render_template, request
 from flask_login import login_required
 
 from app import redis_client, LogConfig
-from app.decorators import admin_required, super_admin_required
+from app.decorators import super_admin_required
 from app.page import log
 from app.utils import restful
 from app.utils.log_utils import custom_sort
@@ -22,7 +22,7 @@ from app.utils.log_utils import custom_sort
 
 @log.route('/', strict_slashes=False)
 @login_required
-@admin_required
+@super_admin_required
 def index():
     type_map = {
         "admin": render_template('log-admin.html'),
@@ -77,7 +77,7 @@ def get_info_log():
 
 @log.route('/getall', methods=['GET', 'POST'], strict_slashes=False)
 @login_required
-@admin_required
+@super_admin_required
 def get_all():
     log_type = request.args.get("type")
     print("我是日志类型", log_type)

@@ -59,6 +59,16 @@
         .widget-shadow a{
             color: white !important;
         }
+.compose-left ul li a {
+    display: block;
+    font-size: 1em;
+    color: #555;
+   border:none;
+    padding: 0.2em 0.5em;
+}
+.compose-left ul li a:hover {
+    background-color: transparent;
+}
     </style>
 </head>
 <body class="cbp-spmenu-push">
@@ -106,7 +116,7 @@
                             <!--<span class="nav-badge-btm">08</span>-->
                         </a>
                     </li>
-                    <li>
+                    <li v-if="user.kind==3">
                         <a href="#"><i class="fa fa-dashboard nav_icon "></i>系统日志<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level collapse">
                                                              <li><a href="/log.html?type=admin">操作日志</a></li>
@@ -115,7 +125,7 @@
 
                         </ul>
                     </li>
-               <li>
+               <li v-if="user.kind==3">
                  <a href="/lab.html"><i class="fa fa-flask nav_icon"></i>实验室</a>
                </li>
            <li class="visible-xs-block">
@@ -180,7 +190,7 @@
 				<div class="col-md-12 compose-left" style="width: 100%;">
 					<div class="folder widget-shadow" style="margin-left: 10px;">
 						<ul>
-							<li class="head">介绍</li>
+							<li class="head">帮助</li>
 							<li>
 								<div class="chat-right">
 									<p style="line-height: 2em;text-indent: 2em;padding: 10px;">
@@ -201,9 +211,9 @@
 							<li class="head">图片裁剪</li>
 							<li class="lab">地址：tool.html/resize<span class="label label-info" style="padding: 4px 8px;"><a href="/tool.html/resize" target="_blank">执行</a></span></li>
 							<li  class="lab">
-                                说明：生产环境，基本无需使用
+                                说明：初始化操作一次之后无需再次操作，因为用户上传图片时，可以自动裁剪了，生产环境，无特殊需求，请不要使用
                             </li>
-                            <li  class="lab">备注：同步执行，耗时较长</li>
+                            <li  class="lab">备注：耗时较长，会出现网关超时的错误，但不影响</li>
 						</ul>
 					</div>
 				</div>
@@ -212,7 +222,7 @@
 					<div class="folder widget-shadow" style="margin-left: 10px;">
 						<ul>
 							<li class="head">垃圾清理</li>
-<li class="lab">地址：tool.html/clear<span class="label label-info" style="padding: 4px 8px;"><a href="/tool.html/clear" target="_blank">执行</a></span></li>
+                            <li class="lab">地址：tool.html/clear<span class="label label-info" style="padding: 4px 8px;"><a href="/tool.html/clear" target="_blank">执行</a></span></li>
 							<li  class="lab">
                                 说明：图片删除,REDIS过期删除会由于一些原因失败,比如发帖删除而帖子的配图还在，这就产生了脏数据，通过此接口可以删除那些无用数据
                             </li>
@@ -220,6 +230,23 @@
 						</ul>
 					</div>
 				</div>
+                	<div class="col-md-4 compose-left" style="margin-top: 24px;">
+					<div class="folder widget-shadow" style="margin-left: 10px;">
+						<ul>
+							<li class="head">秘钥导入</li>
+							<li class="lab">地址：tool.html/import<span class="label label-info" style="padding: 4px 8px;"><a href="/tool.html/import" target="_blank">执行</a></span></li>
+							<li  class="lab">
+                                说明：服务迁移如果秘钥丢失，可通过此接口批量导入秘钥，请把秘钥文件(tiny_keys.txt)放在app/static/temp/目录下，请求此接口即可
+                            </li>
+                            <li  class="lab">备注：服务器迁移时需要执行</li>
+						</ul>
+					</div>
+				</div>
+          <div class="row">
+                <div class="col-md-12">
+                    <span>说明： (此页面仅超级管理员可见)</span>
+                </div>
+            </div>
         </div>
     </div>
     <!--footer-->

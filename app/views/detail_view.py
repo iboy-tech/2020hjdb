@@ -57,7 +57,7 @@ def index():
                 imglist = lost.images.strip().split(',')
             item = {
                 "id": lost.id,
-                "icon": 'https://q2.qlogo.cn/headimg_dl?dst_uin={}&spec=100'.format(user.qq),
+                "icon": PostConfig.AVATER_API.replace("{}",user.qq),
                 "kind": lost.kind,
                 "userId": lost.user_id,
                 "username": user.username,

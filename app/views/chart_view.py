@@ -11,13 +11,15 @@
 import datetime
 
 from flask import render_template
-from flask_login import login_required
+from flask_login import login_required, current_user
 
 from app import db, User
 from app.decorators import admin_required, wechat_required
 from app.page import chart, auth
 from app.models.lostfound_model import LostFound
 from app.views.feedback_view import get_new_feedback
+
+
 # print('视图文件加载')
 
 
@@ -31,7 +33,8 @@ from app.views.feedback_view import get_new_feedback
 def index_page():
     print('蓝图请求成功！')
     data = get_data()
-    return render_template('chart.html', data=data,newCount=get_new_feedback())
+    isSuperAdmin = current_user.kind == 3
+    return render_template('chart.html', data=data, newCount=get_new_feedback(),isSuperAdmin=isSuperAdmin)
 
 
 def get_data():

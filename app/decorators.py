@@ -25,7 +25,7 @@ def permission_required(permission_name):
             if not current_user.can(permission_name) and current_user.kind == 1:
                 messages = {
                     'success': False,
-                    'msg': '非法访问,已记录!'
+                    'msg': '权限不足!'
                 }
                 return render_template('mails/go.html', messages=messages)
 

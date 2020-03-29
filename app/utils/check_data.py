@@ -101,6 +101,7 @@ def check_post(func):
     def decorated_view(*args, **kwargs):
         req = request.json
         try:
+            print(req['about'])
             if req['applyKind'] not in [0, 1]:
                 return restful.params_error(msg="类型有误")
             if req['title'] == "" or req['about'] == "":

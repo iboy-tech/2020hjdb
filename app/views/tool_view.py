@@ -17,7 +17,7 @@ from flask_login import login_required
 
 from app import redis_client
 from app.config import PostConfig, LoginConfig
-from app.decorators import admin_required
+from app.decorators import admin_required, super_admin_required
 from app.models.lostfound_model import LostFound
 from app.page import tool
 # 通过接口进行无损压缩
@@ -25,8 +25,6 @@ from app.utils import restful
 from app.utils.delete_file import remove_files
 from app.utils.img_process import find_big_img, change_all_img_scale
 from app.utils.tinypng_util import tinypng
-
-from tasks import celery
 
 
 @tool.route('/', methods=['GET', 'POST'])
@@ -95,7 +93,7 @@ def import_keys():
 
 @tool.route('/compress', methods=['GET', 'POST'])
 @login_required
-@admin_required
+@super_admin_required
 @cross_origin()
 def compress():
     big_img = find_big_img()
@@ -108,7 +106,7 @@ def compress():
 
 @tool.route('/clear', methods=['GET', 'POST'])
 @login_required
-@admin_required
+@super_admin_required
 @cross_origin()
 def clear():
     dir_path1 = os.getenv("PATH_OF_UPLOAD")
@@ -172,7 +170,7 @@ def getall():
 # 对之前的图片进行批量裁剪
 @tool.route('/resize', methods=['GET'])
 @login_required
-@admin_required
+@super_admin_required
 @cross_origin()
 def resize():
     # 转化所有png图片为jpg
