@@ -20,6 +20,7 @@
         }
         #share-description{
             white-space: pre-line;
+            margin-top: -1em;
         }
     </style>
 </head>
@@ -52,7 +53,7 @@
                                     <div class="item">
                                         <a>
                                             <div class="osc-avatar small-portrait _35x35 avatar">
-                                                <img src="{{ item.icon }}" alt="头像" title="{{ item.username }}"/>
+                                                <img src="{{ item.icon }}" alt="头像" title="{{ item.realName }}"/>
                                             </div>
                                         </a>
                                         <div class="content">
@@ -68,7 +69,7 @@
                                             {% endif %}
 
 
-                                            <a class="user __user">{{ item.username }}</a>
+                                            <a class="user __user">{{ item.realName }}</a>
 
                                             <div class="extra">
                                                 <div class="date">{{ item.time }}&nbsp;&nbsp;
@@ -209,7 +210,7 @@
                                 </div>
                                 <div class="content">
                                     <div class="summary">
-                                        <a class="user __user">{{item.username}}</a>
+                                        <a class="user __user">{{item.realName}}</a>
 
                                         <div class="date">{{item.time}}</div>
                                     </div>
@@ -276,7 +277,7 @@
                                                  data-tooltip="已经被认领">
                                                 已认领
                                             </div>
-                                            {{item.username}}
+                                            {{item.realName}}
                                         </a>
 
                                         <div class="date">{{item.time}}&nbsp;&nbsp;

@@ -53,7 +53,7 @@ def index():
             if lost.images == "":
                 imglist = []
             else:
-                lost.images = lost.images.replace('[', '').replace(']', '').replace(' \'', '').replace('\'', '')
+                # lost.images = lost.images.replace('[', '').replace(']', '').replace(' \'', '').replace('\'', '')
                 imglist = lost.images.strip().split(',')
             item = {
                 "id": lost.id,

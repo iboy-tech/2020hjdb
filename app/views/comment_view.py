@@ -18,10 +18,10 @@ from sqlalchemy import desc
 
 from app import db, OpenID, PostConfig
 from app.decorators import wechat_required
-from app.page import comment
 from app.models.comment_model import Comment
 from app.models.lostfound_model import LostFound
 from app.models.user_model import User
+from app.page import comment
 from app.utils import restful
 from app.utils.check_data import check_comment
 from app.views.found_view import send_message_by_pusher
@@ -74,8 +74,8 @@ def index():
                 user =User.query.get(c.user_id)
                 dict={
                         "id": c.id,
-                        "icon": 'https://q2.qlogo.cn/headimg_dl?dst_uin={}&spec=100'.format(user.qq),
-                        "username": user.username,
+                        "icon": PostConfig.AVATER_API.replace("{}",user.qq),
+                        "realName": user.real_name,
                         "time": c.create_time.strftime('%Y-%m-%d %H:%M:%S'),
                         "content": c.content
                 }

@@ -99,7 +99,7 @@ def tinypng(files):
         s.start()
         # s.join()
         print('线程【', i + 1, '】已启动')
-        if (total_imgs % PostConfig.IMG_NUM_IN_THREAD != 0 and i == total_imgs // PostConfig.IMG_NUM_IN_THREAD - 1):
+        if total_imgs % PostConfig.IMG_NUM_IN_THREAD != 0 and i == total_imgs // PostConfig.IMG_NUM_IN_THREAD - 1:
             s = Thread(target=async_compress_imgs, args=((i + 1) * PostConfig.IMG_NUM_IN_THREAD, (
                     1 + i) * PostConfig.IMG_NUM_IN_THREAD + total_imgs % PostConfig.IMG_NUM_IN_THREAD, files))
             # print((i+1)* 5, (1 + i) * 5+urllen % 5)

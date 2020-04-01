@@ -10,7 +10,7 @@ var app = new Vue({
         tabIndex: 0,
         isSearched: getSession("isSearched") ? JSON.parse(getSession("isSearched")) : false,
         user: getLocal("user") ? JSON.parse(getLocal("user")) : {},
-        category: getCategory() || [],
+        category: [],
         api: 'https://wpa.qq.com/msgrd?v=3&site=qq&menu=yes&uin=',
         imgPrefix: staticUrl,
         tab: [
@@ -667,6 +667,7 @@ function getCategory() {
 }
 
 $(function () {
+    getCategory();
     if (getSession("notice") != null) {
         app.notice = JSON.parse(getSession("notice"));
     } else {

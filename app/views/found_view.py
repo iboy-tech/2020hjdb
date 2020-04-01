@@ -48,7 +48,15 @@ def index():
 def get_all():
     req = request.json
     print(req)
-    page = int(req['pageNum'])
+    page = 0
+    print(req['pageSize'])
+    if req['pageNum']:
+        page=int(req['pageNum'])
+
+        print("这里好像有BUG")
+    else:
+        print("没有数据")
+        print(req)
     pagesize = int(req['pageSize'])
     # 后台分页动态调整
     if current_user.kind > 1 and req.get("flag") is not None:
@@ -87,10 +95,11 @@ def get_all():
         # print('这是分类查询')
         # print(req['category'])
         c = Category.query.filter_by(name=req['category']).first()
-        # print('Category.query.',c)
-        pagination = LostFound.query.filter_by(category_id=c.id, kind=req['kind']).order_by(
-            LostFound.status, LostFound.create_time.desc()).paginate(page + 1, per_page=pagesize,
-                                                                     error_out=False)
+        print('这里好像有问题Category.query.',c)
+        if c:
+            pagination = LostFound.query.filter_by(category_id=c.id, kind=req['kind']).order_by(
+                LostFound.status, LostFound.create_time.desc()).paginate(page + 1, per_page=pagesize,
+                                                                         error_out=False)
     elif req['kind'] != -1 and req['category'] == '':
         # print('这是分类查询')
         pagination = LostFound.query.filter_by(kind=req['kind']).order_by(LostFound.status,

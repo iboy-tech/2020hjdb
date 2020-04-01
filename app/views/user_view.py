@@ -17,7 +17,7 @@ from flask import request, url_for
 from flask_cors import cross_origin
 from flask_login import current_user, login_required
 
-from app import db, OpenID
+from app import db, OpenID, cache, PostConfig
 from app.models.lostfound_model import LostFound
 from app.models.user_model import User
 from app.page import user
@@ -25,44 +25,39 @@ from app.utils import restful
 from app.utils.auth_token import generate_token
 from app.utils.mail_sender import send_email
 from .found_view import send_message_by_pusher
-from ..decorators import wechat_required
 from ..utils.check_data import check_qq
 
 
 @user.route('/messages', methods=['POST', 'OPTIONS'])
-@cross_origin()
+@cache.cached(timeout=60*5, query_string=True)  # 缓存5分钟 默认为300s
 @login_required
-@wechat_required
 def get_message():
     req = request.json
     print('查询消息req', req)
     # commens=Comment.query.join(LostFound,user_id=current_user.id)
-    losts = LostFound.query.filter_by(user_id=current_user.id).order_by(LostFound.create_time.desc()).all()
-    if len(losts) == 0:
-        data = {
-            "list": []
-        }
-        return restful.success(data=data)
-    else:
-        list = []
+    # losts = LostFound.query.filter_by(user_id=current_user.id).order_by(LostFound.create_time.desc()).all()
+    losts = current_user.posts
+    print(losts)
+    list = []
+    if losts:
         for l in losts:
             if len(l.comments) != 0:
                 for c in l.comments:
                     user = User.query.get(c.user_id)
                     dict = {
                         "id": c.id,
-                        "userId": user.id,
-                        "icon": 'https://avater.ctguswzl.cn/headimg_dl?dst_uin={}&spec=100'.format(user.qq),
-                        "username": user.real_name + ' ' + user.username,
+                        # "userId": user.id,
+                        "icon": PostConfig.AVATER_API.replace("{}",user.qq),
+                        "realName": user.real_name,
                         "time": c.create_time.strftime('%Y-%m-%d %H:%M:%S'),
                         "title": l.title,
                         "lostFoundId": l.id,
                         "content": c.content
                     }
                     list.append(dict)
-            data = {
-                "list": list
-            }
+    data = {
+        "list": list
+    }
     return restful.success(data=data)
 
 
@@ -71,7 +66,7 @@ def get_message():
 @cross_origin()
 @check_qq
 def set_QQ():
-    print(current_user.username,current_user.real_name,'用户准备更改密码')
+    print(current_user.username, current_user.real_name, '用户准备更改密码')
     new_qq = request.json['qq']
     print(new_qq, type(new_qq))
     if new_qq == current_user.qq:

@@ -14,7 +14,7 @@ from flask import request, render_template
 from flask_login import login_required, current_user
 from sqlalchemy import desc
 
-from app import db, OpenID
+from app import db, OpenID, cache
 from app.decorators import admin_required, wechat_required
 from app.page import notice
 from app.models.notice_model import Notice

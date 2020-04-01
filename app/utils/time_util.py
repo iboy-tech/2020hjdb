@@ -30,9 +30,19 @@ def get_time_str(create_time):
     # print("时间BUG修复", type(create_time), create_time, create_time.day)
     create_time_utc = time.mktime(create_time.timetuple())
     now = datetime.datetime.now()
+    # print("我是当前的时间类型", now, type(now))
     now_utc = time.mktime(now.timetuple())
-    day_len = now.day - create_time.day
+    # print("now.day:", now.day, "create_time.day:", create_time.day)
+    date1 = time.strptime(now.strftime('%Y-%m-%d'), "%Y-%m-%d")
+    date2 = time.strptime(create_time.strftime('%Y-%m-%d'), "%Y-%m-%d")
+    # print(date1, date2)
+    date1 = datetime.datetime(date1[0], date1[1], date1[2])
+    date2 = datetime.datetime(date2[0], date2[1], date2[2])
+    # day_len = now.day - create_time.day
+    # day_len=(now-create_time).days
+    day_len = (date1 - date2).days
     minute = int((now_utc - create_time_utc) / 60)
+    # print("我是minute", minute, "day_len:", day_len)
     if minute <= 60:
         mytime = minute / 60
         print('我是mytime', mytime)

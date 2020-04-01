@@ -31,6 +31,10 @@
     position: relative;
     top: 1px;
 }
+.share-description{
+    white-space: pre-line;
+    margin-top: -1em;
+}
 
 .c-text-danger {
     background-color: #f13f40;
@@ -333,7 +337,7 @@
                                                  data-tooltip="已经被认领">
                                                 已认领
                                             </div>
-                                                                        {{item.realName}}&nbsp;{{item.username}}
+                                                                        {{item.realName}}
                                                                     </a>
 
                                                                     <div class="extra">
@@ -347,12 +351,14 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="extra text">
-                                                            {{item.title}}
+                                                         <div class="extra text">
+                                                             {{item.title}}
+                                                        </div>
+                                                        <div class="headern" >
+                                                            {{item.about}}
                                                         </div>
                                                         <div v-if="item.images && item.images.length > 0"
                                                              class="extra multi-image">
-                                                            <div class="multimgs">
                                                                 <div class="multimgs">
                                                                     <div  v-if="item.images.length>0" class="wrapper single-wrapper"
                                                                          v-for="src in item.images">
@@ -363,7 +369,6 @@
                                                                         </a>
                                                                     </div>
                                                                 </div>
-                                                            </div>
                                                         </div>
                                                         <div class="ui horizontal list">
                                                             <div class="item">
@@ -523,7 +528,7 @@
                                                                              data-tooltip="等待认领">
                                                                             认领
                                                                         </div>
-                                                                        {{item.realName}}&nbsp;{{item.username}}
+                                                                        {{item.realName}}
                                                                     </a>
 
                                                                     <div class="extra">
@@ -596,7 +601,7 @@
                                                 </div>
                                                 <div class="content">
                                                     <div class="description">
-                                                        <a class="user __user">{{item.username}}</a>&nbsp;&nbsp;{{item.time}}
+                                                        <a class="user __user">{{item.realName}}</a>&nbsp;&nbsp;{{item.time}}
 
                                                     </div>
                                                     <div class="description summary" data-emoji-render="">
@@ -656,7 +661,7 @@
 </p>
 
 <h4>网站简介：</h4>
-<p>校园失物招领平台(ctguswzl.cn)是三峡大学失物招领中心线上平台，本平台由三峡大学启明星工作室成员与失物招领中心共同创办,建于2020年1月10日-2020年3月24日，
+<p>CTGU失物招领平台(ctguswzl.cn)是三峡大学失物招领中心线上平台，本平台由三峡大学启明星工作室成员与失物招领中心共同创办,建于2020年1月10日-2020年4月1日，网站前端借鉴东华理工大学开源项目，向可爱的程序猿致敬，向Web前端致敬，后台采用Flask编写，项目全部代码已在Github开源，希望有兴趣的同学能够进一步完善功能
     目前已开通发布、搜索、认领等板块，致力于为广大学生提供更加便捷的失物招领信息,欢迎各位同学提出宝贵意见或建议!
 </p>
 

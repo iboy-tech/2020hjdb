@@ -4,7 +4,7 @@
     <title>三峡大学失物招领中心</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <meta name="keywords" content="三峡大学失物招领中心,三峡大学失物招领平台,三峡大学失物招领,三大失招,小招同学,三峡大学保卫处,三峡大学失物招领中心">
+    <meta name="keywords" content="三峡大学失物招领中心,三峡大学失物招领中心官网,三峡大学失物招领平台,三峡大学失物招领,三大失招,小招同学,CTGU失物招领,三大失物招领中心">
 <meta name="description" content="三峡大学失物招领中心是隶属于校保卫处的校级学生组织。我们从遍布全校的失物收集箱、各教学楼等地方收集失物，扩散失物信息并负责归还失物。自成立以来，中心全体成员秉承“志愿、公益、物实”的宗旨，齐心协力、努力工作。 虽然失物招领中心这个组织还很年轻，但我们每个人都相信：暖日虽远，但必有光芒！">
     <link href="../static/css/style-login.css" rel="stylesheet" type="text/css" media="all"/>
     <script src="https://cdn.bootcss.com/vue/2.4.2/vue.min.js"></script>
@@ -44,7 +44,7 @@
     </style>
 </head>
 <body>
-<h1>校园失物招领平台</h1>
+<h1>CTGU失物招领</h1>
 
 <div class="w3l-form" id="app">
     <div class="w3l-grids-from2">
@@ -72,7 +72,7 @@
                             <span  style="color: #d28520;float: left"><a  style="color:#004276;" @click=changeTab(1)>立即注册</a></span>
                             <sapn  style="color: #d28520;float: right;"><a  style="color:#004276;" @click=changeTab(3)>忘记密码？</a></sapn>
                         </div>
-                      <div v-if="tabIndex!=0" style="text-align: left;"><input type="checkbox"  value="checkbox" checked>我已阅读并同意 <a href="/policy" style="color:#004276;" target="_blank">《用户协议》</a></div>
+                      <div v-if="tabIndex!=0" style="text-align: left;"><input type="checkbox"  value="checkbox" checked>我已阅读并同意 <a href="/policy" style="color:#004276;" target="_blank">《服务协议》</a></div>
 
                         </template>
 
@@ -199,8 +199,6 @@
             }
             },
             socketConnect(socket){
-                //删除cokie
-                deleteLocal("user");
                 socket.emit('qrcode');//触发通信
                     socket.on('qrcode', function (data) {
                         if (data['success']) {

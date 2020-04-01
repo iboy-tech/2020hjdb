@@ -17,7 +17,7 @@ from flask import render_template, request, url_for, session, send_from_director
 from flask_cors import cross_origin
 from flask_login import logout_user, login_user, login_required, current_user
 
-from app import db, OpenID, redis_client
+from app import db, OpenID, redis_client, cache
 from app.config import LoginConfig, PostConfig
 from app.decorators import wechat_required, unfreeze_user
 from app.models.user_model import User
@@ -31,11 +31,13 @@ from app.utils.mail_sender import send_email
 
 # 隐私协议
 @auth.route('/policy')
+@cache.cached(timeout=60, query_string=True)  # 缓存10分钟 默认为300s
 def private():
     return render_template('policy.html')
 
 
 @auth.route('/favicon.ico')
+@cache.cached(timeout=60, query_string=True)  # 缓存10分钟 默认为300s
 def favicon():
     return send_from_directory(
         os.path.join(
@@ -50,7 +52,6 @@ def favicon():
 @unfreeze_user
 @login_required
 @wechat_required
-# @cache.cached(timeout=60, query_string=True)  # 缓存10分钟 默认为300s
 def index():
     data = request.json
     print('user页面收到请求', data)

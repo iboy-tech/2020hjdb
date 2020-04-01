@@ -122,7 +122,7 @@ def server(data):
         else:
             res = {
                 'success': 'false',
-                'data': {'msg': '二维码已过期，请刷新页面重新绑定', 'bg': '0'}
+                'data': {'msg': '二维码已过期，请刷新页面重新扫描', 'bg': '0'}
             }
             print('background_thread我是查询结果', res)
             socketio.emit('server', res)
