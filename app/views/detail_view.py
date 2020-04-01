@@ -8,7 +8,9 @@
 @Description : 
 @Software: PyCharm
 """
+import json
 import os
+import datetime
 
 from flask import render_template, request, abort
 from flask_login import current_user, login_required
@@ -57,7 +59,7 @@ def index():
                 imglist = lost.images.strip().split(',')
             item = {
                 "id": lost.id,
-                "icon": PostConfig.AVATER_API.replace("{}",user.qq),
+                "icon": PostConfig.AVATER_API.replace("{}", user.qq),
                 "kind": lost.kind,
                 "userId": lost.user_id,
                 "username": user.username,
@@ -82,3 +84,34 @@ def index():
             abort(404)
     else:
         return restful.success()
+
+
+@detail.route('/report', methods=['POST', 'OPTIONS'], strict_slashes=False)
+@login_required
+@wechat_required
+def report():
+    req = request.json
+    print(req)
+    try:
+        post = LostFound.query.get(int(req["id"]))
+        if post:
+            key = str(req["id"]) + PostConfig.REPORT_REDIS_PREFIX
+            redis_report = redis_client.get(key)
+            if redis_report:
+                return restful.success(msg="举报信息已提交，感谢您的反馈")
+            print(post)
+            data = {
+                "title": post.title,
+                "id": str(post.id),
+                "reporter": current_user.username + " " + current_user.real_name,
+                "content":req["content"].replace('<', '&lt;'),
+                "time": datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+            }
+            key=str(post.id)+PostConfig.REPORT_REDIS_PREFIX
+            redis_client.set(key,json.dumps(data))
+    except Exception as e:
+        print(str(e))
+        return restful.params_error()
+    return restful.success(msg="举报信息已提交，感谢您的反馈")
+
+

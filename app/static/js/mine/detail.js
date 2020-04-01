@@ -24,6 +24,10 @@ var app = new Vue({
                  }*/
             ]
         },
+        report: {
+            id: "",
+            content: "",
+        },
         item: {
             id: null,
             icon: "https://ae01.alicdn.com/kf/U89b7be7d8d234a38b9a4b0d4258de362X.jpg",
@@ -59,6 +63,26 @@ var app = new Vue({
         },
     },
     methods: {
+        showReport(id) {
+            layer.open({
+                btn: ['确定', '取消'],
+                type: 1,
+                area: ['70%', 'auto'],
+                //shade: true,
+                title: "违规举报", //不显示标题
+                content: $('#editorDiv') //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
+                , yes: function () {
+                    app.report.id = id;
+                    if (app.report.id == "" || app.report.content == "") {
+                        showAlertError('请填写全部内容!');
+                        return;
+                    }
+                    pubReport(app.report);
+                }, cancel: function () {
+
+                }
+            });
+        },
         share() {
             //捕获页
             layer.open({
@@ -136,6 +160,29 @@ $(function () {
     // var qrcode = new QRCode(document.getElementById("imgDiv"), location.href);
 });
 
+//新增反馈
+function pubReport(data) {
+    console.log(data);
+    $.ajax({
+        url: baseUrl + "/detail.html/report",
+        data: JSON.stringify(data),
+        method: "POST",
+        success: function (res) {
+            console.log(res);
+            if (res.success) {
+                layer.closeAll();
+                showOK(res.msg);
+                app.report = {
+                    id: "",
+                    content: ""
+                }
+            } else {
+                showAlertError(res.msg)
+            }
+        }
+    });
+}
+
 //删除招领信息
 function deletePub(id) {
     $.ajax({
@@ -143,16 +190,16 @@ function deletePub(id) {
         method: "POST",
         success: function (res) {
             console.log(res);
-                if (res.success) {
-                    showOK(res.msg);
-                    saveSession("category", "");
-                    saveSession("kind", -1);
-                    saveSession("tabIndex", 0);
-                    saveLocal("isBack", false);
-                    location.href=baseUrl;
-                } else {
-                    showAlertError(res.msg)
-                }
+            if (res.success) {
+                showOK(res.msg);
+                saveSession("category", "");
+                saveSession("kind", -1);
+                saveSession("tabIndex", 0);
+                saveLocal("isBack", false);
+                location.href = baseUrl;
+            } else {
+                showAlertError(res.msg)
+            }
         }
     });
 
@@ -196,18 +243,18 @@ function pubComment(data, app) {
             console.log(res);
             console.log(res);
             console.log(typeof (res.ext), res.ext, res.ext == null);
-                if (res.success) {
-                    showOK(res.msg);
-                    app.comment = "";
-                    // location.reload();
-                    console.log('把评论框清空')
-                    console.log('我是传给详情的ID:' + app.item.id)
-                    console.log("" + data.targetId)
-                    getDetail(data);
-                    console.log('评论完成之后刷新')
-                } else {
-                    showAlertError(res.msg)
-                }
+            if (res.success) {
+                showOK(res.msg);
+                app.comment = "";
+                // location.reload();
+                console.log('把评论框清空')
+                console.log('我是传给详情的ID:' + app.item.id)
+                console.log("" + data.targetId)
+                getDetail(data);
+                console.log('评论完成之后刷新')
+            } else {
+                showAlertError(res.msg)
+            }
         }
     });
 }
