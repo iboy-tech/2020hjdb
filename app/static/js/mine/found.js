@@ -188,9 +188,8 @@ function getUserInfo(userId, app) {
         url: baseUrl + "/userlist.html/userInfo?userId=" + userId,
         method: "POST",
         //data: JSON.stringify(data),
-        success: function (res, status) {
+        success: function (res) {
             console.log(res);
-            if (status == "success") {
                 if (res.success) {
                     app.userInfo = res.data.user;
                     //$("#infoDiv").show(1000);
@@ -206,10 +205,6 @@ function getUserInfo(userId, app) {
                 } else {
                     showAlertError(res.msg)
                 }
-            } else {
-                console.log(res);
-                showAlertError(res)
-            }
         }
     });
 }

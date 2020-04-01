@@ -102,7 +102,8 @@ class User(db.Model, UserMixin):
             "academy": self.academy,
             "lastLogin": self.last_login.strftime('%Y-%m-%d %H:%M:%S'),
             "status": self.status,
-            "kind": self.kind
+            "kind": self.kind,
+            "postCount":len(self.posts)
         }
         return dict
 

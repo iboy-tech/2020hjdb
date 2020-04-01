@@ -56,7 +56,7 @@ def add():
 
 @tool.route('/deleteKey', methods=['GET', 'POST'])
 @login_required
-@admin_required
+@super_admin_required
 @cross_origin()
 def delete():
     id = request.args.get("key")

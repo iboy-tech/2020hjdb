@@ -219,7 +219,7 @@
                                     </button>
                                     <ul class="dropdown-menu">
                                         <li><a @click="seeInfo(item.userId)">查看信息</a></li>
-                                        <li v-if="item.status=='2' && user.kind > item.kind"><a  @click="freezeUser(item.userId,1)">冻结账号</a></li>
+                                        <li v-if="item.status==2 && user.kind > item.kind"><a  @click="freezeUser(item.userId,1)">冻结账号</a></li>
                                         <li v-if="item.ustatus==0 && user.kind > item.kind"><a @click="freezeUser(item.userId,0)">解冻账号</a></li>
                                     </ul>
                                 </div>
@@ -307,6 +307,10 @@
         <tr>
             <td>学号</td>
             <td>{{userInfo.username}}</td>
+        </tr>
+        <tr>
+            <td>发帖数量</td>
+            <td>{{userInfo.postCount}}</td>
         </tr>
         <tr>
             <td>性别</td>

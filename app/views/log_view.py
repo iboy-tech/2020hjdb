@@ -31,7 +31,7 @@ def index():
     }
     try:
         log_type = request.args.get("type")
-        print("需要"+log_type)
+        # print("需要"+log_type)
         if log_type not  in type_map.keys():
             return restful.params_error()
     except:
@@ -44,7 +44,7 @@ def get_admin_log():
     list = []
     for key in keys:
         res = eval(redis_client.get(key.decode()))
-        print(res, type(res))
+        # print(res, type(res))
         list.append(res)
     # 按时间排序
     list.sort(key=cmp_to_key(custom_sort(lambda x: x["time"])))
@@ -56,7 +56,7 @@ def get_error_log():
     list = []
     for key in keys:
         res = eval(redis_client.get(key.decode()))
-        print(res, type(res))
+        # print(res, type(res))
         list.append(res)
     # 按时间排序
     list.sort(key=cmp_to_key(custom_sort(lambda x: x["time"])))
@@ -68,7 +68,7 @@ def get_info_log():
     list = []
     for key in keys:
         res = eval(redis_client.get(key.decode()))
-        print(res, type(res))
+        # print(res, type(res))
         list.append(res)
     # 按时间排序
     list.sort(key=cmp_to_key(custom_sort(lambda x: x["time"])))
@@ -80,7 +80,7 @@ def get_info_log():
 @super_admin_required
 def get_all():
     log_type = request.args.get("type")
-    print("我是日志类型", log_type)
+    # print("我是日志类型", log_type)
     type_map = {
         "admin": get_admin_log(),
         "error": get_error_log(),
@@ -89,7 +89,7 @@ def get_all():
     data = {
         'list': type_map.get(log_type)
     }
-    print(data)
+    # print(data)
     return restful.success(data=data)
 
 
@@ -98,13 +98,13 @@ def get_all():
 @super_admin_required
 def delete_all():
     log_type = request.args.get("type")
-    print("我是日志类型", log_type)
+    # print("我是日志类型", log_type)
     type_map = {
         "admin": LogConfig.REDIS_ADMIN_LOG_KEY,
         "error": LogConfig.REDIS_ERROR_LOG_KEY,
         "info": LogConfig.REDIS_INFO_LOG_KEY
     }
-    print("键值" + type_map.get(log_type))
+    # print("键值" + type_map.get(log_type))
     keys = redis_client.keys(pattern='*{}*'.format(type_map.get(log_type)))
     for key in keys:
         redis_client.delete(key.decode())

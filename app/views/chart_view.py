@@ -13,10 +13,11 @@ import datetime
 from flask import render_template
 from flask_login import login_required, current_user
 
-from app import db, User
+from app import db, User, redis_client, LogConfig
 from app.decorators import admin_required, wechat_required
 from app.page import chart, auth
 from app.models.lostfound_model import LostFound
+from app.utils.log_utils import add_log, get_log
 from app.views.feedback_view import get_new_feedback
 
 
@@ -31,10 +32,13 @@ from app.views.feedback_view import get_new_feedback
 @wechat_required
 @admin_required
 def index_page():
-    print('蓝图请求成功！')
+    key = current_user.username + LogConfig.REDIS_ADMIN_LOG_KEY
+    log_info = redis_client.get(key)
+    if not log_info:
+        add_log(1, get_log(), 3600 * 24 * 7)  # 7天过期
     data = get_data()
     isSuperAdmin = current_user.kind == 3
-    return render_template('chart.html', data=data, newCount=get_new_feedback(),isSuperAdmin=isSuperAdmin)
+    return render_template('chart.html', data=data, newCount=get_new_feedback(), isSuperAdmin=isSuperAdmin)
 
 
 def get_data():

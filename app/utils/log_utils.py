@@ -30,26 +30,35 @@ def get_log():
     data.pop("is_admin")
     data.pop("real_name")
     ext = {
-        "url": request.url.replace(os.getenv("SITE_URL").replace("https","http"),""),
+        "url": request.url.replace(os.getenv("SITE_URL").replace("https", "http"), ""),
         "username": current_user.username
     }
     data.update(ext)
     return data
 
 
-def insert_delete_log(user, num):
-    type = {
+def add_log(type_id, data, expire_time=LogConfig.REDIS_EXPIRE_TIME):
+    type_map = {
         0: "数据删除",
+        1: "管理登录",
     }
+    key = {
+        0: uuid.uuid4().hex,  # redis的前缀
+        1: current_user.username,
+    }
+    if type_id == 0:
+        detail = "删除 {} 篇帖子".format(data["num"])
+    elif type_id == 1:
+        detail = "IP:{},地址:{}".format(data["ip"], data["addr"])
     info = {
-        "real_name": user.real_name,
-        "type": type.get(0),
-        "detail": "删除 {} 篇帖子".format(num),
+        "real_name": current_user.real_name,
+        "type": type_map.get(type_id),
+        "detail": detail,
         "time": datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
     }
-    key = uuid.uuid4().hex + LogConfig.REDIS_ADMIN_LOG_KEY
+    key = key.get(type_id) + LogConfig.REDIS_ADMIN_LOG_KEY
     redis_client.set(key, json.dumps(info))
-    redis_client.expire(key, LogConfig.REDIS_EXPIRE_TIME)
+    redis_client.expire(key, expire_time)
 
 
 def custom_sort(preprocess_func=lambda x: x):

@@ -29,7 +29,7 @@ from app.utils import restful
 from app.utils.check_data import check_post
 from app.utils.delete_file import remove_files
 from app.utils.img_process import change_bs4_to_png
-from app.utils.log_utils import insert_delete_log
+from app.utils.log_utils import add_log
 from app.utils.mail_sender import send_email
 from app.utils.time_util import get_time_str
 from app.utils.wechat_notice import delete_post_notice, send_message_by_pusher
@@ -291,7 +291,7 @@ def delete_posts():
             db.session.delete(l)
             db.session.commit()
         # 记录删除日志
-        insert_delete_log(current_user, len(req))
+        add_log(0,{"num": len(req)})
         print("try块内")
     except Exception as e:
         db.session.rollback()
@@ -321,7 +321,7 @@ def delete_post():
             redis_client.delete(key)
             if current_user.kind > 1:
                 # 记录删除日志
-                insert_delete_log(current_user, 1)
+                add_log(0,{"num":1})
             delete_post_notice(current_user.kind, current_user.id, l.to_dict())
             db.session.delete(l)
             db.session.commit()
