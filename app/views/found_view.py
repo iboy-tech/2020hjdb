@@ -51,7 +51,7 @@ def get_all():
     page = 0
     print(req['pageSize'])
     if req['pageNum']:
-        page=int(req['pageNum'])
+        page = int(req['pageNum'])
 
         print("这里好像有BUG")
     else:
@@ -95,7 +95,7 @@ def get_all():
         # print('这是分类查询')
         # print(req['category'])
         c = Category.query.filter_by(name=req['category']).first()
-        print('这里好像有问题Category.query.',c)
+        print('这里好像有问题Category.query.', c)
         if c:
             pagination = LostFound.query.filter_by(category_id=c.id, kind=req['kind']).order_by(
                 LostFound.status, LostFound.create_time.desc()).paginate(page + 1, per_page=pagesize,
@@ -275,27 +275,32 @@ def delete_posts():
     req = request.json
     print(req)
     if req:
-        lost_founds = LostFound.query.filter(LostFound.id.in_(req))
+        lost_founds = LostFound.query.filter(LostFound.id.in_(req)).all()
+        # print(lost_founds)
     try:
         for l in lost_founds:
+            # print(l)
             u = User.query.get_or_404(l.user_id)
             # 管理员删帖或用户自身删帖
             if l is not None and (l.user_id == current_user.id or current_user.kind > u.kind):
                 if l.images != "":
                     imglist = l.images.split(',')
                     remove_files(imglist, 0)
+                # l = db.session.merge(l)
                 key = str(l.id) + PostConfig.POST_REDIS_PREFIX
                 # # 删除浏览量，不存在的key会被忽略
                 redis_client.delete(key)
                 delete_post_notice.delay(current_user.kind, current_user.id, l.to_dict())
-            db.session.delete(l)
-            db.session.commit()
+                db.session.delete(l)
+                db.session.commit()
         # 记录删除日志
-        add_log(0,{"num": len(req)})
-        print("try块内")
+        add_log(0, {"num": len(req)})
+        # print("try块内")
     except Exception as e:
         db.session.rollback()
         return restful.success(False, msg=str(e))
+    finally:
+        db.session.commit()
     return restful.success(msg="删除成功")
 
 
@@ -308,9 +313,9 @@ def delete_post():
         return restful.params_error()
     else:
         l = LostFound.query.get_or_404(int(req))
-        print("帖子：", l)
+        # print("帖子：", l)
         u = User.query.get_or_404(l.user_id)
-        print("用户：", u)
+        # print("用户：", u)
         # 管理员删帖或用户自身删帖
         if l is not None and (l.user_id == current_user.id or current_user.kind > u.kind):
             if l.images != "":
@@ -321,7 +326,7 @@ def delete_post():
             redis_client.delete(key)
             if current_user.kind > 1:
                 # 记录删除日志
-                add_log(0,{"num":1})
+                add_log(0, {"num": 1})
             delete_post_notice(current_user.kind, current_user.id, l.to_dict())
             db.session.delete(l)
             db.session.commit()
@@ -329,5 +334,3 @@ def delete_post():
             return restful.success(msg='删除成功')
         else:
             return restful.params_error()
-
-

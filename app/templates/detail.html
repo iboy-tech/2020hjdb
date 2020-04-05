@@ -126,9 +126,11 @@
                                         <i class="trash alternate outline icon "></i>删除
                                     </a>
                                 {% endif %}
-                                  <a class="ban" @click="showReport({{ item.id }})">
+                                 {% if item.isSelf==False  and item.isAdmin==False%}
+                                   <a class="ban" @click="showReport">
                                       <i class="ban icon"></i> 举报
                                   </a>
+                                {% endif %}
                                 </div>
                                 <div class="meta">
                                     <a target="_blank" class="with-popup" data-content="点击邮箱可给对方发送邮件"  style="color: rgba(0,0,0,.5);" class="reply" href="{{ 'https://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email='+item.email }}"><i class="envelope outline icon"></i>
@@ -208,13 +210,12 @@
                                         {{item.content}}
                                     </div>
 {#                                   <div class="meta">#}
-{#                                         <a class="reply">#}
+{#                                         <a class="reply" href="#comments">#}
 {#                                             <i class="comment outline icon"></i> 回复#}
 {#                                         </a>#}
-{#                                         <a class="ban" ban-report data-id="19937818" data-obj-type="101"#}
-{#                                            data-url="https://my.oschina.net/u/2553562/tweet/19937739/#rpl_19937818">#}
-{#                                             <i class="ban icon"></i> 举报#}
-{#                                         </a>#}
+{#                                    <a class="ban" @click="showReport">#}
+{#                                      <i class="ban icon"></i> 举报#}
+{#                                  </a>#}
 {#                                     </div>#}
                                 </div>
                             </div>
@@ -335,15 +336,8 @@
     <div class="social-share" data-mobile-sites="weibo,qq,qzone,wechat"></div>
     <div id="wechat-qrcode" >
     </div>
-</div><!--举报弹窗-->
-<div class="editor-wrapper" style="display: none; padding: 10px;" id="editorDiv">
-    <div class="ui form" style="width: 100%; height: 100%;min-height:100px">
-        <div class="field">
-            <textarea v-model="report.content" rows="6" placeholder="举报理由：如隐私信息未打码，请注意举报信息的真实性，恶意举报者封号处理（最多300字）" maxlength="300"
-                      class="tweet-textarea disabled-resize"></textarea>
-        </div>
-    </div>
 </div>
+<!--举报弹窗-->
 </div>
 </div>
 

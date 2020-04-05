@@ -8,9 +8,7 @@
 @Description : 
 @Software: PyCharm
 """
-import json
 import os
-import datetime
 
 from flask import render_template, request, abort
 from flask_login import current_user, login_required
@@ -18,10 +16,10 @@ from flask_login import current_user, login_required
 from app import db, redis_client
 from app.config import PostConfig
 from app.decorators import wechat_required
-from app.page import detail
 from app.models.category_model import Category
 from app.models.lostfound_model import LostFound
 from app.models.user_model import User
+from app.page import detail
 from app.utils import restful
 
 
@@ -41,7 +39,7 @@ def index():
             myid = int(id)
             lost = LostFound.query.get(myid)
         except:
-            return restful.success(success=False, msg='警告,检测到用户%s尝试非法字符注入，后台已记录' % current_user.real_name)
+            return restful.success(success=False, msg='警告,检测到用户 {} 尝试非法字符注入，后台已记录'.format(current_user.real_name))
         if lost is not None:
             key = str(lost.id) + PostConfig.POST_REDIS_PREFIX
             redis_client.incr(key)
@@ -86,32 +84,6 @@ def index():
         return restful.success()
 
 
-@detail.route('/report', methods=['POST', 'OPTIONS'], strict_slashes=False)
-@login_required
-@wechat_required
-def report():
-    req = request.json
-    print(req)
-    try:
-        post = LostFound.query.get(int(req["id"]))
-        if post:
-            key = str(req["id"]) + PostConfig.REPORT_REDIS_PREFIX
-            redis_report = redis_client.get(key)
-            if redis_report:
-                return restful.success(msg="举报信息已提交，感谢您的反馈")
-            print(post)
-            data = {
-                "title": post.title,
-                "id": str(post.id),
-                "reporter": current_user.username + " " + current_user.real_name,
-                "content":req["content"].replace('<', '&lt;'),
-                "time": datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-            }
-            key=str(post.id)+PostConfig.REPORT_REDIS_PREFIX
-            redis_client.set(key,json.dumps(data))
-    except Exception as e:
-        print(str(e))
-        return restful.params_error()
-    return restful.success(msg="举报信息已提交，感谢您的反馈")
+
 
 

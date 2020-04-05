@@ -63,24 +63,19 @@ var app = new Vue({
         },
     },
     methods: {
-        showReport(id) {
+        showReport() {
             layer.open({
-                btn: ['确定', '取消'],
-                type: 1,
-                area: ['70%', 'auto'],
-                //shade: true,
-                title: "违规举报", //不显示标题
-                content: $('#editorDiv') //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
-                , yes: function () {
-                    app.report.id = id;
-                    if (app.report.id == "" || app.report.content == "") {
-                        showAlertError('请填写全部内容!');
-                        return;
-                    }
-                    pubReport(app.report);
-                }, cancel: function () {
-
-                }
+              title:"违规举报",
+              btn:["前往举报"],
+              content: '对违规行为【如隐私信息未打码，发帖内容无关，评论不文明】' +
+                  '请前往【主页】，通过【菜单->反馈】进行举报，反馈主题填写【违规举报】，' +
+                  '反馈详情中请附上【帖子链接、发帖人姓名和举报理由】，我们会第一时间处理，并将处理结果反馈给您，' +
+                  '感谢您对维护平台秩序做出的贡献！',
+                yes: function(){
+                    layer.closeAll();
+                    window.open(baseUrl);
+              },
+              scrollbar: false,
             });
         },
         share() {

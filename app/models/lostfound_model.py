@@ -1,9 +1,9 @@
 # coding: utf-8
 from datetime import datetime
-from sqlalchemy import Index, text, desc
-from sqlalchemy.orm import relationship
 
-from app import db, User
+from sqlalchemy import text, desc
+
+from app import db
 
 
 class LostFound(db.Model):

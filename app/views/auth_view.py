@@ -37,7 +37,7 @@ def private():
 
 
 @auth.route('/favicon.ico')
-@cache.cached(timeout=60, query_string=True)  # 缓存10分钟 默认为300s
+# @cache.cached(timeout=60, query_string=True)  # 缓存10分钟 默认为300s
 def favicon():
     return send_from_directory(
         os.path.join(

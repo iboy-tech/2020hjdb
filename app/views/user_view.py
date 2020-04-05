@@ -29,7 +29,7 @@ from ..utils.check_data import check_qq
 
 
 @user.route('/messages', methods=['POST', 'OPTIONS'])
-@cache.cached(timeout=60*5, query_string=True)  # 缓存5分钟 默认为300s
+@cache.cached(timeout=60 * 5, query_string=True)  # 缓存5分钟 默认为300s
 @login_required
 def get_message():
     req = request.json
@@ -47,7 +47,7 @@ def get_message():
                     dict = {
                         "id": c.id,
                         # "userId": user.id,
-                        "icon": PostConfig.AVATER_API.replace("{}",user.qq),
+                        "icon": PostConfig.AVATER_API.replace("{}", user.qq),
                         "realName": user.real_name,
                         "time": c.create_time.strftime('%Y-%m-%d %H:%M:%S'),
                         "title": l.title,
@@ -114,14 +114,16 @@ def claim():
         try:
             l = LostFound.query.get(int(req))
             # 寻物
-            if l is not None:  # 查到了
+            if l:  # 查到了
                 if l.kind == 0:
-                    if l.user_id != current_user.id:
+                    if l.user_id != current_user.id:  # 不是自己
                         l.status = 1
                         l.deal_time = datetime.now()
                         l.claimant_id = current_user.id
-                        # db.session.add(l)
-                        lost_user = User.query.filter_by(id=l.user_id).first()
+                        db.session.add(l)
+                        db.session.commit()
+                        l = db.session.merge(l)
+                        lost_user = User.query.get(l.user_id)
                         print('通过失物正向查询失主', lost_user)
                         # 改变状态，有人找到了要通知失主
                         dict = {
@@ -136,10 +138,11 @@ def claim():
                         send_email.apply_async(args=[lost_user.qq, '失物找回通知', 'noticeLost', dict],
                                                countdown=randint(10, 30))
                         op = OpenID.query.filter_by(user_id=lost_user.id).first()
-                        if op is not None:
+                        if op:
                             print('发送消息')
-                            uids = [op.wx_id]
-                            send_message_by_pusher(dict, uids, 0)
+                            if op.wx_id: #部门账号的微信为NULL
+                                uids = [op.wx_id]
+                                send_message_by_pusher(dict, uids, 0)
                         return restful.success(msg='上报成功,您的联系方式已发送给失主')
 
                 # l = db.session.merge(l)
@@ -148,9 +151,10 @@ def claim():
                         l.status = 1
                         l.deal_time = datetime.now()
                         l.claimant_id = current_user.id
-                        # db.session.commit()
-                        # l=db.session.merge(l)
-                        found_user = User.query.filter_by(id=l.user_id).first()
+                        db.session.add(l)
+                        db.session.commit()
+                        l=db.session.merge(l)
+                        found_user = User.query.get(l.user_id)
                         # 改变状态，有人找到了要通知失主
                         dict = {
                             'lost_user': current_user.real_name,
@@ -166,15 +170,17 @@ def claim():
                         op = OpenID.query.filter_by(user_id=found_user.id).first()
                         if op is not None:
                             print('发送消息')
-                            uids = [op.wx_id]
-                            send_message_by_pusher(dict, uids, 1)
+                            if op.wx_id:
+                                uids = [op.wx_id]
+                                send_message_by_pusher(dict, uids, 1)
+                        # db.session.commit()
                         return restful.success(msg='认领成功,您的联系方式已发送给失主')
             else:
                 return restful.params_error()
         except Exception as e:
             db.session.rollback()
             print(str(e))
-            return restful.success(success=False, msg=str(e))
+            return restful.params_error()
         finally:
-            db.session.add(l)
+            # db.session.add(l)
             db.session.commit()
