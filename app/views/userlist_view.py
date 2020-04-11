@@ -14,7 +14,7 @@ from flask import render_template, request
 from flask_login import current_user, login_required
 from sqlalchemy import or_
 
-from app import db, redis_client
+from app import db, redis_client, cache
 from app.config import PostConfig
 from app.decorators import super_admin_required, admin_required, wechat_required
 from app.models.user_model import User
@@ -26,6 +26,7 @@ from app.utils.mail_sender import send_email
 
 
 @userlist.route('/', methods=['POST', 'GET', 'OPTIONS'], strict_slashes=False)
+@cache.cached(timeout=3600*24*7,key_prefix="userlist-html")  # 缓存5分钟 默认为300s
 @login_required
 @wechat_required
 @admin_required
@@ -203,26 +204,29 @@ def delete_users():
         users = User.query.filter(User.id.in_(req)).all()
         print("删除前",len(users),users)
         flag = False
-        for u in users:
-            if u.kind != 3:
-                print("当前要删除的用户",u)
-                u=db.session.merge(u)
-                posts = u.posts
-                reports = u.reports
-                # 删除图片和报告
-                delete_img_and_report(posts, reports)
-                try:
+        try:
+            for u in users:
+                if u.kind != 3:
+                    print("当前要删除的用户",u)
+                    u=db.session.merge(u)
+                    posts = u.posts
+                    reports = u.reports
+                    # 删除图片和报告
+                    delete_img_and_report(posts, reports)
+
                     db.session.delete(u)
                     db.session.commit()
                     # db.session.close()
                     # users.remove(u)
                     print("删除后",len(users),users)
-                except Exception as e:
+                else:
+                    flag = True
+        except Exception as e:
                     db.session.rollback()
                     return restful.params_error(success=False, msg=str(e))
+        finally:
+            db.session.close()
             # 无法直接删除超级管理员
-            else:
-                flag = True
         print("删除结果",users)
         if flag:
             return restful.success(msg="已删除除超级管理员之外的用户")

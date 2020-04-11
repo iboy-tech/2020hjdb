@@ -14,7 +14,7 @@ var app = new Vue({
         deleteCategory(name) {
             console.log(name);
             //询问框
-            layer.confirm('确定要删除码？', {
+            layer.confirm('确定要删除吗？', {
                 btn: ['确定', '取消'] //按钮
             }, function () {
                 deleteCategory(name);

@@ -29,7 +29,6 @@ from ..utils.check_data import check_qq
 
 
 @user.route('/messages', methods=['POST', 'OPTIONS'])
-@cache.cached(timeout=60 * 5, query_string=True)  # 缓存5分钟 默认为300s
 @login_required
 def get_message():
     req = request.json

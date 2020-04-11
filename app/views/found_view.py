@@ -17,7 +17,7 @@ from flask_cors import cross_origin
 from flask_login import current_user, login_required
 from sqlalchemy import or_
 
-from app import db, OpenID, redis_client
+from app import db, OpenID, redis_client, cache
 from app.config import PostConfig
 from app.decorators import wechat_required, admin_required
 from app.models.category_model import Category
@@ -36,6 +36,7 @@ from app.utils.wechat_notice import delete_post_notice, send_message_by_pusher
 
 
 @found.route('/', methods=['GET'], strict_slashes=False)
+@cache.cached(timeout=3600*24*7,key_prefix="found-html")  # 缓存5分钟 默认为300s
 @login_required
 @wechat_required
 def index():
@@ -212,6 +213,7 @@ def pub():
                     uids = [op.wx_id]
                     send_message_by_pusher(dict, uids, 3)
                     send_email.apply_async(args=(u.qq, '失物找回通知', 'foundNotice', dict), countdown=randint(10, 30))
+    cache.delete("category")
     return restful.success(msg="发布成功")
 
 
@@ -300,7 +302,8 @@ def delete_posts():
         db.session.rollback()
         return restful.success(False, msg=str(e))
     finally:
-        db.session.commit()
+        db.session.close()
+    cache.delete("category")
     return restful.success(msg="删除成功")
 
 
@@ -331,6 +334,7 @@ def delete_post():
             db.session.delete(l)
             db.session.commit()
             db.session.close()
+            cache.delete("category")
             return restful.success(msg='删除成功')
         else:
             return restful.params_error()

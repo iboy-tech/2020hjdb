@@ -17,7 +17,7 @@ from flask_login import login_required, current_user
 from openpyxl import load_workbook
 from sqlalchemy import and_
 
-from app import db, Report, User
+from app import db, Report, User, cache
 from app.decorators import wechat_required, admin_required
 from app.models.category_model import Category
 from app.models.lostfound_model import LostFound
@@ -26,6 +26,7 @@ from app.utils import restful
 
 
 @report.route('/', methods=['POST', 'GET'], strict_slashes=False)
+@cache.cached(timeout=3600*24*7,key_prefix="report-html")  # 缓存5分钟 默认为300s
 @login_required
 @wechat_required
 @admin_required

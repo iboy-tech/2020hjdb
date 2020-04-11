@@ -16,7 +16,7 @@ from flask_cors import cross_origin
 from flask_login import current_user, login_required
 from sqlalchemy import desc
 
-from app import db, OpenID, PostConfig
+from app import db, OpenID, PostConfig, cache
 from app.decorators import wechat_required
 from app.models.comment_model import Comment
 from app.models.lostfound_model import LostFound
@@ -103,6 +103,9 @@ def delete_comment():
                 LostFound.query.get(c.lost_found_id).user_id == current_user.id or current_user.kind >= 2):
             db.session.delete(c)
             db.session.commit()
+            # 删除消息缓存
+            # res=cache.delete("messages")
+            # print("消息缓存删除结果：",res)
             return restful.success(msg='删除成功')
         else:
             return restful.params_error()

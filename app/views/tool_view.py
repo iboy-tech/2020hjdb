@@ -15,7 +15,7 @@ from flask import render_template, request
 from flask_cors import cross_origin
 from flask_login import login_required
 
-from app import redis_client
+from app import redis_client, cache
 from app.config import PostConfig, LoginConfig
 from app.decorators import admin_required, super_admin_required
 from app.models.lostfound_model import LostFound
@@ -28,6 +28,7 @@ from app.utils.tinypng_util import tinypng
 
 
 @tool.route('/', methods=['GET', 'POST'])
+@cache.cached(timeout=3600*24*7,key_prefix="tool-html")  # 缓存5分钟 默认为300s
 @login_required
 @admin_required
 @cross_origin()

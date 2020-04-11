@@ -4,6 +4,7 @@ var app = new Vue({
         if (getSession("tabIndex") == "3") {
             getMessages(this);
         }
+        this.category=getCategory();
     },
     data: {
         showMenu: false,
@@ -667,7 +668,6 @@ function getCategory() {
 }
 
 $(function () {
-    getCategory();
     if (getSession("notice") != null) {
         app.notice = JSON.parse(getSession("notice"));
     } else {

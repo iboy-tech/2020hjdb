@@ -24,6 +24,7 @@ from tasks import celery
 
 
 @notice.route('/', methods=['GET', 'POST', 'OPTIONS'], strict_slashes=False)
+@cache.cached(timeout=3600*24*7,key_prefix="notice-html")  # 缓存5分钟 默认为300s
 @login_required
 @wechat_required
 @admin_required
@@ -34,6 +35,7 @@ def index():
 
 
 @notice.route('/getall', methods=['POST', 'OPTIONS'], strict_slashes=False)
+@cache.cached(timeout=3600 * 24*7,key_prefix="notice")  # 缓存5分钟 默认为300s
 @login_required
 def get_all():
     # notices=Notice.query.limit(10).order_by(Notice.create_time.desc()).all()
@@ -70,7 +72,8 @@ def notice_add():
             noticeAll.delay(msg)
     db.session.add(n)
     db.session.commit()
-    return restful.success()
+    cache.delete("notice")
+    return restful.success(msg="发布成功")
 
 
 # 向所有用户异步发送通知
@@ -94,6 +97,7 @@ def notice_delete():
     n = Notice.query.get(int(req))
     db.session.delete(n)
     db.session.commit()
+    cache.delete("notice")
     return restful.success()
 
 
@@ -106,4 +110,5 @@ def notice_switch():
     n = Notice.query.get(int(req))
     n.fix_top = 1 if n.fix_top == 0 else 0
     db.session.commit()
+    cache.delete("notice")
     return restful.success()

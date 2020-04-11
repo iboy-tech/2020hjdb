@@ -31,7 +31,7 @@ from app.utils.mail_sender import send_email
 
 # 隐私协议
 @auth.route('/policy')
-@cache.cached(timeout=60, query_string=True)  # 缓存10分钟 默认为300s
+@cache.cached(timeout=3600 * 24 * 7, query_string=True, key_prefix="policy-html")  # 缓存10分钟 默认为300s
 def private():
     return render_template('policy.html')
 
@@ -49,12 +49,11 @@ def favicon():
 
 @auth.route('/', methods=['POST', 'OPTIONS', 'GET'])
 @cross_origin()
-@unfreeze_user
+@unfreeze_user  # 微信自助解封
+@cache.cached(timeout=3600 * 24 * 7, key_prefix="user-html")  # 缓存10分钟 默认为300s
 @login_required
 @wechat_required
 def index():
-    data = request.json
-    print('user页面收到请求', data)
     return render_template('user.html')  # 所有参数都要
 
 
@@ -77,22 +76,26 @@ def login():
     socket_id = request.args.get('token')
     print("我是登录的token", socket_id)
     if socket_id:
-        key = socket_id + PostConfig.PUSHER_REDIS_PREFIX
-        op = redis_client.get(key)
-        if op != 'null':
-            # redies中为byte类型
-            op = op.decode()
-            data = eval(op)
-            op = OpenID.query.filter_by(wx_id=data['uid']).first()
-            if op:
-                print(op, op.user)
-                # 用户免登陆
-                login_user_longtime(op.user)
-                # 删除redis中的数据
-                redis_client.delete(key)
-                return restful.success(msg="密码重置成功，新密码已发送到您的微信", data=op.user.auth_to_dict())
-            else:
-                return restful.success(False, msg="此微信尚未绑定")
+        try:
+            key = socket_id + PostConfig.PUSHER_REDIS_PREFIX
+            op = redis_client.get(key)
+            if op != 'null':
+                # redies中为byte类型
+                op = op.decode()
+                data = eval(op)
+                op = OpenID.query.filter_by(wx_id=data['uid']).first()
+                if op:
+                    print(op, op.user)
+                    # 用户免登陆
+                    login_user_longtime(op.user)
+                    # 删除redis中的数据
+                    redis_client.delete(key)
+                    return restful.success(msg="密码重置成功，新密码已发送到您的微信", data=op.user.auth_to_dict())
+                else:
+                    return restful.success(False, msg="此微信尚未绑定")
+        except Exception as e:
+            print("扫码登录异常："+str(e))
+            pass
     data = request.json
     print("next的值", request.args.get('next'))
     print('请求成功', type(data))
@@ -176,7 +179,11 @@ def login():
                         return restful.success(success=False, msg="用户名或密码错误")
     if request.args.get('next'):
         session['next'] = request.args.get('next')
-    return render_template('login.html')
+    login_html = cache.get("login-html")
+    if not login_html:
+        cache.set('login-html', render_template('login.html'), timeout=3600 * 24 * 7)
+        login_html = cache.get("login-html")
+    return login_html
 
 
 @auth.route('/logout', methods=['POST'])
