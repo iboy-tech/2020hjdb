@@ -77,6 +77,19 @@ def custom_sort(preprocess_func=lambda x: x):
     return cmp_datetime
 
 
+def get_real_ip():
+    ip = request.remote_addr
+    try:
+        _ip = request.headers.get("X-Real-IP")
+        print("X-Real-IP", _ip)
+        if _ip is not None:
+            ip = _ip
+    except:
+        pass
+        # print(e)
+    return ip
+
+
 def get_login_info(user, kind):
     ip = request.remote_addr
     print("我是转发的ip", ip)

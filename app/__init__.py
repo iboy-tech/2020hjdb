@@ -30,8 +30,8 @@ from .models.open_model import OpenID
 from .models.report_model import Report
 from .models.role_model import Role
 from .models.user_model import Guest, User
+from .utils.log_utils import get_log, get_real_ip
 from .views.auth_view import get_login_info
-from .utils.log_utils import get_log
 
 login_manager.session_protection = 'basic'
 
@@ -51,6 +51,8 @@ from app.page import report as report_bp
 from app.page import tool as tool_bp
 from app.page import log as log_bp
 from app.page import lab as lab_bp
+
+
 
 
 # 工厂函数
@@ -90,6 +92,7 @@ def register_blueprints(app):
     app.register_blueprint(log_bp)
     app.register_blueprint(lab_bp)
 
+
 def register_extensions(app):  # 实例化扩展
     print('注册扩展')
     migrate.init_app(app, db)
@@ -104,6 +107,8 @@ def register_extensions(app):  # 实例化扩展
     # toolbar.init_app(app)
     redis_client.init_app(app)
     cache.init_app(app)
+    limiter.__init__(key_func=get_real_ip, default_limits=["200 per day", "50 per hour"])
+    limiter.init_app(app)
     # mongo_client.init_app(app)
 
 
@@ -289,6 +294,18 @@ def register_errors(app):
             return render_template('errors/500.html', data=data), 500
         else:
             return redirect(url_for('auth.login')), 301
+
+    @app.errorhandler(429)
+    def ratelimit_handler(e):
+        if not isinstance(current_user._get_current_object(), Guest):
+            data = get_log()
+            data.update(user=current_user.username)
+            key = uuid.uuid4().hex + LogConfig.REDIS_ERROR_LOG_KEY
+            redis_client.set(key, json.dumps(data))
+            redis_client.expire(key, LogConfig.REDIS_EXPIRE_TIME)
+            return render_template('errors/429.html', data=data), 429
+        else:
+            return "403 Forbidden", 403
 
     @app.errorhandler(CSRFError)
     def handle_csrf_error(e):

@@ -17,7 +17,7 @@ from flask import render_template, request, url_for, session, send_from_director
 from flask_cors import cross_origin
 from flask_login import logout_user, login_user, login_required, current_user
 
-from app import db, OpenID, redis_client, cache
+from app import db, OpenID, redis_client, cache, limiter
 from app.config import LoginConfig, PostConfig
 from app.decorators import wechat_required, unfreeze_user
 from app.models.user_model import User
@@ -31,6 +31,7 @@ from app.utils.mail_sender import send_email
 
 # 隐私协议
 @auth.route('/policy')
+@limiter.limit(limit_value="10/minute")
 @cache.cached(timeout=3600 * 24 * 7, query_string=True, key_prefix="policy-html")  # 缓存10分钟 默认为300s
 def private():
     return render_template('policy.html')
@@ -48,6 +49,7 @@ def favicon():
 
 
 @auth.route('/', methods=['POST', 'OPTIONS', 'GET'])
+@limiter.limit(limit_value="10/minute")
 @cross_origin()
 @unfreeze_user  # 微信自助解封
 @cache.cached(timeout=3600 * 24 * 7, key_prefix="user-html")  # 缓存10分钟 默认为300s
@@ -71,6 +73,7 @@ def login_user_longtime(user):
 
 
 @auth.route('/login', methods=['GET', 'POST', 'OPTIONS'])
+@limiter.limit(limit_value="20/hour")
 @cross_origin()
 def login():
     socket_id = request.args.get('token')
@@ -195,6 +198,7 @@ def logout():
 
 
 @auth.route('/recognize', methods=['POST', 'OPTIONS'])
+@limiter.limit(limit_value="5/hour")
 @check_qq
 @check_username
 @cross_origin()
@@ -279,6 +283,7 @@ def recognize():
 
 # token验证入口
 @auth.route('/confirm.html', methods=['GET'])
+@limiter.limit(limit_value="5/day")
 @cross_origin()
 def confirm():
     token = request.args.get('token')

@@ -14,7 +14,7 @@ from flask import render_template, request
 from flask_login import current_user, login_required
 from sqlalchemy import or_
 
-from app import db, redis_client, cache
+from app import db, redis_client, cache, limiter
 from app.config import PostConfig
 from app.decorators import super_admin_required, admin_required, wechat_required
 from app.models.user_model import User
@@ -35,6 +35,7 @@ def index():
 
 
 @userlist.route('/getall', methods=['POST', 'GET'], strict_slashes=False)
+@limiter.limit("2/day", exempt_when=lambda: current_user.is_admin)
 @login_required
 @wechat_required
 @admin_required

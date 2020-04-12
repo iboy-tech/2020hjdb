@@ -17,7 +17,7 @@ from flask_cors import cross_origin
 from flask_login import current_user, login_required
 from sqlalchemy import or_
 
-from app import db, OpenID, redis_client, cache
+from app import db, OpenID, redis_client, cache, limiter
 from app.config import PostConfig
 from app.decorators import wechat_required, admin_required
 from app.models.category_model import Category
@@ -167,6 +167,7 @@ def get_all():
 
 
 @found.route('/pub', methods=['POST', 'OPTIONS'], strict_slashes=False)
+@limiter.limit(limit_value="5/minute")
 @login_required
 @check_post
 def pub():

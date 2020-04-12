@@ -17,7 +17,7 @@ from flask import request, url_for
 from flask_cors import cross_origin
 from flask_login import current_user, login_required
 
-from app import db, OpenID, cache, PostConfig
+from app import db, OpenID, cache, PostConfig, limiter
 from app.models.lostfound_model import LostFound
 from app.models.user_model import User
 from app.page import user
@@ -61,6 +61,7 @@ def get_message():
 
 
 @user.route('/setQQ', methods=['POST'])
+@limiter.limit(limit_value="3/minute")
 @login_required
 @cross_origin()
 @check_qq
@@ -102,6 +103,7 @@ def set_password():
 
 
 @user.route('/claim', methods=['POST'])
+@limiter.limit(limit_value="5/minute")
 @login_required
 @cross_origin()
 def claim():

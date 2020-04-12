@@ -13,7 +13,7 @@ import os
 from flask import render_template, request, abort
 from flask_login import current_user, login_required
 
-from app import db, redis_client
+from app import db, redis_client, limiter
 from app.config import PostConfig
 from app.decorators import wechat_required
 from app.models.category_model import Category
@@ -25,6 +25,7 @@ from app.utils import restful
 
 # @detail.route("/?id=<int:lost_id>",defaults = {"lost_id":1})
 @detail.route('/', methods=['GET', 'POST', 'OPTIONS'], strict_slashes=False)
+@limiter.limit(limit_value="30/minute")
 @login_required
 @wechat_required
 def index():
