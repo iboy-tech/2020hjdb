@@ -155,10 +155,10 @@
           </span>
         <div class="collapse navbar-collapse">
     <ul class="navbar-nav mr-auto">
-        <li class="nav-item nav-qi-yin-ji-qiao" role="menuitem"><a class="nav-link top-menu-nav-item" href="#" @click="changePage(1)">使用帮助</a></li>
-        <li class="nav-item nav-sheng-huo-za-ji" role="menuitem"><a class="nav-link top-menu-nav-item" href="#" @click="changePage(2)">更新日志</a></li>
-        <li class="nav-item nav-guan-yu" role="menuitem"><a class="nav-link top-menu-nav-item" href="#" @click="changePage(3)">关于我们</a></li>
-        <li v-if="pageIndex!=0" class="nav-item nav-qi-yin-ji-qiao" role="menuitem"><a class="nav-link top-menu-nav-item" href="#" @click="changePage(0)">登录/注册</a></li>
+        <li class="nav-item nav-qi-yin-ji-qiao" role="menuitem"><a class="nav-link top-menu-nav-item"  @click="changePage(1)">使用帮助</a></li>
+        <li class="nav-item nav-sheng-huo-za-ji" role="menuitem"><a class="nav-link top-menu-nav-item" @click="changePage(2)">更新日志</a></li>
+        <li class="nav-item nav-guan-yu" role="menuitem"><a class="nav-link top-menu-nav-item"  @click="changePage(3)">关于我们</a></li>
+        <li v-if="pageIndex!=0" class="nav-item nav-qi-yin-ji-qiao" role="menuitem"><a class="nav-link top-menu-nav-item"  @click="changePage(0)">登录/注册</a></li>
     </ul>
   </div>
     </div>
