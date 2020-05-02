@@ -49,7 +49,7 @@ def favicon():
 
 
 @auth.route('/', methods=['POST', 'OPTIONS', 'GET'])
-@limiter.limit(limit_value="10/minute")
+# @limiter.limit(limit_value="10/minute")
 @cross_origin()
 @unfreeze_user  # 微信自助解封
 @cache.cached(timeout=3600 * 24 * 7, key_prefix="user-html")  # 缓存10分钟 默认为300s
@@ -182,11 +182,12 @@ def login():
                         return restful.success(success=False, msg="用户名或密码错误")
     if request.args.get('next'):
         session['next'] = request.args.get('next')
-    login_html = cache.get("login-html")
-    if not login_html:
-        cache.set('login-html', render_template('login.html'), timeout=3600 * 24 * 7)
-        login_html = cache.get("login-html")
-    return login_html
+    # login_html = cache.get("login-html")
+    # if not login_html:
+    #     cache.set('login-html', render_template('login.html'), timeout=3600 * 24 * 7)
+    #     login_html = cache.get("login-html")
+    # return login_html
+    return render_template('login.html')
 
 
 @auth.route('/logout', methods=['POST'])
