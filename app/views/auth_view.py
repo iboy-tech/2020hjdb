@@ -184,7 +184,7 @@ def login():
         session['next'] = request.args.get('next')
     # login_html = cache.get("login-html")
     # if not login_html:
-    #     cache.set('login-html', render_template('login.html'), timeout=3600 * 24 * 7)
+    #     cache.set('login-html', render_template('login.html.bak'), timeout=3600 * 24 * 7)
     #     login_html = cache.get("login-html")
     # return login_html
     return render_template('login.html')

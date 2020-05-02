@@ -1,15 +1,24 @@
-<!DOCTYPE HTML>
-<html>
+<!DOCTYPE html>
+<html lang="zh-CN">
 <head>
-    <title>三峡大学失物招领中心</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="renderer" content="webkit">
+  <title>三峡大学失物招领中心</title>
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"/>
     <meta name="keywords" content="三峡大学失物招领中心,三峡大学失物招领中心官网,三峡大学失物招领平台,三峡大学失物招领,三大失招,小招同学,CTGU失物招领,三大失物招领中心">
 <meta name="description" content="三峡大学失物招领中心是隶属于校保卫处的校级学生组织。我们从遍布全校的失物收集箱、各教学楼等地方收集失物，扩散失物信息并负责归还失物。自成立以来，中心全体成员秉承“志愿、公益、物实”的宗旨，齐心协力、努力工作。 虽然失物招领中心这个组织还很年轻，但我们每个人都相信：暖日虽远，但必有光芒！">
-    <link href="../static/css/style-login.css" rel="stylesheet" type="text/css" media="all"/>
-    <script src="https://cdn.bootcss.com/vue/2.4.2/vue.min.js"></script>
-     <script src="https://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
-    <style>
+<script type="text/babel" src="https://blog-static.cnblogs.com/files/gxsyj/browser.min.js"></script>
+  <script src="https://cdn.bootcss.com/vue/2.4.2/vue.min.js"></script>
+ <script src="https://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
+  <link rel="stylesheet" href="../static/css/layui.css" media="all">
+  <link id="bootstrap-css" type="text/css" rel="stylesheet" href="../../static/css/bootstrap.min.css">
+  <link id="fontawesome-css" type="text/css" rel="stylesheet" href="../static/css/all.min.css">
+  <link rel="stylesheet" type="text/css" href="../static/css/login.css">
+<link rel="stylesheet prefetch" href="https://cdn.bootcss.com/semantic-ui/2.3.1/components/icon.min.css">
+  <link id="rebirth-css" rel="stylesheet" type="text/css" href="../static/css/styles.css" />
+      <style>
         body{
             margin-top: 8vh;
         }
@@ -41,38 +50,169 @@
             line-height: 20px;
             font-size: 16px;
         }
+          .faq p{
+    margin-top: 0;
+    margin-bottom: 1.46em;
+    line-height: 2em;
+}
+.faq a {
+ color: #fec40f;
+}
+.faq {
+    margin: 0 auto;
+}
+  .content .logo {
+    display: inline-block;
+    vertical-align: middle;
+    border-radius: 100%;
+}
+   .content .logo img{
+       width: 110px;
+    height: 100px;
+   }
+   .content ,.register{
+       margin: 30px auto;
+   }
+          .content .bannerWord {
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+}
     </style>
-</head>
-<body>
-<h1>CTGU失物招领</h1>
+      <style type="text/css" id="responsive-header-img-css" class="responsive-header-img-css">
+  .responsive-header-img {
+    background-image: url(https://cdn.u1.huluxia.com/g4/M01/06/68/rBAAdl6tDLiACbReAAzE_Adk0Lk012.jpg);
+  }
 
-<div class="w3l-form" id="app">
-    <div class="w3l-grids-from2">
-        <div class="w3l-user2">
-            <div class="agile">
-                <div class="w3l-signup5" style="">
-                    <form action="#" method="post">
-                        <div class="tabContainer" v-if="tabIndex != 3">
-                            <div title="" class="tab" :class="{tabActive: tabIndex == 0}" @click="changeTab(0)">用户登录</div>
-                            <div class="tab" :class="{tabActive: tabIndex == 1}" @click="changeTab(1)">身份认证</div>
-                        </div>
-                        <div class="tabContainer" v-else>
-                    <div class="tab">
-                        <sapn style="display: inline-block;line-height: 16px;font-size: 18px;font-weight: bold;color: #000000a3;margin-bottom: 20px;}">微信扫一扫，重置密码</sapn>
-                        <div id="qrcode"></div>
-                        <span id="notice"></span>
-                    </div>
-                         </div>
-                        <template v-if="tabIndex != 3">
-               <input v-model="user.username" type="text" placeholder="学号" required=""/>
-                        <input v-model="user.password" type="password" :placeholder="tabIndex==1?'教务系统密码':'密码'" required=""/>
-                        <input v-model="user.qq" v-if="tabIndex!=0" type="text" placeholder="QQ" required=""/>
-                        <input @click="submit" type="button" class="btn" value="确定"/>
-                        <div style="width: 100%;height: 10px;" v-if="tabIndex==0">
-                            <span  style="color: #d28520;float: left"><a  style="color:#004276;" @click=changeTab(1)>立即注册</a></span>
-                            <sapn  style="color: #d28520;float: right;"><a  style="color:#004276;" @click=changeTab(3)>忘记密码？</a></sapn>
-                        </div>
-                      <div v-if="tabIndex!=0" style="text-align: left;"><input type="checkbox"  value="checkbox" checked>我已阅读并同意 <a href="/policy" style="color:#004276;" target="_blank">《服务协议》</a></div>
+  @media(max-width: 1000px) {
+    .responsive-header-img {
+      background-image: url(https://cdn.u1.huluxia.com/g4/M01/06/68/rBAAdl6tDLiACbReAAzE_Adk0Lk012.jpg);
+      background-image: -webkit-image-set(url(https://cdn.u1.huluxia.com/g4/M01/06/68/rBAAdl6tDLiACbReAAzE_Adk0Lk012.jpg) 1x,
+      url(https://cdn.u1.huluxia.com/g4/M01/06/68/rBAAdl6tDLiACbReAAzE_Adk0Lk012.jpg) 2x);
+      background-image: image-set(url(https://cdn.u1.huluxia.com/g4/M01/06/68/rBAAdl6tDLiACbReAAzE_Adk0Lk012.jpg) 1x,
+      url(https://cdn.u1.huluxia.com/g4/M01/06/68/rBAAdl6tDLiACbReAAzE_Adk0Lk012.jpg) 2x);
+    }
+  }
+
+  @media(max-width: 600px) {
+    .responsive-header-img {
+      background-image: url(https://cdn.u1.huluxia.com/g4/M01/06/68/rBAAdl6tDLiACbReAAzE_Adk0Lk012.jpg);
+      background-image: -webkit-image-set(url(https://cdn.u1.huluxia.com/g4/M01/06/68/rBAAdl6tDLiACbReAAzE_Adk0Lk012.jpg) 1x,
+      url(https://cdn.u1.huluxia.com/g4/M01/06/68/rBAAdl6tDLiACbReAAzE_Adk0Lk012.jpg) 2x);
+      background-image: image-set(url(https://cdn.u1.huluxia.com/g4/M01/06/68/rBAAdl6tDLiACbReAAzE_Adk0Lk012.jpg) 1x,
+      url(https://cdn.u1.huluxia.com/g4/M01/06/68/rBAAdl6tDLiACbReAAzE_Adk0Lk012.jpg) 2x);
+    }
+  }
+  .join {
+    background: linear-gradient(to bottom right, #fd2638, #3d8cd7, #48ecb6);
+    background-repeat: no-repeat;
+    background-size: 500% 500%;
+    animation: gradient 80s ease infinite;
+    border: none;
+    width: 100px;
+    border-radius: 15px;
+    height: 30px;
+    color: white;
+    cursor: pointer;
+    position: relative;
+    z-index: 10;
+    transition: box-shadow 0.5s;
+}
+  .layui-text ,.layui-timeline-title{
+  color: white !important;
+  }
+
+  </style>
+</head>
+<body class="rebirth-body home-template">
+
+<div class="d-flex site-wrapper" id="app">
+  <div class="d-block d-lg-none d-xl-none sidebar-wrapper">
+    <div class="sidebar-container">
+  <div class="d-flex justify-content-between sidebar-header">
+    <div class="sidebar-title">三峡大学失物招领中心</div>
+    <div class="d-flex sidebar-right">
+      <div class="d-flex align-items-center justify-content-center sidebar-search click-search">
+        <i class="fas fa-search"></i>
+      </div>
+
+    </div>
+  </div>
+        <button class="navbar-toggler sidebar-toggler" type="button" data-toggle="collapse" aria-controls="sidebar-wrapper" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+</div>
+  </div>
+  <div class="main-wrapper">
+    
+<header class="fixed-top shadow-sm main-header scroll-reveal-header">
+  <nav class="navbar navbar-expand-md header-navbar">
+    <div class="container">
+          <span class="d-inline-block align-top navbar-brand-logo" style="font-size: 16px;">
+              <img src="https://cdn.u1.huluxia.com/g4/M01/06/65/rBAAdl6tC9CAMSRZAACoWU6hwWE224.png" style="width: 160px;margin-top: -12px;">
+          失物招领中心
+          </span>
+        <div class="collapse navbar-collapse">
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item nav-qi-yin-ji-qiao" role="menuitem"><a class="nav-link top-menu-nav-item" href="#" @click="changePage(1)">使用帮助</a></li>
+        <li class="nav-item nav-sheng-huo-za-ji" role="menuitem"><a class="nav-link top-menu-nav-item" href="#" @click="changePage(2)">更新日志</a></li>
+        <li class="nav-item nav-guan-yu" role="menuitem"><a class="nav-link top-menu-nav-item" href="#" @click="changePage(3)">关于我们</a></li>
+        <li v-if="pageIndex!=0" class="nav-item nav-qi-yin-ji-qiao" role="menuitem"><a class="nav-link top-menu-nav-item" href="#" @click="changePage(0)">登录/注册</a></li>
+    </ul>
+  </div>
+    </div>
+  </nav>
+</header>
+<section class="main-hero">
+
+
+  <div class="main-hero-bg responsive-header-img"></div>
+   <div class="d-flex flex-column align-content-center justify-content-center main-hero-content">
+       <template  v-if="pageIndex==0">
+            <div class="text-center main-hero-content-title">CTGU失物招领</div>
+            <div class="text-center w-75 main-hero-content-description home-sentence">
+            <div class="w3l-form">
+            <div class="w3l-grids-from2">
+                <div class="w3l-user2">
+                    <div class="agile">
+                        <div class="w3l-signup5" style="">
+                            <form action="#" method="post">
+                                <div class="tabContainer" v-if="tabIndex != 3">
+                                    <div title="" class="tab" :class="{tabActive: tabIndex == 0}" @click="changeTab(0)">用户登录</div>
+                                    <div class="tab" :class="{tabActive: tabIndex == 1}" @click="changeTab(1)">身份认证</div>
+                                </div>
+                                <div class="tabContainer" v-else>
+                            <div class="tab">
+                                <sapn style="display: inline-block;line-height: 16px;font-size: 18px;font-weight: bold;color: #000000a3;margin-bottom: 20px;}">微信扫一扫，重置密码</sapn>
+                                <div id="qrcode"></div>
+                                <span id="notice"></span>
+                            </div>
+                                 </div>
+                                <template v-if="tabIndex != 3">
+
+                                    <p class="input-div form-group">
+                                        <i class="user circle icon auth_icon"></i>
+                                        <input v-model="user.username" type="text" placeholder="学号" required=""/ class="auth_input form-control">
+                                    </p>
+
+                                    <p>
+                                        <i class="lock alternate icon auth_icon"></i>
+                                                               <input v-model="user.password" type="password" :placeholder="tabIndex==1?'教务系统密码':'密码'" required=""/ class="auth_input form-control">
+                                    </p>
+                                    <p v-if="tabIndex!=0" >
+                                        <i class="qq icon auth_icon"></i>
+                                                                <input v-model="user.qq" type="text" placeholder="QQ" required=""/ class="auth_input form-control">
+                                    </p>
+
+
+
+                                <input @click="submit" type="button" class="btn" value="确定"/>
+                                <div style="width: 100%;height: 10px;" v-if="tabIndex==0">
+                                    <span  style="color: #d28520;float: left;padding: 10px;"><a  style="color:#004276;" @click=changeTab(1)>立即注册</a></span>
+                                    <sapn  style="color: #d28520;float: right;padding: 10px;"><a  style="color:#004276;" @click=changeTab(3)>忘记密码？</a></sapn>
+                                </div>
+                              <div v-if="tabIndex!=0" style="text-align: left;padding: 10px;"><input type="checkbox"  value="checkbox" checked>我已阅读并同意 <a href="/policy" style="color:#004276;" target="_blank">《服务协议》</a></div>
 
                         </template>
 
@@ -84,9 +224,145 @@
     </div>
 
 </div>
-    <footer>
-        &copy;三峡大学失物招领中心 | <a href="http://www.ctgu.edu.cn/" target="_blank">CTGU</a>
-    </footer>
+    </div>
+       </template>
+       <template v-if="pageIndex==1">
+           <div class="faq" style="margin: 0 auto;">
+             <h5>收不到通知邮件？</h5>
+             <p>邮件延时发送，一般3分钟之内送达，若长时间没有收到，请登录QQ邮箱，检查是否在垃圾箱中，<br>
+                 为了保证您能及时收到我们的通知，强烈建议您将<span style="font-weight: bold">（ctguswzl.cn）</span>添加到QQ邮箱的域名白名单中，<br>
+                点击这里查看设置方法, <a target="_blank" href="https://service.mail.qq.com/cgi-bin/help?subtype=1&id=16&no=113" rel="nofollow">【设置方法】</a></p>
+            <h5>其他问题？</h5>
+             <p>有关使用过程中的更多问题，请注册登录后查看站内的帮助信息</p>
+           </div>
+       </template>
+       <template v-if="pageIndex==2">
+                   <div style="padding:20px;max-width:700px;margin:0 auto;">
+        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 120px;color: white;">
+          <legend>更新日志</legend>
+        </fieldset>
+         <ul class="layui-timeline">
+
+             <li class="layui-timeline-item">
+            <i class="layui-icon layui-timeline-axis"></i>
+            <div class="layui-timeline-content layui-text">
+              <h3 class="layui-timeline-title">1月10日</h3>
+                项目开始建立
+            </div>
+          </li>
+
+             <li class="layui-timeline-item">
+            <i class="layui-icon layui-timeline-axis"></i>
+            <div class="layui-timeline-content layui-text">
+              <h3 class="layui-timeline-title">3月18日</h3>
+                完成微信公众号对接<br>
+                微信接收通知、找回密码、扫码登录
+            </div>
+          </li>
+          <li class="layui-timeline-item">
+            <i class="layui-icon layui-timeline-axis"></i>
+            <div class="layui-timeline-content layui-text">
+              <h3 class="layui-timeline-title">4月22日</h3>
+                对接QQ群，QQ机器人同步广播失物招领信息<br>
+                机器人被滥用，腾讯已关闭
+            </div>
+          </li>
+           <li class="layui-timeline-item">
+            <i class="layui-icon layui-timeline-axis"></i>
+            <div class="layui-timeline-content layui-text">
+              <h3 class="layui-timeline-title">5月2日</h3>
+                对前端UI进行重构
+            </div>
+          </li>
+          <li class="layui-timeline-item">
+            <i class="layui-icon layui-timeline-axis"></i>
+            <div class="layui-timeline-content layui-text">
+              <h3 class="layui-timeline-title">未来</h3>
+                未完待续...
+            </div>
+          </li>
+          </ul>
+</div>
+ </template>
+       <template v-if="pageIndex==3">
+           			<div class="content">
+				<span class="logo">
+			        <img src="https://icon.qiantucdn.com/20200502/227c7510c4b3bff77b0fef1c1f30e2a12" alt="三峡大学失物招领中心LOGO">
+			    </span>
+
+                  <header class="bannerWord" style="margin: 0 auto;">
+					<h2>Hello CTGUer!</h2>
+					<p>欢迎来到失物招领中心</p>
+				</header>
+				<div class="bannerDes" style="margin: 15px auto;line-height: 30px;">
+					三峡大学失物招领中心是隶属于校保卫处的校级学生组织。<br>
+                    我们从遍布全校的失物收集箱、各教学楼等地方收集失物，扩散失物信息并负责归还失物。<br>
+                    自成立以来，中心全体成员秉承“志愿、公益、物实”的宗旨，齐心协力、努力工作。<br>
+                    虽然失物招领中心这个组织还很年轻，但我们每个人都相信：暖日虽远，但必有光芒！<br>
+				</div>
+
+				<div class="register" style="margin: 30px auto;">
+					<button class="join"><a href="https://shang.qq.com/wpa/qunwpa?idkey=6c652bd1073f3bbb87913503b6c36b89dd89cf7fb4b7b28593f971974d1cc1ef" target="_blank" style="color: white !important;" rel="noopener nofollow">加入我们</a></button>
+				</div>
+       </template>
+
+  <div class="main-hero-waves-area waves-area" style="max-height: 100px;">
+    <svg class="waves-svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+      <defs>
+        <path id="gentle-wave" d="M -160 44 c 30 0 58 -18 88 -18 s 58 18 88 18 s 58 -18 88 -18 s 58 18 88 18 v 44 h -352 Z"/>
+      </defs>
+      <g class="parallax">
+        <use xlink:href="#gentle-wave" x="48" y="0"/>
+        <use xlink:href="#gentle-wave" x="48" y="3"/>
+        <use xlink:href="#gentle-wave" x="48" y="5"/>
+        <use xlink:href="#gentle-wave" x="48" y="7"/>
+      </g>
+    </svg>
+</div>
+</section>
+
+
+    <section class="main-footer-waves-area waves-area"  style="max-height: 100px;">
+  <svg class="waves-svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+    <defs>
+      <path id="gentle-wave" d="M -160 44 c 30 0 58 -18 88 -18 s 58 18 88 18 s 58 -18 88 -18 s 58 18 88 18 v 44 h -352 Z" />
+    </defs>
+    <g class="parallax">
+      <use xlink:href="#gentle-wave" x="48" y="0" />
+    </g>
+  </svg>
+</section>
+    <footer class="main-footer">
+  <div class="container d-flex justify-content-md-between justify-content-center">
+    <div class="text-center main-footer-copyright">
+      <p>三峡大学失物招领中心 | <a href="http://www.ctgu.edu.cn/" target="_blank" rel="noopener nofollow">CTGU</a></p>
+    </div>
+    <div class="d-none d-md-block main-footer-meta">守护你所珍视的每一件事物</div>
+  </div>
+  <div class="container d-flex flex-wrap-reverse justify-content-md-between justify-content-center text-center main-footer-audit">
+    <p>
+      <a href="http://beian.miit.gov.cn" target="_blank" rel="nofollow noopener">晋ICP备20001631号-1</a>
+    </p>
+  </div>
+</footer>
+  </div>
+
+  <div class="toast-wrapper" aria-live="polite" aria-atomic="true">
+  <div class="toast-wrapper-list"></div>
+</div>
+</div>
+
+<script id="jquery-js" type="text/javascript" src="../static/js/jquery.min.js"></script>
+
+
+<script id="scrollreveal-js" type="text/javascript" src="../static/js/scrollreveal.min.js"></script>
+
+<script id="content-api-js" type="text/javascript" src="../static/js/content-api.min.js"></script>
+
+<script id="ghost-search" type="text/javascript" src="../static/js/ghost-search.min.js"></script>
+
+<!-- <script id="rebirth-js" type="text/javascript" src="../static/js/rebirth.js"></script>
+ -->
 <script>
 (function(){
     var bp = document.createElement('script');
@@ -110,6 +386,7 @@
         el: "#app",
         data: {
             tabIndex: 0,
+            pageIndex:0,
             src: baseUrl,
             now: new Date().getTime(),
             user: {
@@ -126,6 +403,10 @@
                     this.getQRCode();
                 }
             },
+            changePage: function (index) {
+                console.log(index);
+                this.pageIndex = index;
+            },
             submit: function () {
                 let me = this;
                 if(me.tabIndex == 1){
@@ -141,13 +422,13 @@
                let qq=me.user.qq;
                 if(me.tabIndex == 1){
                     if(qq.length==0){
-                    showAlertError('QQ号不可为空');
+                    showError('QQ号不可为空');
                     return false;
                 }
                 else{
                      var reg=/^[1-9][0-9]{4,11}$/;
                      if(!reg.test(qq)) {
-                         showAlertError('QQ号格式错误');
+                         showError('QQ号格式错误');
                          return false;
                         }
 	                }
@@ -190,7 +471,7 @@
                 });
             },
             getQRCode() {
-                this.loadJS("../static/js/socket.io.min.js");
+                this.loadJS("../../static/js/socket.io.min.js");
                 loadScript.onload = function () {//加载结束之后执行回调
                     const url = baseUrl;
                     console.log(url);
@@ -245,5 +526,6 @@
         }
     });
 </script>
+<script src="../static/js/layui.js" charset="utf-8"></script>
 </body>
 </html>

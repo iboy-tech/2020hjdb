@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="renderer" content="webkit">
+  <title>三峡大学失物招领中心</title>
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"/>
+    <meta name="keywords" content="三峡大学失物招领中心,三峡大学失物招领中心官网,三峡大学失物招领平台,三峡大学失物招领,三大失招,小招同学,CTGU失物招领,三大失物招领中心">
+<meta name="description" content="三峡大学失物招领中心是隶属于校保卫处的校级学生组织。我们从遍布全校的失物收集箱、各教学楼等地方收集失物，扩散失物信息并负责归还失物。自成立以来，中心全体成员秉承“志愿、公益、物实”的宗旨，齐心协力、努力工作。 虽然失物招领中心这个组织还很年轻，但我们每个人都相信：暖日虽远，但必有光芒！">
+<script type="text/babel" src="https://blog-static.cnblogs.com/files/gxsyj/browser.min.js"></script>
+  <script src="https://cdn.bootcss.com/vue/2.4.2/vue.min.js"></script>
+ <script src="https://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
+
+  <link id="bootstrap-css" type="text/css" rel="stylesheet" href="static/css/bootstrap.min.css">
+  <link id="fontawesome-css" type="text/css" rel="stylesheet" href="static/css/all.min.css">
+  <link rel="stylesheet" type="text/css" href="login.css">
+<link rel="stylesheet prefetch" href="https://cdn.bootcss.com/semantic-ui/2.3.1/components/icon.min.css">
+  <link id="rebirth-css" rel="stylesheet" type="text/css" href="static/css/styles.css" />
+      <style>
+        body{
+            margin-top: 8vh;
+        }
+        .tabContainer {
+            display: flex;
+            margin-bottom: 1em;
+        }
+
+        .tab {
+            font-size: 15px;
+            padding: 10px;
+            box-sizing: border-box;
+            flex: 1;
+            cursor: pointer;
+        }
+
+        .tabActive {
+            color: #fff;
+            border-bottom: 1px solid #fff;
+        }
+        #qrcode{
+            width: 250px;
+            height: 250px;
+            margin: 0 auto;
+            margin-bottom: 10px;
+        }
+        #notice {
+             color: #454441;
+            line-height: 20px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body class="rebirth-body home-template">
+
+<div class="d-flex site-wrapper">
+  <div class="d-block d-lg-none d-xl-none sidebar-wrapper">
+    <div class="sidebar-container">
+  <div class="d-flex justify-content-between sidebar-header">
+    <div class="sidebar-title">三峡大学失物招领中心</div>
+    <div class="d-flex sidebar-right">
+      <div class="d-flex align-items-center justify-content-center sidebar-search click-search">
+        <i class="fas fa-search"></i>
+      </div>
+<!--       <div class="d-flex align-items-center justify-content-center sidebar-close">
+        <i class="fas fa-times"></i>
+      </div> -->
+    </div>
+  </div>
+        <button class="navbar-toggler sidebar-toggler" type="button" data-toggle="collapse" aria-controls="sidebar-wrapper" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+</div>
+  </div>
+  <div class="main-wrapper">
+    
+<header class="fixed-top shadow-sm main-header scroll-reveal-header">
+  <nav class="navbar navbar-expand-md header-navbar">
+    <div class="container">
+        <a class="navbar-brand" href="https://ctguswzl.cn/">
+          <span class="d-inline-block align-top navbar-brand-logo"><img src="https://cdn.u1.huluxia.com/g4/M01/06/65/rBAAdl6tC9CAMSRZAACoWU6hwWE224.png" style="width: 160px;">
+          失物招领中心
+        </a>
+      
+        <div class="collapse navbar-collapse">
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item nav-qi-yin-ji-qiao" role="menuitem"><a class="nav-link top-menu-nav-item" href="https://www.isiyuan.net/sort/jsjc">使用帮助</a></li>
+        <li class="nav-item nav-sheng-huo-za-ji" role="menuitem"><a class="nav-link top-menu-nav-item" href="./log.html">更新日志</a></li>
+        <li class="nav-item nav-guan-yu" role="menuitem"><a class="nav-link top-menu-nav-item" href="https://www.isiyuan.net/about">关于我们</a></li>
+    </ul>
+  </div>
+    </div>
+  </nav>
+</header>
+<section class="main-hero">
+  
+  <style type="text/css" id="responsive-header-img-css" class="responsive-header-img-css">
+  .responsive-header-img {
+    background-image: url(https://cdn.u1.huluxia.com/g4/M01/06/68/rBAAdl6tDLiACbReAAzE_Adk0Lk012.jpg);
+  }
+
+  @media(max-width: 1000px) {
+    .responsive-header-img {
+      background-image: url(static/images/20200325.jpg);
+      background-image: -webkit-image-set(url(static/images/20200325.jpg) 1x,
+      url(static/images/20200325.jpg) 2x);
+      background-image: image-set(url(static/images/20200325.jpg) 1x,
+      url(static/images/20200325.jpg) 2x);
+    }
+  }
+
+  @media(max-width: 600px) {
+    .responsive-header-img {
+      background-image: url(static/images/20200325.jpg);
+      background-image: -webkit-image-set(url(static/images/20200325.jpg) 1x,
+      url(static/images/20200325.jpg) 2x);
+      background-image: image-set(url(static/images/20200325.jpg) 1x,
+      url(static/images/20200325.jpg) 2x);
+    }
+  }
+  </style>
+  <div class="main-hero-bg responsive-header-img"></div>
+   <div class="d-flex flex-column align-content-center justify-content-center main-hero-content">
+    <div class="text-center main-hero-content-title">CTGU失物招领</div>
+    <div class="text-center w-75 main-hero-content-description home-sentence">
+<div class="w3l-form" id="app">
+    <div class="w3l-grids-from2">
+        <div class="w3l-user2">
+            <div class="agile">
+                <div class="w3l-signup5" style="">
+                    <form action="#" method="post">
+                        <div class="tabContainer" v-if="tabIndex != 3">
+                            <div title="" class="tab" :class="{tabActive: tabIndex == 0}" @click="changeTab(0)">用户登录</div>
+                            <div class="tab" :class="{tabActive: tabIndex == 1}" @click="changeTab(1)">身份认证</div>
+                        </div>
+                        <div class="tabContainer" v-else>
+                    <div class="tab">
+                        <sapn style="display: inline-block;line-height: 16px;font-size: 18px;font-weight: bold;color: #000000a3;margin-bottom: 20px;}">微信扫一扫，重置密码</sapn>
+                        <div id="qrcode"></div>
+                        <span id="notice"></span>
+                    </div>
+                         </div>
+                        <template v-if="tabIndex != 3">
+
+                        	<p class="input-div form-group">
+                        		<i class="user circle icon auth_icon"></i>
+                        		<input v-model="user.username" type="text" placeholder="学号" required=""/ class="auth_input form-control">
+                        	</p>
+
+                        	<p>
+                        		<i class="lock alternate icon auth_icon"></i>
+                        		                       <input v-model="user.password" type="password" :placeholder="tabIndex==1?'教务系统密码':'密码'" required=""/ class="auth_input form-control">
+                        	</p>
+                        	<p v-if="tabIndex!=0" >
+                        		<i class="qq icon auth_icon"></i>
+                        		                        <input v-model="user.qq" type="text" placeholder="QQ" required=""/ class="auth_input form-control">
+                        	</p>
+           
+ 
+
+                        <input @click="submit" type="button" class="btn" value="确定"/>
+                        <div style="width: 100%;height: 10px;" v-if="tabIndex==0">
+                            <span  style="color: #d28520;float: left;padding: 10px;"><a  style="color:#004276;" @click=changeTab(1)>立即注册</a></span>
+                            <sapn  style="color: #d28520;float: right;padding: 10px;"><a  style="color:#004276;" @click=changeTab(3)>忘记密码？</a></sapn>
+                        </div>
+                      <div v-if="tabIndex!=0" style="text-align: left;padding: 10px;"><input type="checkbox"  value="checkbox" checked>我已阅读并同意 <a href="/policy" style="color:#004276;" target="_blank">《服务协议》</a></div>
+
+                        </template>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+
+</div>
+    </div>
+  </div>
+  
+  <div class="main-hero-waves-area waves-area">
+    <svg class="waves-svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+      <defs>
+        <path id="gentle-wave" d="M -160 44 c 30 0 58 -18 88 -18 s 58 18 88 18 s 58 -18 88 -18 s 58 18 88 18 v 44 h -352 Z"/>
+      </defs>
+      <g class="parallax">
+        <use xlink:href="#gentle-wave" x="48" y="0"/>
+        <use xlink:href="#gentle-wave" x="48" y="3"/>
+        <use xlink:href="#gentle-wave" x="48" y="5"/>
+        <use xlink:href="#gentle-wave" x="48" y="7"/>
+      </g>
+    </svg>
+</div>
+</section>
+
+
+    <section class="main-footer-waves-area waves-area">
+  <svg class="waves-svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+    <defs>
+      <path id="gentle-wave" d="M -160 44 c 30 0 58 -18 88 -18 s 58 18 88 18 s 58 -18 88 -18 s 58 18 88 18 v 44 h -352 Z" />
+    </defs>
+    <g class="parallax">
+      <use xlink:href="#gentle-wave" x="48" y="0" />
+
+    </g>
+  </svg>
+</section>
+<!--     <section class="main-footer-info">
+  <div class="container-sm">
+    <div class="row">
+      <div class="d-none d-lg-block py-5 col main-footer-info-tags">
+        <h3 class="mb-3 main-footer-info-title main-footer-info-tags-title">业务</h3>
+        <div class="d-flex flex-row flex-wrap justify-content-center align-items-center w-100 h-100 main-footer-info-tags-list">
+                <a href="#" class="tag-item">Emlog开发</a>
+                <a href="#" class="tag-item">织梦模板制作</a>
+                <a href="#" class="tag-item">网站运维</a>
+                <a href="#" class="tag-item">过落地页检测</a>
+        </div>
+      </div>
+      <div class="d-none d-lg-block py-5 col main-footer-info-navigation">
+        <h3 class="mb-3 main-footer-info-title main-footer-info-navigation-title">导航</h3>
+        <div class="w-100 h-100 main-footer-info-navigation-list">
+            
+  <div class="side-navbar-nav list-group list-group-flush">
+      <a href="#" class="list-group-item list-group-item-action menu-item side-menu-nav-item nav-rss-ding-yue">思源资源网</a>
+      <a href="#" class="list-group-item list-group-item-action menu-item side-menu-nav-item nav-ghost-an-zhuang-shou-ce">舔狗日记</a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section> -->
+    <footer class="main-footer">
+  <div class="container d-flex justify-content-md-between justify-content-center">
+    <div class="text-center main-footer-copyright">
+      <p>三峡大学失物招领中心 | <a href="http://www.ctgu.edu.cn/" target="_blank" rel="noopener nofollow">CTGU</a></p>
+    </div>
+    <div class="d-none d-md-block main-footer-meta">守护你所珍视的每一件事物</div>
+  </div>
+  <div class="container d-flex flex-wrap-reverse justify-content-md-between justify-content-center text-center main-footer-audit">
+    <p>
+      <a href="http://beian.miit.gov.cn" target="_blank" rel="nofollow noopener">晋ICP备20001631号-1</a>
+    </p>
+  </div>
+</footer>
+  </div>
+  
+  <div class="toast-wrapper" aria-live="polite" aria-atomic="true">
+  <div class="toast-wrapper-list"></div>
+</div>
+</div>
+
+<script id="jquery-js" type="text/javascript" src="static/js/jquery.min.js"></script>
+
+<!-- <script id="bootstrap-js" type="text/javascript" src="https://www.isiyuan.net/rj/random.php/?format=js&charset=utf-8"></script> -->
+
+<script id="scrollreveal-js" type="text/javascript" src="static/js/scrollreveal.min.js"></script>
+
+<script id="content-api-js" type="text/javascript" src="static/js/content-api.min.js"></script>
+
+<script id="ghost-search" type="text/javascript" src="static/js/ghost-search.min.js"></script>
+
+<!-- <script id="rebirth-js" type="text/javascript" src="static/js/rebirth.js"></script>
+ -->
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+<script src="https://cdn.bootcss.com/layer/2.3/layer.js"></script>
+<script src="static/js/common.js"></script>
+<script>
+
+    var app = new Vue({
+        el: "#app",
+        data: {
+            tabIndex: 0,
+            src: baseUrl,
+            now: new Date().getTime(),
+            user: {
+                username: "",
+                password: "",
+                qq: "",
+            },
+        },
+        methods: {
+            changeTab: function (index) {
+                console.log(index);
+                this.tabIndex = index;
+                if(this.tabIndex==3){
+                    this.getQRCode();
+                }
+            },
+            submit: function () {
+                let me = this;
+                if(me.tabIndex == 1){
+                    if($("input[type='checkbox']").is(':checked')==false){
+                    showInfo('请阅读隐私协议！');
+                    return false;
+                    }
+                }
+                if(me.user.username=="" || me.user.password==""){
+                    showInfo('用户名或密码不能为空');
+                    return false;
+                }
+               let qq=me.user.qq;
+                if(me.tabIndex == 1){
+                    if(qq.length==0){
+                    showError('QQ号不可为空');
+                    return false;
+                }
+                else{
+                     var reg=/^[1-9][0-9]{4,11}$/;
+                     if(!reg.test(qq)) {
+                         showError('QQ号格式错误');
+                         return false;
+                        }
+	                }
+                }
+
+                $.ajax({
+                    url: baseUrl + (me.tabIndex == 0 ? "/login" : "/recognize"),
+                    method: "POST",
+                    data: JSON.stringify(this.user),
+                    success: function (res) {
+                            if (res.success) {
+                                console.log(res)
+                                    showOK(res.msg);
+                                    if(me.tabIndex==0){
+                                        saveLocal("user", res.data.user);
+                                        if(res.ext=='wx'){
+                                              window.location=baseUrl+"/oauth/wx.html";
+                                        }
+                                       else if (res.ext!==null) {
+                                            window.location=baseUrl+unescape(res.ext);
+                                        }
+                                        else if (res.data.user.kind >= 2) {
+                                            location.replace("/chart.html");
+                                        }
+                                        else if(res.data.user.kind==1){
+                                            window.location=baseUrl;
+                                        }
+                                    }
+                                    else{
+                                        if(res.ext=="reg"){
+                                            showOK(res.msg);
+                                        }
+                                    }
+                                    me.user.password = "";
+                                }
+                            else {
+                                showInfo(res.msg);
+                            }
+                    },
+                });
+            },
+            getQRCode() {
+                this.loadJS("../static/js/socket.io.min.js");
+                loadScript.onload = function () {//加载结束之后执行回调
+                    const url = baseUrl;
+                    console.log(url);
+                    const socket = io(url);
+                    app.socketConnect(socket);
+            }
+            },
+            socketConnect(socket){
+                socket.emit('qrcode');//触发通信
+                    socket.on('qrcode', function (data) {
+                        if (data['success']) {
+                            $("#qrcode").css("background", "url(" + data['url'] + ")").css("background-size", "cover").css("background-repeat", "no-repeat");
+                             app.socketServer(socket);
+                        }
+                        else{
+                            console.log("二维码请求失败")
+                        }
+                    });
+
+            },
+            socketServer(socket){
+                    socket.emit('server',{msg: 'login'});//触发通信
+                    socket.on('server', function (data) {
+                        if (data['success']=="true") {
+                   $.ajax({
+                    url: location.href =baseUrl+"/login?token="+data['token'],
+                    method: "POST",
+                    success: function (res) {
+                        if (res.success) {
+                            saveLocal("user",res.data["user"]);
+                           location.href=baseUrl;
+                        }
+                        else {
+                                showInfo(res.msg);
+                        }
+                    }
+                });} else {
+                     if (data['data']['bg'] == '0') {
+                        $("#notice").text(data["data"]["msg"]);
+                        $("#qrcode").css("background", "url(https://ae01.alicdn.com/kf/H4deaf078934d40ff9b81e5e262a3b65eE.png)").css("background-size", "cover").css("background-repeat", "no-repeat");
+                    }
+             }
+        });
+    },
+            loadJS(url)
+            {//加载js
+                loadScript = document.createElement("script");
+                loadScript.type = "text/javascript";
+                loadScript.src = url;
+                document.head.appendChild(loadScript);
+            }
+        }
+    });
+</script>
+</body>
+</html>
