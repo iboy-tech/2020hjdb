@@ -164,7 +164,7 @@ var app = new Vue({
         },
         nextPage(tabIndex, append) {
             console.log("当前tabIndex", tabIndex)
-            if (tabIndex == 0 || tabIndex == 2) {//这有主页，和我的需要无限滚动
+            if (tabIndex == 0 || tabIndex == 2) {//只有主页，和我的需要无限滚动
                 pageLostFound(app.tab[tabIndex].search, app.tab[tabIndex], append);
                 app.tab[tabIndex].search.pageNum++;
             }
@@ -678,20 +678,20 @@ $(function () {
         console.log("我是现在的tab", app.tabIndex);
         if (app.tabIndex == 1) {
             //搜索的关键字
-            app.tab[app.tabIndex].search["keyword"] = getSession("keyword");
+            app.tab[app.tabIndex].search["keyword"] = getSession("keyword")?getSession("keyword"):"";
             deleteSession("keyword");
         }
         if (app.tabIndex == 0) {
             //主页的搜索数据
-            app.tab[0].search.pageNum = JSON.parse(getSession("pageNum"));
+            app.tab[0].search.pageNum =getSession("pageNum")? JSON.parse(getSession("pageNum")):0;
             app.tab[0].search.category = getSession("category")?getSession("category"):"";
             app.tab[0].search.kind = getSession("kind")?JSON.parse(getSession("kind")):-1;
         }
         if (app.tabIndex == 2) {
-            app.tab[2].search.pageNum = JSON.parse(getSession("pageNum"));
+            app.tab[2].search.pageNum = getSession("pageNum")?JSON.parse(getSession("pageNum")):0;
         }
-        app.tab[app.tabIndex].list = JSON.parse(getSession("data"));
-        $("html,body").scrollTop(JSON.parse(getSession("scroll")))
+        app.tab[app.tabIndex].list = getSession("data")?JSON.parse(getSession("data")):[];
+        $("html,body").scrollTop(getSession("scroll")?JSON.parse(getSession("scroll")):0)
         deleteLocal("isBack");
         deleteSession("data");
     }

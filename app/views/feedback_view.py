@@ -100,6 +100,8 @@ def feedback_add():
         db.session.rollback()
         return restful.success(success=False, msg=str(e))
     send_email.delay(AdminConfig.SUPER_ADMIN_QQ, '反馈通知', 'feedbackNotice', messages)
+    if req['subject'] == "违规信息举报":
+        return restful.success(msg="举报信息已提交，正在等待管理员审核")
     return restful.success(msg="感谢您的反馈")
 
 
