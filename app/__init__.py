@@ -107,7 +107,7 @@ def register_extensions(app):  # 实例化扩展
     # toolbar.init_app(app)
     redis_client.init_app(app)
     cache.init_app(app)
-    limiter.__init__(key_func=get_real_ip, default_limits=["200 per day", "50 per hour"])
+    limiter.__init__(key_func=get_real_ip, default_limits=["200 per day", "100 per minute"])
     limiter.init_app(app)
     # mongo_client.init_app(app)
 

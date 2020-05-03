@@ -684,8 +684,8 @@ $(function () {
         if (app.tabIndex == 0) {
             //主页的搜索数据
             app.tab[0].search.pageNum = JSON.parse(getSession("pageNum"));
-            app.tab[0].search.category = getSession("category");
-            app.tab[0].search.kind = JSON.parse(getSession("kind"));
+            app.tab[0].search.category = getSession("category")?getSession("category"):"";
+            app.tab[0].search.kind = getSession("kind")?JSON.parse(getSession("kind")):-1;
         }
         if (app.tabIndex == 2) {
             app.tab[2].search.pageNum = JSON.parse(getSession("pageNum"));
