@@ -150,9 +150,12 @@
   <nav class="navbar navbar-expand-md header-navbar">
     <div class="container">
           <span class="d-inline-block align-top navbar-brand-logo" style="font-size: 16px;">
-              <img src="https://cdn.u1.huluxia.com/g4/M01/06/65/rBAAdl6tC9CAMSRZAACoWU6hwWE224.png" style="width: 160px;margin-top: -12px;">
-          失物招领中心
+              <img src="https://cdn.u1.huluxia.com/g4/M01/06/65/rBAAdl6tC9CAMSRZAACoWU6hwWE224.png" style="width: 160px;margin-top: -5px;">
+{#https://cdn.u1.huluxia.com/g4/M03/09/DB/rBAAdl6uLZeALwbgAAAXvSFs2ko544.png#}
+{#              https://cdn.u1.huluxia.com/g4/M03/09/DE/rBAAdl6uLv-AUztFAAA1Xp0CtDQ598.png#}
+              <img src = "https://cdn.u1.huluxia.com/g4/M03/09/DB/rBAAdl6uLZeALwbgAAAXvSFs2ko544.png"  style="width: 160px;margin-top: -5px;"/>
           </span>
+
         <div class="collapse navbar-collapse">
     <ul class="navbar-nav mr-auto">
         <li class="nav-item nav-qi-yin-ji-qiao" role="menuitem"><a class="nav-link top-menu-nav-item"  @click="changePage(1)">使用帮助</a></li>
@@ -170,7 +173,7 @@
   <div class="main-hero-bg responsive-header-img"></div>
    <div class="d-flex flex-column align-content-center justify-content-center main-hero-content">
        <template  v-if="pageIndex==0">
-            <div class="text-center main-hero-content-title">CTGU失物招领</div>
+            <div class="text-center main-hero-content-title" v-if="tabIndex != 3">CTGU失物招领</div>
             <div class="text-center w-75 main-hero-content-description home-sentence">
             <div class="w3l-form">
             <div class="w3l-grids-from2">
@@ -183,7 +186,7 @@
                                     <div class="tab" :class="{tabActive: tabIndex == 1}" @click="changeTab(1)">身份认证</div>
                                 </div>
                                 <div class="tabContainer" v-else>
-                            <div class="tab">
+                            <div class="tab" style="padding-bottom: 20px;">
                                 <sapn style="display: inline-block;line-height: 16px;font-size: 18px;font-weight: bold;color: #000000a3;margin-bottom: 20px;}">微信扫一扫，重置密码</sapn>
                                 <div id="qrcode"></div>
                                 <span id="notice"></span>
@@ -193,19 +196,17 @@
 
                                     <p class="input-div form-group">
                                         <i class="user circle icon auth_icon"></i>
-                                        <input v-model="user.username" type="text" placeholder="学号" required=""/ class="auth_input form-control">
+                                        <input v-model="user.username" type="text" placeholder="学号" required="" class="auth_input form-control" />
                                     </p>
 
                                     <p>
                                         <i class="lock alternate icon auth_icon"></i>
-                                                               <input v-model="user.password" type="password" :placeholder="tabIndex==1?'教务系统密码':'密码'" required=""/ class="auth_input form-control">
+                                                               <input v-model="user.password" type="password" :placeholder="tabIndex==1?'教务系统密码':'密码'" required=""class="auth_input form-control"/>
                                     </p>
                                     <p v-if="tabIndex!=0" >
                                         <i class="qq icon auth_icon"></i>
                                                                 <input v-model="user.qq" type="text" placeholder="QQ" required=""/ class="auth_input form-control">
                                     </p>
-
-
 
                                 <input @click="submit" type="button" class="btn" value="确定"/>
                                 <div style="width: 100%;height: 10px;" v-if="tabIndex==0">
@@ -335,9 +336,9 @@
     <footer class="main-footer">
   <div class="container d-flex justify-content-md-between justify-content-center">
     <div class="text-center main-footer-copyright">
-      <p>三峡大学失物招领中心 | <a href="http://www.ctgu.edu.cn/" target="_blank" rel="noopener nofollow">CTGU</a></p>
+      <p style="color: #b9b8b3;">三峡大学失物招领中心 | <a href="https://www.ctguqmx.com/" target="_blank" rel="noopener nofollow">启明星工作室</a></p>
     </div>
-    <div class="d-none d-md-block main-footer-meta">守护你所珍视的每一件事物</div>
+    <div class="d-none d-md-block main-footer-meta">为你找回每一件珍视的物品</div>
   </div>
   <div class="container d-flex flex-wrap-reverse justify-content-md-between justify-content-center text-center main-footer-audit">
     <p>

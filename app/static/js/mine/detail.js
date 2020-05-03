@@ -61,23 +61,12 @@ var app = new Vue({
             total: 0,
             list: []
         },
+        feedback:{
+            "subject":"违规信息举报",
+            "content":""
+        }
     },
     methods: {
-        showReport() {
-            layer.open({
-              title:"违规举报",
-              btn:["前往举报"],
-              content: '对违规行为【如隐私信息未打码，发帖内容无关，评论不文明】' +
-                  '请前往【主页】，通过【菜单->反馈】进行举报，反馈主题填写【违规举报】，' +
-                  '反馈详情中请附上【帖子链接、发帖人姓名和举报理由】，我们会第一时间处理，并将处理结果反馈给您，' +
-                  '感谢您对维护平台秩序做出的贡献！',
-                yes: function(){
-                    layer.closeAll();
-                    window.open(baseUrl);
-              },
-              scrollbar: false,
-            });
-        },
         share() {
             //捕获页
             layer.open({
@@ -105,7 +94,30 @@ var app = new Vue({
             }, function () {
 
             });
+        },
+        showFeedback() {
+            layer.open({
+                btn: ['确定', '取消'],
+                type: 1,
+                area: ['70%', 'auto'],
+                //shade: true,
+                title: "违规信息举报", //不显示标题
+                content: $('#editorDiv') //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
+                , yes: function () {
+                    console.log(app.feedback);
+                    if (app.feedback.content == "") {
+                        showAlertError('请填写举报理由!');
+                        return;
+                    }
+                     let obj={
+                        "subject":"违规信息举报",
+                         "content":app.feedback.content
+                     };
+                    pubFeedback(obj);
+                }, cancel: function () {
 
+                }
+            });
         },
         jumpDetail(id) {
             console.log("执行相关函数");
@@ -271,6 +283,30 @@ function getComments(data, app) {
             } else {
                 console.log(res);
                 showAlertError(res)
+            }
+        }
+    });
+}
+
+//新增反馈
+function pubFeedback(data) {
+
+    data.content=data.content.concat(" (详情链接："+location.href+")");
+    $.ajax({
+        url: baseUrl + "/feedback.html/add",
+        data: JSON.stringify(data),
+        method: "POST",
+        success: function (res) {
+            console.log(res);
+            if (res.success) {
+                layer.closeAll();
+                showOK(res.msg);
+                app.feedback = {
+                    subject: "",
+                    content: ""
+                }
+            } else {
+                showAlertError(res.msg)
             }
         }
     });

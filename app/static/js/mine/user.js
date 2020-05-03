@@ -299,7 +299,6 @@ var app = new Vue({
                     }
                     pubFeedback(app.feedback);
                 }, cancel: function () {
-
                 }
             });
         },

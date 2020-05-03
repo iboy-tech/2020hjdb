@@ -52,7 +52,7 @@ def favicon():
 # @limiter.limit(limit_value="10/minute")
 @cross_origin()
 @unfreeze_user  # 微信自助解封
-@cache.cached(timeout=3600 * 24 * 7, key_prefix="user-html")  # 缓存10分钟 默认为300s
+# @cache.cached(timeout=3600 * 24 * 7, key_prefix="user-html")  # 缓存10分钟 默认为300s
 @login_required
 @wechat_required
 def index():
