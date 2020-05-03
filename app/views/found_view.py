@@ -36,7 +36,7 @@ from app.utils.wechat_notice import delete_post_notice, send_message_by_pusher
 
 
 @found.route('/', methods=['GET'], strict_slashes=False)
-@cache.cached(timeout=3600*24*7,key_prefix="found-html")  # 缓存5分钟 默认为300s
+@cache.cached(timeout=3600 * 24 * 7, key_prefix="found-html")  # 缓存5分钟 默认为300s
 @login_required
 @wechat_required
 def index():
@@ -191,8 +191,10 @@ def pub():
         print(str(e))
         db.session.rollback()
         # 出现异常删除照片
-        imglist = imgstr.split(",")
-        remove_files(imglist, 0)
+        if imgstr != "":
+            print("这有BUG",imgstr,type(imgstr))
+            # imglist = imgstr.split(",")
+            remove_files(imgstr, 0)
         return restful.params_error()
     if info != '':
         lost_users = User.query.filter(or_(User.username == info, User.real_name == info))
