@@ -155,7 +155,7 @@
 
         <div class="collapse navbar-collapse">
     <ul class="navbar-nav mr-auto">
-        <li class="nav-item nav-qi-yin-ji-qiao" role="menuitem"><a class="nav-link top-menu-nav-item"  @click="changePage(1)">使用帮助</a></li>
+        <li class="nav-item nav-qi-yin-ji-qiao" role="menuitem"><a class="nav-link top-menu-nav-item"  @click="changePage(1)">常见问题</a></li>
         <li class="nav-item nav-sheng-huo-za-ji" role="menuitem"><a class="nav-link top-menu-nav-item" @click="changePage(2)">更新日志</a></li>
         <li class="nav-item nav-guan-yu" role="menuitem"><a class="nav-link top-menu-nav-item"  @click="changePage(3)">关于我们</a></li>
         <li v-if="pageIndex!=0" class="nav-item nav-qi-yin-ji-qiao" role="menuitem"><a class="nav-link top-menu-nav-item"  @click="changePage(0)">登录/注册</a></li>
@@ -226,11 +226,15 @@
        </template>
        <template v-if="pageIndex==1">
            <div class="faq" style="margin: 0 auto;">
-             <h5>收不到通知邮件？</h5>
+             <h5 style="margin-top: 50px;">收不到通知邮件？</h5>
              <p>邮件延时发送，一般3分钟之内送达，若长时间没有收到，请登录QQ邮箱，检查是否在垃圾箱中，<br>
-                 为了保证您能及时收到我们的通知，强烈建议您将<span style="font-weight: bold">（ctguswzl.cn）</span>添加到QQ邮箱的域名白名单中，<br>
+                 为了保证您能及时收到我们的通知，强烈建议您将<span style="font-weight: bold">（ctguswzl.cn）</span>添加到QQ邮箱的域名白名单中，
                 点击这里查看设置方法, <a target="_blank" href="https://service.mail.qq.com/cgi-bin/help?subtype=1&id=16&no=113" rel="nofollow">【设置方法】</a></p>
-            <h5>其他问题？</h5>
+             <h5>我的账户安全吗？</h5>
+             <p>您的密码经过加密处理，即使密码原文相同，加密之后结果也是不同的，谁都看不到密码，注册成功之后您可自行更改密码<br>
+                 重置密码时密码强度也有限制，以确保您的账户安全，此外，为防止恶意登录，输入密码错误次数过多时，账户会被临时冻结，<br>
+                 届时会发送微信提醒，一段时间后系统会自动解封，您也可以在微信公众号菜单栏中找到【我的订阅】，点击【设置】按钮自行解封</p>
+               <h5>其他问题？</h5>
              <p>有关使用过程中的更多问题，请注册登录后查看站内的帮助信息</p>
            </div>
        </template>
