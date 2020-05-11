@@ -22,7 +22,7 @@ var app = new Vue({
                     "keyword": "",
                     "username": "",
                     "pageNum": 0,
-                    "pageSize": 8
+                    "pageSize": 5
                 },
                 totalPage: 0,
                 total: 0,

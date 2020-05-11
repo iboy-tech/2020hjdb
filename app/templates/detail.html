@@ -172,7 +172,7 @@
                     <div class="" id="tweetCommentForm">
                         <div class="ui form tweet-form">
                             <div class="field">
-                    <textarea v-model="comment" rows="4" placeholder="我有话要说（评论最多100字）"
+                    <textarea v-model="comment" rows="4" placeholder="有话想说（评论最多100字）"
                               oninput="if(value.length > 100)value = value.slice(0, 100)" class="tweet-comment-textarea disabled-resize">
                     </textarea>
                             </div>
@@ -227,11 +227,11 @@
                             <p class="infinite-scroll-request">
                                 <i class="ui active small inline loader"></i>
                             </p>
-                            <p class="infinite-scroll-last">---我是有底线的---</p>
-                            <p class="infinite-scroll-error">加载失败，请刷新页面</p>
+{#                            <p class="infinite-scroll-last">---我是有底线的---</p>#}
+{#                            <p class="infinite-scroll-error">加载失败，请刷新页面</p>#}
                         </div>
-                        <a class="ui fluid button load-more-button" style="display: none;">更多评论</a>
-                        <div class="list-container-last-tips">
+{#                        <a class="ui fluid button load-more-button" style="display: none;">更多评论</a>#}
+                        <div class="list-container-last-tips" v-if="comments.length>0">
                             <p>---我是有底线的---</p>
                         </div>
                     </div>
