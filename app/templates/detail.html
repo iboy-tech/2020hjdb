@@ -18,6 +18,29 @@
         #mainScreen {
             padding-top: 10px;
         }
+        #reward-div img{
+            margin:0 auto;
+            width: 170px;
+            height: 170px;
+        }
+        #reward-div{
+            position: relative;
+        }
+        #code-logo{
+            position: absolute;
+            left:40%;
+            top: 35%;
+            bottom: 0;
+            right: 0;
+            margin: auto;
+        }
+        #code-logo img{
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+        }
+
+
         #share-description{
             white-space: pre-line;
             margin-top: -1em;
@@ -131,6 +154,9 @@
                                       <i class="ban icon"></i> 举报
                                   </a>
                                 {% endif %}
+                                 <a class="ban" @click="reward">
+                                      <i class="yen sign icon"></i>打赏
+                                  </a>
                                 </div>
                                 <div class="meta">
                                     <a target="_blank" class="with-popup" data-content="点击邮箱可给对方发送邮件"  style="color: rgba(0,0,0,.5);" class="reply" href="{{ 'https://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email='+item.email }}"><i class="envelope outline icon"></i>
@@ -333,9 +359,18 @@
     </div>
 </div>
 <div style="display: none; padding: 10px;" id="shareDiv">
-    <div class="social-share" data-mobile-sites="weibo,qq,qzone,wechat"></div>
-    <div id="wechat-qrcode" >
+    <div class="social-share" style="text-align: center !important;" data-mobile-sites="weibo,qq,qzone,wechat"></div>
+    <div id="wechat-qrcode" style="text-align: center !important;"  >
     </div>
+</div>
+<div style="display: none; padding: 10px;" id="rewardDiv">
+    <div id="reward-div" style="text-align: center !important;" >
+{#        <img src="https://cdn.u1.huluxia.com/g4/M02/21/32/rBAAdl65URmALEkjAACH7Oq0j5g612.png" style="width: 180px;height: 180px;" alt="多合一收款码">#}
+{#        <img src="https://cdn.u1.huluxia.com/g4/M03/21/30/rBAAdl65UGWAUgfxAADvgguLzK8624.jpg" style="width: 200px;height: 200px;" alt="多合一收款码">#}
+{#        <img src="https://cdn.u1.huluxia.com/g4/M02/21/21/rBAAdl65S1KAcMDUAACU3Q8ckcs954.png" style="width: 200px;height: 200px;" alt="多合一收款码">#}
+    </div>
+    <div id="code-logo"><img src="https://avater.ctguswzl.cn/headimg_dl?dst_uin=547142436&spec=100" alt=""></div>
+    <p style="color: red;font-size: 10px;text-align: center !important;margin-top:10px;" >请仔细核对收款人信息，谨防上当受骗</p>
 </div>
  <!--反馈弹窗-->
     <div class="editor-wrapper" style="display: none; padding: 10px;" id="editorDiv">

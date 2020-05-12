@@ -336,6 +336,48 @@ var app = new Vue({
                 }
             });
         },
+        showRewardHelp(){
+            layer.open({
+                title:"收款码地址获取方法",
+                content:"将微信收款码保存，然后用QQ扫描，将得到的地址复制粘贴到输入框内保存即可，地址示例[ wxp://f2f0Pihuc-hsXPKrjN4TIU27SSx-w6v2RAUv ]",
+            });
+        },
+        setReward(){
+            // app.showMenu = false;
+            // layer.prompt({title: '请填入您的微信收款码地址：<i class="question circle outline icon with-popup" data-content="分享到社交平台可以增大找回的几率"></i>'}, function (qq) {
+            app.showMenu = false;
+            layer.open({
+                btn: ['确定', '取消'],
+                type: 1,
+                area: ['300px', 'auto'],
+                //shade: true,
+                title: "请填入您的微信收款码地址：", //不显示标题
+                content: $('#rewardDiv'),  //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
+                yes: function () {
+                    console.log(app.password);
+                    let pwd = app.password;
+                    var reg = /^[a-zA-Z0-9]{6,15}$/;
+                    if (pwd.newPassword == '' || pwd.newPassword.length < 6) {
+                        showAlertError('密码至少是6位');
+                        return false;
+                    } else if (!reg.test(app.newPassword)) {
+                        showAlertError('密码必须包为字母或数字！');
+                        return false;
+                    } else if (pwd.newPassword != pwd.confirmPassword) {
+                        showAlertError("两次密码不一致！");
+                        return;
+                    }
+                    setPassword(app.password);
+                },
+                cancel: function () {
+                    app.password = {
+                        oldPassword: "",
+                        newPassword: "",
+                        confirmPassword: ""
+                    }
+                }
+            });
+        },
         setQQ() {
             app.showMenu = false;
             layer.prompt({title: '请输入新的QQ：'}, function (qq) {

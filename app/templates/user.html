@@ -169,6 +169,10 @@
                                             <i class="user circle icon"></i>修改QQ
                                         </a>
 
+                                        <a class="item" @click="setReward">
+                                            <i class="gratipay icon"></i>打赏设置
+                                        </a>
+
                                         <a class="item" @click="setPassword">
                                             <i class="lock alternate icon"></i>修改密码
                                         </a>
@@ -841,6 +845,18 @@ placeholder="
             </div>
         </div>
     </div>
+
+        <!--设置打赏码-->
+    <div class="editor-wrapper" style="display: none; padding: 10px;" id="rewardDiv">
+        <div class="ui form" style="width: 100%; height: 100%;">
+            <div class="field">
+                <input v-model="password.oldPassword" placeholder="请看帮助信息" maxlength="256" type="password"
+                       class="tweet-textarea disabled-resize" autofocus/>
+            </div>
+              <span  @click="showRewardHelp" style="float: right;" ><i class="question circle outline icon" ></i>帮助</span>
+        </div>
+    </div>
+
 
 </div>
 <script src="{{ cdnUrl }}/static/js/layer.js"></script>
