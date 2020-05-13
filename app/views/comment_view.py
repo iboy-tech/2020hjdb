@@ -91,8 +91,6 @@ def index():
                 }
                 # print("评论参数data：",data)
                 return restful.success(data=data)
-        else:
-            return restful.params_error()
 
 
 @comment.route('/delete', methods=['POST'])
