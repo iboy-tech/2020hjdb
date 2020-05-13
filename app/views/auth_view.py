@@ -157,7 +157,6 @@ def login():
                 if cnt is not None:
                     redis_client.incr(key)
                     cnt = int(bytes.decode(redis_client.get(key)))
-
                     left_times = LoginConfig.LOGIN_ERROR_MAX_TIMES - cnt
                     print('计算剩余错误次数', cnt, left_times)
                     if user.kind == 1:

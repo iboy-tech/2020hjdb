@@ -81,6 +81,28 @@ def set_QQ():
     return restful.success(success=True, msg="验证邮件已发送到您的QQ邮箱，请及时确认")
 
 
+@user.route('/setReward', methods=['POST'])
+@limiter.limit(limit_value="3/minute")
+@login_required
+@cross_origin()
+def set_reward():
+    try:
+        reward = request.json['reward']
+        pattern = "^wxp:\/\/[A-Za-z0-9\-]+$"
+        res = re.findall(pattern, reward)
+        print(res, "验证收款码地址", reward)
+        if not res:
+            return restful.params_error(msg="收款码格式错误")
+        print('用户准备设置打赏码')
+        old_user = User.query.get(current_user.id)
+        old_user.wx_reward_url = reward
+        db.session.add(old_user)
+        db.session.commit()
+    except Exception as e:
+        return restful.params_error()
+    return restful.success(success=True, msg="设置成功")
+
+
 @user.route('/setPassword', methods=['POST'])
 @cross_origin()
 @login_required
@@ -141,7 +163,7 @@ def claim():
                         op = OpenID.query.filter_by(user_id=lost_user.id).first()
                         if op:
                             print('发送消息')
-                            if op.wx_id: #部门账号的微信为NULL
+                            if op.wx_id:  # 部门账号的微信为NULL
                                 uids = [op.wx_id]
                                 send_message_by_pusher(dict, uids, 0)
                         return restful.success(msg='上报成功,您的联系方式已发送给失主')
@@ -154,7 +176,7 @@ def claim():
                         l.claimant_id = current_user.id
                         db.session.add(l)
                         db.session.commit()
-                        l=db.session.merge(l)
+                        l = db.session.merge(l)
                         found_user = User.query.get(l.user_id)
                         # 改变状态，有人找到了要通知失主
                         dict = {

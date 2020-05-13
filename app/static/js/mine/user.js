@@ -87,7 +87,8 @@ var app = new Vue({
             oldPassword: "",
             newPassword: "",
             confirmPassword: ""
-        }
+        },
+        wxReward:getLocal("user") ? JSON.parse(getLocal("user")).wxReward : "",
     },
     methods: {
         showAllNotice(b) {
@@ -343,39 +344,36 @@ var app = new Vue({
             });
         },
         setReward(){
-            // app.showMenu = false;
-            // layer.prompt({title: '请填入您的微信收款码地址：<i class="question circle outline icon with-popup" data-content="分享到社交平台可以增大找回的几率"></i>'}, function (qq) {
             app.showMenu = false;
             layer.open({
-                btn: ['确定', '取消'],
+                btn: ['保存'],
                 type: 1,
                 area: ['300px', 'auto'],
                 //shade: true,
                 title: "请填入您的微信收款码地址：", //不显示标题
                 content: $('#rewardDiv'),  //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
                 yes: function () {
-                    console.log(app.password);
-                    let pwd = app.password;
-                    var reg = /^[a-zA-Z0-9]{6,15}$/;
-                    if (pwd.newPassword == '' || pwd.newPassword.length < 6) {
-                        showAlertError('密码至少是6位');
+                    let tmp=app.wxReward;
+                    console.log("测试参数："+tmp);
+                    app.wxReward = tmp.replace(/\s+/g,"");
+                    let reg = /^wxp:\/\/[A-Za-z0-9\-]+/;
+                    if (app.wxReward == '') {
+                        showAlertError('内容不能为空');
                         return false;
-                    } else if (!reg.test(app.newPassword)) {
-                        showAlertError('密码必须包为字母或数字！');
+                    } else if (!reg.test(app.wxReward)) {
+                        showAlertError('收款码地址格式错误！');
                         return false;
-                    } else if (pwd.newPassword != pwd.confirmPassword) {
-                        showAlertError("两次密码不一致！");
-                        return;
                     }
-                    setPassword(app.password);
+                    setReward(app.wxReward);
                 },
-                cancel: function () {
-                    app.password = {
-                        oldPassword: "",
-                        newPassword: "",
-                        confirmPassword: ""
-                    }
-                }
+                // cancel: function () {
+                //     // app.wxReward = {
+                //     //     oldPassword: "",
+                //     //     newPassword: "",
+                //     //     confirmPassword: ""
+                //     // }
+                //      console.log("测试参数："+app.wxReward);
+                // }
             });
         },
         setQQ() {
@@ -385,7 +383,7 @@ var app = new Vue({
                     showAlertError('QQ号不可为空！');
                     return false;
                 } else {
-                    var reg = /^[1-9][0-9]{4,14}$/;
+                    let reg = /^[1-9][0-9]{4,14}$/;
                     if (!reg.test(qq)) {
                         showAlertError('QQ号格式错误！');
                         return false;
@@ -402,7 +400,7 @@ var app = new Vue({
     },
     mounted() {
         // console.log("我是监控的mounted", app.tabIndex);
-        var io = new IntersectionObserver((entries) => {
+        let io = new IntersectionObserver((entries) => {
             if (app.tabIndex == 1) {
                 let mysearch = getSession("isSearched");
                 if (mysearch != "false") {
@@ -419,6 +417,23 @@ var app = new Vue({
 
 });
 
+function setReward(data) {
+    $.ajax({
+        url: baseUrl + "/user.html/setReward",
+        data: JSON.stringify({'reward': data}),
+        method: "POST",
+        success: function (res) {
+            console.log(res);
+                if (res.success) {
+                    layer.closeAll();
+                    showOK(res.msg);
+                    // app.user.wxReward = res.data.reward;
+                    // saveLocal("user", app.user);
+                } else {
+                    showAlertError(res.msg)
+                }
+    }});
+}
 //设置QQ号
 function setQQ(qq) {
     //console.log(data);
@@ -426,9 +441,8 @@ function setQQ(qq) {
         url: baseUrl + "/user.html/setQQ",
         data: JSON.stringify({'qq': qq}),
         method: "POST",
-        success: function (res, status) {
+        success: function (res) {
             console.log(res);
-            if (status == "success") {
                 if (res.success) {
                     layer.closeAll();
                     showOK(res.msg);
@@ -437,10 +451,6 @@ function setQQ(qq) {
                 } else {
                     showAlertError(res.msg)
                 }
-            } else {
-                console.log(res);
-                showAlertError(res)
-            }
         }
     });
 }

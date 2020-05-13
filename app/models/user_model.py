@@ -122,7 +122,7 @@ class User(db.Model, UserMixin):
                 "createTime": self.create_time.strftime('%Y-%m-%d %H:%M:%S'),
                 "lastLogin": self.last_login.strftime('%Y-%m-%d %H:%M:%S'),
                 "kind": self.kind,
-                "rewardUrl": self.wx_reward_url
+                "wxReward": "" if self.wx_reward_url is None else  self.wx_reward_url,
             }
         }
         return data

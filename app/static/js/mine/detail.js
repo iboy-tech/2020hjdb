@@ -6,6 +6,7 @@ var app = new Vue({
         // }
     },
     data: {
+        wxReward:"",
         imgPrefix: staticUrl,
         userIcon: "https://ae01.alicdn.com/kf/U89b7be7d8d234a38b9a4b0d4258de362X.jpg",
         comment: "",//发布评论
@@ -47,7 +48,7 @@ var app = new Vue({
             email: "",
             QQ: "",
         },
-        comments: [],
+        comments:"",
         page: {
             search: {//tab1
                 "kind": -1,
@@ -77,32 +78,19 @@ var app = new Vue({
             });
         },
         reward() {
-            //捕获页
+            if (app.wxReward==""){
+                showInfo("用户暂未设置赞赏码，快去提醒他(她)设置吧！");
+            }
+            else {
             layer.open({
                 type: 1,
                 //shade: true,
                 title: "<h4 style='text-align: center !important;'>微信扫一扫，打赏</h4>", //不显示标题
                 content: $('#rewardDiv') //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
             });
-            // var qrcode = new QRCode("reward-div", {
-            // text: "wxp://f2f0Pihuc-hsXPKrjN4TIU27SSx-w6v2RAUv",
-            // width: 170,
-            // height: 170,
-            // // iconSrc:"https://avater.ctguswzl.cn/headimg_dl?dst_uin=547142436&spec=100",
-            //     //二维码中心图片
-            // // iconSrc: "http://www.365mini.com/static/image/cry.gif",
-            // //二维码中心图片边框弧度
-            // // iconRadius: 10,
-            // // //二维码中心图片边框宽度
-            // // iconBorderWidth: 3,
-            // // //二维码中心图片边框颜色
-            // // iconBorderColor: "red",
-            // // colorDark : "#000000",
-            // // colorLight : "#ffffff",
-            // // correctLevel : QRCode.CorrectLevel.H
-            // });
             $("#reward-div").empty();
-            new QRCode(document.getElementById("reward-div"), "wxp://f2f0Pihuc-hsXPKrjN4TIU27SSx-w6v2RAUv");  // 设置要生成二维码的链接
+            new QRCode(document.getElementById("reward-div"), app.wxReward);  // 设置要生成二维码的链接
+            }
         },
         pubComment(id) {
             console.log(this.comment);
@@ -300,18 +288,14 @@ function getComments(data, app) {
     $.ajax({
         url: baseUrl + "/comment?id=" + window.location.search.split("id=")[1],
         method: "POST",
-        success: function (res, status) {
-            if (status == "success") {
+        success: function (res) {
                 if (res.success) {
                     //console.log(result.item);
                     app.comments = res.data.comments;
+                    app.wxReward=res.data.wxReward;
                 } else {
                     showAlertError(res.msg)
-                }
-            } else {
-                console.log(res);
-                showAlertError(res)
-            }
+           }
         }
     });
 }
