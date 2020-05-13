@@ -147,7 +147,7 @@
                                     </a>
                                      {%  if item.kind==1 %}
                                          <a class="ban" @click="reward">
-                                                <i class="yen sign icon"></i>打赏
+                                                <i class="yen sign icon"></i>赞赏
                                          </a>
                                      {% endif %}
                                 {% if item.isSelf or item.isAdmin %}
@@ -368,11 +368,9 @@
 </div>
 <div style="display: none; padding: 10px;" id="rewardDiv">
     <div id="reward-div" style="text-align: center !important;" >
-{#        <img src="https://cdn.u1.huluxia.com/g4/M02/21/32/rBAAdl65URmALEkjAACH7Oq0j5g612.png" style="width: 180px;height: 180px;" alt="多合一收款码">#}
-{#        <img src="https://cdn.u1.huluxia.com/g4/M03/21/30/rBAAdl65UGWAUgfxAADvgguLzK8624.jpg" style="width: 200px;height: 200px;" alt="多合一收款码">#}
-{#        <img src="https://cdn.u1.huluxia.com/g4/M02/21/21/rBAAdl65S1KAcMDUAACU3Q8ckcs954.png" style="width: 200px;height: 200px;" alt="多合一收款码">#}
+
     </div>
-    <div id="code-logo"><img src="https://avater.ctguswzl.cn/headimg_dl?dst_uin=547142436&spec=100" alt=""></div>
+    <div id="code-logo"><img src="{{ item.icon }}" alt=""></div>
     <p style="color: red;font-size: 10px;text-align: center !important;margin-top:10px;" >请仔细核对收款人信息，谨防上当受骗</p>
 </div>
  <!--反馈弹窗-->
