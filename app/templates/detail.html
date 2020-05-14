@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Language" content="zh-CN">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <meta name="referrer" content="always"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>三峡大学失物招领中心</title>
     <link rel="stylesheet" type="text/css" href="{{ cdnUrl }}/static/css/semantic.min.css"/>
       <link rel='stylesheet prefetch' href='https://cdn.bootcss.com/semantic-ui/2.3.1/components/icon.min.css'>
@@ -15,24 +15,40 @@
     <script src="{{ cdnUrl }}/static/public/vue.min.js"></script>
 
     <style>
+
         #mainScreen {
-            padding-top: 10px;
+            padding-top: 10px !important;
         }
-        #reward-div img{
-            margin:0 auto;
-            width: 170px;
-            height: 170px;
+        #wechat-qrcode img{
+            margin: 0 auto;
+            {#text-align: center !important;#}
         }
         #reward-div{
-            position: relative;
+            width: 150px;
+            height: 150px;
+            text-align: center !important;
+            margin: 5px auto 10px;
         }
+
+        @media screen and (min-width: 768px) and (max-width:2048px){
+
+}
+@media screen and (max-width: 500px){
+    #reward-div{
+        margin-left: -10px;
+    }
+}
+
+        #reward-div img{
+            text-align: center !important;
+    margin: 0 auto !important;
+}
+
         #code-logo{
-            position: absolute;
-            left:40%;
-            top: 35%;
-            bottom: 0;
+          position: absolute;
+            left: 85px;
             right: 0;
-            margin: auto;
+            top: 65px;
         }
         #code-logo img{
             width: 50px;
@@ -197,7 +213,7 @@
 
 
                     <!--comment-->
-                    <h4 class="ui header" id="comments">全部评论（ {{comments.length ||0 }} ）</h4>
+                    <h4 class="ui header" id="comments">全部评论（{{comments.length ||0 }}）</h4>
                     <div class="" id="tweetCommentForm">
                         <div class="ui form tweet-form">
                             <div class="field">
@@ -361,27 +377,8 @@
         </div>
     </div>
 </div>
-<div style="display: none; padding: 10px;" id="shareDiv">
-    <div class="social-share" style="text-align: center !important;" data-mobile-sites="weibo,qq,qzone,wechat"></div>
-    <div id="wechat-qrcode" style="text-align: center !important;"  >
-    </div>
-</div>
-<div style="display: none; padding: 10px;" id="rewardDiv">
-    <div id="reward-div" style="text-align: center !important;" >
 
-    </div>
-    <div id="code-logo"><img src="{{ item.icon }}" alt=""></div>
-    <p style="color: red;font-size: 10px;text-align: center !important;margin-top:10px;" >请仔细核对收款人信息，谨防上当受骗</p>
-</div>
- <!--反馈弹窗-->
-    <div class="editor-wrapper" style="display: none; padding: 10px;" id="editorDiv">
-        <div class="ui form" style="width: 100%; height: 100%;min-height:100px">
-            <div class="field">
-                <textarea v-model="feedback.content" rows="6" placeholder="举报理由，请注意举报信息的真实性，恶意举报封号处理" maxlength="300"
-                          class="tweet-textarea disabled-resize"></textarea>
-            </div>
-        </div>
-    </div>
+
 
 </div>
 </div>
@@ -445,4 +442,26 @@ $(function () {
 })();
 </script>
 </body>
+<div style="display: none; padding: 10px;" id="shareDiv" >
+    <div class="social-share" style="text-align: center !important;" data-mobile-sites="weibo,qq,qzone,wechat"></div>
+    <div id="wechat-qrcode" >
+    </div>
+</div>
+<div style="display: none; padding: 10px;" id="rewardDiv">
+    <div id="reward-div">
+    </div>
+    <div id="code-logo"><img src="{{ item.icon }}" alt=""></div>
+    <p style="color: red;
+    font-size: 10px;
+    text-align: center !important;" >请仔细核对收款人信息，谨防上当受骗</p>
+</div>
+ <!--反馈弹窗-->
+<div class="editor-wrapper" style="display: none; padding: 10px;" id="editorDiv">
+    <div class="ui form" style="width: 100%; height: 100%;min-height:100px">
+        <div class="field">
+            <textarea v-model="feedback.content" rows="6" placeholder="举报理由，请注意举报信息的真实性，恶意举报封号处理" maxlength="300"
+                      class="tweet-textarea disabled-resize"></textarea>
+        </div>
+    </div>
+</div>
 </html>

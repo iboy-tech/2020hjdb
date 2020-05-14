@@ -72,7 +72,9 @@ var app = new Vue({
             //捕获页
             layer.open({
                 type: 1,
+                area:"auto",
                 //shade: true,
+                scrollbar: false, // 父页面 滚动条 禁止
                 title: "<h4 style='text-align: center !important;'>微信扫一扫分享</h4>", //不显示标题
                 content: $('#shareDiv') //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
             });
@@ -84,12 +86,20 @@ var app = new Vue({
             else {
             layer.open({
                 type: 1,
-                //shade: true,
+                area:"auto",
+                scrollbar: false, // 父页面 滚动条 禁止
+                // shade: true,
                 title: "<h4 style='text-align: center !important;'>微信扫一扫，打赏</h4>", //不显示标题
                 content: $('#rewardDiv') //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
             });
+
             $("#reward-div").empty();
-            new QRCode(document.getElementById("reward-div"), app.wxReward);  // 设置要生成二维码的链接
+            new QRCode("reward-div", {
+            text: app.wxReward,
+            width: 150,
+            height: 150,
+            });
+            // new QRCode(document.getElementById("reward-div"), app.wxReward);  // 设置要生成二维码的链接
             }
         },
         pubComment(id) {
