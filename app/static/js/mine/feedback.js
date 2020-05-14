@@ -11,7 +11,7 @@ var app = new Vue({
         }
     },
     methods: {
-        showReply(id) {
+        showReply:function(id) {
             layer.open({
                 btn: ['确定', '取消'],
                 type: 1,
@@ -28,10 +28,10 @@ var app = new Vue({
                 }
             });
         },
-        markFeedback(id) {
+        markFeedback:function(id) {
             markFeedback(id);
         },
-        deleteFeedback(id) {
+        deleteFeedback:function(id) {
             //询问框
             layer.confirm('确定要删除吗？', {
                 btn: ['确定', '取消'] //按钮
@@ -42,7 +42,7 @@ var app = new Vue({
             });
 
         },
-        logout() {
+        logout:function() {
             logout();
         },
     }
@@ -50,8 +50,6 @@ var app = new Vue({
 
 $(function () {
     getFeedbackList(app);
-
-
     var menuLeft = document.getElementById('cbp-spmenu-s1'),
         showLeftPush = document.getElementById('showLeftPush'),
         body = document.body;

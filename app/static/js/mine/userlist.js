@@ -24,7 +24,7 @@ var app = new Vue({
         }
     },
     methods: {
-        toPage(pageNum) {
+        toPage:function(pageNum) {
             console.log(pageNum);
             if (pageNum < 0 || pageNum >= this.result.totalPage) {
                 return;
@@ -32,7 +32,7 @@ var app = new Vue({
             this.search.pageNum = pageNum;
             getUserList(app.search, app, false);
         },
-        checkAll() {
+        checkAll:function() {
             if (this.checked == false) {
                 this.checkedList = [];//清空数据
             } else {
@@ -43,7 +43,7 @@ var app = new Vue({
                 })
             }
         },
-        deleteAll() {
+        deleteAll:function() {
             let data = this.checkedList;
             layer.confirm('你确定要批量删除 ' + data.length + ' 条数据吗？', {
                 btn: ['确定', '取消'] //按钮
@@ -68,12 +68,12 @@ var app = new Vue({
             }, function () {
             });
         },
-        submit() {
+        submit:function() {
             let pgNum = $('#pgNum').val() - 1;
             this.search.pageNum = pgNum < 0 ? 0 : pgNum;
             getUserList(app.search, app, false);
         },
-        freezeUser(userId) {
+        freezeUser:function(userId) {
             layer.confirm('冻结后该用户将无法再登录系统，确定要冻结吗？', {
                 btn: ['确定', '取消'] //按钮
             }, function () {
@@ -81,7 +81,7 @@ var app = new Vue({
             }, function () {
             });
         },
-        unfreezeUser(userId) {
+        unfreezeUser:function(userId) {
             layer.confirm('解冻后用户可正常登录并发布信息，确定要解冻吗？', {
                 btn: ['确定', '取消'] //按钮
             }, function () {
@@ -89,7 +89,7 @@ var app = new Vue({
             }, function () {
             });
         },
-        setAsManager(userId, flag) {
+        setAsManager:function(userId, flag) {
             if (flag == 1) {
                 layer.confirm('设置为管理员的账号可登录后台，请谨慎操作，确定要将其设置为管理员吗？', {
                     btn: ['确定', '取消'] //按钮
@@ -107,10 +107,10 @@ var app = new Vue({
             }
 
         },
-        logout() {
+        logout:function() {
             logout();
         },
-        deleteUser(userId) {
+        deleteUser:function(userId) {
             //询问框
             layer.confirm('危险操作，你确定要这样做吗？', {
                 btn: ['确定', '取消'] //按钮
@@ -119,7 +119,7 @@ var app = new Vue({
             }, function () {
             });
         },
-        resetPassword(userId) {
+        resetPassword:function(userId) {
             //询问框
             layer.confirm('确定吗？', {
                 btn: ['确定', '取消'] //按钮

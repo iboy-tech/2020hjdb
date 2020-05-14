@@ -25,7 +25,7 @@ var app = new Vue({
         list: []
     },
     methods: {
-        execute() {
+        execute:function() {
             this.condition.start = this.startTime;
             this.condition.end = this.endTime;
             this.condition.type = this.flag;
@@ -36,7 +36,7 @@ var app = new Vue({
                 addFile(app, app.condition);
             }
         },
-        logout() {
+        logout:function() {
             logout();
         },
         deleteFile: function (id) {

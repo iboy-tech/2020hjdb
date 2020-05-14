@@ -158,7 +158,7 @@
 
                             <div class="item action clearfix">
                                 <a class="ui button follow-btn green" @click="logout">
-                                    </i><span class="text">退出</span>
+                                    <span class="text">退出</span>
                                 </a>
                                 <div class="ui basic dropdown more dropdown-more">
                                     <div @click="showMenu=!showMenu" class="ui icon green basic button menu-btn"><i
@@ -334,7 +334,7 @@
                                                  data-tooltip="已经找到">
                                                 已找到
                                             </div>
-                                            <div v-else-if="item.kind==1 && item.status==0"class="ui blue label horizontal" data-tooltip="等待认领">
+                                            <div v-else-if="item.kind==1 && item.status==0" class="ui blue label horizontal" data-tooltip="等待认领">
                                                 认领
                                             </div>
                                             <div v-else-if="item.kind==1 && item.status==1"  class="ui grey label horizontal"

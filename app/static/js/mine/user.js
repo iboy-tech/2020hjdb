@@ -1,6 +1,6 @@
 var app = new Vue({
     el: "#app",
-    created() {
+    created:function() {
         if (getSession("tabIndex") == "3") {
             getMessages(this);
         }
@@ -91,10 +91,10 @@ var app = new Vue({
         wxReward:getLocal("user") ? JSON.parse(getLocal("user")).wxReward : "",
     },
     methods: {
-        showAllNotice(b) {
+        showAllNotice:function(b) {
             this.noticeAll = b;
         },
-        seeNotice(index) {
+        seeNotice:function(index) {
             let t = app.notice[index];
             layer.open({
                 title: t.time + "  " + t.title || "",
@@ -102,7 +102,7 @@ var app = new Vue({
                 content: t.content || ""
             });
         },
-        changeTab(index) {
+        changeTab:function(index) {
             console.log(index);
             if (index != 1) {
                 app.isSearched = false;
@@ -133,7 +133,7 @@ var app = new Vue({
                 // 关于我们
             }
         },
-        search() {
+        search:function() {
             //用户开始搜索
             app.isSearched = true;
             saveSession("isSearched", true);
@@ -143,7 +143,7 @@ var app = new Vue({
             this.tab[1].total = 0;
             pageLostFound(this.tab[1].search, this.tab[1], false);
         },
-        changeTab0Kind(index) {
+        changeTab0Kind:function(index) {
             this.tab[0].search.pageNum = 0;
             this.tab[0].list = [];
             this.tab[0].search.kind = index;
@@ -151,7 +151,7 @@ var app = new Vue({
             app.nextPage(0, false);
             console.log(this.tab[0].search, this.tab[0]);
         },
-        changeTab0Category(index) {
+        changeTab0Category:function(index) {
             this.tab[0].search.pageNum = 0;
             deleteSession("data");
             this.tab[0].list = [];
@@ -163,7 +163,7 @@ var app = new Vue({
             app.nextPage(0, false);
             console.log(this.tab[0].search, this.tab[0]);
         },
-        nextPage(tabIndex, append) {
+        nextPage:function(tabIndex, append) {
             console.log("当前tabIndex", tabIndex)
             if (tabIndex == 0 || tabIndex == 2) {//只有主页，和我的需要无限滚动
                 pageLostFound(app.tab[tabIndex].search, app.tab[tabIndex], append);
@@ -171,7 +171,7 @@ var app = new Vue({
             }
         },
 
-        deletePub(id) {
+        deletePub:function(id) {
             console.log(id);
             layer.confirm('确定要删除吗？', {
                 btn: ['确定', '取消'] //按钮
@@ -180,10 +180,10 @@ var app = new Vue({
             }, function () {
             });
         },
-        logout() {
+        logout:function() {
             logout();
         },
-        removeComment(id) {
+        removeComment:function(id) {
             console.log(id);
             layer.confirm('确定要删除吗？', {
                 btn: ['确定', '取消'] //按钮
@@ -193,14 +193,14 @@ var app = new Vue({
             }, function () {
             });
         },
-        changeTab4EventKind(index) {
+        changeTab4EventKind:function(index) {
             console.log(index);
             this.tab4.applyKind = index;
         },
-        changeTab4CategoryIndex(index) {
+        changeTab4CategoryIndex:function(index) {
             this.tab4.categoryIndex = index;
         },
-        submitPub() {
+        submitPub:function() {
             if (this.tab4.categoryIndex < 0) {
                 showAlertError("请选择物品类别！")
                 return;
@@ -258,15 +258,15 @@ var app = new Vue({
             console.log(data);
             //console.log(this.tab4);
         },
-        changeImg() {
+        changeImg:function() {
             console.log('change div');
             $("#imgInput").click();//模拟点击
         },
-        removeImg(index) {
+        removeImg:function(index) {
             console.log('remove img' + index);
             this.tab4.images.splice(index, 1);
         },
-        jumpDetail(id) {
+        jumpDetail:function(id) {
             //跳转详情页面
             saveLocal("isBack", true);
             // 记住当前数据
@@ -283,7 +283,7 @@ var app = new Vue({
             saveSession("tabIndex", app.tabIndex);
             window.open(baseUrl + "/detail.html?id=" + id, "_self");
         },
-        showFeedback() {
+        showFeedback:function() {
             app.showMenu = false;
             layer.open({
                 btn: ['确定', '取消'],
@@ -303,7 +303,7 @@ var app = new Vue({
                 }
             });
         },
-        setPassword() {
+        setPassword:function() {
             app.showMenu = false;
             layer.open({
                 btn: ['确定', '取消'],
@@ -337,13 +337,13 @@ var app = new Vue({
                 }
             });
         },
-        showRewardHelp(){
+        showRewardHelp:function(){
             layer.open({
                 title:"收款码地址获取方法",
                 content:"将微信收款码保存，然后用QQ扫描，将得到的地址复制粘贴到输入框内保存即可，地址示例[ wxp://f2f0Pihuc-hsXPKrjN4TIU27SSx-w6v2RAUv ]",
             });
         },
-        setReward(){
+        setReward:function(){
             app.showMenu = false;
             layer.open({
                 btn: ['保存'],
@@ -376,7 +376,7 @@ var app = new Vue({
                 // }
             });
         },
-        setQQ() {
+        setQQ:function() {
             app.showMenu = false;
             layer.prompt({title: '请输入新的QQ：'}, function (qq) {
                 if (qq == '') {
@@ -393,12 +393,12 @@ var app = new Vue({
                 setQQ(qq);
             });
         },
-        titleAlert(title) {
+        titleAlert:function(title) {
             console.log(title);
             alert(title)
         },
     },
-    mounted() {
+    mounted:function() {
         // console.log("我是监控的mounted", app.tabIndex);
         let io = new IntersectionObserver((entries) => {
             if (app.tabIndex == 1) {

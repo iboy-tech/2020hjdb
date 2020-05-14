@@ -13,10 +13,10 @@ var app = new Vue({
         user: getLocal("user") ? JSON.parse(getLocal("user")) : {},
     },
     methods: {
-        logout() {
+        logout:function() {
             logout();
         },
-        addKey() {
+        addKey:function() {
             // alert("执行了");
             app.showMenu = false;
             layer.prompt({title: '请输入秘钥：'}, function (key, index) {

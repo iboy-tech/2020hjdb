@@ -5,14 +5,14 @@ var app = new Vue({
         user: getLocal("user") ? JSON.parse(getLocal("user")) : {},
     },
     methods: {
-        logout() {
+        logout:function() {
             logout();
         },
-        delete(type) {
+        delete:function(type) {
             layer.confirm('日志30天后自动删除,你需要手动清空吗？', {
                 btn: ['确定', '取消'] //按钮
             }, function () {
-                            $.ajax({
+                $.ajax({
                 url: "/log.html/delete?type="+type,
                 method: "POST",
                 success: function (res) {

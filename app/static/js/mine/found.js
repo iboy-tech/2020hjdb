@@ -39,7 +39,7 @@ var app = new Vue({
     },
 
     methods: {
-        freezeUser(userId, flag) {
+        freezeUser:function(userId, flag) {
             if (flag == 1) {
                 layer.confirm('冻结后该用户将无法再登录系统，确定要冻结吗？', {
                     btn: ['确定', '取消'] //按钮
@@ -56,11 +56,11 @@ var app = new Vue({
                 });
             }
         },
-        seeInfo(userId) {
+        seeInfo:function(userId) {
             console.log(userId);
             getUserInfo(userId, this);
         },
-        checkAll() {
+        checkAll:function() {
             if (this.checked == false) {
                 this.checkedList = [];//清空数据
             } else {
@@ -71,7 +71,7 @@ var app = new Vue({
                 })
             }
         },
-        deleteAll() {
+        deleteAll:function() {
             let data=this.checkedList;
             layer.confirm('你确定要批量删除 '+data.length+' 条数据吗？', {
                 btn: ['确定', '取消'] //按钮
@@ -96,12 +96,12 @@ var app = new Vue({
             }, function () {
             });
         },
-        submit() {
+        submit:function() {
             let pgNum = $('#pgNum').val() - 1;
             this.result.search.pageNum = pgNum < 0 ? 0 : pgNum;
             pageLostFound(app.result.search, app.result, false);
         },
-        deletePub(id) {
+        deletePub:function(id) {
             console.log(id);
             layer.confirm('确定要删除吗？', {
                 btn: ['确定', '取消'] //按钮
@@ -111,19 +111,19 @@ var app = new Vue({
             });
 
         },
-        changePage(e) {
+        changePage:function(e) {
             console.log(e);
         },
-        toPage(pageNum) {
+        toPage:function(pageNum) {
             toPage(pageNum);
         },
-        jumpDetail(id) {
+        jumpDetail:function(id) {
             saveSession("toIndex",true);
             saveSession("tabIndex", 0);
             //跳转详情页面
             window.open("./detail.html?id=" + id, "_blank");
         },
-        logout() {
+        logout:function() {
             logout();
         },
     }

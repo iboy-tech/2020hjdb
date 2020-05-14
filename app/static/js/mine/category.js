@@ -11,7 +11,7 @@ var app = new Vue({
         }
     },
     methods: {
-        deleteCategory(name) {
+        deleteCategory:function(name) {
             console.log(name);
             //询问框
             layer.confirm('确定要删除吗？', {
@@ -23,14 +23,14 @@ var app = new Vue({
             });
 
         },
-        showAbout(index){
+        showAbout:function(index){
             showInfo(this.categoryList[index].about || this.categoryList[index].name);
         },
-        submit() {
+        submit:function() {
             console.log(this.category);
             addCategory(this.category, this);
         },
-        logout() {
+        logout:function() {
             logout();
         }
     }

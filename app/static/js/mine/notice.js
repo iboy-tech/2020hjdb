@@ -13,7 +13,7 @@ var app = new Vue({
         list: []
     },
     methods: {
-        showAdd() {
+        showAdd:function() {
             //捕获页
             layer.open({
                 type: 1,
@@ -23,7 +23,7 @@ var app = new Vue({
                 content: $('#addDiv') //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
             });
         },
-        submit() {
+        submit:function() {
             if (app.notice.pusher) {
                 layer.confirm('微信群发用来发送重要通知，仅超级管理员可用，你确定要群发吗？', {
                     btn: ['确定', '取消'] //按钮
@@ -36,7 +36,7 @@ var app = new Vue({
             }
 
         },
-        switchFix(id, index) {
+        switchFix:function(id, index) {
             let ask;
             if (this.list[index].fixTop == 1) {
                 ask = "确定要取消置顶吗？";
@@ -51,7 +51,7 @@ var app = new Vue({
 
             });
         },
-        deleteNotice(id) {
+        deleteNotice:function(id) {
             layer.confirm('确定要删除吗？', {
                 btn: ['确定', '取消'] //按钮
             }, function () {
@@ -60,7 +60,7 @@ var app = new Vue({
 
             });
         },
-        logout() {
+        logout:function() {
             logout();
         },
     }

@@ -68,7 +68,7 @@ var app = new Vue({
         }
     },
     methods: {
-        share() {
+        share:function() {
             //捕获页
             layer.open({
                 type: 1,
@@ -79,7 +79,7 @@ var app = new Vue({
                 content: $('#shareDiv') //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
             });
         },
-        reward() {
+        reward:function() {
             if (app.wxReward==""){
                 showInfo("用户暂未设置赞赏码，快去提醒他(她)设置吧！");
             }
@@ -102,7 +102,7 @@ var app = new Vue({
             // new QRCode(document.getElementById("reward-div"), app.wxReward);  // 设置要生成二维码的链接
             }
         },
-        pubComment(id) {
+        pubComment:function(id) {
             console.log(this.comment);
             let data = {
                 "targetId": id,
@@ -111,7 +111,7 @@ var app = new Vue({
             console.log(data);
             pubComment(data, this);
         },
-        deletePub(id) {
+        deletePub:function(id) {
             console.log(id);
             layer.confirm('确定要删除吗？', {
                 btn: ['确定', '取消'] //按钮
@@ -121,7 +121,7 @@ var app = new Vue({
 
             });
         },
-        showFeedback() {
+        showFeedback:function() {
             layer.open({
                 btn: ['确定', '取消'],
                 type: 1,
@@ -145,7 +145,7 @@ var app = new Vue({
                 }
             });
         },
-        jumpDetail(id) {
+        jumpDetail:function(id) {
             console.log("执行相关函数");
             //从相关启示进去，出来直接返回主页面
             app.isRelate = true;
@@ -158,7 +158,7 @@ var app = new Vue({
             //跳转详情页面
             location.href = baseUrl + "/detail.html?id=" + id;
         },
-        claim(flag, id) {
+        claim:function(flag, id) {
             if (flag == 1) {
                 layer.confirm("物品是您的吗？", {
                     btn: ["是的", "不是"]

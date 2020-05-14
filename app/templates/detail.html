@@ -149,35 +149,24 @@
                                     </div>
                                 </div>
 
-
                                 <!--赞，分享，评论，举报-->
                                 <div class="meta">
-                                            {%  if item.kind==0 %}
-                                                <a class="reply with-popup" data-content="有物品消息，快告诉对方吧" href="#comments"><i class="comment outline icon"></i>
-                                                <span data-tweet-reply-count></span> 评论</a>
-                                            {% endif %}
-                                    <a class="share with-popup"   data-content="分享到社交平台可以增大找回的几率" @click="share">
-                                        <i class="external icon"></i>
-                                        分享
-                                    </a>
+                                    <a class="share with-popup"   data-content="分享到社交平台可以增大找回的几率" @click="share"><i class="external icon"></i>分享</a>
                                      {%  if item.kind==1 %}
-                                         <a class="ban" @click="reward">
-                                                <i class="yen sign icon"></i>赞赏
-                                         </a>
+                                         <a class="ban" @click="reward"><i class="yen sign icon"></i>赞赏</a>
+                                      {% else %}
+                                    <a class="reply with-popup" data-content="有物品消息，快告诉对方吧" href="#comments"><i class="comment outline icon"></i>评论
+                                    </a>
                                      {% endif %}
                                 {% if item.isSelf or item.isAdmin %}
-                                    <a class="like with-popup" data-content="如果您的问题已经解决，记得及时删帖哦" @click="deletePub({{ item.id }})">
-                                        <i class="trash alternate outline icon "></i>删除
-                                    </a>
+                                    <a class="like with-popup" data-content="如果您的问题已经解决，记得及时删帖哦" @click="deletePub({{ item.id }})"> &nbsp; <i class="trash alternate outline icon "></i>删除</a>
                                 {% endif %}
                                  {% if item.isSelf==False  and item.isAdmin==False%}
-                                   <a class="ban" @click="showFeedback">
-                                      <i class="ban icon"></i> 举报
-                                  </a>
+                                   <a class="ban" @click="showFeedback"><i class="ban icon"></i>举报</a>
                                 {% endif %}
                                 </div>
                                 <div class="meta">
-                                    <a target="_blank" class="with-popup" data-content="点击邮箱可给对方发送邮件"  style="color: rgba(0,0,0,.5);" class="reply" href="{{ 'https://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email='+item.email }}"><i class="envelope outline icon"></i>
+                                    <a target="_blank" class="with-popup" data-content="QQ无法联系？试试邮件吧！"  style="color: rgba(0,0,0,.5);" class="reply" href="{{ 'https://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email='+item.email }}"><i class="envelope outline icon"></i>
                                         {{ item.email }}</a>
                                     <a target="_blank" class="with-popup" data-content="点击QQ可直接跳转到对话框" style="color: rgba(0,0,0,.5);" class="share" href="{{ 'https://wpa.qq.com/msgrd?v=3&site=qq&menu=yes&uin='+item.QQ }}">
                                         <i class="qq icon" style="color: rgba(121, 103, 103, 0.4) !important;"></i>
