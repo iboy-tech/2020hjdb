@@ -84,18 +84,21 @@ def login():
             op = redis_client.get(key)
             if op != 'null':
                 # redies中为byte类型
-                op = op.decode()
-                data = eval(op)
-                op = OpenID.query.filter_by(wx_id=data['uid']).first()
-                if op:
-                    print(op, op.user)
-                    # 用户免登陆
-                    login_user_longtime(op.user)
-                    # 删除redis中的数据
-                    redis_client.delete(key)
-                    return restful.success(msg="密码重置成功，新密码已发送到您的微信", data=op.user.auth_to_dict())
-                else:
-                    return restful.success(False, msg="此微信尚未绑定")
+                try:
+                    op = op.decode()
+                    data = eval(op)
+                    op = OpenID.query.filter_by(wx_id=data['uid']).first()
+                    if op:
+                        print(op, op.user)
+                        # 用户免登陆
+                        login_user_longtime(op.user)
+                        # 删除redis中的数据
+                        redis_client.delete(key)
+                        return restful.success(msg="密码重置成功，新密码已发送到您的微信", data=op.user.auth_to_dict())
+                    else:
+                        return restful.success(False, msg="此微信尚未绑定")
+                except Exception as e:
+                    print("扫码登录异常",str(e))
         except Exception as e:
             print("扫码登录异常："+str(e))
             pass
