@@ -208,7 +208,7 @@ def pub():
                     'pub_time': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
                     'pub_content': lost.about,
                     'pub_location': lost.location,
-                    'url': os.getenv('SITE_URL') + 'detail.html?id=' + str(lost.id)
+                    'url': os.getenv('SITE_URL') + 'detail?id=' + str(lost.id)
                 }
                 op = OpenID.query.filter_by(user_id=u.id).first()
                 if op is not None and op.wx_id is not None:

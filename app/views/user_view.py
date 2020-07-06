@@ -156,7 +156,7 @@ def claim():
                             'pub_time': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
                             'pub_content': l.about,
                             'pub_location': l.location,
-                            'url': os.getenv('SITE_URL') + 'detail.html?id=' + str(l.id)
+                            'url': os.getenv('SITE_URL') + 'detail?id=' + str(l.id)
                         }
                         send_email.apply_async(args=[lost_user.qq, '失物找回通知', 'noticeLost', dict],
                                                countdown=randint(10, 30))
@@ -186,7 +186,7 @@ def claim():
                             'pub_time': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
                             'pub_content': l.about,
                             'pub_location': l.location,
-                            'url': os.getenv('SITE_URL') + 'detail.html?id=' + str(l.id)
+                            'url': os.getenv('SITE_URL') + 'detail?id=' + str(l.id)
                         }
                         send_email.apply_async(args=[found_user.qq, '失物认领通知', 'noticeFound', dict],
                                                countdown=randint(10, 30))

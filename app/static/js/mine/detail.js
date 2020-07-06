@@ -156,7 +156,7 @@ var app = new Vue({
             saveLocal("isBack", false);
             // sessionStorage.clear();
             //跳转详情页面
-            location.href = baseUrl + "/detail.html?id=" + id;
+            location.href = baseUrl + "/detail/" + id+".html";
         },
         claim:function(flag, id) {
             if (flag == 1) {
@@ -184,7 +184,7 @@ var app = new Vue({
 });
 
 $(function () {
-    let id = getUrlParam("id");
+    let id = getPostId();
     if (!id) {
         showAlertError("缺少请求参数！");
     } else {
@@ -197,7 +197,7 @@ $(function () {
 function pubReport(data) {
     console.log(data);
     $.ajax({
-        url: baseUrl + "/detail.html/report",
+        url: baseUrl + "/detail/report",
         data: JSON.stringify(data),
         method: "POST",
         success: function (res) {
@@ -269,7 +269,7 @@ function pageLostFound(data, result) {
 //发布评论
 function pubComment(data, app) {
     $.ajax({
-        url: baseUrl + "/comment",
+        url: baseUrl + "/comment/"+getPostId(),
         data: JSON.stringify(data),
         method: "POST",
         success: function (res) {
@@ -283,7 +283,7 @@ function pubComment(data, app) {
                 console.log('把评论框清空')
                 console.log('我是传给详情的ID:' + app.item.id)
                 console.log("" + data.targetId)
-                getDetail(data);
+                getDetail(getPostId());
                 console.log('评论完成之后刷新')
             } else {
                 showAlertError(res.msg)
@@ -296,7 +296,7 @@ function pubComment(data, app) {
 function getComments(data, app) {
     console.log("评论有BUG：", data);
     $.ajax({
-        url: baseUrl + "/comment?id=" + window.location.search.split("id=")[1],
+        url: baseUrl + "/comment/" + getPostId(),
         method: "POST",
         success: function (res) {
                 if (res.success) {
@@ -379,16 +379,15 @@ function viewImages(index) {
 function getDetail(id) {
     console.log('这是帖子的ID:' + id);
     $.ajax({
-        url: baseUrl + "/detail.html?id=" + id,
+        url: baseUrl + "/detail/"+id+".html",
         // data:id,
         method: "POST",
         // async : false,
-        success: function (res, status) {
+        success: function (res) {
             console.log(res);
-            if (status == "success") {
                 if (res.success) {
                     //console.log(result.item);
-                    // result.item = res.data.item;
+                    result.item = res.data.item;
                     //console.log(result.item);
                     app.page.search.category = $("#search-category").text();
                     console.log(app.page.search);
@@ -399,10 +398,6 @@ function getDetail(id) {
                 } else {
                     showAlertError(res.msg)
                 }
-            } else {
-                console.log(res);
-                showAlertError(res)
-            }
         }
     });
 }

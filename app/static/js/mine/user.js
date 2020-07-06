@@ -281,7 +281,7 @@ var app = new Vue({
             //记住当前位置
             saveSession("scroll", $(window).scrollTop());
             saveSession("tabIndex", app.tabIndex);
-            window.open(baseUrl + "/detail.html?id=" + id, "_self");
+            window.open(baseUrl + "/detail/" + id+".html", "_self");
         },
         showFeedback:function() {
             app.showMenu = false;

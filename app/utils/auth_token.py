@@ -47,6 +47,8 @@ def validate_token(token):  # 验证邮箱
     if data.get('operation') == Operations.CONFIRM_QQ:
         if user.status == 1:
             user.status = 2
+            # 所有QQ只从token中获取
+            user.qq = data.get('qq')
             db.session.commit()
             return restful.success(msg='恭喜,验证成功')
         else:

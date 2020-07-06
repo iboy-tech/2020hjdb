@@ -121,7 +121,7 @@ var app = new Vue({
             saveSession("toIndex",true);
             saveSession("tabIndex", 0);
             //跳转详情页面
-            window.open("./detail.html?id=" + id, "_blank");
+            window.open("/detail/" + id+'.html', "_blank");
         },
         logout:function() {
             logout();

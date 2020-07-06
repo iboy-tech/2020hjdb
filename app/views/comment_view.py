@@ -27,12 +27,12 @@ from app.utils.check_data import check_comment
 from app.views.found_view import send_message_by_pusher
 
 
-@comment.route('/', methods=['GET', 'POST', 'OPTIONS'], strict_slashes=False)
+@comment.route('/<int:id>', methods=['GET', 'POST', 'OPTIONS'], strict_slashes=False)
 @login_required
 @wechat_required
 @check_comment
-def index():
-    id = request.args.get('id')
+def index(id):
+    # id = request.args.get('id')
     req = request.json
     if req is not None:
         lost = LostFound.query.get(req['targetId'])
@@ -46,7 +46,7 @@ def index():
                 'comment_content': comment.content,
                 'connect_way': current_user.qq,
                 'comment_time': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-                'url': os.getenv('SITE_URL') + 'detail.html?id=' + str(lost.id)
+                'url': os.getenv('SITE_URL') + 'detail?id=' + str(lost.id)
             }
             op = OpenID.query.filter_by(user_id=user.id).first()
             if op is not None and user.id != current_user.id:

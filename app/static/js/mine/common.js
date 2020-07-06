@@ -156,6 +156,13 @@ function getUrlParam(paramName) {
     }
 }
 
+//paraName 等找参数的名称
+function getPostId() {
+    let url = document.location.toString();
+    let id=url.match("/detail/(.*).html")[0].match("\\d+")[0]
+    return parseInt(id);
+}
+
 //显示loading
 function showLoading(title) {
     //加载层-风格4

@@ -63,8 +63,10 @@ def login_user_longtime(user):
     session.permanent = True
     app = current_app._get_current_object()
     # session持久化，免登陆
-    app.permanent_session_lifetime = timedelta(days=365)
-    login_user(user, remember=True)
+    # app.permanent_session_lifetime = timedelta(days=365)
+    app.permanent_session_lifetime = timedelta(minutes=60)
+#    login_user(user, remember=True)
+    login_user(user)
     user.last_login = datetime.now()
     print(user)
     db.session.add(user)
@@ -200,7 +202,7 @@ def logout():
     return restful.success(success=True, msg="登出成功")
 
 
-@auth.route('/recognize', methods=['POST', 'OPTIONS'])
+@auth.route('/register', methods=['POST', 'OPTIONS'])
 @limiter.limit(limit_value="5/hour")
 @check_qq
 @check_username
@@ -227,16 +229,16 @@ def recognize():
         # 需要更改认证QQ
         elif user_db.status == 1:
             try:
-                user_db.qq = qq
-                # 发送验证邮件
+                # user_db.qq = qq
+                # 用户首次注册填错了QQ需要更改QQ
                 token = str(generate_token(id=user_db.id, operation='confirm-qq', qq=user_db.qq), encoding="utf-8")
                 messages = {
                     'real_name': user_db.real_name,
                     'token': url_for('auth.confirm', token=token, _external=True)
                 }
                 send_email.apply_async(args=(qq, '身份认证', 'confirm', messages), countdown=randint(10, 30))
-                db.session.add(user_db)
-                db.session.commit()
+                # db.session.add(user_db)
+                # db.session.commit()
                 return restful.success(
                     msg="验证邮件已重新发送到您的QQ邮箱，可能在垃圾信箱中，请尽快认证",
                     data=data,
@@ -263,7 +265,7 @@ def recognize():
             db.session.add(user)
             db.session.commit()
             # 发送验证邮件
-            token = str(generate_token(id=user.id, operation='confirm-qq', qq=user.qq), encoding="utf-8")
+            token = str(generate_token(id=user.id, operation='confirm-qq', qq=qq), encoding="utf-8")
             messages = {
                 'real_name': user.real_name,
                 'token': url_for('auth.confirm', token=token, _external=True)
@@ -291,10 +293,16 @@ def recognize():
 def confirm():
     token = request.args.get('token')
     print(token)
-    data = validate_token(token)
-    messages = {
-        'msg': json.loads(data)['msg'],
-        'success': json.loads(data)['success']
-    }
+    if token is not None:
+        data = validate_token(token)
+        messages = {
+            'msg': json.loads(data)['msg'],
+            'success': json.loads(data)['success']
+        }
+    else:
+        messages = {
+            'msg': "验证信息有误",
+            'success': False
+        }
     print(messages)
     return render_template('mails/go.html', messages=messages)

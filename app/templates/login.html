@@ -440,7 +440,7 @@
                 }
 
                 $.ajax({
-                    url: baseUrl + (me.tabIndex == 0 ? "/login" : "/recognize"),
+                    url: baseUrl + (me.tabIndex == 0 ? "/login" : "/register"),
                     method: "POST",
                     data: JSON.stringify(this.user),
                     success: function (res) {

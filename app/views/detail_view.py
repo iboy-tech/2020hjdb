@@ -24,22 +24,25 @@ from app.utils import restful
 
 
 # @detail.route("/?id=<int:lost_id>",defaults = {"lost_id":1})
-@detail.route('/', methods=['GET', 'POST', 'OPTIONS'], strict_slashes=False)
+# @detail.route('/<path:url_path>/', methods=['GET', 'POST', 'OPTIONS'], strict_slashes=False)
+@detail.route('/<int:id>.html', methods=['GET', 'POST', 'OPTIONS'], strict_slashes=False)
 @limiter.limit(limit_value="30/minute")
 @login_required
 @wechat_required
-def index():
+def index(id):
+    print("路径参数的ID",id)
     print('我是前端的ID')
     print('这是详情页面request.json', request.json)
     if request.method == 'GET':
-        print("我是获取的ID", request.args.get('id'))
-        id = request.args.get('id')
-        if id is None:
-            return restful.success(success=False, msg='提示：参数缺失')
+        # print("我是获取的ID", request.args.get('id'))
+        # id = request.args.get('id')
+        # if id is None:
+        #     return restful.success(success=False, msg='提示：参数缺失')
         try:
-            myid = int(id)
-            lost = LostFound.query.get(myid)
-        except:
+            # myid = int(id)
+            lost = LostFound.query.get(id)
+        except Exception as e:
+            print(str(e))
             return restful.success(success=False, msg='警告,检测到用户 {} 尝试非法字符注入，后台已记录'.format(current_user.real_name))
         if lost is not None:
             key = str(lost.id) + PostConfig.POST_REDIS_PREFIX
