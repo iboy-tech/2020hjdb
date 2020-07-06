@@ -130,7 +130,6 @@
                                     {{item.about}}
                                 </div>
 
-{#<template v-if="item.images.length  > 0">#}
             <div class="extra multi-image" id="share-images" v-if="item.images && item.images.length > 0">
             <div data-multi-image-raw="list" class="multimgs" style="display: flex;">
                 <div v-for="(src, index) in item.images" class="wrapper multing-wrapper">
@@ -138,19 +137,6 @@
                 </div>
             </div>
         </div>
-{#</template>#}
-{#                            <template></template>
-                             {% if    %}
-                                <div class="extra multi-image" id="share-images">
-                                <div data-multi-image-raw="list" class="multimgs" style="display: flex;">
-                                     {% for imgsrc in item.images %}
-                                        <div class="wrapper multing-wrapper">
-                                            <img src="static/thumb/{{imgsrc}}" key="static/thumb/{{imgsrc}}" onclick="viewImages({{ loop.index-1}})" style="max-width: 160px; height: auto;">
-                                         </div>
-                                    {% endfor %}
-                                    </div>
-                                 </div>
-                             {% endif %}#}
 
 
 
@@ -164,18 +150,16 @@
                                 <div class="meta">
                                     <a class="share with-popup"   data-content="分享到社交平台可以增大找回的几率" @click="share"><i class="external icon"></i>分享</a>
 
-{#                                     {%  if  %}#}
+
                                          <a v-if="item.kind==1" class="ban" @click="reward"><i class="yen sign icon"></i>赞赏</a>
-{#                                      {% else %}#}
+
                                     <a v-else class="reply with-popup" data-content="有物品消息，快告诉对方吧" href="#comments"><i class="comment outline icon"></i>评论
                                     </a>
-{#                                     {% endif %}#}
-{#                                {% if  %}#}
+
                                     <a v-if="item.isSelf || item.isAdmin" class="like with-popup" data-content="如果您的问题已经解决，记得及时删帖哦" @click="deletePub(item.id)"> &nbsp; <i class="trash alternate outline icon "></i>删除</a>
-{#                                {% endif %}#}
-{#                                 {% if item.isSelf==False  and item.isAdmin==False%}#}
+
                                    <a v-if="item.isSelf==false  && item.isAdmin==false" class="ban" @click="showFeedback"><i class="ban icon"></i>举报</a>
-{#                                {% endif %}#}
+
                                 </div>
                                 <div class="meta">
                                     <a target="_blank" class="with-popup" data-content="QQ无法联系？试试邮件吧！"  style="color: rgba(0,0,0,.5);" class="reply" :href="mailApi+item.email"><i class="envelope outline icon"></i>
@@ -195,7 +179,7 @@
                             <button  class="ui blue small button" @click="claim(1,item.id)">我要认领
                             </button>
                         </div>
-{#                     {% elif item.status==1 %}#}
+
                         <div  v-else-if="item.status==1" class="field foot-bar" style="text-align: center;">
                             <button class="ui green small button">已认领</button>
                         </div>

@@ -35,24 +35,23 @@ from .views.auth_view import get_login_info
 
 login_manager.session_protection = 'basic'
 
-from app.page import cached as cache_bp
-from app.page import oauth as pusher_bp
-from app.page import comment as comment_bp
-from app.page import detail as detail_bp
-from app.page import feedback as feedback_bp
-from app.page import found as found_bp
-from app.page import userlist as userlist_bp
-from app.page import notice as notice_bp
-from app.page import category as category_bp
-from app.page import user as user_bp
-from app.page import auth as auth_bp
-from app.page import chart as admin_bp
-from app.page import report as report_bp
-from app.page import tool as tool_bp
-from app.page import log as log_bp
-from app.page import lab as lab_bp
-
-
+from app.page import cached
+from app.page import oauth
+from app.page import comment
+from app.page import detail
+from app.page import feedback
+from app.page import found
+from app.page import users
+from app.page import notice
+from app.page import category
+from app.page import user
+from app.page import auth
+from app.page import chart
+from app.page import report
+from app.page import tool
+from app.page import log
+from app.page import lab
+from app.page import robot
 
 
 # 工厂函数
@@ -74,23 +73,26 @@ def create_app(config_name=None):
     return app
 
 
+# 注册蓝图
 def register_blueprints(app):
-    app.register_blueprint(admin_bp)  # 管理员
-    app.register_blueprint(auth_bp)  # 认证
-    app.register_blueprint(user_bp)  # 用户
-    app.register_blueprint(category_bp)  # 分类
-    app.register_blueprint(notice_bp)  # 通知
-    app.register_blueprint(userlist_bp)  # 用户管理
-    app.register_blueprint(found_bp)  # 用户管理
-    app.register_blueprint(feedback_bp)  # 用户管理
-    app.register_blueprint(detail_bp)  # 用户管理
-    app.register_blueprint(comment_bp)
-    app.register_blueprint(pusher_bp)
-    app.register_blueprint(cache_bp)
-    app.register_blueprint(report_bp)
-    app.register_blueprint(tool_bp)
-    app.register_blueprint(log_bp)
-    app.register_blueprint(lab_bp)
+    app.register_blueprint(chart)  # 管理员
+    app.register_blueprint(auth)  # 认证
+    app.register_blueprint(user)  # 用户
+    app.register_blueprint(category)  # 分类
+    app.register_blueprint(notice)  # 通知
+    app.register_blueprint(users)  # 用户管理
+    app.register_blueprint(found)  # 用户管理
+    app.register_blueprint(feedback)  # 用户管理
+    app.register_blueprint(detail)  # 用户管理
+    app.register_blueprint(comment)
+    app.register_blueprint(oauth)
+    app.register_blueprint(cached)
+    app.register_blueprint(report)
+    app.register_blueprint(tool)
+    app.register_blueprint(log)
+    app.register_blueprint(lab)
+    # QQ群机器人
+    app.register_blueprint(robot)
 
 
 def register_extensions(app):  # 实例化扩展
@@ -123,6 +125,7 @@ def register_shell_context(app):
         from app.models.user_model import User
         from app.models.comment_model import Comment
         from app.models.category_model import Category
+        from app.models.robot_model import Robot
 
         return dict(
             app=app,
@@ -136,7 +139,8 @@ def register_shell_context(app):
             Role=Role,
             Permission=Permission,
             OpenID=OpenID,
-            Report=Report
+            Report=Report,
+            Robot=Robot
         )
 
 

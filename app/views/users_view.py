@@ -1,7 +1,7 @@
 # -*- coding:UTF-8 -*-
 # !/usr/bin/python
 """
-@File    : userlist_view.py
+@File    : users_view.py
 @Time    : 2020/1/23 22:41
 @Author  : iBoy
 @Email   : iboy@iboy.tech
@@ -18,14 +18,14 @@ from app import db, redis_client, cache, limiter
 from app.config import PostConfig
 from app.decorators import super_admin_required, admin_required, wechat_required
 from app.models.user_model import User
-from app.page import userlist
+from app.page import users
 from app.utils import restful
 from app.utils.auth_token import generate_password
 from app.utils.delete_file import remove_files
 from app.utils.mail_sender import send_email
 
 
-@userlist.route('/', methods=['POST', 'GET', 'OPTIONS'], strict_slashes=False)
+@users.route('/', methods=['POST', 'GET', 'OPTIONS'], strict_slashes=False)
 @cache.cached(timeout=3600*24*7,key_prefix="userlist-html")  # 缓存5分钟 默认为300s
 @login_required
 @wechat_required
@@ -34,7 +34,7 @@ def index():
     return render_template('users.html')
 
 
-@userlist.route('/getall', methods=['POST', 'GET'], strict_slashes=False)
+@users.route('/getall', methods=['POST', 'GET'], strict_slashes=False)
 @limiter.limit("2/day", exempt_when=lambda: current_user.is_admin)
 @login_required
 @wechat_required
@@ -117,7 +117,7 @@ def get_all():
         return data
 
 
-@userlist.route('/freeze', methods=['POST'], strict_slashes=False)
+@users.route('/freeze', methods=['POST'], strict_slashes=False)
 @login_required
 @admin_required
 def user_freeze_or_unfreeze():
@@ -148,7 +148,7 @@ def user_freeze_or_unfreeze():
     return restful.success()
 
 
-@userlist.route('/resetPassword', methods=['POST'], strict_slashes=False)
+@users.route('/resetPassword', methods=['POST'], strict_slashes=False)
 @login_required
 @admin_required
 def reset_pssword():
@@ -196,7 +196,7 @@ def delete_img_and_report(posts, reports):
         remove_files(del_reports, 2)
 
 
-@userlist.route('/deleteAll', methods=['POST'], strict_slashes=False)
+@users.route('/deleteAll', methods=['POST'], strict_slashes=False)
 @super_admin_required
 def delete_users():
     req = request.json
@@ -237,7 +237,7 @@ def delete_users():
     return restful.success(msg="删除失败")
 
 
-@userlist.route('/delete', methods=['POST'], strict_slashes=False)
+@users.route('/delete', methods=['POST'], strict_slashes=False)
 @super_admin_required
 def delete_user():
     req = request.args.get('userId')
@@ -263,7 +263,7 @@ def delete_user():
     return restful.success(msg="删除失败")
 
 
-@userlist.route('/setAsAdmin', methods=['POST'], strict_slashes=False)
+@users.route('/setAsAdmin', methods=['POST'], strict_slashes=False)
 @super_admin_required
 def set_or_cancle_admin():
     req = request.args.get('userId')
@@ -297,7 +297,7 @@ def search(pagination, page, pagesize):
     return restful.success(data=data)
 
 
-@userlist.route('/userInfo', methods=['POST'], strict_slashes=False)
+@users.route('/userInfo', methods=['POST'], strict_slashes=False)
 @login_required
 @admin_required
 def get_userinfo():

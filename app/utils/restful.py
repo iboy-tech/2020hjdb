@@ -2,13 +2,18 @@
 import datetime
 import json
 
+from app.models.robot_model import Robot
 
-class DateEncoder(json.JSONEncoder):
+
+class MyEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, datetime.datetime):
             return obj.strftime("%Y-%m-%d %H:%M:%S")
-        else:
-            return json.JSONEncoder.default(self, obj)
+        if isinstance(obj, bytes):
+            return str(obj, encoding='utf-8')
+        if isinstance(obj, Robot):
+            return obj.to_dict()
+        return json.JSONEncoder.default(self, obj)
 
 
 class HttpCode(object):
@@ -20,7 +25,7 @@ class HttpCode(object):
 
 
 def RestfulResult(success, code, msg, data, ext=None):
-    data = json.dumps({'success': success, 'code': code, 'msg': msg, 'data': data, 'ext': ext}, cls=DateEncoder)
+    data = json.dumps({'success': success, 'code': code, 'msg': msg, 'data': data, 'ext': ext}, cls=MyEncoder)
     # print("生成消息类", str(data))
     return data
 

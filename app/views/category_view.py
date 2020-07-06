@@ -8,13 +8,13 @@
 @Description : 
 @Software: PyCharm
 """
-from flask import request, render_template, session
-from flask_login import current_user, login_required
+from flask import request, render_template
+from flask_login import login_required
 
 from app import db, cache
 from app.decorators import admin_required, super_admin_required, wechat_required
-from app.page import category
 from app.models.category_model import Category
+from app.page import category
 from app.utils import restful
 
 

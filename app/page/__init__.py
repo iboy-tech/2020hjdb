@@ -19,7 +19,7 @@ auth = Blueprint('auth', __name__)
 user = Blueprint('user', __name__, url_prefix='/user.html')
 category = Blueprint('category', __name__, url_prefix='/category.html')
 notice = Blueprint('notice', __name__, url_prefix='/notice.html')
-userlist = Blueprint('userlist', __name__, url_prefix='/users.html')
+users = Blueprint('users', __name__, url_prefix='/users.html')
 found = Blueprint('found', __name__, url_prefix='/found.html')
 feedback = Blueprint('feedback', __name__, url_prefix='/feedback.html')
 detail = Blueprint('detail', __name__, url_prefix='/detail')
@@ -30,7 +30,9 @@ report = Blueprint('report', __name__, url_prefix='/report.html')
 tool = Blueprint('tool', __name__, url_prefix='/tool.html')
 log = Blueprint('log', __name__, url_prefix='/log.html')
 lab = Blueprint('lab', __name__, url_prefix='/lab.html')
+# QQ群机器人
+robot = Blueprint('robot', __name__, url_prefix='/robot.html')
 # 防止循环导包
 from ..views import chart_view, auth_view, user_view, category_view, notice_view, comment_view, \
-    feedback_view, userlist_view, found_view, detail_view, oauth_view, cache_view, report_view, tool_view, log_view, \
-    lab_view
+    feedback_view, users_view, found_view, detail_view, oauth_view, cache_view, report_view, tool_view, log_view, \
+    lab_view, robot_view
