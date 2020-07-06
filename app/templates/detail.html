@@ -74,12 +74,12 @@
             <div class="ui internally stackable grid tweet-detail-page">
                 <div class="eleven wide computer sixteen wide tablet column tweet-detail-wrap">
                     <div class="ui breadcrumb">
-                        <template v-if="isRelate">
-                            <a class="section" href="/">所有启事</a>
-                        </template>
-                        <template v-else>
-                            <a class="section" href="javascript:window.history.go(-1)">所有启事</a>
-                        </template>
+{#                        <template >#}
+                            <a v-if="isRelate" class="section" href="/">所有启事</a>
+{#                        </template>#}
+{#                        <template >#}
+                            <a  v-else class="section" href="javascript:window.history.go(-1)">所有启事</a>
+{#                        </template>#}
                         <i class="right chevron icon divider"></i>
                         <div class="active section">详情</div>
                     </div>
@@ -92,28 +92,30 @@
                                     <div class="item">
                                         <a>
                                             <div class="osc-avatar small-portrait _35x35 avatar">
-                                                <img src="{{ item.icon }}" alt="头像" title="{{ item.realName }}"/>
+                                                <img :src="item.icon" alt="头像" :title="item.realName"/>
                                             </div>
                                         </a>
                                         <div class="content">
-                                            {%  if item.kind==0 %}
-                                                    <div class="ui red label horizontal" data-tooltip="正在寻找">
+{#                                        <template >#}
+                                                <div v-if="item.kind==0" class="ui red label horizontal" data-tooltip="正在寻找">
                                                         寻物
                                                     </div>
-                                                {% else  %}
-                                                    <div  class="ui blue label horizontal"
+{#                                        </template>#}
+{#                                        <template >#}
+                                             <div v-else class="ui blue label horizontal"
                                                          data-tooltip="等待认领">
                                                         认领
                                                     </div>
-                                            {% endif %}
+{#                                        </template>#}
 
 
-                                            <a class="user __user">{{ item.realName }}</a>
+
+                                            <a class="user __user">{{item.realName}}</a>
 
                                             <div class="extra">
-                                                <div class="date">{{ item.time }}&nbsp;&nbsp;
+                                                <div class="date">{{item.time}}&nbsp;&nbsp;
                                                     <i class="map marker alternate icon"></i>
-                                                    <span>{{ item.location }}</span>
+                                                    <span>{{item.location}}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -122,86 +124,110 @@
                                 </div>
 
                                 <div class="extra text" id="share-title">
-                                    {{ item.title }}
+                                    {{item.title}}
                                 </div>
                                 <div class="header" id="share-description">
-                                    {{ item.about }}
+                                    {{item.about}}
                                 </div>
 
-
-                             {% if  item.images|length  > 0  %}
+{#<template v-if="item.images.length  > 0">#}
+            <div class="extra multi-image" id="share-images" v-if="item.images && item.images.length > 0">
+            <div data-multi-image-raw="list" class="multimgs" style="display: flex;">
+                <div v-for="(src, index) in item.images" class="wrapper multing-wrapper">
+                    <img :src="imgPrefix+src" :key="imgPrefix+src" @click="viewImages(index)" style="max-width: 160px; height: auto;">
+                </div>
+            </div>
+        </div>
+{#</template>#}
+{#                            <template></template>
+                             {% if    %}
                                 <div class="extra multi-image" id="share-images">
                                 <div data-multi-image-raw="list" class="multimgs" style="display: flex;">
                                      {% for imgsrc in item.images %}
                                         <div class="wrapper multing-wrapper">
-                                            <img src="static/thumb/{{ imgsrc }}" key="static/thumb/{{ imgsrc }}" onclick="viewImages({{  loop.index-1 }})" style="max-width: 160px; height: auto;">
+                                            <img src="static/thumb/{{imgsrc}}" key="static/thumb/{{imgsrc}}" onclick="viewImages({{ loop.index-1}})" style="max-width: 160px; height: auto;">
                                          </div>
                                     {% endfor %}
                                     </div>
                                  </div>
-                             {% endif %}
+                             {% endif %}#}
 
 
 
                                 <div class="ui horizontal list">
                                     <div class="item">
-                                        <span id="search-category"class="ui horizontal label">{{ item.category }}</span>
+                                        <span id="search-category"class="ui horizontal label">{{item.category}}</span>
                                     </div>
                                 </div>
 
                                 <!--赞，分享，评论，举报-->
                                 <div class="meta">
                                     <a class="share with-popup"   data-content="分享到社交平台可以增大找回的几率" @click="share"><i class="external icon"></i>分享</a>
-                                     {%  if item.kind==1 %}
-                                         <a class="ban" @click="reward"><i class="yen sign icon"></i>赞赏</a>
-                                      {% else %}
-                                    <a class="reply with-popup" data-content="有物品消息，快告诉对方吧" href="#comments"><i class="comment outline icon"></i>评论
+
+{#                                     {%  if  %}#}
+                                         <a v-if="item.kind==1" class="ban" @click="reward"><i class="yen sign icon"></i>赞赏</a>
+{#                                      {% else %}#}
+                                    <a v-else class="reply with-popup" data-content="有物品消息，快告诉对方吧" href="#comments"><i class="comment outline icon"></i>评论
                                     </a>
-                                     {% endif %}
-                                {% if item.isSelf or item.isAdmin %}
-                                    <a class="like with-popup" data-content="如果您的问题已经解决，记得及时删帖哦" @click="deletePub({{ item.id }})"> &nbsp; <i class="trash alternate outline icon "></i>删除</a>
-                                {% endif %}
-                                 {% if item.isSelf==False  and item.isAdmin==False%}
-                                   <a class="ban" @click="showFeedback"><i class="ban icon"></i>举报</a>
-                                {% endif %}
+{#                                     {% endif %}#}
+{#                                {% if  %}#}
+                                    <a v-if="item.isSelf || item.isAdmin" class="like with-popup" data-content="如果您的问题已经解决，记得及时删帖哦" @click="deletePub(item.id)"> &nbsp; <i class="trash alternate outline icon "></i>删除</a>
+{#                                {% endif %}#}
+{#                                 {% if item.isSelf==False  and item.isAdmin==False%}#}
+                                   <a v-if="item.isSelf==false  && item.isAdmin==false" class="ban" @click="showFeedback"><i class="ban icon"></i>举报</a>
+{#                                {% endif %}#}
                                 </div>
                                 <div class="meta">
-                                    <a target="_blank" class="with-popup" data-content="QQ无法联系？试试邮件吧！"  style="color: rgba(0,0,0,.5);" class="reply" href="{{ 'https://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email='+item.email }}"><i class="envelope outline icon"></i>
-                                        {{ item.email }}</a>
-                                    <a target="_blank" class="with-popup" data-content="点击QQ可直接跳转到对话框" style="color: rgba(0,0,0,.5);" class="share" href="{{ 'https://wpa.qq.com/msgrd?v=3&site=qq&menu=yes&uin='+item.QQ }}">
+                                    <a target="_blank" class="with-popup" data-content="QQ无法联系？试试邮件吧！"  style="color: rgba(0,0,0,.5);" class="reply" :href="mailApi+item.email"><i class="envelope outline icon"></i>
+                                        {{item.email}}</a>
+                                    <a target="_blank" class="with-popup" data-content="点击QQ可直接跳转到对话框" style="color: rgba(0,0,0,.5);" class="share" :href="qqApi+item.QQ">
                                         <i class="qq icon" style="color: rgba(121, 103, 103, 0.4) !important;"></i>
-                                        {{ item.QQ }}
+                                        {{item.QQ}}
                                     </a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                {% if item.kind == 1   %}
-                    {% if item.isSelf==False and item.status==0 %}
-                        <div id="claim" class="field foot-bar" style="text-align: center;">
-                            <button  class="ui blue small button" @click="claim(1,{{ item.id }})">我要认领
+{#                {% if item.kind == 1   %}#}
+                    <template v-if="item.kind == 1">
+{#                    {% if item.isSelf==False and item.status==0 %}#}
+                        <div v-if="item.isSelf==false && item.status==0" id="claim" class="field foot-bar" style="text-align: center;">
+                            <button  class="ui blue small button" @click="claim(1,item.id)">我要认领
                             </button>
                         </div>
-                     {% elif item.status==1 %}
-                        <div  class="field foot-bar" style="text-align: center;">
+{#                     {% elif item.status==1 %}#}
+                        <div  v-else-if="item.status==1" class="field foot-bar" style="text-align: center;">
                             <button class="ui green small button">已认领</button>
                         </div>
-                    {% endif %}
-                {% else  %}
+{#                    {% endif %}#}
+                    </template>
+
+                    <template v-else>
+{#                      {% if item.isSelf==False and item.status==0 %}#}
+                            <div  v-if="item.isSelf==false && item.status==0" id="report" class="field foot-bar" style="text-align: center;">
+                                <button class="ui red small button" @click="claim(0,item.id)">我要上报</button>
+                            </div>
+{#                        {% elif item.status==1  %}#}
+                            <div v-else-if="item.status==1" class="field foot-bar" style="text-align: center;">
+                                <button class="ui green small button">已找到</button>
+                            </div>
+{#                        {% endif %}#}
+                    </template>
+{#                {% else  %}
                     {% if item.isSelf==False and item.status==0 %}
                             <div  id="report" class="field foot-bar" style="text-align: center;">
-                                <button class="ui red small button" @click="claim(0,{{ item.id }})">我要上报</button>
+                                <button class="ui red small button" @click="claim(0,{{item.id}})">我要上报</button>
                             </div>
                         {% elif item.status==1  %}
                             <div  class="field foot-bar" style="text-align: center;">
                                 <button class="ui green small button">已找到</button>
                             </div>
                         {% endif %}
-                {% endif %}
+                {% endif %}#}
 
 
                     <!--comment-->
-                    <h4 class="ui header" id="comments">全部评论（{{comments.length ||0 }}）</h4>
+                    <h4 class="ui header" id="comments">全部评论（{{comments.length ||0}}）</h4>
                     <div class="" id="tweetCommentForm">
                         <div class="ui form tweet-form">
                             <div class="field">
@@ -213,8 +239,8 @@
                                 <div class="ui horizontal link small list toolbox">
                                 </div>
 
-                                <button :class="{disabled:  !{{ item.id }} || comment.length<=  0}"
-                                        class="ui primary right floated small button" @click="pubComment({{ item.id }})">发布评论
+                                <button :class="{disabled:  !item.id || comment.length<=  0}"
+                                        class="ui primary right floated small button" @click="pubComment(item.id)">发布评论
                                 </button>
                             </div>
                         </div>
@@ -369,6 +395,29 @@
 
 
 </div>
+
+<div style="display: none; padding: 10px;" id="shareDiv" >
+    <div class="social-share" style="text-align: center !important;" data-mobile-sites="weibo,qq,qzone,wechat"></div>
+    <div id="wechat-qrcode" >
+    </div>
+</div>
+<div style="display: none; padding: 10px;" id="rewardDiv">
+    <div id="reward-div">
+    </div>
+    <div id="code-logo"><img :src="item.icon" alt="头像"></div>
+    <p style="color: red;
+    font-size: 10px;
+    text-align: center !important;" >请仔细核对收款人信息，谨防上当受骗</p>
+</div>
+ <!--反馈弹窗-->
+<div class="editor-wrapper" style="display: none; padding: 10px;" id="editorDiv">
+    <div class="ui form" style="width: 100%; height: 100%;min-height:100px">
+        <div class="field">
+            <textarea v-model="feedback.content" rows="6" placeholder="举报理由，请注意举报信息的真实性，恶意举报封号处理" maxlength="300"
+                      class="tweet-textarea disabled-resize"></textarea>
+        </div>
+    </div>
+</div>
 </div>
 
 <style>
@@ -401,7 +450,7 @@
 <script src="../static/js/mine/common.js"></script>
 <script src="{{ cdnUrl }}/static/js/layer.js"></script>
 <script src="../static/js/mine/detail.js"></script>
-<script src="{{ cdnUrl }}/static/js/share/js/social-share.js"></script>
+{#<script src="{{ cdnUrl }}/static/js/share/js/social-share.js"></script>#}
 <script src="{{ cdnUrl }}/static/js/qrcode.js"></script>
 <script>
      // hideLoading();
@@ -430,26 +479,4 @@ $(function () {
 })();
 </script>
 </body>
-<div style="display: none; padding: 10px;" id="shareDiv" >
-    <div class="social-share" style="text-align: center !important;" data-mobile-sites="weibo,qq,qzone,wechat"></div>
-    <div id="wechat-qrcode" >
-    </div>
-</div>
-<div style="display: none; padding: 10px;" id="rewardDiv">
-    <div id="reward-div">
-    </div>
-    <div id="code-logo"><img src="{{ item.icon }}" alt=""></div>
-    <p style="color: red;
-    font-size: 10px;
-    text-align: center !important;" >请仔细核对收款人信息，谨防上当受骗</p>
-</div>
- <!--反馈弹窗-->
-<div class="editor-wrapper" style="display: none; padding: 10px;" id="editorDiv">
-    <div class="ui form" style="width: 100%; height: 100%;min-height:100px">
-        <div class="field">
-            <textarea v-model="feedback.content" rows="6" placeholder="举报理由，请注意举报信息的真实性，恶意举报封号处理" maxlength="300"
-                      class="tweet-textarea disabled-resize"></textarea>
-        </div>
-    </div>
-</div>
 </html>

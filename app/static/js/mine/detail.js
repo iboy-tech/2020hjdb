@@ -7,6 +7,8 @@ var app = new Vue({
     },
     data: {
         wxReward:"",
+        mailApi:"https://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=",
+        qqApi:"https://wpa.qq.com/msgrd?v=3&site=qq&menu=yes&uin=",
         imgPrefix: staticUrl,
         userIcon: "https://ae01.alicdn.com/kf/U89b7be7d8d234a38b9a4b0d4258de362X.jpg",
         comment: "",//发布评论
@@ -45,6 +47,7 @@ var app = new Vue({
             status: 1,
             dealTime: null,
             isSelf: false,
+            isAdmin:false,
             email: "",
             QQ: "",
         },
@@ -68,6 +71,13 @@ var app = new Vue({
         }
     },
     methods: {
+        loadJS:function()
+        {//加载js
+            let loadScript = document.createElement("script");
+            loadScript.type = "text/javascript";
+            loadScript.src = "../static/js/share/js/social-share.js";
+            document.head.appendChild(loadScript);
+        },
         share:function() {
             //捕获页
             layer.open({
@@ -179,6 +189,7 @@ var app = new Vue({
     },
     mounted() {
         // console.log("挂载完成",this.isRelate);
+        this.loadJS();//页面渲染完成后加载分享组件
         deleteLocal("isRelate");
     }
 });
@@ -387,7 +398,7 @@ function getDetail(id) {
             console.log(res);
                 if (res.success) {
                     //console.log(result.item);
-                    result.item = res.data.item;
+                    app.item = res.data.item;
                     //console.log(result.item);
                     app.page.search.category = $("#search-category").text();
                     console.log(app.page.search);

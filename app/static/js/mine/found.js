@@ -163,7 +163,7 @@ $(function () {
 //冻结用户
 function freezeUser(userId, flag) {
     $.ajax({
-        url: baseUrl + "/userlist.html/freeze?userId=" + userId,
+        url: baseUrl + "/users.html/freeze?userId=" + userId,
         method: "POST",
         //data: JSON.stringify(data),
         success: function (res, status) {
@@ -185,7 +185,7 @@ function freezeUser(userId, flag) {
 //查询用户信息
 function getUserInfo(userId, app) {
     $.ajax({
-        url: baseUrl + "/userlist.html/userInfo?userId=" + userId,
+        url: baseUrl + "/users.html/userInfo?userId=" + userId,
         method: "POST",
         //data: JSON.stringify(data),
         success: function (res) {

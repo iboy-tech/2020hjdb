@@ -56,7 +56,7 @@ def favicon():
 @login_required
 @wechat_required
 def index():
-    return render_template('user.html')  # 所有参数都要
+    return render_template('index.html')  # 所有参数都要
 
 
 def login_user_longtime(user):

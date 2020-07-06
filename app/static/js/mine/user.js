@@ -1,6 +1,8 @@
 var app = new Vue({
     el: "#app",
     created:function() {
+
+        this.user=getLocal("user") ? JSON.parse(getLocal("user")) :{};
         if (getSession("tabIndex") == "3") {
             getMessages(this);
         }
@@ -10,7 +12,7 @@ var app = new Vue({
         showMenu: false,
         tabIndex: 0,
         isSearched: getSession("isSearched") ? JSON.parse(getSession("isSearched")) : false,
-        user: getLocal("user") ? JSON.parse(getLocal("user")) : {},
+        user:  {},
         category: [],
         api: 'https://wpa.qq.com/msgrd?v=3&site=qq&menu=yes&uin=',
         imgPrefix: staticUrl,

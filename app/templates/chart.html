@@ -15,7 +15,9 @@
     }
     </script>
     <!-- Bootstrap Core CSS -->
-        <link href=" https://cdn.bootcss.com/twitter-bootstrap/3.3.4/css/bootstrap.min.css" rel='stylesheet' type='text/css'/>
+    <link rel="shortcut icon" href="/static/images/favicon.ico" />
+
+    <link href=" https://cdn.bootcss.com/twitter-bootstrap/3.3.4/css/bootstrap.min.css" rel='stylesheet' type='text/css'/>
 
     <!-- Custom CSS -->
     <link href="../static/css/style.css" rel='stylesheet' type='text/css'/>
@@ -66,12 +68,11 @@ span.nav-badge-btm {
 }
     </style>
 </head>
-{% autoescape false %}
 
 <body class="cbp-spmenu-push">
-<div class="main-content">
+<div class="main-content" id="app">
     <!--left-fixed -navigation-->
-    <div class=" sidebar" role="navigation">
+    <div class="sidebar" role="navigation">
         <div class="navbar-collapse">
             <nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-left" id="cbp-spmenu-s1">
                 <ul class="nav" id="side-menu">
@@ -99,7 +100,7 @@ span.nav-badge-btm {
                         <!-- /nav-second-level -->
                     </li>
                     <li>
-                        <a href="/userlist.html"><i class="fa fa-users nav_icon"></i>用户管理</a>
+                        <a href="/users.html"><i class="fa fa-users nav_icon"></i>用户管理</a>
                     </li>
                     <li>
                         <a href="/notice.html"><i class="fa fa-send-o nav_icon"></i>公告管理</a>
@@ -110,15 +111,12 @@ span.nav-badge-btm {
                     </li>
                     <li>
                         <a href="/feedback.html"><i class="fa fa-envelope nav_icon"></i>反馈管理
-                            <!--<span class="nav-badge-btm">08</span>-->
                         </a>
-                        {% if newCount!=0 %}
-<span class="nav-badge-btm">{{ newCount }}</span>
-                        {% endif %}
-                        <!-- //nav-second-level -->
+
+                        <span v-if="newCount!=0" class="nav-badge-btm">{{newCount}}</span>
+
                     </li>
-                {% if isSuperAdmin %}
-                <li>
+                <li v-if="user.kind==3">
                         <a href="#"><i class="fa fa-dashboard nav_icon "></i>系统日志<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level collapse">
                                 <li><a href="/log.html?type=admin">操作日志</a></li>
@@ -126,12 +124,10 @@ span.nav-badge-btm {
                                 <li><a href="/log.html?type=info">请求日志</a></li>
                         </ul>
                     </li>
-                 {% endif %}
-                 {% if isSuperAdmin %}
-                <li>
+
+                <li v-if="user.kind==3">
                  <a href="/lab.html"><i class="fa fa-flask nav_icon"></i>实验室</a>
                </li>
-                 {% endif %}
                     <li class="visible-xs-block">
                         <a href="#" onclick="logout()"><i class="fa fa-sign-out nav_icon"></i>安全退出</a>
                     </li>
@@ -143,7 +139,7 @@ span.nav-badge-btm {
     </div>
     <!--left-fixed -navigation-->
     <!-- header-starts -->
-    <div class="sticky-header header-section" id="app">
+    <div class="sticky-header header-section" >
         <div class="header-left">
             <!--toggle button start-->
             <button id="showLeftPush"><i class="fa fa-bars"></i></button>
@@ -178,8 +174,6 @@ span.nav-badge-btm {
                             </div>
                         </a>
                         <ul class="dropdown-menu drp-mnu">
-                            <!--<li><a ><i class="fa fa-cog"></i> Settings</a></li>-->
-                            <!--<li><a ><i class="fa fa-user"></i> Profile</a></li>-->
                             <li><a @click="logout"><i class="fa fa-sign-out"></i>退出</a></li>
                         </ul>
                     </li>
@@ -196,31 +190,31 @@ span.nav-badge-btm {
             <div class="row-one">
                 <div class="col-md-3 widget">
                     <div class="stats-left ">
-                        <h5>今日失物：{{ data.lost[0] }}</h5>
-                        <h4>总计：{{ data.lost[1] }}</h4>
+                        <h5>今日失物：{{lost[0]}}</h5>
+                        <h4>总计：{{lost[1]}}</h4>
                     </div>
                     <div class="stats-right">
-                        <label>+{{ data.lost[0] }}</label>
+                        <label>+{{lost[0]}}</label>
                     </div>
                     <div class="clearfix"></div>
                 </div>
                 <div class="col-md-3 widget states-mdl">
                     <div class="stats-left" style="background-color: #e94e02;">
-                        <h5>今日拾物：{{ data.found[0] }}</h5>
-                        <h4>总计：{{ data.found[1] }}</h4>
+                        <h5>今日拾物：{{found[0]}}</h5>
+                        <h4>总计：{{found[1]}}</h4>
                     </div>
                     <div class="stats-right" style="background-color: #d14a00;">
-                        <label>+{{ data.found[0] }}</label>
+                        <label>+{{found[0]}}</label>
                     </div>
                     <div class="clearfix"></div>
                 </div>
                 <div class="col-md-3 widget states-last">
                     <div class="stats-left" style="background-color: #3dab53">
-                        <h5>今日寻回：{{ data.solve[0] }}</h5>
-                        <h4>总计：{{ data.solve[1] }}</h4>
+                        <h5>今日寻回：{{solve[0]}}</h5>
+                        <h4>总计：{{solve[1]}}</h4>
                     </div>
                     <div class="stats-right" style="background-color: #1d9b13">
-                        <label>+{{ data.solve[0] }}</label>
+                        <label>+{{solve[0]}}</label>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -240,94 +234,7 @@ span.nav-badge-btm {
                     <canvas id="pie1" height="300" width="400"></canvas>
                 </div>
                 <div class="clearfix"></div>
-                <script>
-                    //近期数据
-                    var barChartData1 = {
-                        labels: {{ data.dayLabels }},
-                        datasets: [
-                            {
-                                fillColor: "#4F52BA",
-                                strokeColor: "#4F52BA",
-                                highlightFill: "#4F52BA",
-                                highlightStroke: "#4F52BA",
-                                data:{{ data.data1[0] }}
-                            },
-                            {
-                                fillColor: "#e94e02",
-                                strokeColor: "#e94e02",
-                                highlightFill: "#e94e02",
-                                highlightStroke: "#e94e02",
-                                data: {{ data.data1[1] }}
-                            },
-                            {
-                                fillColor: "#3dab53",
-                                strokeColor: "#3dab53",
-                                highlightFill: "#3dab53",
-                                highlightStroke: "#3dab53",
-                                data: {{ data.data1[2] }}
-                            }
-                        ]
 
-                    };
-                    //近期趋势
-                    var lineChartData1 = {
-                        labels:{{ data.dayLabels }},
-                        {#labels:  ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],#}
-                        datasets: [
-                            {
-                                fillColor: "rgba(79, 82, 186, 0.9)",
-                                strokeColor: "rgba(79, 82, 186, 0.9)",
-                                pointColor: "rgba(79, 82, 186, 0.9)",
-                                pointStrokeColor: "#fff",
-                                data: {{ data.data1[0] }}
-
-                            },
-                            {
-                                fillColor: "rgba(233, 78, 2, 0.9)",
-                                strokeColor: "rgba(233, 78, 2, 0.9)",
-                                pointColor: "rgba(233, 78, 2, 0.9)",
-                                pointStrokeColor: "#9358ac",
-                                data: {{ data.data1[1] }}
-
-                            },
-                            {
-                                fillColor: "#3dab53",
-                                strokeColor: "#3dab53",
-                                pointColor: "#3dab53",
-                                pointStrokeColor: "#9358ac",
-                                data: {{ data.data1[2] }}
-
-                            }
-                        ]
-
-                    };
-                    //失物，拾取，解决占比
-                    var pieData1 = [
-                        {
-                            value: {{ data.data3[0] }},
-                            color: "#4F52BA",
-                            label: "失物",
-                            percentageInnerCutout: 50
-                        },
-                        {
-                            value: {{ data.data3[1] }},
-                            color: "#e94e02",
-                            label: "拾物",
-                            percentageInnerCutout: 50
-                        },
-                        {
-                            value: {{ data.data3[2] }},
-                            color: "#3dab53",
-                            label: "寻回",
-                            percentageInnerCutout: 0
-                        }
-                    ];
-
-                    var line1 = new Chart(document.getElementById("line1").getContext("2d")).Line(lineChartData1, {pointDot: true});
-                    new Chart(document.getElementById("bar1").getContext("2d")).Bar(barChartData1);
-                    new Chart(document.getElementById("pie1").getContext("2d")).Pie(pieData1, {percentageInnerCutout: 50});
-
-                </script>
 
             </div>
             <div class="charts">
@@ -344,66 +251,7 @@ span.nav-badge-btm {
                     <canvas id="pie2" height="300" width="400"></canvas>
                 </div>
                 <div class="clearfix"></div>
-                <script>
-                    //用户数量
-                    var lineChartData2 = {
-                        {#labels:  ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],#}
-                        labels:  {{ data.dayLabels }},
-                        datasets: [
-                            {
-                                fillColor: "#2673ec",
-                                strokeColor: "rgba(79, 82, 186, 0.9)",
-                                pointColor: "rgba(79, 82, 186, 0.9)",
-                                pointStrokeColor: "#fff",
-                                data:  {{ data.data4 }}
-                            }
-                        ]
-                    };
-                    //活跃用户
-                    var lineChartData3 = {
-                        labels:{{ data.dayLabels }},
-                        {#labels:  ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],#}
-                        datasets: [
-                            {
-                                fillColor: "#00b5ad",
-                                strokeColor: "rgba(79, 82, 186, 0.9)",
-                                pointColor: "#00b5ad",
-                                pointStrokeColor: "#fff",
-                                data: {{ data.data5[0] }}
 
-                            },
-                            {
-                                fillColor: "#e03997",
-                                strokeColor: "rgba(233, 78, 2, 0.9)",
-                                pointColor: "#e03997",
-                                pointStrokeColor: "#9358ac",
-                                data:  {{ data.data5[1] }}
-                            }
-                        ]
-
-                    };
-                //性别比例
-                    var pieData2 = [
-                        {
-                            value:  {{ data.data6[0] }},
-                            color: "#00b5ad",
-                            label: "男",
-                            percentageInnerCutout: 50
-                        },
-                        {
-                            value:  {{ data.data6[1] }},
-                            color: "#e03997",
-                            label: "女",
-                            percentageInnerCutout: 50
-                        }
-
-                    ];
-
-                    new Chart(document.getElementById("line2").getContext("2d")).Line(lineChartData2, {pointDot: true});
-                    new Chart(document.getElementById("line3").getContext("2d")).Line(lineChartData3, {pointDot: true});
-                    new Chart(document.getElementById("pie2").getContext("2d")).Pie(pieData2, {percentageInnerCutout: 50});
-
-                </script>
 
             </div>
             <div class="clearfix"></div>
@@ -428,6 +276,5 @@ span.nav-badge-btm {
         isAnonymous();
      })
 </script>
-{% endautoescape %}
 </body>
 </html>

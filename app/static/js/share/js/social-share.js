@@ -30,12 +30,10 @@
     var site = getMetaContentByName('site') || getMetaContentByName('Site') || document.title;
     var title = getMetaContentByName('title') || getMetaContentByName('Title') || document.title;
     var description = getMetaContentByName('description') || getMetaContentByName('Description') || '';
-var myimg=$("#share-images img").attr("src");
+
+    let myimg=$("#share-images img").attr("src");
 if(myimg==undefined){
-    imgSrc="https://ae01.alicdn.com/kf/H178e60830e4342b8916cbfd620d46d57Q.png";
-}
-else{
-    imgSrc=window.location.protocol+"//"+window.location.host+'/'+$("#share-images img").attr("src");
+    myimg="https://ae01.alicdn.com/kf/H178e60830e4342b8916cbfd620d46d57Q.png";
 }
 
 
@@ -45,7 +43,7 @@ else{
         source: site,
         title: $("#share-title").text().replace(/\s+/g,""),
         description: $("#share-description").text().replace(/\s+/g,""),
-        image: imgSrc,
+        image: myimg,
         imageSelector: undefined,
         weiboKey: '',
         wechatQrcodeHelper: '<p>微信里点“发现”，扫一下</p>',
@@ -58,7 +56,7 @@ else{
 
     var templates = {
         qzone: 'https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url={{URL}}&title={{TITLE}}&desc={{DESCRIPTION}}&pics={{IMAGE}}&summary={{SUMMARY}}&site={{SOURCE}}',
-        qq: 'https://connect.qq.com/widget/shareqq/index.html?url={{URL}}&title={{TITLE}}&source={{SOURCE}}&desc={{DESCRIPTION}}&pics={{IMAGE}}&summary="{{SUMMARY}}"',
+        qq: 'https://connect.qq.com/widget/shareqq/user.html?url={{URL}}&title={{TITLE}}&source={{SOURCE}}&desc={{DESCRIPTION}}&pics={{IMAGE}}&summary="{{SUMMARY}}"',
         weibo: 'https://service.weibo.com/share/share.php?url={{URL}}&title={{TITLE}}&pic={{IMAGE}}&appkey={{WEIBOKEY}}',
         wechat: 'javascript:',
     };

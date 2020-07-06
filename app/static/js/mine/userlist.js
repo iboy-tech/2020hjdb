@@ -2,7 +2,6 @@ var app = new Vue({
     el: "#app",
     data: {
         imgPrefix: staticUrl,
-        schoolIcon: './go/icon-school.png',
         user: getLocal("user") ? JSON.parse(getLocal("user")) : {},
         search: {
             keyword: "",
@@ -49,7 +48,7 @@ var app = new Vue({
                 btn: ['确定', '取消'] //按钮
             }, function () {
                 $.ajax({
-                    url: baseUrl + "/userlist.html/deleteAll",
+                    url: baseUrl + "/users.html/deleteAll",
                     method: "POST",
                     data: JSON.stringify(data),
                     success: function (res) {
@@ -156,7 +155,7 @@ $(function () {
 //获取用户列表
 function getUserList(data, app, append) {
     $.ajax({
-        url: baseUrl + "/userlist.html/getall",
+        url: baseUrl + "/users.html/getall",
         data: JSON.stringify(data),
         method: "POST",
         success: function (res, status) {
@@ -182,7 +181,7 @@ function getUserList(data, app, append) {
 //重置密吗
 function resetPassword(userId) {
     $.ajax({
-        url: baseUrl + "/userlist.html/resetPassword?userId=" + userId,
+        url: baseUrl + "/users.html/resetPassword?userId=" + userId,
         method: "POST",
         //data: JSON.stringify(data),
         beforeSend: function () {
@@ -207,7 +206,7 @@ function resetPassword(userId) {
 //设置/取消用户为管理员
 function setAsAdmin(userId) {
     $.ajax({
-        url: baseUrl + "/userlist.html/setAsAdmin?userId=" + userId,
+        url: baseUrl + "/users.html/setAsAdmin?userId=" + userId,
         method: "POST",
         //data: JSON.stringify(data),
         success: function (res, status) {
@@ -230,7 +229,7 @@ function setAsAdmin(userId) {
 //冻结用户
 function freezeUser(userId) {
     $.ajax({
-        url: baseUrl + "/userlist.html/freeze?userId=" + userId,
+        url: baseUrl + "/users.html/freeze?userId=" + userId,
         method: "POST",
         //data: JSON.stringify(data),
         beforeSend: function () {
@@ -259,7 +258,7 @@ function freezeUser(userId) {
 //删除用户
 function deleteUser(userId) {
     $.ajax({
-        url: baseUrl + "/userlist.html/delete?userId=" + userId,
+        url: baseUrl + "/users.html/delete?userId=" + userId,
         method: "POST",
         //data: JSON.stringify(data),
         success: function (res, status) {
@@ -277,7 +276,7 @@ function deleteUser(userId) {
 //解冻用户
 function unfreezeUser(userId) {
     $.ajax({
-        url: baseUrl + "/userlist.html/freeze?userId=" + userId,
+        url: baseUrl + "/users.html/freeze?userId=" + userId,
         method: "POST",
         //data: JSON.stringify(data),
         beforeSend: function () {

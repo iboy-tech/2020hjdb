@@ -31,7 +31,7 @@ from app.utils.mail_sender import send_email
 @wechat_required
 @admin_required
 def index():
-    return render_template('userlist.html')
+    return render_template('users.html')
 
 
 @userlist.route('/getall', methods=['POST', 'GET'], strict_slashes=False)

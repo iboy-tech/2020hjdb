@@ -30,7 +30,7 @@ from app.utils import restful
 @login_required
 @wechat_required
 def index(id):
-    print("路径参数的ID",id)
+    print("路径参数的ID", id)
     print('我是前端的ID')
     print('这是详情页面request.json', request.json)
     if request.method == 'GET':
@@ -38,6 +38,12 @@ def index(id):
         # id = request.args.get('id')
         # if id is None:
         #     return restful.success(success=False, msg='提示：参数缺失')
+        lost = LostFound.query.get(id)
+        if lost is not None:
+            return render_template('detail.html')
+        else:
+            abort(404)
+    else:
         try:
             # myid = int(id)
             lost = LostFound.query.get(id)
@@ -81,13 +87,7 @@ def index(id):
                 "QQ": user.qq,
                 "site": os.getenv('SITE_URL')
             }
-            return render_template('detail.html', item=item)
+            data = {"item": item}
+            return restful.success(data=data)
         else:
             abort(404)
-    else:
-        return restful.success()
-
-
-
-
-
