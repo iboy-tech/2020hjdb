@@ -10,6 +10,8 @@
 """
 
 # from flask_debugtoolbar import DebugToolbarExtension
+import logging
+
 from flask_limiter import Limiter
 from flask_login import LoginManager
 # from flask_mail_sendgrid import MailSendGrid#接口发邮件
@@ -19,6 +21,7 @@ from flask_migrate import Migrate
 from flask_redis import FlaskRedis
 from flask_sqlalchemy import SQLAlchemy
 from flask_caching import Cache
+
 # from flask_mongoengine import MongoEngine
 
 
@@ -33,6 +36,7 @@ login_manager = LoginManager()
 redis_client = FlaskRedis()
 cache = Cache()
 limiter = Limiter()
+logger = logging.getLogger(__name__)
 # mongo_client = MongoEngine()
 """
 Celery 客户端: 用于发布后台作业。当与 Flask 一起工作的时候，客户端与 Flask 应用一起运行。

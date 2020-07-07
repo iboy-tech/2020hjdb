@@ -11,7 +11,7 @@
 from flask import render_template, request
 from flask_login import login_required
 
-from app import db
+from app import db, logger
 from app.decorators import admin_required, super_admin_required
 from app.page import robot
 from app.utils import restful
@@ -30,15 +30,12 @@ def index():
 @admin_required
 def get_all():
     robots = Robot.query.all()
-    print("请求了", robots[0].group_name)
     my_list = []
     if robots:
         my_list = [r.to_dict for r in robots]
-    print(my_list)
     data = {
         "list": robots
     }
-    print(data)
     return restful.success(data=data)
 
 
@@ -47,20 +44,16 @@ def get_all():
 @admin_required
 def add_group():
     req = request.json
-    print(req)
     id = req.get("id")
     if id == "":
-        print("添加")
         try:
             new_robot = Robot(key=req["key"], group_num=req["num"], group_name=req["name"])
             db.session.add(new_robot)
             db.session.commit()
         except Exception as e:
-            return restful.params_error(msg=str(e))
+            return restful.error(str(e))
     else:
-        print("更新", id)
         update_robot = Robot.query.get(int(id))
-        print(update_robot)
         update_robot.key = req["key"]
         update_robot.group_num = req["num"]
         update_robot.group_name = req["name"]
@@ -80,4 +73,4 @@ def delete(id):
         db.session.commit()
         return restful.success(msg="删除成功")
     except Exception as e:
-        return restful.params_error(msg=str(e))
+        return restful.error(str(e))

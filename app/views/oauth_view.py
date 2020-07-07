@@ -14,7 +14,7 @@ import os
 from flask import render_template, request, redirect, url_for
 from flask_login import login_required, current_user
 
-from app import db, OpenID, redis_client, PostConfig
+from app import db, OpenID, redis_client, PostConfig, logger
 from app.page import oauth
 from app.utils import mail_sender
 from app.utils.auth_token import generate_password
@@ -25,19 +25,14 @@ from app.views.found_view import send_message_by_pusher
 @oauth.route('/wx.html', methods=['GET'], strict_slashes=False)
 @oauth.route('/wx', methods=['POST'], strict_slashes=False)
 def index():
-    # print('SECRET_KEY', os.getenv('SECRET_KEY'))
-    # print('request.sid',request.sid)
-    print("用户要绑定位置")
     if current_user.is_authenticated and request.method == 'GET':
         op = OpenID.query.filter_by(user_id=current_user.id).first()
         if op:  # 已经绑定过了
             return redirect(url_for('auth.index')), 301
         data = (WxPusher.create_qrcode(extra=current_user.id, valid_time=180))
-        # print(type(data), data)
+        # logger.info(type(data), data)
         if data['success']:
             data = data['data']
-            # print('user_id', data['extra'])
-            # print('qr_code', data['url'])
             data = {
                 'url': data['url'],
                 'site': os.getenv('SITE_URL')
@@ -49,7 +44,7 @@ def index():
         data = request.json['data']
         wx_open_id = data['uid']
         user_id = data['extra']
-        # print('用户的ID', user_id,type(user_id))
+        # logger.info('用户的ID', user_id,type(user_id))
         # 如果是数字说明是初始扫码绑定
         if user_id.isnumeric():
             try:
@@ -58,7 +53,7 @@ def index():
                 db.session.commit()
                 db.session.close()
             except:
-                key = '{}'.format(user_id)+PostConfig.PUSHER_REDIS_PREFIX
+                key = '{}'.format(user_id) + PostConfig.PUSHER_REDIS_PREFIX
                 redis_client.setrange(key, 0, "exist")  # 不是系统用户重置密码
                 return "false"
             """
@@ -71,13 +66,11 @@ def index():
             expire函数接受一个键，一个时间（格式可以类似3600*24），设置缓存的期限
             """
         else:
-            print("我是找回密码")
+            logger.info("用户：%s 找回密码" % current_user.real_name)
             data = request.json['data']
             wx_open_id = data['uid']
             op = OpenID.query.filter_by(wx_id=wx_open_id).first()
             if op:
-                print(op, op.user)
-                print('用户的OPEN-ID', wx_open_id)
                 password = generate_password()
                 op.user.password = password
                 # 新密码发送到微信
@@ -88,20 +81,17 @@ def index():
                     'time': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
                     'url': os.getenv('SITE_URL') + 'login'
                 }
-                print("我是新的密码", password)
                 mail_sender.send_email.delay(op.user.qq, '密码重置', 'findPassword', msg)
                 send_message_by_pusher(msg, [op.wx_id], 5)
                 db.session.add(op)
                 db.session.commit()
                 db.session.close()
             else:
-                key = '{}'.format(user_id)+PostConfig.PUSHER_REDIS_PREFIX
+                key = '{}'.format(user_id) + PostConfig.PUSHER_REDIS_PREFIX
                 redis_client.setrange(key, 0, "guest")  # 不是系统用户重置密码
                 return "false"
-    key = '{}'.format(user_id)+PostConfig.PUSHER_REDIS_PREFIX
+    key = '{}'.format(user_id) + PostConfig.PUSHER_REDIS_PREFIX
     redis_client.setrange(key, 0, str(data))  # 把数据存入redis
-    print('key的过期时间：', os.getenv('QR_CODE_VALID_TIME'))
-    print('redis中的值', redis_client.get('key'), type(redis_client.get('key')))
     return "ok"
 
 

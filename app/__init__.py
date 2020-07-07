@@ -12,7 +12,7 @@ import json
 import logging
 import os
 import uuid
-from logging.handlers import RotatingFileHandler, SMTPHandler
+from logging.handlers import RotatingFileHandler, SMTPHandler, TimedRotatingFileHandler
 
 import click
 from flask import Flask, render_template, request, redirect, url_for
@@ -96,7 +96,6 @@ def register_blueprints(app):
 
 
 def register_extensions(app):  # 实例化扩展
-    print('注册扩展')
     migrate.init_app(app, db)
     # bootstrap.init_app(app)
     mail.init_app(app)  # 发送邮件
@@ -155,52 +154,44 @@ def create_celery(app):
     return celery
 
 
-"""
-    # 一般之前的配置没有这个，需要添加上
-    celery.conf.ONCE = {
-        'backend': 'celery_once.backends.Redis',
-        'settings': {
-            'url': 'redis://localhost:6379/2',
-            'default_timeout': 60 * 60
-        }
-    }
-    """
-
-
-# Attach to celery object for easy access.
-
 def register_logging(app):
     class RequestFormatter(logging.Formatter):
-
         def format(self, record):
             record.url = request.url
-            record.remote_addr = request.remote_addr
+            record.remote_addr = get_real_ip()
+            record.username = current_user.username
             return super(RequestFormatter, self).format(record)
 
     request_formatter = RequestFormatter(
-        '[%(asctime)s] %(remote_addr)s requested %(url)s\n'
-        '%(levelname)s in %(module)s: %(message)s'
+        '[%(asctime)s] username:%(username)s - ip:%(remote_addr)s - url:%(url)s\n'
+        '%(levelname)s thread -%(thread)d  - %(module)s - %(funcName)s line:%(lineno)d : %(message)s'
     )
 
-    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-
-    file_handler = RotatingFileHandler('logs/app.log',
-                                       maxBytes=10 * 1024 * 1024, backupCount=10)
-    file_handler.setFormatter(formatter)
-    file_handler.setLevel(logging.INFO)
+    file_handler = TimedRotatingFileHandler(
+        "logs/log", when="D", interval=1, backupCount=30,
+        encoding="UTF-8", delay=False, utc=True)
+    file_handler.setFormatter(request_formatter)
+    file_handler.setLevel(logging.DEBUG)
 
     mail_handler = SMTPHandler(
         mailhost=app.config['MAIL_SERVER'],
         fromaddr=app.config['MAIL_USERNAME'],
-        toaddrs=['547142436@qq.com'],
-        subject='系统错误通知',
-        credentials=(app.config['MAIL_USERNAME'], app.config['MAIL_PASSWORD']))
+        toaddrs=[os.getenv("SUPER_ADMIN_EMAIL")],
+        subject='系统异常通知',
+        credentials=(app.config['MAIL_USERNAME'], app.config['MAIL_PASSWORD'],
+                     )
+    )
     mail_handler.setLevel(logging.ERROR)
     mail_handler.setFormatter(request_formatter)
 
-    if not app.debug:
-        app.logger.addHandler(mail_handler)
-        app.logger.addHandler(file_handler)
+    # loggers = [app.logger, logging.getLogger('sqlalchemy'), logging.getLogger('werkzeug')]
+    loggers = [app.logger, logging.getLogger('sqlalchemy')]
+    for logger in loggers:
+        logger.addHandler(file_handler)
+        logger.addHandler(mail_handler)
+    gunicorn_logger = logging.getLogger('gunicorn.error')
+    app.logger.handlers = gunicorn_logger.handlers
+    app.logger.setLevel(gunicorn_logger.level)
 
 
 # 模板上下文
@@ -217,7 +208,7 @@ def register_commands(app):
     @click.option('--content', default='世界你好')
     def hello(content):
         click.echo('Shell测试消息...')
-        print('这是默认消息' + content)
+        logger.info('这是默认消息' + content)
 
     @app.cli.command()
     def initrole():
@@ -248,9 +239,9 @@ def register_commands(app):
                           class_name='部门账号', major='部门账号', qq=qq, kind=1, gender=2, status=2)
             db.session.add(public)
             db.session.commit()
-            print('共有账户的ID', public.id)
+            logger.info('共有账户的ID', public.id)
             op = OpenID(qq_id=None, wx_id=None, user_id=public.id)
-            print('创建开发平台ID')
+            logger.info('创建开发平台ID')
             db.session.add(op)
             db.session.commit()
 
@@ -267,7 +258,7 @@ def register_errors(app):
     @app.errorhandler(404)
     def page_not_found(e):
         if not isinstance(current_user._get_current_object(), Guest):
-            # print(e)
+            # logger.info(e)
             return render_template('errors/404.html'), 404
         else:
             return redirect(url_for('auth.login')), 301
@@ -277,8 +268,8 @@ def register_errors(app):
     def method_not_allowed(e):
         # 当前用户不是匿名用户的时候执行
         if not isinstance(current_user._get_current_object(), Guest):
-            print("当前用户信息")
-            print(current_user.real_name)
+            logger.info("当前用户信息")
+            logger.info(current_user.real_name)
             data = get_log()
             key = uuid.uuid4().hex + LogConfig.REDIS_INFO_LOG_KEY
             redis_client.set(key, json.dumps(data))

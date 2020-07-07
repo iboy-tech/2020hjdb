@@ -76,14 +76,12 @@ class Role(db.Model):
             'SuperAdmin': ['ADMIN', 'SUPER_ADMIN']
         }
         for role_name in roles_permissions_map:  # 添加角色
-            print('角色名称：' + role_name)
             role = Role.query.filter_by(name=role_name).first()
             if role is None:
                 role = Role(name=role_name)
                 db.session.add(role)
             role.permissions = []  # 这会取消该角色对象和相关的权限对象之间的关联
             for permission_name in roles_permissions_map[role_name]:  # 重新更新权限列表
-                print('权限名称：' + permission_name)
                 permission = Permission.query.filter_by(name=permission_name).first()
                 if permission is None:
                     permission = Permission(name=permission_name)

@@ -17,7 +17,7 @@ from flask import render_template, request, url_for, session, send_from_director
 from flask_cors import cross_origin
 from flask_login import logout_user, login_user, login_required, current_user
 
-from app import db, OpenID, redis_client, cache, limiter
+from app import db, OpenID, redis_client, cache, limiter, logger
 from app.config import LoginConfig, PostConfig
 from app.decorators import wechat_required, unfreeze_user
 from app.models.user_model import User
@@ -65,13 +65,11 @@ def login_user_longtime(user):
     # session持久化，免登陆
     # app.permanent_session_lifetime = timedelta(days=365)
     app.permanent_session_lifetime = timedelta(minutes=60)
-#    login_user(user, remember=True)
+    #    login_user(user, remember=True)
     login_user(user)
     user.last_login = datetime.now()
-    print(user)
     db.session.add(user)
     db.session.commit()
-    print('更新用户登陆时间')
 
 
 @auth.route('/login', methods=['GET', 'POST', 'OPTIONS'])
@@ -79,7 +77,6 @@ def login_user_longtime(user):
 @cross_origin()
 def login():
     socket_id = request.args.get('token')
-    print("我是登录的token", socket_id)
     if socket_id:
         try:
             key = socket_id + PostConfig.PUSHER_REDIS_PREFIX
@@ -91,65 +88,55 @@ def login():
                     data = eval(op)
                     op = OpenID.query.filter_by(wx_id=data['uid']).first()
                     if op:
-                        print(op, op.user)
                         # 用户免登陆
                         login_user_longtime(op.user)
+                        logger.info("用户:%s,扫码重置密码" % op.user.real_name)
                         # 删除redis中的数据
                         redis_client.delete(key)
                         return restful.success(msg="密码重置成功，新密码已发送到您的微信", data=op.user.auth_to_dict())
                     else:
-                        return restful.success(False, msg="此微信尚未绑定")
+                        return restful.error("此微信尚未绑定")
                 except Exception as e:
-                    print("扫码登录异常",str(e))
+                    logger.info("扫码登录异常", str(e))
         except Exception as e:
-            print("扫码登录异常："+str(e))
+            logger.info("用户:%s,扫码登录异常" % op.user.real_name)
+            logger.info(str(e))
             pass
     data = request.json
-    print("next的值", request.args.get('next'))
-    print('请求成功', type(data))
     if request.method == 'POST':
-        print('请求的全路径：', request.full_path, session.get('next'))
         user = User.query.filter_by(username=data['username']).first()
         if user is None:
-            return restful.success(success=False, msg='用户名或密码错误')
+            return restful.error('用户名或密码错误')
         else:
             # 密码错误次数判断
             key = user.username + LoginConfig.LOGIN_REDIS_PREFIX
             cnt = redis_client.get(key)
             if cnt is not None:
                 cntint = int(bytes.decode(cnt))
-                print("达到6次提醒锁定，但不发送通知")
+                # logger.info("达到6次提醒锁定，但不发送通知")
                 if cntint >= LoginConfig.LOGIN_ERROR_MAX_TIMES:
                     # 管理员不冻结只提醒
                     if user.kind == 1:
-                        return restful.success(success=False, msg='您的账户已被冻结，请1小时后重试')
+                        return restful.error('您的账户已被冻结，请1小时后重试')
                     else:
                         redis_client.delete(key)
             # 用户状态判断
             if user.status == 0:
-                return restful.success(
-                    success=False, msg='您的账户因违规已被冻结，请联系管理员申诉')
+                return restful.error('您的账户因违规已被冻结，请联系管理员申诉')
             elif user.status == 1:
-                return restful.success(
-                    success=False,
-                    msg='您的账户还未完成认证，请认证后登录，若之前填写的QQ有误，可以在认证界面填写新的QQ重新进行认证')
+                return restful.error('您的账户还未完成认证，请认证后登录，若之前填写的QQ有误，可以在认证界面填写新的QQ重新进行认证')
             elif user is not None and user.verify_password(data['password']):
                 # 登录并保存cookie
                 login_user_longtime(user)
                 op = OpenID.query.filter_by(user_id=current_user.id).first()
-                print('我是查询的登录页面查询的OPIN', op, datetime.now())
+                # logger.info('我是查询的登录页面查询的OPIN', op, datetime.now())
                 if op is None:
                     data = user.auth_to_dict()
                     return restful.success(success=True, msg='登录成功，请绑定微信', data=data, ext='wx')
-                print('当前登录的用户', current_user.real_name)
-                print(
-                    'current_user.is_authenticated',
-                    current_user.is_authenticated)
-                # print('Flask-Login自动添加', session['user_id'])
-                # print(session.get('uid'))
+                # logger.info('Flask-Login自动添加', session['user_id'])
+                # logger.info(session.get('uid'))
                 data = user.auth_to_dict()
                 if session.get('next') is not None:
-                    print(session.get("next的值"))
                     if "getQRcode" not in session['next']:
                         return restful.success(msg='登录成功', data=data, ext=session.get('next'))
                 return restful.success(msg='登录成功', data=data)
@@ -163,19 +150,19 @@ def login():
                     redis_client.incr(key)
                     cnt = int(bytes.decode(redis_client.get(key)))
                     left_times = LoginConfig.LOGIN_ERROR_MAX_TIMES - cnt
-                    print('计算剩余错误次数', cnt, left_times)
+                    # logger.info('计算剩余错误次数', cnt, left_times)
                     if user.kind == 1:
                         if left_times == 0:
                             # 只在刚好达到阈值的时候提醒
                             get_login_info(user, 0)
-                            return restful.success(success=False, msg="您的账户已被冻结，请1小时后重试")
+                            return restful.error("您的账户已被冻结，请1小时后重试")
                         else:
-                            return restful.success(success=False, msg="用户名或密码错误,您还能尝试 %s 次" % str(left_times))
+                            return restful.error("用户名或密码错误,您还能尝试 %s 次" % str(left_times))
                     else:
                         if cnt == LoginConfig.LOGIN_ERROR_MAX_TIMES:
                             # 只在刚好达到阈值的时候提醒
                             get_login_info(user, 0)
-                        return restful.success(success=False, msg="用户名或密码错误")
+                        return restful.error("用户名或密码错误")
                 else:
                     redis_client.incr(key)  # 把数据存入redis
                     redis_client.expire(key, LoginConfig.LOGIN_FAIL_KEY_EXPIRED)
@@ -183,7 +170,7 @@ def login():
                         return restful.success(success=False,
                                                msg="用户名或密码错误,您还能尝试 %s 次" % str(LoginConfig.LOGIN_ERROR_MAX_TIMES - 1))
                     else:
-                        return restful.success(success=False, msg="用户名或密码错误")
+                        return restful.error("用户名或密码错误")
     if request.args.get('next'):
         session['next'] = request.args.get('next')
     # login_html = cache.get("login-html")
@@ -196,8 +183,6 @@ def login():
 
 @auth.route('/logout', methods=['POST'])
 def logout():
-    print(session.get('uid'))
-    print('用户登出成功')
     logout_user()
     return restful.success(success=True, msg="登出成功")
 
@@ -209,7 +194,6 @@ def logout():
 @cross_origin()
 def recognize():
     data = request.json
-    print(data)
     qq = data['qq']
     # 校验QQ号
     # 判断用户是否存在
@@ -218,7 +202,7 @@ def recognize():
     if user_db:
         if user_db.status > 1:
             data = {"user": {}}
-            return restful.success(success=False, msg="您的账户已认证，请直接登录", data=data)
+            return restful.error("您的账户已认证，请直接登录", data=data)
         # 被冻结
         elif user_db.status == 0:
             data = {"user": {}}
@@ -245,14 +229,13 @@ def recognize():
                     ext="reg")
             except:
                 db.session.rollback()
-                return restful.success(success=False, msg="QQ号已被他人使用", data=data)
+                return restful.error("QQ号已被他人使用", data=data)
     else:  # 新用户进行认证
         from app.utils.jwc import user_verify
         usr, pwd = data["username"], data["password"]
         user_jwc = user_verify(usr, pwd)
         # 查询到用户信息
         if user_jwc:
-            print(user_jwc, '验证成功')
             user = User(
                 username=user_jwc['username'],
                 password=pwd,
@@ -270,7 +253,7 @@ def recognize():
                 'real_name': user.real_name,
                 'token': url_for('auth.confirm', token=token, _external=True)
             }
-            print('我是生成的认证链接', messages)
+            # logger.info('我是生成的认证链接', messages)
             send_email.apply_async(args=(user.qq, '身份认证', 'confirm', messages), countdown=randint(10, 30))
             # 发送验证邮件
             return restful.success(
@@ -283,7 +266,7 @@ def recognize():
                 success=False,
                 msg='学号或密码错误',
                 data=data)
-    return restful.params_error(msg="认证失败，请重新认证")
+    return restful.error("认证失败，请重新认证")
 
 
 # token验证入口
@@ -292,7 +275,6 @@ def recognize():
 @cross_origin()
 def confirm():
     token = request.args.get('token')
-    print(token)
     if token is not None:
         data = validate_token(token)
         messages = {
@@ -304,5 +286,4 @@ def confirm():
             'msg': "验证信息有误",
             'success': False
         }
-    print(messages)
     return render_template('mails/go.html', messages=messages)

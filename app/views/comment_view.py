@@ -50,7 +50,7 @@ def index(id):
             }
             op = OpenID.query.filter_by(user_id=user.id).first()
             if op is not None and user.id != current_user.id:
-                print('发送消息')
+                # logger.info('发送消息')
                 uids = [op.wx_id]
                 send_message_by_pusher(dict, uids, 4)
             try:
@@ -60,13 +60,13 @@ def index(id):
             except Exception as e:
                 return restful.success(False, str(e))
         else:
-            return restful.params_error()
+            return restful.error()
     else:
         comments = Comment.query.order_by(desc('create_time')).filter_by(lost_found_id=int(id)).all()
         post=LostFound.query.get(int(id))
         if post:
             post_user=User.query.get(post.user_id)
-            # print("我是帖子的评论：",comments)
+            # logger.info("我是帖子的评论：",comments)
             if not comments:
                 data = {
                     "comments": [],
@@ -89,7 +89,7 @@ def index(id):
                     "comments": list,
                     "wxReward": "" if post_user.wx_reward_url is None else post_user.wx_reward_url
                 }
-                # print("评论参数data：",data)
+                # logger.info("评论参数data：",data)
                 return restful.success(data=data)
 
 
@@ -98,11 +98,9 @@ def index(id):
 @cross_origin()
 def delete_comment():
     refer = request.referrer
-    print(refer)
     req = request.args.get('id')
-    print('删除评论：', req, type(req))
     if not req:
-        return restful.params_error()
+        return restful.error()
     else:
         c = Comment.query.get(int(req))
         if c is not None and (
@@ -111,7 +109,7 @@ def delete_comment():
             db.session.commit()
             # 删除消息缓存
             # res=cache.delete("messages")
-            # print("消息缓存删除结果：",res)
+            # logger.info("消息缓存删除结果：",res)
             return restful.success(msg='删除成功')
         else:
-            return restful.params_error()
+            return restful.error()

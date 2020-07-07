@@ -10,7 +10,7 @@
 """
 from random import randint
 
-from flask import render_template, request
+from flask import render_template, request, url_for
 from flask_login import current_user, login_required
 from sqlalchemy import or_
 
@@ -20,13 +20,13 @@ from app.decorators import super_admin_required, admin_required, wechat_required
 from app.models.user_model import User
 from app.page import users
 from app.utils import restful
-from app.utils.auth_token import generate_password
+from app.utils.auth_token import generate_password, generate_token
 from app.utils.delete_file import remove_files
 from app.utils.mail_sender import send_email
 
 
 @users.route('/', methods=['POST', 'GET', 'OPTIONS'], strict_slashes=False)
-@cache.cached(timeout=3600*24*7,key_prefix="userlist-html")  # 缓存5分钟 默认为300s
+@cache.cached(timeout=3600 * 24 * 7, key_prefix="users.html")  # 缓存5分钟 默认为300s
 @login_required
 @wechat_required
 @admin_required
@@ -42,7 +42,6 @@ def index():
 # @cache.cached(timeout=10 * 60,query_string=True,key_prefix='user-getall')  # 缓存10分钟 默认为300s
 def get_all():
     req = request.json
-    print(req)
     page = int(req['pageNum'])
     pagesize = int(req['pageSize'])
     # 自动调整每页的数量
@@ -52,7 +51,6 @@ def get_all():
         pagesize = mid
     keyword = req['keyword']
     if keyword == '':
-        print('get_users收到请求')
         pagination = User.query.order_by(User.kind.desc(), User.status, User.last_login.desc(),
                                          User.last_login.desc()).paginate(page + 1, per_page=pagesize,
                                                                           error_out=False)
@@ -124,9 +122,9 @@ def user_freeze_or_unfreeze():
     req = request.args.get('userId')
     u = User.query.get_or_404(int(req))
     if u.status == 1:
-        return restful.success(success=False, msg='该账户尚未认证，暂时无法冻结')
+        return restful.error('该账户尚未认证，暂时无法冻结')
     elif current_user.kind <= u.kind:
-        return restful.success(success=False, msg='权限不足')
+        return restful.error('权限不足')
     elif u.status == 2:  # 级别高的才能操作
         u.status = 0
         messages = {
@@ -143,7 +141,6 @@ def user_freeze_or_unfreeze():
             'handlerEmail': current_user.qq + '@qq.com',
         }
         send_email.apply_async(args=(u.qq, '账户恢复通知', 'userunFreeze', messages), countdown=randint(10, 30))
-    print('要给用户发送提醒邮件')
     db.session.commit()
     return restful.success()
 
@@ -153,11 +150,9 @@ def user_freeze_or_unfreeze():
 @admin_required
 def reset_pssword():
     req = request.args.get('userId')
-    print('request.args', req)
     u = User.query.get(int(req))
     password = generate_password()
     u.password = password
-    print('发送邮件')
     messages = {
         'username': u.username,
         'password': password,
@@ -165,12 +160,28 @@ def reset_pssword():
         'handlerName': current_user.real_name,
         'handlerEmail': current_user.qq + '@qq.com',
     }
-    print("我是新的密码", password)
     send_email.apply_async(args=(u.qq, '密码重置提醒', 'resetPassword', messages), countdown=randint(10, 30))
-    print('要给用户发送提醒邮件')
     db.session.add(u)
     db.session.commit()
     return restful.success()
+
+
+# 重新手动给用户发送认证邮件
+@users.route('/resend/<int:id>', methods=['GET'], strict_slashes=False)
+@login_required
+@admin_required
+def resend_mail(id):
+    try:
+        user_db = User.query.get(id)
+        token = str(generate_token(id=user_db.id, operation='confirm-qq', qq=user_db.qq), encoding="utf-8")
+        messages = {
+            'real_name': user_db.real_name,
+            'token': url_for('auth.confirm', token=token, _external=True)
+        }
+        send_email.apply_async(args=(user_db.qq, '身份认证', 'confirm', messages), countdown=1)
+        return restful.success(msg='发送成功')
+    except:
+        return  restful.success(False,msg="参数错误")
 
 
 def delete_img_and_report(posts, reports):
@@ -180,15 +191,15 @@ def delete_img_and_report(posts, reports):
         for lost in posts:
             key = str(lost.id) + PostConfig.POST_REDIS_PREFIX
             redis_client.delete(key)
-            # print(lost.images)
+            # logger.info(lost.images)
             if lost.images != "":
-                # print("判断图片类型", lost.images, type(lost.images))
+                # logger.info("判断图片类型", lost.images, type(lost.images))
                 # images =eval(lost.images)
-                # print("反序列化对象",ev,type(ev))
+                # logger.info("反序列化对象",ev,type(ev))
                 # lost.images = lost.images.replace('[', '').replace(']', '').replace(' \'', '').replace('\'', '')
                 temp_imglist = lost.images.split(',')
                 del_imgs += temp_imglist
-        # print(del_imgs, type(del_imgs))
+        # logger.info(del_imgs, type(del_imgs))
         remove_files(del_imgs, 0)
     if reports:
         for report in reports:
@@ -200,16 +211,13 @@ def delete_img_and_report(posts, reports):
 @super_admin_required
 def delete_users():
     req = request.json
-    print(req)
     if req:
-        users = User.query.filter(User.id.in_(req)).all()
-        print("删除前",len(users),users)
+        my_users = User.query.filter(User.id.in_(req)).all()
         flag = False
         try:
-            for u in users:
+            for u in my_users:
                 if u.kind != 3:
-                    print("当前要删除的用户",u)
-                    u=db.session.merge(u)
+                    u = db.session.merge(u)
                     posts = u.posts
                     reports = u.reports
                     # 删除图片和报告
@@ -219,21 +227,19 @@ def delete_users():
                     db.session.commit()
                     # db.session.close()
                     # users.remove(u)
-                    print("删除后",len(users),users)
                 else:
                     flag = True
         except Exception as e:
-                    db.session.rollback()
-                    return restful.params_error(success=False, msg=str(e))
+            db.session.rollback()
+            return restful.params_error(success=False, msg=str(e))
         finally:
             db.session.close()
             # 无法直接删除超级管理员
-        print("删除结果",users)
         if flag:
             return restful.success(msg="已删除除超级管理员之外的用户")
         return restful.success(msg="删除成功")
     else:
-        return restful.params_error(msg="参数错误")
+        return restful.error("参数错误")
     return restful.success(msg="删除失败")
 
 
@@ -241,20 +247,17 @@ def delete_users():
 @super_admin_required
 def delete_user():
     req = request.args.get('userId')
-    print('request.args', req)
     u = User.query.get(int(req))
     if u and u.kind != 3:
         try:
             posts = u.posts
             reports = u.reports
-            print("删除用户的所有图片和报告")
             delete_img_and_report(posts, reports)
             db.session.delete(u)
             db.session.commit()
         except Exception as e:
             db.session.rollback()
             msg = str(e)
-            print(msg)
             return restful.params_error(success=False, msg=msg)
     else:
         if u.kind == 3:
@@ -267,22 +270,20 @@ def delete_user():
 @super_admin_required
 def set_or_cancle_admin():
     req = request.args.get('userId')
-    print('request.args', req)
     u = User.query.get(int(req))
     u.kind = 2 if u.kind == 1 else 1
     db.session.commit()
-    print('发送邮件')
     return restful.success()
 
 
 # @cache.memoize(timeout=50)  # 根据参数设置缓存
 def search(pagination, page, pagesize):
     global data
-    users = pagination.items
+    my_users = pagination.items
     # users = User.query.order_by(desc('kind')).all()
-    # print(users)
+    # logger.info(users)
     list = []
-    for u in users:
+    for u in my_users:
         dict = u.to_dict()
         list.append(dict)
         data = {

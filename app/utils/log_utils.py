@@ -17,16 +17,13 @@ import requests
 from flask import request
 from flask_login import current_user
 
-from app import redis_client
+from app import redis_client, logger
 from app.config import LoginConfig, LogConfig
 from app.utils.wechat_notice import send_message_by_pusher
 
 
 def get_log():
     data = get_login_info(current_user, 1)  # 仅仅获取IP信息
-    print(request.url)
-    print(request.query_string)
-    print(data)
     data.pop("is_admin")
     data.pop("real_name")
     ext = {
@@ -81,29 +78,24 @@ def get_real_ip():
     ip = request.remote_addr
     try:
         _ip = request.headers.get("X-Real-IP")
-        print("X-Real-IP", _ip)
         if _ip is not None:
             ip = _ip
     except:
         pass
-        # print(e)
+        # logger.info(e)
     return ip
 
 
 def get_login_info(user, kind):
     ip = request.remote_addr
-    print("我是转发的ip", ip)
     try:
         _ip = request.headers.get("X-Real-IP")
-        print("X-Real-IP", _ip)
         if _ip is not None:
             ip = _ip
     except Exception as e:
-        print(e)
-    print("我是最终的ip", ip)
+        logger.info(str(e))
     data = requests.get(LoginConfig.LOGIN_INFO_API.replace("{}", ip)).text
     data = eval(data)
-    print(data)
     info = {
         "real_name": user.real_name,
         "ip": data.get("ip"),
@@ -113,6 +105,5 @@ def get_login_info(user, kind):
     }
     if kind == 0:  # 登录异常检测，需要发送信息
         send_message_by_pusher(info, [user.wx_open.wx_id], 6)
-        print(info)
     else:
         return info

@@ -96,6 +96,24 @@ var app = new Vue({
             }, function () {
             });
         },
+         resend:function(id) {
+            layer.confirm('你确定要重新发布吗？', {
+                btn: ['确定', '取消'] //按钮
+            }, function () {
+                $.ajax({
+                    url: baseUrl + "/found.html/resend/"+id,
+                    method: "GET",
+                    success: function (res) {
+                            if (res.success) {
+                                showOK(res.msg);
+                            } else {
+                                showAlertError(res.msg)
+                            }
+                    }
+                });
+            }, function () {
+            });
+        },
         submit:function() {
             let pgNum = $('#pgNum').val() - 1;
             this.result.search.pageNum = pgNum < 0 ? 0 : pgNum;

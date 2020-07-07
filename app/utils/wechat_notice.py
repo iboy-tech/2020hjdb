@@ -15,7 +15,7 @@ from random import randint
 from app.utils.mail_sender import send_email
 from flask import render_template
 
-from app import OpenID, User
+from app import OpenID, User, logger
 from app.utils.wxpusher import WxPusher
 from tasks import celery
 
@@ -35,15 +35,12 @@ def delete_post_notice(kind, id, l):
                 'qq_group': '878579883',
                 'url': os.getenv('SITE_URL')
             }
-            print('删除帖子要发送的消息', dict)
-            print('管理员删帖发送消息')
             uids = [op.wx_id]
             send_message_by_pusher(msg=dict, uid=uids, kind=2)
 
 
 @celery.task
 def send_message_by_pusher(msg, uid, kind):
-    print('即将要发送的消息', msg)
     msg_template = {
         0: 'WXLostNotice.txt',  # 寻物认领
         1: "WXFoundNotice.txt",  # 招领认领
@@ -55,21 +52,16 @@ def send_message_by_pusher(msg, uid, kind):
         7: "WXImportantNotice.txt"  # 群发重要通知
     }
     content = render_template('msgs/' + msg_template[kind], messages=msg)
-    print(content)
     if msg.get("url") is None:
         notice_url = os.getenv("SITE_URL")
     else:
         notice_url = msg['url']
     msg_ids = WxPusher.send_message(content=u'' + str(content), uids=uid, content_type=1, url=notice_url)
-    print(msg_ids)
     for msg_id in msg_ids["data"]:
-        print(msg_id, msg_id["status"])
         if "关闭" in msg_id["status"]:
-            print("用户关闭了通知，发送邮件提醒")
             op = OpenID.query.filter(OpenID.wx_id == msg_id["uid"]).first()
-            print(op)
             real_name = {
                 "realName": op.user.real_name
             }
+            logger.info("用户：%s关闭了通知，发送邮件提醒" % op.user.real_name)
             send_email.apply_async(args=(op.user.qq, '系统通知', 'importantNotice', real_name), countdown=randint(10, 30))
-

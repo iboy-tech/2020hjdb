@@ -26,12 +26,16 @@ class HttpCode(object):
 
 def RestfulResult(success, code, msg, data, ext=None):
     data = json.dumps({'success': success, 'code': code, 'msg': msg, 'data': data, 'ext': ext}, cls=MyEncoder)
-    # print("生成消息类", str(data))
+    # logger.info("生成消息类", str(data))
     return data
 
 
 def success(success=True, msg="处理成功", data={"user": {}}, ext=None):
     return RestfulResult(success, HttpCode.Ok, msg=msg + "！", data=data, ext=ext)
+
+
+def error(msg="参数错误"):
+    return RestfulResult(False, -1, msg=msg + "！", data={}, ext=None)
 
 
 def params_error(success=False, msg="参数错误", data={}, ext=None):

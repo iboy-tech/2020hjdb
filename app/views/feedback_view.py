@@ -98,7 +98,7 @@ def feedback_add():
         db.session.commit()
     except Exception as e:
         db.session.rollback()
-        return restful.success(success=False, msg=str(e))
+        return restful.error(str(e))
     send_email.delay(AdminConfig.SUPER_ADMIN_QQ, '反馈通知', 'feedbackNotice', messages)
     if req['subject'] == "违规信息举报":
         return restful.success(msg="举报信息已提交，正在等待管理员审核")
@@ -110,7 +110,6 @@ def feedback_add():
 @admin_required
 def feedback_delete():
     req = request.args.get('id')
-    print('request.args.get(\'id\')', req)
     f = Feedback.query.get(int(req))
     db.session.delete(f)
     db.session.commit()
@@ -122,7 +121,6 @@ def feedback_delete():
 @admin_required
 def feedback_replay():
     req = request.json
-    print(req)
     id = int(req['id'])
     f = Feedback.query.get(id)
     f.handler_id = current_user.id
@@ -142,7 +140,6 @@ def feedback_replay():
         'handlerEmail': current_user.qq + '@qq.com',
     }
     send_email.delay(u.qq, '反馈回复', 'feedbackReply', messages)
-    print('要给用户发送提醒邮件')
     return restful.success()
 
 
@@ -151,7 +148,7 @@ def feedback_replay():
 @admin_required
 def feedback_mark():
     req = request.args.get('id')
-    print('request.args.get(\'id\')', req)
+    # logger.info('request.args.get(\'id\')', req)
     f = Feedback.query.get(int(req))
     f.status = 1
     f.handler_time = datetime.now()

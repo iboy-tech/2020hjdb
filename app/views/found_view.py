@@ -17,7 +17,7 @@ from flask_cors import cross_origin
 from flask_login import current_user, login_required
 from sqlalchemy import or_
 
-from app import db, OpenID, redis_client, cache, limiter
+from app import db, OpenID, redis_client, cache, limiter, logger
 from app.config import PostConfig
 from app.decorators import wechat_required, admin_required
 from app.models.category_model import Category
@@ -44,27 +44,37 @@ def index():
     return render_template('found.html')
 
 
+@found.route('/resend/<int:id>', methods=['GET'], strict_slashes=False)
+@login_required
+@admin_required
+def resend(id):
+    article = LostFound.query.get(id)
+    if article is None:
+        return restful.success(False, "参数错误")
+    article.claimant_id = None
+    article.status = 0
+    article.deal_time = None
+    db.session.add(article)
+    db.session.commit()
+    return restful.success(msg="已重新发布")
+
+
 @found.route('/getall', methods=['POST'], strict_slashes=False)
 @login_required
 # @cache.cached(timeout=10 * 60, query_string=True, key_prefix='found-getall')  # 缓存10分钟 默认为300s
 def get_all():
     req = request.json
-    print(req)
     page = 0
-    print(req['pageSize'])
+    # logger.info(req['pageSize'])
     if req['pageNum']:
         page = int(req['pageNum'])
-
-        print("这里好像有BUG")
-    else:
-        print("没有数据")
-        print(req)
+        # logger.info("这里好像有BUG")
     pagesize = int(req['pageSize'])
     # 后台分页动态调整
     if current_user.kind > 1 and req.get("flag") is not None:
         total_page = db.session.query(LostFound).count()
         mid = total_page // 10
-        print('总的页数', total_page, mid)
+        # logger.info('总的页数', total_page, mid)
         if pagesize < mid:
             pagesize = mid
     else:
@@ -72,8 +82,8 @@ def get_all():
         if pagesize > PostConfig.PAGESIZE_OF_USER:
             # 不是搜索页面的请求
             if req.get("isSearch") is None:
-                return restful.params_error()
-    # print('get_users收到请求')
+                return restful.error()
+    # logger.info('get_users收到请求')
     keyword = req['keyword']
     if req['kind'] == -1 and req['category'] == '' and req['username'] == '' and keyword == '':
         pagination = LostFound.query.order_by(LostFound.status, LostFound.create_time.desc()).paginate(page + 1,
@@ -85,7 +95,7 @@ def get_all():
         pagination = LostFound.query.filter_by(category_id=c.id).order_by(LostFound.status,
                                                                           LostFound.create_time.desc()).paginate(
             page + 1, per_page=pagesize, error_out=False)
-    # print('这是用户个人查询')
+    # logger.info('这是用户个人查询')
     elif req['username'] != '':
         u = User.query.filter_by(username=req['username']).one()
         pagination = LostFound.query.filter_by(user_id=u.id).order_by(LostFound.status,
@@ -94,16 +104,16 @@ def get_all():
                                                                                                              pagesize,
                                                                                                              error_out=False)
     elif req['kind'] != -1 and req['category'] != '':
-        # print('这是分类查询')
-        # print(req['category'])
+        # logger.info('这是分类查询')
+        # logger.info(req['category'])
         c = Category.query.filter_by(name=req['category']).first()
-        print('这里好像有问题Category.query.', c)
+        # logger.info('这里好像有问题Category.query.', c)
         if c:
             pagination = LostFound.query.filter_by(category_id=c.id, kind=req['kind']).order_by(
                 LostFound.status, LostFound.create_time.desc()).paginate(page + 1, per_page=pagesize,
                                                                          error_out=False)
     elif req['kind'] != -1 and req['category'] == '':
-        # print('这是分类查询')
+        # logger.info('这是分类查询')
         pagination = LostFound.query.filter_by(kind=req['kind']).order_by(LostFound.status,
                                                                           LostFound.create_time.desc()).paginate(
             page + 1,
@@ -112,7 +122,7 @@ def get_all():
             error_out=False)
     # 用户搜索开始模糊匹配
     elif keyword != '':
-        # print('这是分类查询')
+        # logger.info('这是分类查询')
         c = Category.query.filter(Category.name.like(("%" + keyword + "%"))).first()
         u = User.query.filter(or_(User.real_name.like("%" + keyword + "%"),
                                   User.username == keyword)).first()
@@ -163,7 +173,7 @@ def get_all():
                                                                                      per_page=pagesize,
                                                                                      error_out=False)
     data = get_search_data(pagination, page, pagesize)
-    # print('分类查询：',data)
+    # logger.info('分类查询：',data)
     return data
 
 
@@ -173,13 +183,11 @@ def get_all():
 @check_post
 def pub():
     data = request.json
-    print(data)
     imgstr = ''
     if len(data['images']) != 0:
         imgstr = change_bs4_to_png(data['images'])
     info = data.get('info')
-    # print(type(imgstr), imgstr)
-    print(data['location'])
+    # logger.info(type(imgstr), imgstr)
     try:
         lost = LostFound(kind=data['applyKind'], category_id=data['categoryId'],
                          images=','.join(imgstr), location=data['location'].replace('/(<（[^>]+）>)/script', ''),
@@ -187,21 +195,18 @@ def pub():
                          about=data['about'].replace('/(<（[^>]+）>)/script', ''), user_id=current_user.id)
         db.session.add(lost)
         db.session.commit()
-        print('帖子的ID')
     except Exception as e:
-        print(str(e))
+        logger.info(str(e))
         db.session.rollback()
         # 出现异常删除照片
         if imgstr != "":
-            print("这有BUG", imgstr, type(imgstr))
             # imglist = imgstr.split(",")
             remove_files(imgstr, 0)
-        return restful.params_error()
+        return restful.error()
     if info != '':
         lost_users = User.query.filter(or_(User.username == info, User.real_name == info))
         if lost_users:
             for u in lost_users:
-                print(u)
                 dict = {
                     'lost_user': u.real_name,
                     'found_user': current_user.real_name,
@@ -213,7 +218,7 @@ def pub():
                 }
                 op = OpenID.query.filter_by(user_id=u.id).first()
                 if op is not None and op.wx_id is not None:
-                    print('发送消息')
+                    # logger.info('发送消息')
                     uids = [op.wx_id]
                     send_message_by_pusher(dict, uids, 3)
                     send_email.apply_async(args=(u.qq, '失物找回通知', 'foundNotice', dict), countdown=randint(10, 30))
@@ -221,18 +226,18 @@ def pub():
         "kind": "失物招领" if lost.kind == 0 else "寻物启示",
         "poster": current_user.real_name,
         "category": Category.query.get(lost.category_id).name,
-        "addr": "未知" if lost.location is None else lost.location,
+        "addr": "未知" if lost.location=='' else lost.location,
         "detail": lost.about,
         "url": os.getenv('SITE_URL') + 'detail/' + str(lost.id) + ".html"
     }
-    qq_group_notice(qq_msg)
+    qq_group_notice.delay(qq_msg)
     cache.delete("category")
     return restful.success(msg="发布成功")
 
 
 def get_search_data(pagination, pageNum, pagesize):
     losts = pagination.items
-    # print(losts)
+    # logger.info(losts)
     datalist = []
     for l in losts:
         if l.images == "":
@@ -240,7 +245,7 @@ def get_search_data(pagination, pageNum, pagesize):
         else:
             # l.images = l.images.replace('[', '').replace(']', '').replace(' \'', '').replace('\'', '')
             imglist = l.images.split(',')
-        # print(imglist, type(imglist))
+        # logger.info(imglist, type(imglist))
         user = User.query.get(l.user_id)
         key = str(l.id) + PostConfig.POST_REDIS_PREFIX
         view_count = redis_client.get(key)
@@ -288,13 +293,13 @@ def get_search_data(pagination, pageNum, pagesize):
 @cross_origin()
 def delete_posts():
     req = request.json
-    print(req)
+    logger.info(req)
     if req:
         lost_founds = LostFound.query.filter(LostFound.id.in_(req)).all()
-        # print(lost_founds)
+        # logger.info(lost_founds)
     try:
         for l in lost_founds:
-            # print(l)
+            # logger.info(l)
             u = User.query.get_or_404(l.user_id)
             # 管理员删帖或用户自身删帖
             if l is not None and (l.user_id == current_user.id or current_user.kind > u.kind):
@@ -310,10 +315,10 @@ def delete_posts():
                 db.session.commit()
         # 记录删除日志
         add_log(0, {"num": len(req)})
-        # print("try块内")
+        # logger.info("try块内")
     except Exception as e:
         db.session.rollback()
-        return restful.success(False, msg=str(e))
+        return restful.error(str(e))
     finally:
         db.session.close()
     cache.delete("category")
@@ -326,12 +331,12 @@ def delete_posts():
 def delete_post():
     req = request.args.get('id')
     if not req:
-        return restful.params_error()
+        return restful.error()
     else:
         l = LostFound.query.get_or_404(int(req))
-        # print("帖子：", l)
+        # logger.info("帖子：", l)
         u = User.query.get_or_404(l.user_id)
-        # print("用户：", u)
+        # logger.info("用户：", u)
         # 管理员删帖或用户自身删帖
         if l is not None and (l.user_id == current_user.id or current_user.kind > u.kind):
             if l.images != "":
@@ -350,4 +355,4 @@ def delete_post():
             cache.delete("category")
             return restful.success(msg='删除成功')
         else:
-            return restful.params_error()
+            return restful.error()

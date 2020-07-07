@@ -31,7 +31,7 @@ def index():
 @cache.cached(timeout=3600*24,key_prefix="category")  # 缓存5分钟 默认为300s
 @login_required
 def get_all():
-    # print('category页面收到请求', data)
+    # logger.info('category页面收到请求', data)
     categorys=Category.query.all()
     list=[c.to_dict() for c in categorys]
     data={
@@ -50,9 +50,9 @@ def add_category():
         db.session.add(c)
         db.session.commit()
     except Exception as e:
-        print("添加分类："+str(e))
+        # logger.info("添加分类："+str(e))
         db.session.rollback()
-        return restful.success(success=False, msg="类别名称已存在")
+        return restful.error("类别名称已存在")
     cache.delete("category")
     return restful.success()
 
@@ -62,9 +62,7 @@ def add_category():
 @super_admin_required
 def delete_category():
     req = request.args.get('name')
-    print('delete_category', req)
     temp = Category.query.filter_by(name=req).first()
-    print(temp)
     db.session.delete(temp)
     db.session.commit()
     cache.delete("category")

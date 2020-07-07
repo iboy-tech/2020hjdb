@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>用户页面</title>
+    <title>用户管理</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="keywords" content="三峡大学失物招领中心"/>
@@ -24,9 +24,7 @@
     <!-- js-->
         <script src="https://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
     <script src="../static/js/modernizr.custom.js"></script>
-    <!--webfonts-->
-    <!-- <link href='//fonts.googleapis.com/css?family=Roboto+Condensed:400,300,300italic,400italic,700,700italic' rel='stylesheet' type='text/css'> -->
-    <!--//webfonts-->
+
     <!--animate-->
     <link href="../static/css/animate.css" rel="stylesheet" type="text/css" media="all">
     <script src="../static/js/wow.min.js"></script>
@@ -163,8 +161,7 @@
                             </div>
                         </a>
                         <ul class="dropdown-menu drp-mnu">
-                            <!--<li><a ><i class="fa fa-cog"></i> Settings</a></li>-->
-                            <!--<li><a ><i class="fa fa-user"></i> Profile</a></li>-->
+
                             <li><a @click="logout"><i class="fa fa-sign-out"></i>退出</a></li>
                         </ul>
                     </li>
@@ -238,13 +235,12 @@
                                         <span class="glyphicon glyphicon-menu-hamburger"></span>
                                     </button>
                                     <ul class="dropdown-menu">
-                                        <li v-if="item.status=='2' && user.kind> item.kind"><a @click="resetPassword(item.userId)">重置密码</a></li>
+                                        <li v-if="item.status==1"><a @click="reSend(item.userId)">重发邮件</a></li>
+                                       <li v-if="item.status==2 && user.kind> item.kind"><a @click="resetPassword(item.userId)">重置密码</a></li>
                                         <!--<li role="separator" class="divider"></li>-->
-                                        <li v-if="item.status=='2' && user.kind > item.kind"><a @click="freezeUser(item.userId)">冻结账号</a></li>
+                                        <li v-if="item.status==2 && user.kind > item.kind"><a @click="freezeUser(item.userId)">冻结账号</a></li>
                                         <!--<li role="separator" class="divider"></li>-->
-                                        <li v-else-if="item.status=='0' && user.kind > item.kind"><a @click="unfreezeUser(item.userId)">解冻账号</a></li>
-{#                                        <li v-else-if="item.status=='1'"><a @click="unfreezeUser(item.userId)">发送认证邮件</a></li>#}
-                                        <!--<li role="separator" class="divider"></li>-->
+                                        <li v-else-if="item.status==0 && user.kind > item.kind"><a @click="unfreezeUser(item.userId)">解冻账号</a></li>
                                         <li>
                                             <li v-if="item.kind==1 && user.kind==3"><a @click="setAsManager(item.userId,1)">添加为管理员</a></li>
                                             <li v-else-if="item.kind==2 && user.kind==3"><a @click="setAsManager(item.userId, 0)">移除该管理员</a></li>
@@ -311,7 +307,7 @@
 <script src="https://cdn.bootcss.com/vue/2.4.2/vue.min.js"></script>
 <script src="https://cdn.bootcss.com/layer/2.3/layer.js"></script>
 <script src="../static/js/mine/common.js"></script>
-<script src="../static/js/mine/userlist.js"></script>
+<script src="../static/js/mine/users.js"></script>
 <script>
      // hideLoading();
      $(function () {

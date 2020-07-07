@@ -13,7 +13,7 @@ from functools import wraps
 from flask import render_template, url_for, redirect, request
 from flask_login import current_user
 
-from app import OpenID, redis_client
+from app import OpenID, redis_client, logger
 from app.config import LoginConfig
 
 
@@ -21,7 +21,6 @@ def permission_required(permission_name):
     def dercorator(func):
         @wraps(func)
         def decorator_function(*args, **kwargs):
-            print('验证权限')
             if not current_user.can(permission_name) and current_user.kind == 1:
                 messages = {
                     'success': False,
@@ -39,6 +38,7 @@ def permission_required(permission_name):
                     },
                     "ext": None
                 }
+                logger.error("用户：%s ,试图非法访问" % current_user.username)
                 return data
             return func(*args, **kwargs)
 
@@ -59,7 +59,6 @@ def wechat_required(func):
     @wraps(func)
     def decorated_view(*args, **kwargs):
         op = OpenID.query.filter(OpenID.user_id == current_user.id).first()
-        print('判断用户是否关注公众号', )
         if current_user.status == 0:
             return redirect(url_for('auth.login')), 301
         if op is None:
@@ -80,4 +79,5 @@ def unfreeze_user(func):
                 key = op.user.username + LoginConfig.LOGIN_REDIS_PREFIX
                 redis_client.delete(key)
         return func(*args, **kwargs)
+
     return decorated_view

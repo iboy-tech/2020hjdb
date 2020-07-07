@@ -14,7 +14,7 @@ from flask import request, render_template
 from flask_login import login_required, current_user
 from sqlalchemy import desc
 
-from app import db, OpenID, cache
+from app import db, OpenID, cache, logger
 from app.decorators import admin_required, wechat_required
 from app.page import notice
 from app.models.notice_model import Notice
@@ -30,7 +30,6 @@ from tasks import celery
 @admin_required
 def index():
     data = request.json
-    print('notice页面收到请求', data)
     return render_template('notice.html')
 
 
@@ -38,13 +37,7 @@ def index():
 @cache.cached(timeout=3600 * 24*7,key_prefix="notice")  # 缓存5分钟 默认为300s
 @login_required
 def get_all():
-    # notices=Notice.query.limit(10).order_by(Notice.create_time.desc()).all()
-    # notices = Notice.query.all().order_by(Notice.create_time.desc())
-    # notices = Notice.query.limit(10).order_by(desc('create_time')).all()
     notices = Notice.query.order_by(desc('fix_top'), desc('create_time')).limit(10)
-    cnt = len(Notice.query.all())
-    print('cnt:', cnt)
-    # print('notices:',notices)
     list = [n.to_dict() for n in notices]
     data = {
         "list": list
@@ -57,13 +50,12 @@ def get_all():
 @admin_required
 def notice_add():
     req = request.json
-    print(req)
     n = Notice(title=req['title'].replace('<', '&lt;').replace('>', '&gt;'),
                content=req['content'].replace('<', '&lt;').replace('>', '&gt;'),
                fix_top=1 if req['fixTop'] == True else 0)
     if req['pusher']:
         if current_user.kind == 3:
-            print("超级管理向所有用户推送微信消息")
+            logger.info("超级管理向所有用户推送微信消息")
             msg = {
                 "title": n.title,
                 "content": n.content,
@@ -84,7 +76,6 @@ def noticeAll(msg):
     for wx in wx_opens:
         if wx.wx_id:
             uids.append(wx.wx_id)
-    print(uids)
     send_message_by_pusher(msg=msg, uid=uids, kind=7)
 
 
@@ -93,7 +84,6 @@ def noticeAll(msg):
 @admin_required
 def notice_delete():
     req = request.args.get('id')
-    print('request.args.get(\'id\')', req)
     n = Notice.query.get(int(req))
     db.session.delete(n)
     db.session.commit()
@@ -106,7 +96,6 @@ def notice_delete():
 @admin_required
 def notice_switch():
     req = request.args.get('id')
-    print('request.args.get(\'id\')', req)
     n = Notice.query.get(int(req))
     n.fix_top = 1 if n.fix_top == 0 else 0
     db.session.commit()

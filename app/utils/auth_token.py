@@ -16,7 +16,7 @@ from flask import current_app
 from itsdangerous import TimedJSONWebSignatureSerializer  as Serializer, SignatureExpired, BadSignature
 
 # 生成邮箱验证TOKEN
-from app import db, User
+from app import db, User, logger
 from app.utils import restful
 
 
@@ -35,15 +35,14 @@ def validate_token(token):  # 验证邮箱
     s = Serializer(current_app.config['SECRET_KEY'])
     try:
         data = s.loads(token)
-        print(data)
+        logger.info(data)
         user = User.query.get(data['id'])
-        print('要验证的用户', user.to_dict())
         if user is None:
-            return restful.params_error(msg='验证信息有误')
+            return restful.error('验证信息有误')
     except (SignatureExpired, BadSignature):
-        return restful.params_error(msg='验证信息错误或已过期')
+        return restful.error('验证信息错误或已过期')
     # if data.get('operation') != 'confirm' or user.qq != data.get('qq'):
-    #     return restful.params_error(msg='验证途径非法')
+    #     return restful.error('验证途径非法')
     if data.get('operation') == Operations.CONFIRM_QQ:
         if user.status == 1:
             user.status = 2
@@ -52,7 +51,7 @@ def validate_token(token):  # 验证邮箱
             db.session.commit()
             return restful.success(msg='恭喜,验证成功')
         else:
-            return restful.params_error(msg='您已注册，请直接登录')
+            return restful.error('您已注册，请直接登录')
     if data.get('operation') == Operations.CHANGE_QQ:
         user.qq = data.get('qq')
         try:
@@ -62,6 +61,6 @@ def validate_token(token):  # 验证邮箱
             db.session.rollback()
             return restful.success(msg='要更改的QQ已被使用')
     else:
-        return restful.params_error(msg='更改失败,请重新尝试')
+        return restful.error('更改失败,请重新尝试')
 
-    return restful.params_error(msg='验证信息有误')
+    return restful.error('验证信息有误')

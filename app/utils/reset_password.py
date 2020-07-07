@@ -1,7 +1,7 @@
 # -*- coding:UTF-8 -*-
 # !/usr/bin/python
 """
-@File   = fakes.py
+@File   = reset_password.py
 @Time   = 2020/1/27 18:58
 @Author = iBoy
 @Email  = iboy@iboy.tech
@@ -12,10 +12,11 @@
 # admin_role=User(username='2018171101',password='123456',real_name='测试',academy='计算机与信息学院',class_name='20181107',major='物联网',qq='3282534296',kind=1,gender=0)
 # db.session.add(admin_role)
 # 忘记密码可通过命令行重置
+from app import logger
 from app.models.user_model import User, db
 
 user = User.query.filter(User.username == "2018171109").first()
-print(user)
+logger.info(user)
 user.password = "123456"
 db.session.add(user)
 db.session.commit()

@@ -189,7 +189,7 @@ th {
   padding: 0;
 }
 /*! Source: https://github.com/h5bp/html5-boilerplate/blob/master/src/css/main.css */
-@media print {
+@media logger.info {
   *,
   *:before,
   *:after {
@@ -433,7 +433,7 @@ th {
 .glyphicon-bookmark:before {
   content: "\e044";
 }
-.glyphicon-print:before {
+.glyphicon-logger.info:before {
   content: "\e045";
 }
 .glyphicon-camera:before {
@@ -6533,50 +6533,50 @@ button.close {
     display: none !important;
   }
 }
-.visible-print {
+.visible-logger.info {
   display: none !important;
 }
-@media print {
-  .visible-print {
+@media logger.info {
+  .visible-logger.info {
     display: block !important;
   }
-  table.visible-print {
+  table.visible-logger.info {
     display: table;
   }
-  tr.visible-print {
+  tr.visible-logger.info {
     display: table-row !important;
   }
-  th.visible-print,
-  td.visible-print {
+  th.visible-logger.info,
+  td.visible-logger.info {
     display: table-cell !important;
   }
 }
-.visible-print-block {
+.visible-logger.info-block {
   display: none !important;
 }
-@media print {
-  .visible-print-block {
+@media logger.info {
+  .visible-logger.info-block {
     display: block !important;
   }
 }
-.visible-print-inline {
+.visible-logger.info-inline {
   display: none !important;
 }
-@media print {
-  .visible-print-inline {
+@media logger.info {
+  .visible-logger.info-inline {
     display: inline !important;
   }
 }
-.visible-print-inline-block {
+.visible-logger.info-inline-block {
   display: none !important;
 }
-@media print {
-  .visible-print-inline-block {
+@media logger.info {
+  .visible-logger.info-inline-block {
     display: inline-block !important;
   }
 }
-@media print {
-  .hidden-print {
+@media logger.info {
+  .hidden-logger.info {
     display: none !important;
   }
 }

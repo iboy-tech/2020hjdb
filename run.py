@@ -11,7 +11,6 @@
 from __future__ import absolute_import
 
 import os
-from datetime import datetime
 
 from dotenv import load_dotenv, find_dotenv
 from flask import request
@@ -19,7 +18,7 @@ from flask_cors import CORS
 from flask_login import current_user
 from flask_socketio import emit, SocketIO
 
-from app import create_app, create_celery, redis_client, OpenID, PostConfig
+from app import create_app, create_celery, redis_client, PostConfig, logger
 from app.utils.wxpusher import WxPusher
 
 # os.environ.setdefault('FORKED_BY_MULTIPROCESSING', '1')
@@ -28,14 +27,14 @@ async_mode = 'eventlet'
 load_dotenv(find_dotenv('.env'), override=True)
 load_dotenv(find_dotenv('.flaskenv'), override=True)
 
-print('我是run.py中的环境', os.getenv('FlASK_ENV'))
-print('MAIL_USERNAME', os.getenv('MAIL_USERNAME'))
-print('MAIL_PASSWORD', os.getenv('MAIL_PASSWORD'))
-print('SECRET_KEY', os.getenv('SECRET_KEY'))
-print('PATH_OF_IMAGES_DIR', os.getenv('PATH_OF_IMAGES_DIR'))
-print('MAIL_SENDGRID_API_KEY', os.getenv('MAIL_SENDGRID_API_KEY'))
-print('我是站点的地址', os.getenv('SITE_URL'))
-print("我是CDN加速地址", os.getenv("CDN_URL"))
+# logger.info('当前环境' + os.getenv('FlASK_ENV'))
+# logger.info('MAIL_USERNAME', os.getenv('MAIL_USERNAME'))
+# logger.info('MAIL_PASSWORD', os.getenv('MAIL_PASSWORD'))
+# logger.info('SECRET_KEY', os.getenv('SECRET_KEY'))
+# logger.info('PATH_OF_IMAGES_DIR', os.getenv('PATH_OF_IMAGES_DIR'))
+# logger.info('MAIL_SENDGRID_API_KEY', os.getenv('MAIL_SENDGRID_API_KEY'))
+logger.info('站点地址：%s' % os.getenv('SITE_URL'))
+# print('站点地址：'+os.getenv('SITE_URL'))
 
 app = create_app(os.getenv('FlASK_ENV') or 'production')
 CORS(app, supports_credentials=True, resources=r'/*')  # 允许所有域名跨域
@@ -66,10 +65,9 @@ def server(data):
         emit('server', res)
     while True:
         op = redis_client.get(key)
-        print('我是redis中的数据类型', op, type(op))
         if op is not None:
             op = op.decode()
-            # print('当前用户姓名', current_user.real_name)
+            # logger.info('当前用户姓名', current_user.real_name)
             # db.session.remove()
             if op != 'null':
                 if op == "guest":  # 找回密码的扫码的不是系统用户
@@ -94,12 +92,6 @@ def server(data):
                     break
 
                 data = eval(op)
-                # print('data的数据类型', type(data),data['uid'])
-                # op = OpenID.query.filter_by(user_id=current_user.id).first()
-                # if op:
-                #     print(op, op.user)
-                #     print('我是查询的OP', op)
-                print('循环查询OpenID', datetime.now(), op)
                 res = {
                     'success': 'true',
                     'data': {'msg': '绑定成功！即将回到主页',
@@ -107,7 +99,6 @@ def server(data):
                              },
                     'token': request.sid
                 }
-                print('background_thread我是查询结果', res)
                 emit('server', res)
                 break
             else:
@@ -117,14 +108,12 @@ def server(data):
                              'bg': '1'
                              }
                 }
-                print('background_thread我是查询结果', res)
                 socketio.emit('server', res)
         else:
             res = {
                 'success': 'false',
                 'data': {'msg': '二维码已过期，请刷新页面重新扫描', 'bg': '0'}
             }
-            print('background_thread我是查询结果', res)
             socketio.emit('server', res)
             break;
         socketio.sleep(5)
@@ -140,11 +129,9 @@ def get_qrcode():
             'success': 'true',
             'url': data['url'],
         }
-        print("我是获取的数据", res)
         # res =
         socketio.emit("qrcode", res)
     else:
-        print("我是获取的数据没成功")
         res = {
             'success': 'false',
         }
@@ -153,7 +140,7 @@ def get_qrcode():
 
 @socketio.on('connect')
 def connect():
-    print("客户连接了")
+    logger.info("客户连接了")
 
 
 if __name__ == '__main__':

@@ -17,7 +17,7 @@ from flask import request, url_for
 from flask_cors import cross_origin
 from flask_login import current_user, login_required
 
-from app import db, OpenID, cache, PostConfig, limiter
+from app import db, OpenID, cache, PostConfig, limiter, logger
 from app.models.lostfound_model import LostFound
 from app.models.user_model import User
 from app.page import user
@@ -32,11 +32,9 @@ from ..utils.check_data import check_qq
 @login_required
 def get_message():
     req = request.json
-    print('查询消息req', req)
     # commens=Comment.query.join(LostFound,user_id=current_user.id)
     # losts = LostFound.query.filter_by(user_id=current_user.id).order_by(LostFound.create_time.desc()).all()
     losts = current_user.posts
-    print(losts)
     list = []
     if losts:
         for l in losts:
@@ -66,13 +64,11 @@ def get_message():
 @cross_origin()
 @check_qq
 def set_QQ():
-    print(current_user.username, current_user.real_name, '用户准备更改密码')
+    logger.info("用户：%s准备更改QQ"%current_user.username)
     new_qq = request.json['qq']
-    print(new_qq, type(new_qq))
     if new_qq == current_user.qq:
-        return restful.success(success=False, msg="您的QQ和之前一样，修改失败")
+        return restful.error("您的QQ和之前一样，修改失败")
     token = str(generate_token(id=current_user.id, operation='change-qq', qq=new_qq), encoding="utf-8")
-    print('我是生成的token', url_for('auth.confirm', token=token, _external=True))
     messages = {
         'real_name': current_user.real_name,
         'token': url_for('auth.confirm', token=token, _external=True)
@@ -90,16 +86,14 @@ def set_reward():
         reward = request.json['reward']
         pattern = "^wxp:\/\/[A-Za-z0-9\-]+$"
         res = re.findall(pattern, reward)
-        print(res, "验证收款码地址", reward)
         if not res:
-            return restful.params_error(msg="收款码格式错误")
-        print('用户准备设置打赏码')
+            return restful.error("收款码格式错误")
         old_user = User.query.get(current_user.id)
         old_user.wx_reward_url = reward
         db.session.add(old_user)
         db.session.commit()
     except Exception as e:
-        return restful.params_error()
+        return restful.error()
     return restful.success(success=True, msg="设置成功")
 
 
@@ -107,21 +101,19 @@ def set_reward():
 @cross_origin()
 @login_required
 def set_password():
-    print('用户准备更改密码')
+    logger.info('用户%s准备通过表单更改密码'%current_user.username)
     req = request.json
-    print(req)
     u = User.query.get(current_user.id)
     new_pwd = req['newPassword']
     regx = "^(?:(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])).{6,16}$"
     if re.match(regx, new_pwd):
         if u.verify_password(req['oldPassword']):
-            print("密码强度够！")
             u.password = new_pwd
             db.session.commit()
             return restful.success()
     else:
-        return restful.success(False, msg="密码长度至少是6位且必须包含大小写字母和数字")
-    return restful.success(success=False, msg="您的原密码有误")
+        return restful.error("密码长度至少是6位且必须包含大小写字母和数字")
+    return restful.error("您的原密码有误")
 
 
 @user.route('/claim', methods=['POST'])
@@ -130,9 +122,8 @@ def set_password():
 @cross_origin()
 def claim():
     req = request.args.get('id')
-    print(req, type(req))
     if not req:
-        return restful.params_error()
+        return restful.error()
     else:
         try:
             l = LostFound.query.get(int(req))
@@ -147,7 +138,6 @@ def claim():
                         db.session.commit()
                         l = db.session.merge(l)
                         lost_user = User.query.get(l.user_id)
-                        print('通过失物正向查询失主', lost_user)
                         # 改变状态，有人找到了要通知失主
                         dict = {
                             'lost_user': lost_user.real_name,
@@ -162,7 +152,6 @@ def claim():
                                                countdown=randint(10, 30))
                         op = OpenID.query.filter_by(user_id=lost_user.id).first()
                         if op:
-                            print('发送消息')
                             if op.wx_id:  # 部门账号的微信为NULL
                                 uids = [op.wx_id]
                                 send_message_by_pusher(dict, uids, 0)
@@ -192,18 +181,17 @@ def claim():
                                                countdown=randint(10, 30))
                         op = OpenID.query.filter_by(user_id=found_user.id).first()
                         if op is not None:
-                            print('发送消息')
                             if op.wx_id:
                                 uids = [op.wx_id]
                                 send_message_by_pusher(dict, uids, 1)
                         # db.session.commit()
                         return restful.success(msg='认领成功,您的联系方式已发送给失主')
             else:
-                return restful.params_error()
+                return restful.error()
         except Exception as e:
             db.session.rollback()
-            print(str(e))
-            return restful.params_error()
+            logger.info(str(e))
+            return restful.error()
         finally:
             # db.session.add(l)
             db.session.commit()

@@ -1,14 +1,13 @@
 var app = new Vue({
     el: "#app",
-    create() {
-        // if(getLocal("isRelate")=="true"){
-        //     app.is
-        // }
+    created() {
+        let id = getPostId();
+        this.getDetail(id);
     },
     data: {
-        wxReward:"",
-        mailApi:"https://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=",
-        qqApi:"https://wpa.qq.com/msgrd?v=3&site=qq&menu=yes&uin=",
+        wxReward: "",
+        mailApi: "https://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=",
+        qqApi: "https://wpa.qq.com/msgrd?v=3&site=qq&menu=yes&uin=",
         imgPrefix: staticUrl,
         userIcon: "https://ae01.alicdn.com/kf/U89b7be7d8d234a38b9a4b0d4258de362X.jpg",
         comment: "",//发布评论
@@ -47,11 +46,11 @@ var app = new Vue({
             status: 1,
             dealTime: null,
             isSelf: false,
-            isAdmin:false,
+            isAdmin: false,
             email: "",
             QQ: "",
         },
-        comments:"",
+        comments: "",
         page: {
             search: {//tab1
                 "kind": -1,
@@ -65,54 +64,52 @@ var app = new Vue({
             total: 0,
             list: []
         },
-        feedback:{
-            "subject":"违规信息举报",
-            "content":""
+        feedback: {
+            "subject": "违规信息举报",
+            "content": ""
         }
     },
     methods: {
-        loadJS:function()
-        {//加载js
+        loadJS: function () {//加载js
             let loadScript = document.createElement("script");
             loadScript.type = "text/javascript";
             loadScript.src = "../static/js/share/js/social-share.js";
             document.head.appendChild(loadScript);
         },
-        share:function() {
+        share: function () {
             //捕获页
             layer.open({
                 type: 1,
-                area:"auto",
+                area: "auto",
                 //shade: true,
                 scrollbar: false, // 父页面 滚动条 禁止
                 title: "<h4 style='text-align: center !important;'>微信扫一扫分享</h4>", //不显示标题
                 content: $('#shareDiv') //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
             });
         },
-        reward:function() {
-            if (app.wxReward==""){
+        reward: function () {
+            if (app.wxReward == "") {
                 showInfo("用户暂未设置赞赏码，快去提醒他(她)设置吧！");
-            }
-            else {
-            layer.open({
-                type: 1,
-                area:"auto",
-                scrollbar: false, // 父页面 滚动条 禁止
-                // shade: true,
-                title: "<h4 style='text-align: center !important;'>微信扫一扫，打赏</h4>", //不显示标题
-                content: $('#rewardDiv') //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
-            });
+            } else {
+                layer.open({
+                    type: 1,
+                    area: "auto",
+                    scrollbar: false, // 父页面 滚动条 禁止
+                    // shade: true,
+                    title: "<h4 style='text-align: center !important;'>微信扫一扫，打赏</h4>", //不显示标题
+                    content: $('#rewardDiv') //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
+                });
 
-            $("#reward-div").empty();
-            new QRCode("reward-div", {
-            text: app.wxReward,
-            width: 150,
-            height: 150,
-            });
-            // new QRCode(document.getElementById("reward-div"), app.wxReward);  // 设置要生成二维码的链接
+                $("#reward-div").empty();
+                new QRCode("reward-div", {
+                    text: app.wxReward,
+                    width: 150,
+                    height: 150,
+                });
+                // new QRCode(document.getElementById("reward-div"), app.wxReward);  // 设置要生成二维码的链接
             }
         },
-        pubComment:function(id) {
+        pubComment: function (id) {
             console.log(this.comment);
             let data = {
                 "targetId": id,
@@ -121,7 +118,7 @@ var app = new Vue({
             console.log(data);
             pubComment(data, this);
         },
-        deletePub:function(id) {
+        deletePub: function (id) {
             console.log(id);
             layer.confirm('确定要删除吗？', {
                 btn: ['确定', '取消'] //按钮
@@ -131,7 +128,7 @@ var app = new Vue({
 
             });
         },
-        showFeedback:function() {
+        showFeedback: function () {
             layer.open({
                 btn: ['确定', '取消'],
                 type: 1,
@@ -145,17 +142,43 @@ var app = new Vue({
                         showAlertError('请填写举报理由!');
                         return;
                     }
-                     let obj={
-                        "subject":"违规信息举报",
-                         "content":app.feedback.content
-                     };
+                    let obj = {
+                        "subject": "违规信息举报",
+                        "content": app.feedback.content
+                    };
                     pubFeedback(obj);
                 }, cancel: function () {
 
                 }
             });
         },
-        jumpDetail:function(id) {
+        //获得启事详情
+        getDetail: function (id) {
+            console.log('这是帖子的ID:' + id);
+            $.ajax({
+                url: baseUrl + "/detail/" + id + ".html",
+                // data:id,
+                method: "POST",
+                // async : false,
+                success: function (res) {
+                    console.log(res);
+                    if (res.success) {
+                        //console.log(result.item);
+                        app.item = res.data.item;
+                        //console.log(result.item);
+                        app.page.search.category = $("#search-category").text();
+                        console.log(app.page.search);
+                        if (getLocal("user")) {
+                            getComments(id, app);
+                            pageLostFound(app.page.search, app.page);
+                        }
+                    } else {
+                        showAlertError(res.msg)
+                    }
+                }
+            });
+        },
+        jumpDetail: function (id) {
             console.log("执行相关函数");
             //从相关启示进去，出来直接返回主页面
             app.isRelate = true;
@@ -166,9 +189,9 @@ var app = new Vue({
             saveLocal("isBack", false);
             // sessionStorage.clear();
             //跳转详情页面
-            location.href = baseUrl + "/detail/" + id+".html";
+            location.href = baseUrl + "/detail/" + id + ".html";
         },
-        claim:function(flag, id) {
+        claim: function (flag, id) {
             if (flag == 1) {
                 layer.confirm("物品是您的吗？", {
                     btn: ["是的", "不是"]
@@ -192,16 +215,6 @@ var app = new Vue({
         this.loadJS();//页面渲染完成后加载分享组件
         deleteLocal("isRelate");
     }
-});
-
-$(function () {
-    let id = getPostId();
-    if (!id) {
-        showAlertError("缺少请求参数！");
-    } else {
-        getDetail(id);
-    }
-    // var qrcode = new QRCode(document.getElementById("imgDiv"), location.href);
 });
 
 //新增反馈
@@ -280,7 +293,7 @@ function pageLostFound(data, result) {
 //发布评论
 function pubComment(data, app) {
     $.ajax({
-        url: baseUrl + "/comment/"+getPostId(),
+        url: baseUrl + "/comment/" + getPostId(),
         data: JSON.stringify(data),
         method: "POST",
         success: function (res) {
@@ -294,7 +307,7 @@ function pubComment(data, app) {
                 console.log('把评论框清空')
                 console.log('我是传给详情的ID:' + app.item.id)
                 console.log("" + data.targetId)
-                getDetail(getPostId());
+                app.getDetail(getPostId());
                 console.log('评论完成之后刷新')
             } else {
                 showAlertError(res.msg)
@@ -310,13 +323,13 @@ function getComments(data, app) {
         url: baseUrl + "/comment/" + getPostId(),
         method: "POST",
         success: function (res) {
-                if (res.success) {
-                    //console.log(result.item);
-                    app.comments = res.data.comments;
-                    app.wxReward=res.data.wxReward;
-                } else {
-                    showAlertError(res.msg)
-           }
+            if (res.success) {
+                //console.log(result.item);
+                app.comments = res.data.comments;
+                app.wxReward = res.data.wxReward;
+            } else {
+                showAlertError(res.msg)
+            }
         }
     });
 }
@@ -324,7 +337,7 @@ function getComments(data, app) {
 //新增反馈
 function pubFeedback(data) {
 
-    data.content=data.content.concat(" (详情链接："+location.href+")");
+    data.content = data.content.concat(" (详情链接：" + location.href + ")");
     $.ajax({
         url: baseUrl + "/feedback.html/add",
         data: JSON.stringify(data),
@@ -386,32 +399,6 @@ function viewImages(index) {
     });
 }
 
-//获得启事详情
-function getDetail(id) {
-    console.log('这是帖子的ID:' + id);
-    $.ajax({
-        url: baseUrl + "/detail/"+id+".html",
-        // data:id,
-        method: "POST",
-        // async : false,
-        success: function (res) {
-            console.log(res);
-                if (res.success) {
-                    //console.log(result.item);
-                    app.item = res.data.item;
-                    //console.log(result.item);
-                    app.page.search.category = $("#search-category").text();
-                    console.log(app.page.search);
-                    if (getLocal("user")) {
-                        getComments(id, app);
-                        pageLostFound(app.page.search, app.page);
-                    }
-                } else {
-                    showAlertError(res.msg)
-                }
-        }
-    });
-}
 
 //认领物品
 function claimID(id) {

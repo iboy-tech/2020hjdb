@@ -19,12 +19,8 @@ from tasks import celery
 @celery.task  # 删除帖子给用户发送通知
 def qq_group_notice(messages):
     data = render_template('msgs/QQNotice.txt', messages=messages)
-    print(data)
     groups = Robot.query.all()
-    print(groups)
     for g in groups:
-        print(g)
         api = PostConfig.QQ_GROUP_API+g.key
-        print(api)
-        resp = requests.post(url=api, data=data.encode())
-        print(resp)
+        requests.post(url=api, data=data.encode())
+

@@ -127,7 +127,7 @@ class DevelopmentConfig(BaseConfig):
     DEBUG = True
     CACHE_NO_NULL_WARNING = True  # 关闭缓存警告信息
     SQLALCHEMY_DATABASE_URI = 'mysql://用户名:密码@127.0.0.1/数据库?charset=utf8mb4'
-    print('现在是开发环境数据库', SQLALCHEMY_DATABASE_URI)
+    logger.info('现在是开发环境数据库', SQLALCHEMY_DATABASE_URI)
 
 
 # 测试环境的子类配置
@@ -140,7 +140,7 @@ class TestingConfig(BaseConfig):
 class ProductionConfig(BaseConfig):
     CACHE_TYPE = 'redis'  # 生产环境下开启redis缓存
     SQLALCHEMY_DATABASE_URI = 'mysql://用户名:密码@127.0.0.1/数据库?charset=utf8mb4'
-    print('现在是生产环境数据库', SQLALCHEMY_DATABASE_URI)
+    logger.info('现在是生产环境数据库', SQLALCHEMY_DATABASE_URI)
 
 
 # 注册不同的开发环境和默认的开发环境

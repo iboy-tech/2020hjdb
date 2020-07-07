@@ -15,7 +15,7 @@ from flask import render_template, request
 from flask_cors import cross_origin
 from flask_login import login_required
 
-from app import redis_client, cache
+from app import redis_client, cache, logger
 from app.config import PostConfig, LoginConfig
 from app.decorators import admin_required, super_admin_required
 from app.models.lostfound_model import LostFound
@@ -42,17 +42,16 @@ def index():
 @cross_origin()
 def add():
     req = request.args.get('key')
-    print(req)
+    logger.info(req)
     if not re.match(r"^[a-z0-9A-Z]+$", req):
-        return restful.success(False, msg="秘钥格式错误")
+        return restful.error("秘钥格式错误")
     key = PostConfig.TINYPNG_REDIS_KEY
     mapping = {req: 500}
     res = redis_client.zadd(key, mapping)
-    print("添加结果", res)
     if res != 0:
         return restful.success(msg="添加成功")
     else:
-        return restful.success(False, msg="秘钥已存在")
+        return restful.error("秘钥已存在")
 
 
 @tool.route('/deleteKey', methods=['GET', 'POST'])
@@ -66,7 +65,7 @@ def delete():
     if res != 0:
         return restful.success(msg="删除成功")
     else:
-        return restful.params_error()
+        return restful.error()
 
 
 @tool.route('/import', methods=['GET', 'POST'])
@@ -79,16 +78,15 @@ def import_keys():
         with open("app/static/temp/tiny_keys.txt") as f:
             for api_key in f:
                 api_key = api_key[:-1]  # 去掉换行符
-                # print(api_key)
+                # logger.info(api_key)
                 key = PostConfig.TINYPNG_REDIS_KEY
                 mapping = {api_key: 500}
                 res = redis_client.zadd(key, mapping)
-                print("插入的结果", res)
                 if res is not 0:
                     cnt = cnt + 1
         f.close()
     except Exception as e:
-        return restful.success(False, msg="请把秘钥文件(tiny_keys.txt)放在app/static/temp/目录下")
+        return restful.error("请把秘钥文件(tiny_keys.txt)放在app/static/temp/目录下")
     return restful.success(msg="恭喜，成功导入" + str(cnt) + "个秘钥")
 
 
@@ -115,30 +113,23 @@ def clear():
     file_names1 = os.listdir(dir_path1)
     file_names2 = os.listdir(dir_path2)
     scan_list = file_names1 if len(file_names1) >= len(file_names2) else file_names2
-    print(len(scan_list), len(file_names1), len(file_names2))
     delete_list = []
     # 清理redis垃圾数据
     keys1 = redis_client.keys(pattern='*{}*'.format(PostConfig.PUSHER_REDIS_PREFIX))
-    print("redis垃圾数据 PUSHER_REDIS_PREFIX", keys1)
     if keys1:
         for key in keys1:
-            print(key)
             redis_client.delete(key.decode())
     # 清理redis垃圾数据
     keys2 = redis_client.keys(pattern='*{}*'.format(LoginConfig.LOGIN_REDIS_PREFIX))
-    print("redis登录限制垃圾数据 LOGIN_REDIS_PREFIX", keys2)
     if keys2:
         for key in keys2:
-            print(key)
             redis_client.delete(key.decode())
     # 查询数据库
     for file in scan_list:
-        # print("检查文件", file)
         res = LostFound.query.filter(LostFound.images.like("%" + file + "%")).first()
         if not res:
             delete_list.append(file)
     # 缩略图与上传的文件夹相互比较
-    print("待删除的图片", delete_list)
     remove_files(delete_list, 0)
     return restful.success(msg="恭喜，脏数据清理完成")
 
@@ -149,7 +140,6 @@ def clear():
 @cross_origin()
 def getall():
     req = request.args.get('key')
-    print(req)
     key = PostConfig.TINYPNG_REDIS_KEY
     keys = redis_client.zrange(key, 0, -1, desc=True, withscores=True)
     # max = redis_client.bzpopmax(key)
@@ -161,7 +151,7 @@ def getall():
                 'count': int(k[1])
             }
             list.append(dict)
-            # print(keys, type(keys), type(keys[0]), bytes.decode(keys[0][0]))
+            # logger.info(keys, type(keys), type(keys[0]), bytes.decode(keys[0][0]))
     data = {
         'list': list
     }

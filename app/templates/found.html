@@ -24,9 +24,7 @@
     <!-- js-->
         <script src="https://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
     <script src="../static/js/modernizr.custom.js"></script>
-    <!--webfonts-->
-    <!-- <link href='//fonts.googleapis.com/css?family=Roboto+Condensed:400,300,300italic,400italic,700,700italic' rel='stylesheet' type='text/css'> -->
-    <!--//webfonts-->
+
     <!--animate-->
     <link href="../static/css/animate.css" rel="stylesheet" type="text/css" media="all">
     <script src="../static/js/wow.min.js"></script>
@@ -162,8 +160,7 @@
                             </div>
                         </a>
                         <ul class="dropdown-menu drp-mnu">
-                            <!--<li><a ><i class="fa fa-cog"></i> Settings</a></li>-->
-                            <!--<li><a ><i class="fa fa-user"></i> Profile</a></li>-->
+
                             <li><a @click="logout"><i class="fa fa-sign-out"></i>退出</a></li>
                         </ul>
                     </li>
@@ -224,6 +221,7 @@
                                     </button>
                                     <ul class="dropdown-menu">
                                         <li><a @click="seeInfo(item.userId)">查看信息</a></li>
+                                        <li v-if="item.status==1"><a @click="resend(item.id)">重新发布</a></li>
                                         <li v-if="item.status==2 && user.kind > item.kind"><a  @click="freezeUser(item.userId,1)">冻结账号</a></li>
                                         <li v-if="item.ustatus==0 && user.kind > item.kind"><a @click="freezeUser(item.userId,0)">解冻账号</a></li>
                                     </ul>
