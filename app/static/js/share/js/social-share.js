@@ -33,7 +33,7 @@
 
     let myimg=$("#share-images img").attr("src");
 if(myimg==undefined){
-    myimg="https://ae01.alicdn.com/kf/H178e60830e4342b8916cbfd620d46d57Q.png";
+    myimg="https://ae01.alicdn.com/kf/H25441b24db014cae86cb642db4c46f262.jpg";
 }
 
 

@@ -67,6 +67,11 @@
                                     <!--<span class="nav-badge-btm">8</span>-->
                                 </a>
                             </li>
+                            <li v-if="user.kind==3">
+                                <a href="/robot.html">群机器人
+                                    <!--<span class="nav-badge-btm">8</span>-->
+                                </a>
+                            </li>
                         </ul>
                         <!-- /nav-second-level -->
                     </li>
@@ -232,8 +237,8 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label"></label>
                         <div class="col-sm-10">
-                            <button type="button" class="btn btn-default" style="background-color: #6164C1;
-                                color: #fff;" @click="submit">确定</button>
+                            <button type="button" class="btn btn-default" style="background-color: #2185D0 !important;
+                                color: #fff;border:none !important;" @click="submit">确定</button>
                         </div>
                     </div>
                 </form>

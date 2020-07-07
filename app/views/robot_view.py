@@ -47,12 +47,26 @@ def get_all():
 @admin_required
 def add_group():
     req = request.json
-    try:
-        new_group = Robot(key=req["key"], group_num=req["num"],group_name=req["name"])
-        db.session.add(new_group)
+    print(req)
+    id = req.get("id")
+    if id == "":
+        print("添加")
+        try:
+            new_robot = Robot(key=req["key"], group_num=req["num"], group_name=req["name"])
+            db.session.add(new_robot)
+            db.session.commit()
+        except Exception as e:
+            return restful.params_error(msg=str(e))
+    else:
+        print("更新", id)
+        update_robot = Robot.query.get(int(id))
+        print(update_robot)
+        update_robot.key = req["key"]
+        update_robot.group_num = req["num"]
+        update_robot.group_name = req["name"]
+        db.session.add(update_robot)
         db.session.commit()
-    except Exception as e:
-        return restful.params_error(msg=str(e))
+        return restful.success(msg="修改成功")
     return restful.success(msg="添加成功")
 
 

@@ -172,9 +172,7 @@
                             </div>
                         </div>
                     </div>
-{#                {% if item.kind == 1   %}#}
                     <template v-if="item.kind == 1">
-{#                    {% if item.isSelf==False and item.status==0 %}#}
                         <div v-if="item.isSelf==false && item.status==0" id="claim" class="field foot-bar" style="text-align: center;">
                             <button  class="ui blue small button" @click="claim(1,item.id)">我要认领
                             </button>
@@ -183,31 +181,16 @@
                         <div  v-else-if="item.status==1" class="field foot-bar" style="text-align: center;">
                             <button class="ui green small button">已认领</button>
                         </div>
-{#                    {% endif %}#}
                     </template>
 
                     <template v-else>
-{#                      {% if item.isSelf==False and item.status==0 %}#}
                             <div  v-if="item.isSelf==false && item.status==0" id="report" class="field foot-bar" style="text-align: center;">
                                 <button class="ui red small button" @click="claim(0,item.id)">我要上报</button>
                             </div>
-{#                        {% elif item.status==1  %}#}
                             <div v-else-if="item.status==1" class="field foot-bar" style="text-align: center;">
                                 <button class="ui green small button">已找到</button>
                             </div>
-{#                        {% endif %}#}
                     </template>
-{#                {% else  %}
-                    {% if item.isSelf==False and item.status==0 %}
-                            <div  id="report" class="field foot-bar" style="text-align: center;">
-                                <button class="ui red small button" @click="claim(0,{{item.id}})">我要上报</button>
-                            </div>
-                        {% elif item.status==1  %}
-                            <div  class="field foot-bar" style="text-align: center;">
-                                <button class="ui green small button">已找到</button>
-                            </div>
-                        {% endif %}
-                {% endif %}#}
 
 
                     <!--comment-->

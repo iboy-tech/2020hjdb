@@ -184,7 +184,7 @@
                         <tr>
                             <th>ID</th>
                             <th>群号</th>
-                            <th>名称</th>
+                            <th>群名称</th>
                             <th>Key</th>
                             <th>创建时间</th>
                             <th>
@@ -205,7 +205,7 @@
                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <span class="glyphicon glyphicon-menu-hamburger"></span>
                                     </button>
-                                    <ul class="dropdown-menu">
+                                    <ul class="dropdown-menu"><li><a @click="updateKey(item)">修改</a></li>
                                     <li><a @click="deleteKey(item.Id)">删除</a></li>
                                 </ul>
                                 </div>
@@ -220,7 +220,7 @@
             </div>
             <div class="row">
             <div class="col-md-12" style="margin-top: 15px;">
-           <span>说明：图片每天凌晨3:00定时压缩，如需手动压缩，请选择访问量少的时间，压缩的图片数量可通过秘钥剩余次数判断</span>
+           <span>QQ群机器人配置信息，此处配置信息修改之后还需要去酷推官网(https://cp.xuthus.cc/)更新配置信息,</span>
             </div>
             </div>
         </div>

@@ -31,6 +31,7 @@ from app.utils.delete_file import remove_files
 from app.utils.img_process import change_bs4_to_png
 from app.utils.log_utils import add_log
 from app.utils.mail_sender import send_email
+from app.utils.qq_notice import qq_group_notice
 from app.utils.time_util import get_time_str
 from app.utils.wechat_notice import delete_post_notice, send_message_by_pusher
 
@@ -192,7 +193,7 @@ def pub():
         db.session.rollback()
         # 出现异常删除照片
         if imgstr != "":
-            print("这有BUG",imgstr,type(imgstr))
+            print("这有BUG", imgstr, type(imgstr))
             # imglist = imgstr.split(",")
             remove_files(imgstr, 0)
         return restful.params_error()
@@ -208,7 +209,7 @@ def pub():
                     'pub_time': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
                     'pub_content': lost.about,
                     'pub_location': lost.location,
-                    'url': os.getenv('SITE_URL') + 'detail?id=' + str(lost.id)
+                    'url': os.getenv('SITE_URL') + 'detail/' + str(lost.id) + ".html"
                 }
                 op = OpenID.query.filter_by(user_id=u.id).first()
                 if op is not None and op.wx_id is not None:
@@ -216,6 +217,15 @@ def pub():
                     uids = [op.wx_id]
                     send_message_by_pusher(dict, uids, 3)
                     send_email.apply_async(args=(u.qq, '失物找回通知', 'foundNotice', dict), countdown=randint(10, 30))
+    qq_msg = {
+        "kind": "失物招领" if lost.kind == 0 else "寻物启示",
+        "poster": current_user.real_name,
+        "category": Category.query.get(lost.category_id).name,
+        "addr": "未知" if lost.location is None else lost.location,
+        "detail": lost.about,
+        "url": os.getenv('SITE_URL') + 'detail/' + str(lost.id) + ".html"
+    }
+    qq_group_notice(qq_msg)
     cache.delete("category")
     return restful.success(msg="发布成功")
 

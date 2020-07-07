@@ -84,7 +84,7 @@ button#showLeftPush {
 	outline:none;
 }
 button#showLeftPush:hover {
-    color: #6164C1;
+    color: #2185D0;
 }
 /*--push-menu-css--*/
 .cbp-spmenu {
@@ -248,23 +248,23 @@ ul.dropdown-menu{
     margin: 0;
     z-index: 10;
     font-size: 0.9em;
-    color: #6164C1;
+    color: #2185D0;
     padding: 0.5em 1em;
 	border: 2px solid rgba(79, 82, 186, 0.3);
 	-webkit-appearance: none; /* for box shadows to show on iOS */
 	font-family: 'Roboto Condensed', sans-serif;
 }
 .sb-search-input::-webkit-input-placeholder {
-	color:#6164C1;
+	color:#2185D0;
 }
 .sb-search-input:-moz-placeholder {
-	color: #6164C1;
+	color: #2185D0;
 }
 .sb-search-input::-moz-placeholder {
-	color: #6164C1;
+	color: #2185D0;
 }
 .sb-search-input:-ms-input-placeholder {
-	color: #6164C1;
+	color: #2185D0;
 }
 .input__label {
 	-webkit-font-smoothing: antialiased;
@@ -497,7 +497,7 @@ i.fa.fa-tasks{
 	 font-size: 1em;
 }
 .notification_bottom a:hover {
-    color:#6164C1;
+    color:#2185D0;
 }
 .notification_bottom h3 a{	
 	color: #717171;
@@ -1470,7 +1470,7 @@ button.note-color-btn {
     margin-left: .5em;
 }
 .validation-grids .btn-primary{
-    background: #6164C1 !important;
+    background: #2185D0 !important;
     color: #FFF;
     border: none;
     font-size: 0.9em;
@@ -1604,7 +1604,7 @@ button.note-color-btn {
     outline: none;
     cursor: pointer;
     color: #fff;
-    background: #6164C1;
+    background: #2185D0;
     width: 100%;
     padding: .5em 1em;
     font-size: 1em;
@@ -1709,7 +1709,7 @@ p.creating {
 }
 .signup-page h5,.signup-page h6{
 	margin: 0 0 1em;
-    color:#6164C1;
+    color:#2185D0;
     font-size: 1.1em;
 }
 .signup-page h6{
@@ -1741,7 +1741,7 @@ p.creating {
     outline: none;
     cursor: pointer;
     color: #fff;
-    background: #6164C1;
+    background: #2185D0;
     width: 23%;
     padding: .5em 1em;
     font-size: 1em;
@@ -2111,7 +2111,7 @@ h4.modal-title {
 .compose-right .alert.alert-info {
     padding: 10px 20px;
     font-size: 0.9em;
-    color: #6164C1;
+    color: #2185D0;
 	background-color: rgba(212, 213, 243, 0.98);
     border-color: rgba(151, 153, 230, 0.41);
 	border-radius: inherit;
@@ -2145,7 +2145,7 @@ h4.modal-title {
 }
 .compose-right input[type="submit"] {
     font-size: 0.9em;
-    background-color: #6164C1;
+    background-color: #2185D0;
     border: 1px solid #4F52BA;
     color: #fff;
     padding: 0.4em 1em;
@@ -2159,7 +2159,7 @@ h4.modal-title {
 	width: 32%;
 }
 .profile-top {
-    background-color: #6164C1;
+    background-color: #2185D0;
     text-align: center;
 	padding: 1.5em;
 }
@@ -2197,8 +2197,8 @@ h4.title3 {
     width: 85%;
 }
 .row-middle .profile-right {
-    border-top: 1px dotted #6164C1;
-    border-bottom: 1px dotted #6164C1;
+    border-top: 1px dotted #2185D0;
+    border-bottom: 1px dotted #2185D0;
     padding: 1em 0;
 }
 .profile-row .profile-icon {
@@ -2238,7 +2238,7 @@ i.fa.fa-facebook.profile-icon {
 }
 .profile-btm ul li h4 {
     font-size: 1.3em;
-    color: #6164C1;
+    color: #2185D0;
     font-weight: 900;
 }
 .profile-btm ul li h5 {
@@ -2398,7 +2398,7 @@ i.fa.fa-facebook.profile-icon {
 }
 .header-top li p.cen {
     background: #FFFFFF;
-    color: #6164C1;
+    color: #2185D0;
     border-radius: 0 3px 3px 0;
 }
 .whe {
@@ -2429,7 +2429,7 @@ i.fa.fa-facebook.profile-icon {
     border-right: none;
 }
 .header-head h4 {
-    color: #6164C1;
+    color: #2185D0;
     font-size: 1.1em;
     margin-bottom: 1em;
 }
@@ -2485,7 +2485,7 @@ i.fa.fa-facebook.profile-icon {
 	text-align:center;
 }
 .widget_1_box .bg-info {
-    background-color: #6164C1;
+    background-color: #2185D0;
 }
 .widget_1_box .bg-success {
     background-color: #F2B33F;
@@ -2512,7 +2512,7 @@ i.fa.fa-facebook.profile-icon {
     background: #EB621F;
 }
 .widget_1_box .progress-striped .orange {
-    background: #6164C1;
+    background: #2185D0;
 }
 .widget_1_box .progress-striped .bar {
     background-image: -webkit-gradient(linear, 0 100%, 100% 0, color-stop(0.25, rgba(255, 255, 255, 0.15)), color-stop(0.25, transparent), color-stop(0.5, transparent), color-stop(0.5, rgba(255, 255, 255, 0.15)), color-stop(0.75, rgba(255, 255, 255, 0.15)), color-stop(0.75, transparent), to(transparent));

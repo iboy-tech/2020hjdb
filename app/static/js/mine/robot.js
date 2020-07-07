@@ -12,10 +12,11 @@ var app = new Vue({
         list: [],
         user: getLocal("user") ? JSON.parse(getLocal("user")) : {},
         group: {
+            id: "",
             num: "",
             name: "",
             key: "",
-        }
+        },
     },
     methods: {
         logout: function () {
@@ -39,6 +40,37 @@ var app = new Vue({
                 },
                 cancel: function () {
                     app.group = {
+                        id:"",
+                        num: "",
+                        name: "",
+                        key: "",
+                    }
+                }
+            });
+        },
+        updateKey: function (item) {
+            this.group.id = item.Id;
+            this.group.name = item.groupName;
+            this.group.num = item.groupNum;
+            this.group.key = item.Key;
+            app.showMenu = false;
+            layer.open({
+                btn: ['确定', '取消'],
+                type: 1,
+                area: ['300px', 'auto'],
+                //shade: true,
+                title: "修改记录", //不显示标题
+                content: $('#pwdDiv'),  //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
+                yes: function () {
+                    if (app.group.num == "" || app.group.name == "" || app.group.key == "") {
+                        showAlertError('信息填写不完整');
+                        return false;
+                    }
+                    addKey(app.group);
+                },
+                cancel: function () {
+                    app.group = {
+                        id:1,
                         num: "",
                         name: "",
                         key: "",
@@ -81,6 +113,12 @@ function addKey(data) {
                 layer.closeAll();
                 showOK(res.msg);
                 getKeys(app, false);
+                app.group = {
+                        id:"",
+                        num: "",
+                        name: "",
+                        key: "",
+                    }
             } else {
                 showAlertError(res.msg)
             }

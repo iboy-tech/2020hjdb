@@ -72,3 +72,4 @@ def send_message_by_pusher(msg, uid, kind):
                 "realName": op.user.real_name
             }
             send_email.apply_async(args=(op.user.qq, '系统通知', 'importantNotice', real_name), countdown=randint(10, 30))
+
