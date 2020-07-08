@@ -27,7 +27,9 @@ from app.utils import restful
 @limiter.limit(limit_value="30/minute")
 @login_required
 @wechat_required
-def index(id):
+def index(id=-1):
+    if id == -1:
+        return restful.error("参数缺失")
     if request.method == 'GET':
         # logger.info("我是获取的ID", request.args.get('id'))
         # id = request.args.get('id')

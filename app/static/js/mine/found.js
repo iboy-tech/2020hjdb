@@ -77,11 +77,10 @@ var app = new Vue({
                 btn: ['确定', '取消'] //按钮
             }, function () {
                 $.ajax({
-                    url: baseUrl + "/found.html/deleteAll",
-                    method: "POST",
+                    url: baseUrl + "/lostfounds",
+                    method: "DELETE",
                     data: JSON.stringify(data),
                     success: function (res) {
-                        console.log(res);
                             if (res.success) {
                                 //数据置空
                                 app.checked=false;
@@ -101,7 +100,7 @@ var app = new Vue({
                 btn: ['确定', '取消'] //按钮
             }, function () {
                 $.ajax({
-                    url: baseUrl + "/found.html/resend/"+id,
+                    url: baseUrl + "/lostfounds/resend/"+id,
                     method: "GET",
                     success: function (res) {
                             if (res.success) {
@@ -230,22 +229,15 @@ function getUserInfo(userId, app) {
 //删除招领信息
 function deletePub(id) {
     $.ajax({
-        url: baseUrl + "/found.html/delete?id=" + id,
-        method: "POST",
-        // data: JSON.stringify(data),
-        success: function (res, status) {
-            console.log(res);
-            if (status == "success") {
+        url: baseUrl + "/lostfounds/delete/" + id,
+        method: "DELETE",
+        success: function (res) {
                 if (res.success) {
                     showOK(res.msg);
                     pageLostFound(app.result.search, app.result, false);
                 } else {
                     showAlertError(res.msg)
                 }
-            } else {
-                console.log(res);
-                showAlertError(res)
-            }
         }
     });
 
@@ -255,12 +247,10 @@ function deletePub(id) {
 function pageLostFound(data, result, append) {
     //console.log(data);
     $.ajax({
-        url: baseUrl + "/found.html/getall",
+        url: baseUrl + "/lostfounds/page",
         data: JSON.stringify(data),
         method: "POST",
-        success: function (res, status) {
-            console.log(res);
-            if (status == "success") {
+        success: function (res) {
                 if (res.success) {
                     result.search.pageNum = res.data.page.pageNum;
                     result.search.pageSize = res.data.page.pageSize;
@@ -277,10 +267,6 @@ function pageLostFound(data, result, append) {
                 } else {
                     showAlertError(res.msg)
                 }
-            } else {
-                console.log(res);
-                showAlertError(res)
-            }
         }
     });
 }

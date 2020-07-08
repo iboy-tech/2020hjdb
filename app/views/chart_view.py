@@ -22,8 +22,6 @@ from app.utils.log_utils import add_log, get_log
 from app.views.feedback_view import get_new_feedback
 
 
-
-
 # https://blog.csdn.net/yannanxiu/article/details/53816567
 
 @chart.route('/', methods=['GET', 'POST'], strict_slashes=False)
@@ -85,7 +83,8 @@ def get_data():
         'solve': [today_solve, total_solve],
         # //最近7天
         # 'barChartData1': {
-        'item': [mylist[0], [mylist[0], mylist[1], mylist[2]],mylist[3],[mylist[4], mylist[5]],[boy_users, girl_users]],
+        'item': [mylist[0], [mylist[0], mylist[1], mylist[2]], mylist[3], [mylist[4], mylist[5]],
+                 [boy_users, girl_users]],
         # //近期数据
         # 'data1': [[1111, 70, 55, 20, 45, 0, 60], [65, 59, 90, 81, 56, 0, 40], [65, 1, 90, 81, 56, 1, 300]],
         # 'data1': [mylist[0], mylist[1], mylist[2]],

@@ -19,9 +19,9 @@ from flask_login import logout_user, login_user, login_required, current_user
 
 from app import db, OpenID, redis_client, cache, limiter, logger
 from app.config import LoginConfig, PostConfig
-from app.decorators import wechat_required, unfreeze_user
+from app.decorators import wechat_required, unfreeze_user, admin_required
 from app.models.user_model import User
-from app.page import auth
+from app.page import auth, users, robot, tool
 from app.utils import restful
 from app.utils.auth_token import generate_token, validate_token
 from app.utils.check_data import check_qq, check_username
@@ -29,12 +29,88 @@ from app.utils.log_utils import get_login_info
 from app.utils.mail_sender import send_email
 
 
+# 失物招领
+@auth.route('/found.html', methods=['GET'], strict_slashes=False)
+@cache.cached(timeout=3600 * 24 * 7, key_prefix="found-html")  # 缓存5分钟 默认为300s
+@login_required
+@wechat_required
+def found():
+    return render_template('found.html')
+
+
+# 用户管理
+@auth.route('/users.html', methods=['POST', 'GET', 'OPTIONS'], strict_slashes=False)
+@cache.cached(timeout=3600 * 24 * 7, key_prefix="users.html")  # 缓存5分钟 默认为300s
+@login_required
+@wechat_required
+@admin_required
+def users_index():
+    return render_template('users.html')
+
+
 # 隐私协议
 @auth.route('/policy')
 @limiter.limit(limit_value="10/minute")
 @cache.cached(timeout=3600 * 24 * 7, query_string=True, key_prefix="policy-html")  # 缓存10分钟 默认为300s
-def private():
+def policy():
     return render_template('policy.html')
+
+
+# 分类页面
+@auth.route('/category.html', methods=['GET'], strict_slashes=False)
+@cache.cached(timeout=3600 * 24 * 7, key_prefix="category-html")  # 缓存5分钟 默认为300s
+@login_required
+@wechat_required
+@admin_required
+def category():
+    return render_template('category.html')
+
+
+# 反馈
+@auth.route('/feedback.html', methods=['GET', 'POST', 'OPTIONS'], strict_slashes=False)
+@login_required
+@wechat_required
+@admin_required
+def feedback():
+    return render_template('feedback.html')
+
+
+# 通知
+@auth.route('/notice.html', methods=['GET'], strict_slashes=False)
+@cache.cached(timeout=3600 * 24 * 7, key_prefix="notice-html")  # 缓存5分钟 默认为300s
+@login_required
+@wechat_required
+@admin_required
+def notice():
+    return render_template('notice.html')
+
+
+# 报表
+@auth.route('/report.html', methods=['GET'], strict_slashes=False)
+@cache.cached(timeout=3600 * 24 * 7, key_prefix="report-html")  # 缓存5分钟 默认为300s
+@login_required
+@wechat_required
+@admin_required
+def get_report():
+    return render_template('report.html')
+
+
+# 机器人
+@auth.route("/robot.html", methods=["GET"])
+@login_required
+@admin_required
+def robot():
+    return render_template('robot.html')
+
+
+# 图片压缩
+@auth.route('/tool.html', methods=['GET', 'POST'])
+@cache.cached(timeout=3600 * 24 * 7, key_prefix="tool-html")  # 缓存5分钟 默认为300s
+@login_required
+@admin_required
+@cross_origin()
+def tool():
+    return render_template('tool.html')
 
 
 @auth.route('/favicon.ico')

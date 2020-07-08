@@ -27,48 +27,36 @@ from app.utils.img_process import find_big_img, change_all_img_scale
 from app.utils.tinypng_util import tinypng
 
 
-@tool.route('/', methods=['GET', 'POST'])
-@cache.cached(timeout=3600*24*7,key_prefix="tool-html")  # 缓存5分钟 默认为300s
+@tool.route('/<key>', methods=['POST'])
 @login_required
 @admin_required
 @cross_origin()
-def index():
-    return render_template('tool.html')
-
-
-@tool.route('/addKey', methods=['GET', 'POST'])
-@login_required
-@admin_required
-@cross_origin()
-def add():
-    req = request.args.get('key')
-    logger.info(req)
-    if not re.match(r"^[a-z0-9A-Z]+$", req):
+def add(key):
+    if not re.match(r"^[a-z0-9A-Z]+$", key):
         return restful.error("秘钥格式错误")
-    key = PostConfig.TINYPNG_REDIS_KEY
-    mapping = {req: 500}
-    res = redis_client.zadd(key, mapping)
+    key_pre = PostConfig.TINYPNG_REDIS_KEY
+    mapping = {key: 500}
+    res = redis_client.zadd(key_pre, mapping)
     if res != 0:
         return restful.success(msg="添加成功")
     else:
         return restful.error("秘钥已存在")
 
 
-@tool.route('/deleteKey', methods=['GET', 'POST'])
+@tool.route('/<key>', methods=['DELETE'])
 @login_required
 @super_admin_required
 @cross_origin()
-def delete():
-    id = request.args.get("key")
-    key = PostConfig.TINYPNG_REDIS_KEY
-    res = redis_client.zrem(key, id)
+def delete(key):
+    key_pre = PostConfig.TINYPNG_REDIS_KEY
+    res = redis_client.zrem(key_pre, key)
     if res != 0:
         return restful.success(msg="删除成功")
     else:
         return restful.error()
 
 
-@tool.route('/import', methods=['GET', 'POST'])
+@tool.route('/import', methods=['GET'])
 @login_required
 @admin_required
 @cross_origin()
@@ -78,7 +66,6 @@ def import_keys():
         with open("app/static/temp/tiny_keys.txt") as f:
             for api_key in f:
                 api_key = api_key[:-1]  # 去掉换行符
-                # logger.info(api_key)
                 key = PostConfig.TINYPNG_REDIS_KEY
                 mapping = {api_key: 500}
                 res = redis_client.zadd(key, mapping)
@@ -86,11 +73,12 @@ def import_keys():
                     cnt = cnt + 1
         f.close()
     except Exception as e:
+        logger.info(str(e))
         return restful.error("请把秘钥文件(tiny_keys.txt)放在app/static/temp/目录下")
     return restful.success(msg="恭喜，成功导入" + str(cnt) + "个秘钥")
 
 
-@tool.route('/compress', methods=['GET', 'POST'])
+@tool.route('/compress', methods=['GET'])
 @login_required
 @super_admin_required
 @cross_origin()
@@ -103,7 +91,7 @@ def compress():
         return restful.success(msg="恭喜，所有图片都达到要求了")
 
 
-@tool.route('/clear', methods=['GET', 'POST'])
+@tool.route('/clear', methods=['GET'])
 @login_required
 @super_admin_required
 @cross_origin()
@@ -134,12 +122,11 @@ def clear():
     return restful.success(msg="恭喜，脏数据清理完成")
 
 
-@tool.route('/getall', methods=['GET', 'POST'])
+@tool.route('/', methods=['GET'])
 @login_required
 @admin_required
 @cross_origin()
 def getall():
-    req = request.args.get('key')
     key = PostConfig.TINYPNG_REDIS_KEY
     keys = redis_client.zrange(key, 0, -1, desc=True, withscores=True)
     # max = redis_client.bzpopmax(key)
@@ -169,5 +156,3 @@ def resize():
     # 裁剪upload文件夹下的图片生成缩略图
     change_all_img_scale()
     return restful.success(msg="裁剪成功")
-
-

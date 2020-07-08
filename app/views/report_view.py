@@ -12,12 +12,12 @@ import os
 from datetime import datetime, timedelta
 from uuid import uuid4
 
-from flask import render_template, request
+from flask import request
 from flask_login import login_required, current_user
 from openpyxl import load_workbook
 from sqlalchemy import and_
 
-from app import db, Report, User, cache
+from app import db, Report, User, logger
 from app.decorators import wechat_required, admin_required
 from app.models.category_model import Category
 from app.models.lostfound_model import LostFound
@@ -25,16 +25,7 @@ from app.page import report
 from app.utils import restful
 
 
-@report.route('/', methods=['POST', 'GET'], strict_slashes=False)
-@cache.cached(timeout=3600*24*7,key_prefix="report-html")  # 缓存5分钟 默认为300s
-@login_required
-@wechat_required
-@admin_required
-def get_report():
-    return render_template('report.html')
-
-
-@report.route('/getall', methods=['POST'], strict_slashes=False)
+@report.route('/', methods=['GET'], strict_slashes=False)
 @login_required
 @wechat_required
 @admin_required
@@ -62,7 +53,7 @@ def get_file():
     return restful.success(data=data)
 
 
-@report.route('/add', methods=['POST'], strict_slashes=False)
+@report.route('/', methods=['POST'], strict_slashes=False)
 @login_required
 @wechat_required
 @admin_required
@@ -78,21 +69,20 @@ def create_report():
     return restful.success(msg="导出成功")
 
 
-@report.route('/delete', methods=['POST'], strict_slashes=False)
+@report.route('/<key>', methods=['DELETE'], strict_slashes=False)
 @login_required
 @wechat_required
 @admin_required
-def delete_report():
-    id = request.json
-    # logger.info('要删除的文件', id, type(id))
-    file = Report.query.filter_by(id=id).first()
+def delete_report(key):
+    file = Report.query.get(key)
     if file:
-        filename = os.path.join(os.getenv('PATH_OF_REPORT'), id + '.xlsx')
+        filename = os.path.join(os.getenv('PATH_OF_REPORT'), key + '.xlsx')
         try:
             db.session.delete(file)
             db.session.commit()
             os.remove(filename)
         except Exception as e:
+            logger.info(str(e))
             db.session.rollback()
     return restful.success(msg="删除成功")
 

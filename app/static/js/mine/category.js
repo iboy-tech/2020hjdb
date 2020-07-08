@@ -36,23 +36,17 @@ var app = new Vue({
     }
 });
 //删除类别
-function deleteCategory(name) {
+function deleteCategory(categoryId) {
     $.ajax({
-        url: baseUrl + "/category.html/delete?name=" + name,
-        method: "POST",
-        success: function (res, status) {
-            console.log(res);
-            if (status == "success") {
+        url: baseUrl + "/categories/" +categoryId,
+        method: "DELETE",
+        success: function (res) {
                 if (res.success) {
-                    showOK();
+                    showOK(res.msg);
                     getCategory();
                 } else {
                     showAlertError(res.msg)
                 }
-            } else {
-                console.log(res);
-                showAlertError(res)
-            }
         }
     });
 }
@@ -60,27 +54,20 @@ function deleteCategory(name) {
 //新增类别
 function addCategory(data, app) {
     $.ajax({
-        url: baseUrl + "/category.html/add",
+        url: baseUrl + "/categories",
         method: "POST",
         data: JSON.stringify(data),
-        success: function (res, status) {
-            console.log(res);
-            if (status == "success") {
+        success: function (res) {
                 if (res.success) {
-                    showOK("操作成功！")
+                    showOK(res.msg)
                     app.category = {
                         name: "",
                         about: ""
                     }
                     getCategory();
-
                 } else {
                     showAlertError(res.msg)
                 }
-            } else {
-                console.log(res);
-                showAlertError(res)
-            }
         }
     });
 }
@@ -88,8 +75,8 @@ function addCategory(data, app) {
 //获取物品类别list
 function getCategory() {
     $.ajax({
-        url: baseUrl + "/category.html/getall",
-        method: "POST",
+        url: baseUrl + "/categories",
+        method: "GET",
         success: function (res, status) {
             console.log(res);
             if (status == "success") {

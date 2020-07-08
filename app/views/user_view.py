@@ -28,12 +28,9 @@ from .found_view import send_message_by_pusher
 from ..utils.check_data import check_qq
 
 
-@user.route('/messages', methods=['POST', 'OPTIONS'])
+@user.route('/messages', methods=['GET', 'OPTIONS'])
 @login_required
 def get_message():
-    req = request.json
-    # commens=Comment.query.join(LostFound,user_id=current_user.id)
-    # losts = LostFound.query.filter_by(user_id=current_user.id).order_by(LostFound.create_time.desc()).all()
     losts = current_user.posts
     list = []
     if losts:
@@ -58,7 +55,7 @@ def get_message():
     return restful.success(data=data)
 
 
-@user.route('/setQQ', methods=['POST'])
+@user.route('/qq', methods=['PUT'])
 @limiter.limit(limit_value="3/minute")
 @login_required
 @cross_origin()
@@ -77,7 +74,7 @@ def set_QQ():
     return restful.success(success=True, msg="验证邮件已发送到您的QQ邮箱，请及时确认")
 
 
-@user.route('/setReward', methods=['POST'])
+@user.route('/reward', methods=['PUT'])
 @limiter.limit(limit_value="3/minute")
 @login_required
 @cross_origin()
@@ -97,7 +94,7 @@ def set_reward():
     return restful.success(success=True, msg="设置成功")
 
 
-@user.route('/setPassword', methods=['POST'])
+@user.route('/password', methods=['PUT'])
 @cross_origin()
 @login_required
 def set_password():
@@ -116,7 +113,7 @@ def set_password():
     return restful.error("您的原密码有误")
 
 
-@user.route('/claim', methods=['POST'])
+@user.route('/claim', methods=['PUT'])
 @limiter.limit(limit_value="5/minute")
 @login_required
 @cross_origin()

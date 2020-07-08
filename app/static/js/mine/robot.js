@@ -83,7 +83,7 @@ var app = new Vue({
                 btn: ['确定', '取消'] //按钮
             }, function () {
                 $.ajax({
-                    url: "/robot.html/" + id,
+                    url: "/robots/" + id,
                     method: "DELETE",
                     success: function (res) {
                         if (res.success) {
@@ -105,7 +105,7 @@ var app = new Vue({
 function addKey(data) {
     //console.log(data);
     $.ajax({
-        url: baseUrl + "/robot.html/add",
+        url: baseUrl + "/robots",
         data: JSON.stringify(data),
         method: "POST",
         success: function (res) {
@@ -148,11 +148,9 @@ $(function () {
 
 function getKeys(app, append) {
     $.ajax({
-        url: baseUrl + "/robot.html/getall",
-        // data: JSON.stringify(data),
-        method: "POST",
+        url: baseUrl + "/robots",
+        method: "GET",
         success: function (res) {
-            console.log(res);
             if (res.success) {
                 if (append) {
                     for (let v in res.data.list) {

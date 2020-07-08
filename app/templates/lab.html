@@ -93,13 +93,11 @@
                             </li>
                             <li>
                                 <a href="/category.html">类别管理
-                                    <!--<span class="nav-badge-btm">8</span>-->
-                                </a>
+</a>
                             </li>
                            <li v-if="user.kind==3">
                                 <a href="/robot.html">群机器人
-                                    <!--<span class="nav-badge-btm">8</span>-->
-                                </a>
+</a>
                             </li>
                         </ul>
                         <!-- /nav-second-level -->
@@ -212,7 +210,7 @@
 					<div class="folder widget-shadow" style="margin-left: 10px;">
 						<ul>
 							<li class="head">图片裁剪</li>
-							<li class="lab">地址：tool.html/resize<span class="label label-info" style="padding: 4px 8px;"><a href="/tool.html/resize" target="_blank">执行</a></span></li>
+							<li class="lab">地址：tools/resize<span class="label label-info" style="padding: 4px 8px;"><a href="/tool.html/resize" target="_blank">执行</a></span></li>
 							<li  class="lab">
                                 说明：初始化操作一次之后无需再次操作，因为用户上传图片时，可以自动裁剪了，生产环境，无特殊需求，请不要使用
                             </li>
@@ -225,7 +223,7 @@
 					<div class="folder widget-shadow" style="margin-left: 10px;">
 						<ul>
 							<li class="head">垃圾清理</li>
-                            <li class="lab">地址：tool.html/clear<span class="label label-info" style="padding: 4px 8px;"><a href="/tool.html/clear" target="_blank">执行</a></span></li>
+                            <li class="lab">地址：tools/clear<span class="label label-info" style="padding: 4px 8px;"><a href="/tool.html/clear" target="_blank">执行</a></span></li>
 							<li  class="lab">
                                 说明：图片删除,REDIS过期删除会由于一些原因失败,比如发帖删除而帖子的配图还在，这就产生了脏数据，通过此接口可以删除那些无用数据
                             </li>
@@ -237,7 +235,7 @@
 					<div class="folder widget-shadow" style="margin-left: 10px;">
 						<ul>
 							<li class="head">秘钥导入</li>
-							<li class="lab">地址：tool.html/import<span class="label label-info" style="padding: 4px 8px;"><a href="/tool.html/import" target="_blank">执行</a></span></li>
+							<li class="lab">地址：tools/import<span class="label label-info" style="padding: 4px 8px;"><a href="/tool.html/import" target="_blank">执行</a></span></li>
 							<li  class="lab">
                                 说明：服务迁移如果秘钥丢失，可通过此接口批量导入秘钥，请把秘钥文件(tiny_keys.txt)放在app/static/temp/目录下，请求此接口即可
                             </li>

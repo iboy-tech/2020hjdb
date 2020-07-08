@@ -22,8 +22,8 @@ from app.utils.wxpusher import WxPusher
 from app.views.found_view import send_message_by_pusher
 
 
+@oauth.route('/wechat/callback', methods=['POST'], strict_slashes=False)
 @oauth.route('/wx.html', methods=['GET'], strict_slashes=False)
-@oauth.route('/wx', methods=['POST'], strict_slashes=False)
 def index():
     if current_user.is_authenticated and request.method == 'GET':
         op = OpenID.query.filter_by(user_id=current_user.id).first()

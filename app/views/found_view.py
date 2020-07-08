@@ -12,14 +12,14 @@ import os
 from datetime import datetime
 from random import randint
 
-from flask import render_template, request
+from flask import request
 from flask_cors import cross_origin
 from flask_login import current_user, login_required
 from sqlalchemy import or_
 
 from app import db, OpenID, redis_client, cache, limiter, logger
 from app.config import PostConfig
-from app.decorators import wechat_required, admin_required
+from app.decorators import admin_required
 from app.models.category_model import Category
 from app.models.comment_model import Comment
 from app.models.lostfound_model import LostFound
@@ -34,14 +34,6 @@ from app.utils.mail_sender import send_email
 from app.utils.qq_notice import qq_group_notice
 from app.utils.time_util import get_time_str
 from app.utils.wechat_notice import delete_post_notice, send_message_by_pusher
-
-
-@found.route('/', methods=['GET'], strict_slashes=False)
-@cache.cached(timeout=3600 * 24 * 7, key_prefix="found-html")  # 缓存5分钟 默认为300s
-@login_required
-@wechat_required
-def index():
-    return render_template('found.html')
 
 
 @found.route('/resend/<int:id>', methods=['GET'], strict_slashes=False)
@@ -59,11 +51,12 @@ def resend(id):
     return restful.success(msg="已重新发布")
 
 
-@found.route('/getall', methods=['POST'], strict_slashes=False)
+@found.route('/page', methods=['POST'], strict_slashes=False)
 @login_required
 # @cache.cached(timeout=10 * 60, query_string=True, key_prefix='found-getall')  # 缓存10分钟 默认为300s
 def get_all():
     req = request.json
+    print(req)
     page = 0
     # logger.info(req['pageSize'])
     if req['pageNum']:
@@ -176,8 +169,7 @@ def get_all():
     # logger.info('分类查询：',data)
     return data
 
-
-@found.route('/pub', methods=['POST', 'OPTIONS'], strict_slashes=False)
+@found.route('/', methods=['POST', 'OPTIONS'], strict_slashes=False)
 @limiter.limit(limit_value="5/minute")
 @login_required
 @check_post
@@ -226,7 +218,7 @@ def pub():
         "kind": "失物招领" if lost.kind == 0 else "寻物启示",
         "poster": current_user.real_name,
         "category": Category.query.get(lost.category_id).name,
-        "addr": "未知" if lost.location=='' else lost.location,
+        "addr": "未知" if lost.location == '' else lost.location,
         "detail": lost.about,
         "url": os.getenv('SITE_URL') + 'detail/' + str(lost.id) + ".html"
     }
@@ -287,7 +279,7 @@ def get_search_data(pagination, pageNum, pagesize):
     return restful.success(data=data)
 
 
-@found.route('/deleteAll', methods=['POST'])
+@found.route('/', methods=['DELETE'])
 @login_required
 @admin_required
 @cross_origin()
@@ -325,15 +317,14 @@ def delete_posts():
     return restful.success(msg="删除成功")
 
 
-@found.route('/delete', methods=['POST'])
+@found.route('/delete/<int:id>', methods=['DELETE'])
 @login_required
 @cross_origin()
-def delete_post():
-    req = request.args.get('id')
-    if not req:
+def delete_post(id=-1):
+    if id ==-1:
         return restful.error()
     else:
-        l = LostFound.query.get_or_404(int(req))
+        l = LostFound.query.get_or_404(id)
         # logger.info("帖子：", l)
         u = User.query.get_or_404(l.user_id)
         # logger.info("用户：", u)

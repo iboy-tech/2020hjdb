@@ -33,9 +33,8 @@ var app = new Vue({
                 btn: ['确定', '取消'] //按钮
             }, function () {
                             $.ajax({
-                url: "/tool.html/deleteKey?key=" + key,
-                // data: JSON.stringify(key),
-                method: "POST",
+                url: "/tools/" + key,
+                method: "DELETE",
                 success: function (res) {
                     if (res.success) {
                         showOK(res.msg);
@@ -51,9 +50,9 @@ var app = new Vue({
         },
         compress: function () {
             $.ajax({
-                url: "/tool.html/compress",
+                url: "/tools/compress",
                 // data: JSON.stringify(key),
-                method: "POST",
+                method: "GET",
                 success: function (res) {
                     if (res.success) {
                         showOK(res.msg);
@@ -65,8 +64,8 @@ var app = new Vue({
         },
         importKeys: function () {
             $.ajax({
-                url: "/tool.html/import",
-                method: "POST",
+                url: "/tools/import",
+                method: "GET",
                 success: function (res) {
                     if (res.success) {
                         showOK(res.msg);
@@ -84,12 +83,9 @@ var app = new Vue({
 function addKey(key) {
     //console.log(data);
     $.ajax({
-        url: baseUrl + "/tool.html/addKey?key=" + key,
-        //data: JSON.stringify(data),
+        url: baseUrl + "/tools/" + key,
         method: "POST",
-        success: function (res, status) {
-            console.log(res);
-            if (status == "success") {
+        success: function (res) {
                 if (res.success) {
                     layer.closeAll();
                     showOK(res.msg);
@@ -97,10 +93,6 @@ function addKey(key) {
                 } else {
                     showAlertError(res.msg)
                 }
-            } else {
-                console.log(res);
-                showAlertError(res)
-            }
         }
     });
 }
@@ -127,15 +119,12 @@ $(function () {
 
 function getKeys(app, append) {
     $.ajax({
-        url: baseUrl + "/tool.html/getall",
-        // data: JSON.stringify(data),
-        method: "POST",
+        url: baseUrl + "/tools",
+        method: "GET",
         success: function (res) {
-            console.log(res);
             if (res.success) {
                 if (append) {
                     for (let v in res.data.list) {
-                        //console.log(v);
                         app.list.push(res.data.list[v]);
                     }
                 } else {

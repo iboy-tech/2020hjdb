@@ -14,7 +14,7 @@ from flask import render_template, request, url_for
 from flask_login import current_user, login_required
 from sqlalchemy import or_
 
-from app import db, redis_client, cache, limiter
+from app import db, redis_client, cache, limiter, logger
 from app.config import PostConfig
 from app.decorators import super_admin_required, admin_required, wechat_required
 from app.models.user_model import User
@@ -25,16 +25,7 @@ from app.utils.delete_file import remove_files
 from app.utils.mail_sender import send_email
 
 
-@users.route('/', methods=['POST', 'GET', 'OPTIONS'], strict_slashes=False)
-@cache.cached(timeout=3600 * 24 * 7, key_prefix="users.html")  # 缓存5分钟 默认为300s
-@login_required
-@wechat_required
-@admin_required
-def index():
-    return render_template('users.html')
-
-
-@users.route('/getall', methods=['POST', 'GET'], strict_slashes=False)
+@users.route('/', methods=['POST'], strict_slashes=False)
 @limiter.limit("2/day", exempt_when=lambda: current_user.is_admin)
 @login_required
 @wechat_required
@@ -115,12 +106,13 @@ def get_all():
         return data
 
 
-@users.route('/freeze', methods=['POST'], strict_slashes=False)
+@users.route('/freeze/<int:id>', methods=['GET'], strict_slashes=False)
 @login_required
 @admin_required
-def user_freeze_or_unfreeze():
-    req = request.args.get('userId')
-    u = User.query.get_or_404(int(req))
+def user_freeze_or_unfreeze(id=-1):
+    if id == -1:
+        return restful.error()
+    u = User.query.get_or_404(id)
     if u.status == 1:
         return restful.error('该账户尚未认证，暂时无法冻结')
     elif current_user.kind <= u.kind:
@@ -145,12 +137,13 @@ def user_freeze_or_unfreeze():
     return restful.success()
 
 
-@users.route('/resetPassword', methods=['POST'], strict_slashes=False)
+@users.route('/password/<int:id>', methods=['GET'], strict_slashes=False)
 @login_required
 @admin_required
-def reset_pssword():
-    req = request.args.get('userId')
-    u = User.query.get(int(req))
+def reset_pssword(id=-1):
+    if id == -1:
+        return restful.error()
+    u = User.query.get(id)
     password = generate_password()
     u.password = password
     messages = {
@@ -170,7 +163,9 @@ def reset_pssword():
 @users.route('/resend/<int:id>', methods=['GET'], strict_slashes=False)
 @login_required
 @admin_required
-def resend_mail(id):
+def resend_mail(id=-1):
+    if id == -1:
+        return restful.error()
     try:
         user_db = User.query.get(id)
         token = str(generate_token(id=user_db.id, operation='confirm-qq', qq=user_db.qq), encoding="utf-8")
@@ -181,7 +176,7 @@ def resend_mail(id):
         send_email.apply_async(args=(user_db.qq, '身份认证', 'confirm', messages), countdown=1)
         return restful.success(msg='发送成功')
     except:
-        return  restful.success(False,msg="参数错误")
+        return restful.success(False, msg="参数错误")
 
 
 def delete_img_and_report(posts, reports):
@@ -207,7 +202,7 @@ def delete_img_and_report(posts, reports):
         remove_files(del_reports, 2)
 
 
-@users.route('/deleteAll', methods=['POST'], strict_slashes=False)
+@users.route('/', methods=['DELETE'], strict_slashes=False)
 @super_admin_required
 def delete_users():
     req = request.json
@@ -231,7 +226,7 @@ def delete_users():
                     flag = True
         except Exception as e:
             db.session.rollback()
-            return restful.params_error(success=False, msg=str(e))
+            return restful.error(str(e))
         finally:
             db.session.close()
             # 无法直接删除超级管理员
@@ -243,11 +238,12 @@ def delete_users():
     return restful.success(msg="删除失败")
 
 
-@users.route('/delete', methods=['POST'], strict_slashes=False)
+@users.route('/delete/<int:id>', methods=['DELETE'], strict_slashes=False)
 @super_admin_required
-def delete_user():
-    req = request.args.get('userId')
-    u = User.query.get(int(req))
+def delete_user(id=-1):
+    if id == -1:
+        return restful.error()
+    u = User.query.get(id)
     if u and u.kind != 3:
         try:
             posts = u.posts
@@ -255,22 +251,24 @@ def delete_user():
             delete_img_and_report(posts, reports)
             db.session.delete(u)
             db.session.commit()
+
         except Exception as e:
+            logger.info(str(e))
             db.session.rollback()
-            msg = str(e)
-            return restful.params_error(success=False, msg=msg)
+            return restful.error()
     else:
         if u.kind == 3:
-            return restful.params_error(False, msg="超级管理员无法直接删除")
-        return restful.params_error(success=False, msg="用户不存在")
-    return restful.success(msg="删除失败")
+            return restful.error("超级管理员无法直接删除")
+        return restful.error("用户不存在")
+    return restful.success(msg="删除成功")
 
 
-@users.route('/setAsAdmin', methods=['POST'], strict_slashes=False)
+@users.route('/admin/<int:id>', methods=['GET'], strict_slashes=False)
 @super_admin_required
-def set_or_cancle_admin():
-    req = request.args.get('userId')
-    u = User.query.get(int(req))
+def set_or_cancle_admin(id=-1):
+    if id == -1:
+        return restful.error()
+    u = User.query.get(id)
     u.kind = 2 if u.kind == 1 else 1
     db.session.commit()
     return restful.success()
@@ -280,8 +278,6 @@ def set_or_cancle_admin():
 def search(pagination, page, pagesize):
     global data
     my_users = pagination.items
-    # users = User.query.order_by(desc('kind')).all()
-    # logger.info(users)
     list = []
     for u in my_users:
         dict = u.to_dict()
@@ -298,11 +294,12 @@ def search(pagination, page, pagesize):
     return restful.success(data=data)
 
 
-@users.route('/userInfo', methods=['POST'], strict_slashes=False)
+@users.route('/info/<int:id>', methods=['GET'], strict_slashes=False)
 @login_required
 @admin_required
-def get_userinfo():
-    id = int(request.args.get('userId'))
+def get_userinfo(id=-1):
+    if id == -1:
+        return restful.error()
     u = User.query.get_or_404(id)
     data = {
         "user": u.to_dict()

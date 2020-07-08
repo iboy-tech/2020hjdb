@@ -48,11 +48,10 @@ var app = new Vue({
                 btn: ['确定', '取消'] //按钮
             }, function () {
                 $.ajax({
-                    url: baseUrl + "/users.html/deleteAll",
-                    method: "POST",
+                    url: baseUrl + "/users",
+                    method: "DELETE",
                     data: JSON.stringify(data),
                     success: function (res) {
-                        console.log(res);
                         if (res.success) {
                             app.checked = false;
                             app.checkedList = [];
@@ -75,7 +74,7 @@ var app = new Vue({
         // 重发认证邮件
         reSend: function (id) {
             $.ajax({
-                url: baseUrl + "/users.html/resend/" + id,
+                url: baseUrl + "/users/resend/" + id,
                 method: "GET",
                 success: function (res) {
                     if (res.success) {
@@ -170,11 +169,10 @@ $(function () {
 //获取用户列表
 function getUserList(data, app, append) {
     $.ajax({
-        url: baseUrl + "/users.html/getall",
+        url: baseUrl + "/users",
         data: JSON.stringify(data),
         method: "POST",
-        success: function (res, status) {
-            console.log(res);
+        success: function (res) {
             if (res.success) {
                 app.search.pageNum = res.data.page.pageNum;
                 app.search.pageSize = res.data.page.pageSize;
@@ -196,9 +194,8 @@ function getUserList(data, app, append) {
 //重置密吗
 function resetPassword(userId) {
     $.ajax({
-        url: baseUrl + "/users.html/resetPassword?userId=" + userId,
-        method: "POST",
-        //data: JSON.stringify(data),
+        url: baseUrl + "/users/password/"+userId,
+        method: "GET",
         beforeSend: function () {
             showLoading();
         },
@@ -221,8 +218,8 @@ function resetPassword(userId) {
 //设置/取消用户为管理员
 function setAsAdmin(userId) {
     $.ajax({
-        url: baseUrl + "/users.html/setAsAdmin?userId=" + userId,
-        method: "POST",
+        url: baseUrl + "/users/admin/" + userId,
+        method: "GET",
         //data: JSON.stringify(data),
         success: function (res, status) {
             console.log(res);
@@ -244,25 +241,18 @@ function setAsAdmin(userId) {
 //冻结用户
 function freezeUser(userId) {
     $.ajax({
-        url: baseUrl + "/users.html/freeze?userId=" + userId,
-        method: "POST",
-        //data: JSON.stringify(data),
+        url: baseUrl + "/users/freeze/" + userId,
+        method: "GET",
         beforeSend: function () {
             showLoading();
         },
-        success: function (res, status) {
-            console.log(res);
-            if (status == "success") {
+        success: function (res) {
                 if (res.success) {
                     showOK();
                     getUserList(app.search, app, false);
                 } else {
                     showAlertError(res.msg)
                 }
-            } else {
-                console.log(res);
-                showAlertError(res)
-            }
         },
         complete: function () {
             hideLoading();
@@ -273,11 +263,9 @@ function freezeUser(userId) {
 //删除用户
 function deleteUser(userId) {
     $.ajax({
-        url: baseUrl + "/users.html/delete?userId=" + userId,
-        method: "POST",
-        //data: JSON.stringify(data),
-        success: function (res, status) {
-            console.log(res);
+        url: baseUrl + "/users/delete/" + userId,
+        method: "DELETE",
+        success: function (res) {
             if (res.success) {
                 showOK();
                 getUserList(app.search, app, false);
@@ -291,25 +279,18 @@ function deleteUser(userId) {
 //解冻用户
 function unfreezeUser(userId) {
     $.ajax({
-        url: baseUrl + "/users.html/freeze?userId=" + userId,
-        method: "POST",
-        //data: JSON.stringify(data),
+        url: baseUrl + "/users/freeze/" + userId,
+        method: "GET",
         beforeSend: function () {
             showLoading();
         },
-        success: function (res, status) {
-            console.log(res);
-            if (status == "success") {
+        success: function (res) {
                 if (res.success) {
                     showOK();
                     getUserList(app.search, app, false);
                 } else {
                     showAlertError(res.msg)
                 }
-            } else {
-                console.log(res);
-                showAlertError(res)
-            }
         },
         complete: function () {
             hideLoading();

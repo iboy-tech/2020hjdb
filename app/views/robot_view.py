@@ -8,24 +8,17 @@
 @Description : 
 @Software: PyCharm
 """
-from flask import render_template, request
+from flask import request
 from flask_login import login_required
 
-from app import db, logger
+from app import db
 from app.decorators import admin_required, super_admin_required
+from app.models.robot_model import Robot
 from app.page import robot
 from app.utils import restful
-from app.models.robot_model import Robot
 
 
-@robot.route("/", methods=["GET"])
-@login_required
-@admin_required
-def index():
-    return render_template('robot.html')
-
-
-@robot.route("/getall", methods=['GET', 'POST', 'OPTIONS'])
+@robot.route("/", methods=['GET','OPTIONS'])
 @login_required
 @admin_required
 def get_all():
@@ -39,7 +32,7 @@ def get_all():
     return restful.success(data=data)
 
 
-@robot.route("/add", methods=['GET', 'POST', 'OPTIONS'])
+@robot.route("/", methods=['POST', 'OPTIONS'])
 @login_required
 @admin_required
 def add_group():

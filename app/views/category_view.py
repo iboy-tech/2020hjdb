@@ -8,39 +8,30 @@
 @Description : 
 @Software: PyCharm
 """
-from flask import request, render_template
+from flask import request
 from flask_login import login_required
 
 from app import db, cache
-from app.decorators import admin_required, super_admin_required, wechat_required
+from app.decorators import super_admin_required
 from app.models.category_model import Category
 from app.page import category
 from app.utils import restful
 
 
-@category.route('/', methods=['GET'], strict_slashes=False)
-@cache.cached(timeout=3600*24*7,key_prefix="category-html")  # 缓存5分钟 默认为300s
-@login_required
-@wechat_required
-@admin_required
-def index():
-    return render_template('category.html')
-
-
-@category.route('/getall', methods=['POST', 'OPTIONS'], strict_slashes=False)
-@cache.cached(timeout=3600*24,key_prefix="category")  # 缓存5分钟 默认为300s
+@category.route('/', methods=['GET', 'OPTIONS'], strict_slashes=False)
+@cache.cached(timeout=3600 * 24, key_prefix="category")  # 缓存5分钟 默认为300s
 @login_required
 def get_all():
     # logger.info('category页面收到请求', data)
-    categorys=Category.query.all()
-    list=[c.to_dict() for c in categorys]
-    data={
-            "list":list
-        }
+    categorys = Category.query.all()
+    list = [c.to_dict() for c in categorys]
+    data = {
+        "list": list
+    }
     return restful.success(data=data)
 
 
-@category.route('/add', methods=['POST'])
+@category.route('/', methods=['POST'])
 @login_required
 @super_admin_required
 def add_category():
@@ -54,15 +45,16 @@ def add_category():
         db.session.rollback()
         return restful.error("类别名称已存在")
     cache.delete("category")
-    return restful.success()
+    return restful.success(msg="添加成功")
 
 
-@category.route('/delete', methods=['POST'])
+@category.route('/<int:id>', methods=['DELETE'])
 @login_required
 @super_admin_required
-def delete_category():
-    req = request.args.get('name')
-    temp = Category.query.filter_by(name=req).first()
+def delete_category(id=-1):
+    if id == -1:
+        return restful.error()
+    temp = Category.query.get(id)
     db.session.delete(temp)
     db.session.commit()
     cache.delete("category")

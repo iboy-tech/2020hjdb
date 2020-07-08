@@ -24,15 +24,7 @@ from app.utils.check_data import check_feedback
 from app.utils.mail_sender import send_email
 
 
-@feedback.route('/', methods=['GET', 'POST', 'OPTIONS'], strict_slashes=False)
-@login_required
-@wechat_required
-@admin_required
-def index():
-    return render_template('feedback.html')
-
-
-@feedback.route('/getall', methods=['GET', 'POST', 'OPTIONS'], strict_slashes=False)
+@feedback.route('/', methods=['GET', 'OPTIONS'], strict_slashes=False)
 @login_required
 @admin_required
 def get_all():
@@ -78,7 +70,7 @@ def get_new_feedback():
     return new_count
 
 
-@feedback.route('/add', methods=['GET', 'POST', 'OPTIONS'], strict_slashes=False)
+@feedback.route('/', methods=['POST', 'OPTIONS'], strict_slashes=False)
 @login_required
 @check_feedback
 def feedback_add():
@@ -105,15 +97,16 @@ def feedback_add():
     return restful.success(msg="感谢您的反馈")
 
 
-@feedback.route('/delete', methods=['POST', 'OPTIONS'], strict_slashes=False)
+@feedback.route('/<int:id>', methods=['DELETE', 'OPTIONS'], strict_slashes=False)
 @login_required
 @admin_required
-def feedback_delete():
-    req = request.args.get('id')
-    f = Feedback.query.get(int(req))
+def feedback_delete(id=-1):
+    if id == -1:
+        return restful.error()
+    f = Feedback.query.get(id)
     db.session.delete(f)
     db.session.commit()
-    return restful.success()
+    return restful.success(msg="删除成功")
 
 
 @feedback.route('/reply', methods=['POST', 'OPTIONS'], strict_slashes=False)
@@ -143,13 +136,13 @@ def feedback_replay():
     return restful.success()
 
 
-@feedback.route('/mark', methods=['POST', 'OPTIONS'], strict_slashes=False)
+@feedback.route('/<int:id>', methods=['PUT', 'OPTIONS'], strict_slashes=False)
 @login_required
 @admin_required
-def feedback_mark():
-    req = request.args.get('id')
-    # logger.info('request.args.get(\'id\')', req)
-    f = Feedback.query.get(int(req))
+def feedback_mark(id=-1):
+    if id == -1:
+        return restful.error()
+    f = Feedback.query.get(id)
     f.status = 1
     f.handler_time = datetime.now()
     f.handler_id = current_user.id

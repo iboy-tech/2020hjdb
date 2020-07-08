@@ -71,11 +71,9 @@ $(function () {
 //标记已读反馈
 function deleteFeedback(id) {
     $.ajax({
-        url: baseUrl + "/feedback.html/delete?id=" + id,
-        method: "POST",
-        //data: JSON.stringify(data),
+        url: baseUrl + "/feedbacks/" + id,
+        method: "DELETE",
         success: function (res) {
-            console.log(res);
                 if (res.success) {
                     showOK(res.msg);
                     getFeedbackList(app);
@@ -89,11 +87,9 @@ function deleteFeedback(id) {
 //标记已读反馈
 function markFeedback(id) {
     $.ajax({
-        url: baseUrl + "/feedback.html/mark?id=" + id,
-        method: "POST",
-        //data: JSON.stringify(data),
+        url: baseUrl + "/feedbacks/" + id,
+        method: "PUT",
         success: function (res) {
-            console.log(res);
                 if (res.success) {
                     showOK(res.msg);
                     getFeedbackList(app);
@@ -108,12 +104,10 @@ function markFeedback(id) {
 //回复反馈
 function replyFeedback(data, app) {
     $.ajax({
-        url: baseUrl + "/feedback.html/reply",
+        url: baseUrl + "/feedbacks/reply",
         method: "POST",
         data: JSON.stringify(data),
-        success: function (res, status) {
-            console.log(res);
-            if (status == "success") {
+        success: function (res) {
                 if (res.success) {
                     layer.closeAll();
                     showOK(res.msg);
@@ -123,10 +117,6 @@ function replyFeedback(data, app) {
                 } else {
                     showAlertError(res.msg)
                 }
-            } else {
-                console.log(res);
-                showAlertError(res)
-            }
         }
     });
 }
@@ -134,21 +124,15 @@ function replyFeedback(data, app) {
 //查询反馈列表
 function getFeedbackList(app) {
     $.ajax({
-        url: baseUrl + "/feedback.html/getall",
+        url: baseUrl + "/feedbacks",
         //data: JSON.stringify(data),
-        method: "POST",
-        success: function (res, status) {
-            console.log(res);
-            if (status == "success") {
+        method: "GET",
+        success: function (res) {
                 if (res.success) {
                     app.list = res.data.list;
                 } else {
                     showAlertError(res.msg)
                 }
-            } else {
-                console.log(res);
-                showAlertError(res)
-            }
         }
     });
 

@@ -68,22 +68,16 @@ var app = new Vue({
 
 function switchFix(id) {
     $.ajax({
-        url: baseUrl + "/notice.html/switch?id=" + id,
+        url: baseUrl + "/notices/" + id,
         //data: JSON.stringify(data),
-        method: "POST",
-        success: function (res, status) {
-            console.log(res);
-            if (status == "success") {
+        method: "PUT",
+        success: function (res) {
                 if (res.success) {
                     showOK();
                     getNoticeList(app);
                 } else {
                     showAlertError(res.msg)
                 }
-            } else {
-                console.log(res);
-                showAlertError(res)
-            }
         }
     });
 }
@@ -91,22 +85,16 @@ function switchFix(id) {
 //删除通知
 function deleteNotice(id) {
     $.ajax({
-        url: baseUrl + "/notice.html/delete?id=" + id,
+        url: baseUrl + "/notices/" + id,
         //data: JSON.stringify(data),
-        method: "POST",
-        success: function (res, status) {
-            console.log(res);
-            if (status == "success") {
+        method: "DELETE",
+        success: function (res) {
                 if (res.success) {
                     showOK();
                     getNoticeList(app);
                 } else {
                     showAlertError(res.msg)
                 }
-            } else {
-                console.log(res);
-                showAlertError(res)
-            }
         }
     });
 }
@@ -115,13 +103,12 @@ function deleteNotice(id) {
 function addNotice(notice) {
     //console.log(data);
     $.ajax({
-        url: baseUrl + "/notice.html/add",
+        url: baseUrl + "/notices",
         method: "POST",
         data: JSON.stringify(notice),
-        success: function (res, status) {
-            console.log(res);
+        success: function (res) {
             if (res.success) {
-                showOK();
+                showOK(res.msg);
                 layer.closeAll(); //疯狂模式，关闭所有层
                 app.notice = {
                     title: "",
@@ -140,23 +127,14 @@ function addNotice(notice) {
 //查询通知列表
 function getNoticeList(app) {
     $.ajax({
-        url: baseUrl + "/notice.html/getall",
-        //data: JSON.stringify(data),
-        method: "POST",
-        success: function (res, status) {
-            console.log(res);
-            // alert('notice'+res)
-            // alert('我是'+status)
-            if (status == "success") {
+        url: baseUrl + "/notices",
+        method: "GET",
+        success: function (res) {
                 if (res.success) {
                     app.list = res.data.list;
                 } else {
                     showAlertError(res.msg)
                 }
-            } else {
-                console.log(res);
-                showAlertError(res)
-            }
         }
     });
 }

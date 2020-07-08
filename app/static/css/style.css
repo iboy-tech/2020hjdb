@@ -2146,7 +2146,8 @@ h4.modal-title {
 .compose-right input[type="submit"] {
     font-size: 0.9em;
     background-color: #2185D0;
-    border: 1px solid #4F52BA;
+    /*border: 1px solid #4F52BA;*/
+	border: none;
     color: #fff;
     padding: 0.4em 1em;
     margin-top: 1em;

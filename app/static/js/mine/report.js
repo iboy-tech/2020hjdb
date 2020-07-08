@@ -44,9 +44,8 @@ var app = new Vue({
                 btn: ['确定', '取消'] //按钮
             }, function () {
                             $.ajax({
-                url: "/report.html/delete",
-                data: JSON.stringify(id),
-                method: "POST",
+                url: "/reports/"+id,
+                method: "DELETE",
                 success: function (res) {
                     if (res.success) {
                         showOK(res.msg);
@@ -91,11 +90,9 @@ $(function () {
 
 function getFile(app, append) {
     $.ajax({
-        url: baseUrl + "/report.html/getall",
-        // data: JSON.stringify(data),
-        method: "POST",
+        url: baseUrl + "/reports",
+        method: "GET",
         success: function (res) {
-            console.log(res);
             if (res.success) {
                 if (append) {
                     for (let v in res.data.list) {
@@ -114,12 +111,10 @@ function getFile(app, append) {
 
 function addFile(app, data) {
     $.ajax({
-        url: baseUrl + "/report.html/add",
+        url: baseUrl + "/reports",
         data: JSON.stringify(data),
         method: "POST",
         success: function (res) {
-            console.log(res);
-            // alert('我是userlist'+res)
             if (res.success) {
                 showOK(res.msg);
                 getFile(app, false);

@@ -23,18 +23,8 @@ from app.views.found_view import send_message_by_pusher
 from tasks import celery
 
 
-@notice.route('/', methods=['GET', 'POST', 'OPTIONS'], strict_slashes=False)
-@cache.cached(timeout=3600*24*7,key_prefix="notice-html")  # 缓存5分钟 默认为300s
-@login_required
-@wechat_required
-@admin_required
-def index():
-    data = request.json
-    return render_template('notice.html')
-
-
-@notice.route('/getall', methods=['POST', 'OPTIONS'], strict_slashes=False)
-@cache.cached(timeout=3600 * 24*7,key_prefix="notice")  # 缓存5分钟 默认为300s
+@notice.route('/', methods=['GET', 'OPTIONS'], strict_slashes=False)
+@cache.cached(timeout=3600 * 24 * 7, key_prefix="notice")  # 缓存5分钟 默认为300s
 @login_required
 def get_all():
     notices = Notice.query.order_by(desc('fix_top'), desc('create_time')).limit(10)
@@ -45,7 +35,7 @@ def get_all():
     return restful.success(data=data)
 
 
-@notice.route('/add', methods=['POST'], strict_slashes=False)
+@notice.route('/', methods=['POST'], strict_slashes=False)
 @login_required
 @admin_required
 def notice_add():
@@ -79,24 +69,26 @@ def noticeAll(msg):
     send_message_by_pusher(msg=msg, uid=uids, kind=7)
 
 
-@notice.route('/delete', methods=['POST'], strict_slashes=False)
+@notice.route('/<int:id>', methods=['DELETE'], strict_slashes=False)
 @login_required
 @admin_required
-def notice_delete():
-    req = request.args.get('id')
-    n = Notice.query.get(int(req))
+def notice_delete(id=-1):
+    if id == -1:
+        return restful.error()
+    n = Notice.query.get(id)
     db.session.delete(n)
     db.session.commit()
     cache.delete("notice")
-    return restful.success()
+    return restful.success(msg="删除成功")
 
 
-@notice.route('/switch', methods=['POST'], strict_slashes=False)
+@notice.route('/<int:id>', methods=['PUT'], strict_slashes=False)
 @login_required
 @admin_required
-def notice_switch():
-    req = request.args.get('id')
-    n = Notice.query.get(int(req))
+def notice_switch(id=-1):
+    if id == -1:
+        return restful.error()
+    n = Notice.query.get(id)
     n.fix_top = 1 if n.fix_top == 0 else 0
     db.session.commit()
     cache.delete("notice")

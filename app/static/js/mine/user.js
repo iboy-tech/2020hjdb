@@ -1,7 +1,6 @@
 var app = new Vue({
     el: "#app",
     created:function() {
-
         this.user=getLocal("user") ? JSON.parse(getLocal("user")) :{};
         if (getSession("tabIndex") == "3") {
             getMessages(this);
@@ -368,14 +367,6 @@ var app = new Vue({
                     }
                     setReward(app.wxReward);
                 },
-                // cancel: function () {
-                //     // app.wxReward = {
-                //     //     oldPassword: "",
-                //     //     newPassword: "",
-                //     //     confirmPassword: ""
-                //     // }
-                //      console.log("测试参数："+app.wxReward);
-                // }
             });
         },
         setQQ:function() {
@@ -421,9 +412,9 @@ var app = new Vue({
 
 function setReward(data) {
     $.ajax({
-        url: baseUrl + "/user.html/setReward",
+        url: baseUrl + "/user/reward",
         data: JSON.stringify({'reward': data}),
-        method: "POST",
+        method: "PUT",
         success: function (res) {
             console.log(res);
                 if (res.success) {
@@ -440,9 +431,9 @@ function setReward(data) {
 function setQQ(qq) {
     //console.log(data);
     $.ajax({
-        url: baseUrl + "/user.html/setQQ",
+        url: baseUrl + "/user/qq",
         data: JSON.stringify({'qq': qq}),
-        method: "POST",
+        method: "PUT",
         success: function (res) {
             console.log(res);
                 if (res.success) {
@@ -459,9 +450,8 @@ function setQQ(qq) {
 
 //新增反馈
 function pubFeedback(data) {
-    console.log(data);
     $.ajax({
-        url: baseUrl + "/feedback.html/add",
+        url: baseUrl + "/feedbacks",
         data: JSON.stringify(data),
         method: "POST",
         success: function (res) {
@@ -484,9 +474,9 @@ function pubFeedback(data) {
 function setPassword(data) {
     console.log(data);
     $.ajax({
-        url: baseUrl + "/user.html/setPassword",
+        url: baseUrl + "/user/password",
         data: JSON.stringify(data),
-        method: "POST",
+        method: "PUT",
         success: function (res) {
             if (res.success) {
                 layer.closeAll();
@@ -518,8 +508,8 @@ function setPassword(data) {
 //删除招领信息
 function deletePub(id) {
     $.ajax({
-        url: baseUrl + "/found.html/delete?id=" + id,
-        method: "POST",
+        url: baseUrl + "/lostfounds/delete/" + id,
+        method: "DELETE",
         success: function (res) {
             console.log(res);
             if (res.success) {
@@ -536,9 +526,8 @@ function deletePub(id) {
 //查询通知列表
 function getNoticeList(app) {
     $.ajax({
-        url: baseUrl + "/notice.html/getall",
-        //data: JSON.stringify(data),
-        method: "POST",
+        url: baseUrl + "/notices",
+        method: "GET",
         success: function (res) {
             if (res.success) {
                 app.notice = res.data.list;
@@ -553,8 +542,8 @@ function getNoticeList(app) {
 function removeComment(id) {
     console.log("我是要删除的ID:" + id);
     $.ajax({
-        url: baseUrl + "/comment/delete?id=" + id,
-        method: "POST",
+        url: baseUrl + "/comments/" + id,
+        method: "DELETE",
         success: function (res) {
             console.log(res);
             if (res.success) {
@@ -571,8 +560,8 @@ function removeComment(id) {
 //我的消息(与我发布的信息相关的评论）
 function getMessages(app) {
     $.ajax({
-        url: baseUrl + "/user.html/messages",
-        method: "POST",
+        url: baseUrl + "/user/messages",
+        method: "GET",
         success: function (res, status) {
             console.log(res);
             if (status == "success") {
@@ -619,7 +608,7 @@ function changeInput(obj) {
 function pubLostFound(data) {
     console.log(data);
     $.ajax({
-        url: baseUrl + "/user.html/pub",
+        url: baseUrl + "/lostfounds",
         data: JSON.stringify(data),
         method: "POST",
         success: function (res) {
@@ -646,7 +635,7 @@ function pubLostFound(data) {
 function pubLostFound(data) {
     console.log(data);
     $.ajax({
-        url: baseUrl + "/found.html/pub",
+        url: baseUrl + "/lostfounds",
         data: JSON.stringify(data),
         method: "POST",
         success: function (res) {
@@ -677,13 +666,11 @@ function pubLostFound(data) {
 
 //分页查寻启事列表
 function pageLostFound(data, result, append) {
-    //console.log(data);
     $.ajax({
-        url: baseUrl + "/found.html/getall",
+        url: baseUrl + "/lostfounds/page",
         data: JSON.stringify(data),
         method: "POST",
         success: function (res) {
-            console.log(res);
             if (res.success) {
                 // result.search.pageNum = res.data.page.pageNum;
                 result.search.pageSize = res.data.page.pageSize;
@@ -691,7 +678,6 @@ function pageLostFound(data, result, append) {
                 result.total = res.data.page.total;
                 if (append) {
                     for (let v in res.data.page.list) {
-                        //console.log(v);
                         result.list.push(res.data.page.list[v]);
                     }
                 } else {
@@ -707,8 +693,8 @@ function pageLostFound(data, result, append) {
 //获取物品类别list
 function getCategory() {
     $.ajax({
-        url: baseUrl + "/category.html/getall",
-        method: "POST",
+        url: baseUrl + "/categories",
+        method: "GET",
         success: function (res) {
             console.log(res);
                 if (res.success) {

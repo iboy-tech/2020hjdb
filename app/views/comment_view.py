@@ -63,9 +63,9 @@ def index(id):
             return restful.error()
     else:
         comments = Comment.query.order_by(desc('create_time')).filter_by(lost_found_id=int(id)).all()
-        post=LostFound.query.get(int(id))
+        post = LostFound.query.get(int(id))
         if post:
-            post_user=User.query.get(post.user_id)
+            post_user = User.query.get(post.user_id)
             # logger.info("我是帖子的评论：",comments)
             if not comments:
                 data = {
@@ -93,16 +93,14 @@ def index(id):
                 return restful.success(data=data)
 
 
-@comment.route('/delete', methods=['POST'])
+@comment.route('/<int:id>', methods=['DELETE'])
 @login_required
 @cross_origin()
-def delete_comment():
-    refer = request.referrer
-    req = request.args.get('id')
-    if not req:
+def delete_comment(id=-1):
+    if id == -1:
         return restful.error()
     else:
-        c = Comment.query.get(int(req))
+        c = Comment.query.get(id)
         if c is not None and (
                 LostFound.query.get(c.lost_found_id).user_id == current_user.id or current_user.kind >= 2):
             db.session.delete(c)

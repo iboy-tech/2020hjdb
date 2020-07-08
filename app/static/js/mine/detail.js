@@ -293,7 +293,7 @@ function pageLostFound(data, result) {
 //发布评论
 function pubComment(data, app) {
     $.ajax({
-        url: baseUrl + "/comment/" + getPostId(),
+        url: baseUrl + "/comments/" + getPostId(),
         data: JSON.stringify(data),
         method: "POST",
         success: function (res) {
@@ -320,7 +320,7 @@ function pubComment(data, app) {
 function getComments(data, app) {
     console.log("评论有BUG：", data);
     $.ajax({
-        url: baseUrl + "/comment/" + getPostId(),
+        url: baseUrl + "/comments/" + getPostId(),
         method: "POST",
         success: function (res) {
             if (res.success) {
@@ -336,10 +336,9 @@ function getComments(data, app) {
 
 //新增反馈
 function pubFeedback(data) {
-
     data.content = data.content.concat(" (详情链接：" + location.href + ")");
     $.ajax({
-        url: baseUrl + "/feedback.html/add",
+        url: baseUrl + "/feedbacks",
         data: JSON.stringify(data),
         method: "POST",
         success: function (res) {

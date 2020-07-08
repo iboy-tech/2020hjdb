@@ -72,8 +72,7 @@
                             </li>
                              <li v-if="user.kind==3">
                                 <a href="/robot.html">群机器人
-                                    <!--<span class="nav-badge-btm">8</span>-->
-                                </a>
+</a>
                             </li>
 
                         </ul>
@@ -178,7 +177,7 @@
                                 <a @click="showAbout(index)">
                                     {{item.name}}
                                     <span v-if="item.count > 0" style="background-color: rgba(233, 78, 2, 0.73);">{{item.count}}</span>
-                                    <span v-else @click.stop="deleteCategory(item.name)" style="background-color: #d9534f;"
+                                    <span v-else @click.stop="deleteCategory(item.categoryId)" style="background-color: #d9534f;"
                                           class="glyphicon glyphicon-remove"></span>
                                 </a>
                             </li>
