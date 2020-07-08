@@ -515,6 +515,8 @@ function deletePub(id) {
             if (res.success) {
                 showOK(res.msg);
                 saveSession("tabIndex", 2);
+                app.tab[2].search.pageNum=0;
+                $("html,body").scrollTop(0);
                 pageLostFound(app.tab[2].search, app.tab[2], false);
             } else {
                 showAlertError(res.msg)
