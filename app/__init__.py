@@ -11,6 +11,9 @@
 import json
 import logging
 import os
+import smtplib
+import sys
+import time
 import uuid
 from logging.handlers import RotatingFileHandler, SMTPHandler, TimedRotatingFileHandler
 
@@ -19,7 +22,7 @@ from flask import Flask, render_template, request, redirect, url_for
 from flask_login import current_user
 from flask_wtf.csrf import CSRFError
 
-from app.config import BaseConfig, basedir, PostConfig, LogConfig
+from app.config import BaseConfig, basedir, PostConfig, LogConfig, AdminConfig
 # .表示当前路径
 from app.config import config  # 导入存储配置的字典
 from tasks import celery
@@ -31,6 +34,7 @@ from .models.report_model import Report
 from .models.role_model import Role
 from .models.user_model import Guest, User
 from .utils.log_utils import get_log, get_real_ip
+from .utils.mail_sender import send_email
 from .views.auth_view import get_login_info
 
 login_manager.session_protection = 'basic'
@@ -173,14 +177,36 @@ def register_logging(app):
     file_handler.setFormatter(request_formatter)
     file_handler.setLevel(logging.DEBUG)
 
-    mail_handler = SMTPHandler(
-        mailhost=app.config['MAIL_SERVER'],
+    class SSLSMTPHandler(SMTPHandler):
+        def emit(self, record):
+            """
+            Emit a record.
+            """
+            try:
+                # 将错误信息的Hash值存入Redis设置过期时间，防止重复发送
+                key = LogConfig.LOG_REDIS_PREFIX+str(record.exc_text.__hash__())
+                obj = redis_client.get(key)
+                if not  obj:
+                    # 如果记录以及存在，则不发送
+                    messages = {
+                        "msg": self.format(record)
+                    }
+                    send_email.apply_async(args=(AdminConfig.SUPER_ADMIN_QQ, "异常通知", 'taskError', messages), countdown=1)
+                    redis_client.set(key,record.exc_text)
+                    redis_client.expire(key, LogConfig.LOG_REDIS_TIME)
+            except (KeyboardInterrupt, SystemExit):
+                raise
+            except:
+                self.handleError(record)
+
+    mail_handler = SSLSMTPHandler(
+        mailhost=(app.config['MAIL_SERVER'], app.config['MAIL_PORT']),
         fromaddr=app.config['MAIL_USERNAME'],
-        toaddrs=[os.getenv("SUPER_ADMIN_EMAIL")],
-        subject='系统异常通知',
-        credentials=(app.config['MAIL_USERNAME'], app.config['MAIL_PASSWORD'],
-                     )
+        toaddrs=AdminConfig.SUPER_ADMIN_QQ,
+        subject='异常通知',
+        credentials=(app.config['MAIL_USERNAME'], app.config['MAIL_PASSWORD'])
     )
+
     mail_handler.setLevel(logging.ERROR)
     mail_handler.setFormatter(request_formatter)
 
@@ -189,9 +215,9 @@ def register_logging(app):
     for logger in loggers:
         logger.addHandler(file_handler)
         logger.addHandler(mail_handler)
-    gunicorn_logger = logging.getLogger('gunicorn.error')
-    app.logger.handlers = gunicorn_logger.handlers
-    app.logger.setLevel(gunicorn_logger.level)
+    # gunicorn_logger = logging.getLogger('gunicorn.error')
+    # app.logger.handlers = gunicorn_logger.handlers
+    # app.logger.setLevel(gunicorn_logger.level)
 
 
 # 模板上下文

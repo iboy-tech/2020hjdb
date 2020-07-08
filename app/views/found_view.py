@@ -56,7 +56,6 @@ def resend(id):
 # @cache.cached(timeout=10 * 60, query_string=True, key_prefix='found-getall')  # 缓存10分钟 默认为300s
 def get_all():
     req = request.json
-    print(req)
     page = 0
     # logger.info(req['pageSize'])
     if req['pageNum']:

@@ -28,6 +28,7 @@ from app.utils import restful
 @login_required
 @wechat_required
 def index(id=-1):
+    1/0
     if id == -1:
         return restful.error("参数缺失")
     if request.method == 'GET':

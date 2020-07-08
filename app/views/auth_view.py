@@ -21,7 +21,7 @@ from app import db, OpenID, redis_client, cache, limiter, logger
 from app.config import LoginConfig, PostConfig
 from app.decorators import wechat_required, unfreeze_user, admin_required
 from app.models.user_model import User
-from app.page import auth, users, robot, tool
+from app.page import auth
 from app.utils import restful
 from app.utils.auth_token import generate_token, validate_token
 from app.utils.check_data import check_qq, check_username
