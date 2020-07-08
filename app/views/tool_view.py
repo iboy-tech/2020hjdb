@@ -122,7 +122,7 @@ def clear():
     return restful.success(msg="恭喜，脏数据清理完成")
 
 
-@tool.route('/', methods=['GET'])
+@tool.route('/', methods=['GET'],strict_slashes=False)
 @login_required
 @admin_required
 @cross_origin()

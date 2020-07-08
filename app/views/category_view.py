@@ -31,7 +31,7 @@ def get_all():
     return restful.success(data=data)
 
 
-@category.route('/', methods=['POST'])
+@category.route('/', methods=['POST'],strict_slashes=False)
 @login_required
 @super_admin_required
 def add_category():

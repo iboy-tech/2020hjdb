@@ -12,10 +12,33 @@ var app = new Vue({
         list: [],
         user: getLocal("user") ? JSON.parse(getLocal("user")) : {},
     },
+    created(){
+        this.getKeys(this, false);
+    },
     methods: {
         logout:function() {
             logout();
         },
+
+getKeys:function (app, append) {
+    $.ajax({
+        url: baseUrl + "/tools",
+        method: "GET",
+        success: function (res) {
+            if (res.success) {
+                if (append) {
+                    for (let v in res.data.list) {
+                        app.list.push(res.data.list[v]);
+                    }
+                } else {
+                    app.list = res.data.list;
+                }
+            } else {
+                showAlertError(res.msg)
+            }
+        }
+    });
+},
         addKey:function() {
             // alert("执行了");
             app.showMenu = false;
@@ -38,7 +61,7 @@ var app = new Vue({
                 success: function (res) {
                     if (res.success) {
                         showOK(res.msg);
-                        getKeys(app, false);
+                        app.getKeys(app, false);
                     } else {
                         showError(res.msg)
                     }
@@ -69,7 +92,7 @@ var app = new Vue({
                 success: function (res) {
                     if (res.success) {
                         showOK(res.msg);
-                        getKeys(app, false);
+                        app.getKeys(app, false);
                     } else {
                         showError(res.msg)
                     }
@@ -89,7 +112,7 @@ function addKey(key) {
                 if (res.success) {
                     layer.closeAll();
                     showOK(res.msg);
-                    getKeys(app, false);
+                    app.getKeys(app, false);
                 } else {
                     showAlertError(res.msg)
                 }
@@ -113,29 +136,8 @@ $(function () {
             classie.toggle(showLeftPush, 'disabled');
         }
     }
-
-    getKeys(app, false);
 });
 
-function getKeys(app, append) {
-    $.ajax({
-        url: baseUrl + "/tools",
-        method: "GET",
-        success: function (res) {
-            if (res.success) {
-                if (append) {
-                    for (let v in res.data.list) {
-                        app.list.push(res.data.list[v]);
-                    }
-                } else {
-                    app.list = res.data.list;
-                }
-            } else {
-                showAlertError(res.msg)
-            }
-        }
-    });
-}
 
 $('select.dropdown')
     .dropdown()

@@ -18,7 +18,7 @@ from app.page import robot
 from app.utils import restful
 
 
-@robot.route("/", methods=['GET','OPTIONS'])
+@robot.route("/", methods=['GET','OPTIONS'],strict_slashes=False)
 @login_required
 @admin_required
 def get_all():
@@ -32,7 +32,7 @@ def get_all():
     return restful.success(data=data)
 
 
-@robot.route("/", methods=['POST', 'OPTIONS'])
+@robot.route("/", methods=['POST', 'OPTIONS'],strict_slashes=False)
 @login_required
 @admin_required
 def add_group():

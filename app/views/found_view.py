@@ -169,6 +169,7 @@ def get_all():
     # logger.info('分类查询：',data)
     return data
 
+
 @found.route('/', methods=['POST', 'OPTIONS'], strict_slashes=False)
 @limiter.limit(limit_value="5/minute")
 @login_required
@@ -279,7 +280,7 @@ def get_search_data(pagination, pageNum, pagesize):
     return restful.success(data=data)
 
 
-@found.route('/', methods=['DELETE'])
+@found.route('/', methods=['DELETE'], strict_slashes=False)
 @login_required
 @admin_required
 @cross_origin()
@@ -321,7 +322,7 @@ def delete_posts():
 @login_required
 @cross_origin()
 def delete_post(id=-1):
-    if id ==-1:
+    if id == -1:
         return restful.error()
     else:
         l = LostFound.query.get_or_404(id)
