@@ -223,14 +223,13 @@ def pub():
         "detail": lost.about,
         "url": os.getenv('SITE_URL') + 'detail/' + str(lost.id) + ".html"
     }
-    qq_group_notice.delay(qq_msg)
+    qq_group_notice.apply_async(args=[qq_msg, ],countdown=1)
     cache.delete("category")
     return restful.success(msg="发布成功")
 
 
 def get_search_data(pagination, pageNum, pagesize):
     losts = pagination.items
-    # logger.info(losts)
     datalist = []
     for l in losts:
         if l.images == "":

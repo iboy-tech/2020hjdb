@@ -8,12 +8,11 @@
 @Description : 电子邮件支持
 @Software: PyCharm
 """
-import os
 
 from flask import current_app, render_template
 from flask_mail import Message  # 用QQ邮箱发邮件
 
-from app import mail, logger
+from app import mail
 from tasks import celery
 
 

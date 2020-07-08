@@ -90,6 +90,7 @@ def set_reward():
         db.session.add(old_user)
         db.session.commit()
     except Exception as e:
+        logger.info(str(e))
         return restful.error()
     return restful.success(success=True, msg="设置成功")
 

@@ -41,11 +41,13 @@ task_queues = (
     Queue('send_mail', Exchange('send_mail'), routing_key='send_mail'),
     Queue('img_compress', Exchange('img_compress'), routing_key='img_compress'),
     Queue('send_wechat_msg', Exchange('send_wechat_msg'), routing_key='send_wechat_msg'),
+    Queue('send_qq_group_notice', Exchange('send_qq_group_notice'), routing_key='send_qq_group_notice'),
     Queue("default", Exchange("default"), routing_key="default"),
 )
 task_routes= {
     "app.utils.mail_sender.send_mail": {'queue': 'send_mail', 'routing_key': 'send_mail'},
     "app.utils.tinify_tool.tinypng": {'queue': 'img_compress', 'routing_key': 'img_compress'},
+    "app.utils.qq_notice.qq_group_notice": {'queue': 'send_qq_group_notice', 'routing_key': 'send_qq_group_notice'},
     'app.utils.wechat_notice.send_message_by_pusher': {'queue': 'send_wechat_msg', 'routing_key': 'send_wechat_msg'},
     '*': {'queue': 'default', 'routing_key': 'default'},
 }
