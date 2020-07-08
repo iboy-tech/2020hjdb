@@ -221,11 +221,10 @@ var app = new Vue({
 function pubReport(data) {
     console.log(data);
     $.ajax({
-        url: baseUrl + "/detail/report",
+        url: baseUrl + "/feedbacks",
         data: JSON.stringify(data),
         method: "POST",
         success: function (res) {
-            console.log(res);
             if (res.success) {
                 layer.closeAll();
                 showOK(res.msg);
@@ -243,8 +242,8 @@ function pubReport(data) {
 //删除招领信息
 function deletePub(id) {
     $.ajax({
-        url: baseUrl + "/found.html/delete?id=" + id,
-        method: "POST",
+        url: baseUrl + "/lostfounds/delete/" + id,
+        method: "DELETE",
         success: function (res) {
             console.log(res);
             if (res.success) {
@@ -265,14 +264,10 @@ function deletePub(id) {
 //查询相关类别
 function pageLostFound(data, result) {
     $.ajax({
-        url: baseUrl + "/found.html/getall",
+        url: baseUrl + "/lostfounds/page",
         data: JSON.stringify(data),
         method: "POST",
-        beforeSend: function () {
-        },
-        success: function (res, status) {
-            console.log(res);
-            if (status == "success") {
+        success: function (res) {
                 if (res.success) {
                     result.search.pageNum = res.data.page.pageNum;
                     result.search.pageSize = res.data.page.pageSize;
@@ -282,10 +277,6 @@ function pageLostFound(data, result) {
                 } else {
                     showAlertError(res.msg)
                 }
-            } else {
-                console.log(res);
-                showAlertError(res)
-            }
         }
     });
 }
@@ -402,8 +393,8 @@ function viewImages(index) {
 //认领物品
 function claimID(id) {
     $.ajax({
-        url: baseUrl + "/user.html/claim?id=" + id,
-        method: "POST",
+        url: baseUrl + "/user/claim" + id,
+        method: "PUT",
         success: function (res, status) {
             console.log(res);
             if (status == "success") {
