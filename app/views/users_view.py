@@ -14,7 +14,7 @@ from flask import render_template, request, url_for
 from flask_login import current_user, login_required
 from sqlalchemy import or_
 
-from app import db, redis_client, cache, limiter, logger
+from app import db, redis_client, cache, limiter, logger, OpenID
 from app.config import PostConfig
 from app.decorators import super_admin_required, admin_required, wechat_required
 from app.models.user_model import User
@@ -147,13 +147,10 @@ def reset_pssword(id=-1):
     password = generate_password()
     u.password = password
     messages = {
-        'username': u.username,
         'password': password,
         'realName': u.real_name,
-        'handlerName': current_user.real_name,
-        'handlerEmail': current_user.qq + '@qq.com',
     }
-    send_email.apply_async(args=(u.qq, '密码重置提醒', 'resetPassword', messages), countdown=randint(10, 30))
+    send_email.apply_async(args=(u.qq, '密码重置提醒', 'resetPassword', messages), countdown=1)
     db.session.add(u)
     db.session.commit()
     return restful.success()
@@ -184,14 +181,10 @@ def delete_img_and_report(posts, reports):
     del_reports = []
     if posts:
         for lost in posts:
-            key = str(lost.id) + PostConfig.POST_REDIS_PREFIX
+            key = PostConfig.POST_REDIS_PREFIX + str(lost.id)
             redis_client.delete(key)
             # logger.info(lost.images)
             if lost.images != "":
-                # logger.info("判断图片类型", lost.images, type(lost.images))
-                # images =eval(lost.images)
-                # logger.info("反序列化对象",ev,type(ev))
-                # lost.images = lost.images.replace('[', '').replace(']', '').replace(' \'', '').replace('\'', '')
                 temp_imglist = lost.images.split(',')
                 del_imgs += temp_imglist
         # logger.info(del_imgs, type(del_imgs))
@@ -261,6 +254,30 @@ def delete_user(id=-1):
             return restful.error("超级管理员无法直接删除")
         return restful.error("用户不存在")
     return restful.success(msg="删除成功")
+
+
+@users.route('/wechat/<int:id>', methods=['DELETE'], strict_slashes=False)
+@super_admin_required
+def delete_wechat(id=-1):
+    if id == -1:
+        return restful.error()
+    op = OpenID.query.filter_by(user_id=id).first()
+    if op is None:
+        return restful.error("此用户尚未绑定微信")
+    if current_user.kind <= op.user.kind:
+        return restful.error("权限不足")
+    try:
+        db.session.delete(op)
+        db.session.commit()
+    except Exception as e:
+        logger.info(str(e))
+        db.session.rollback()
+        return restful.error()
+    messages = {
+        'realName': op.user.real_name,
+    }
+    send_email.apply_async(args=(op.user.qq, '微信解绑提醒', 'resetWeChat', messages), countdown=2)
+    return restful.success(msg="解绑成功")
 
 
 @users.route('/admin/<int:id>', methods=['GET'], strict_slashes=False)

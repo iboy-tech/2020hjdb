@@ -11,7 +11,6 @@ import os
 import requests
 
 from . import exceptions
-from ... import logger
 
 BASEURL = 'http://wxpusher.zjiecode.com/api'
 
@@ -23,8 +22,6 @@ class WxPusher():
 
     @classmethod
     def send_message(cls, content, uids, token=None, **kwargs):
-        logger.info('这是环境变量中的token', cls.default_token)
-        logger.info('这是要发送的内容和对象', content, uids)
         """Send Message."""
         payload = {
             'appToken': cls.get_token(token),

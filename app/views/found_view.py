@@ -238,7 +238,7 @@ def get_search_data(pagination, pageNum, pagesize):
             imglist = l.images.split(',')
         # logger.info(imglist, type(imglist))
         user = User.query.get(l.user_id)
-        key = str(l.id) + PostConfig.POST_REDIS_PREFIX
+        key = PostConfig.POST_REDIS_PREFIX+str(l.id)
         view_count = redis_client.get(key)
         if view_count is None:
             # 防止redis迁移导致的数据丢失
@@ -298,7 +298,7 @@ def delete_posts():
                     imglist = l.images.split(',')
                     remove_files(imglist, 0)
                 # l = db.session.merge(l)
-                key = str(l.id) + PostConfig.POST_REDIS_PREFIX
+                key = PostConfig.POST_REDIS_PREFIX+str(l.id)
                 # # 删除浏览量，不存在的key会被忽略
                 redis_client.delete(key)
                 delete_post_notice.delay(current_user.kind, current_user.id, l.to_dict())
@@ -332,7 +332,7 @@ def delete_post(id=-1):
             if l.images != "":
                 imglist = l.images.strip().split(',')
                 remove_files(imglist, 0)
-            key = str(l.id) + PostConfig.POST_REDIS_PREFIX
+            key = PostConfig.POST_REDIS_PREFIX+str(l.id)
             # # 删除浏览量，不存在的key会被忽略
             redis_client.delete(key)
             if current_user.kind > 1:

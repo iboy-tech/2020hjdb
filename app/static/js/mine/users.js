@@ -132,9 +132,18 @@ var app = new Vue({
             }, function () {
             });
         },
+        deleteWX: function (userId) {
+            //询问框
+            layer.confirm('你确定要解绑用户的微信吗？', {
+                btn: ['确定', '取消'] //按钮
+            }, function () {
+                deleteWX(userId);
+            }, function () {
+            });
+        },
         resetPassword: function (userId) {
             //询问框
-            layer.confirm('确定吗？', {
+            layer.confirm('你确定要重置密码吗？', {
                 btn: ['确定', '取消'] //按钮
             }, function () {
                 resetPassword(userId);
@@ -267,8 +276,23 @@ function deleteUser(userId) {
         method: "DELETE",
         success: function (res) {
             if (res.success) {
-                showOK();
+                showOK(res.msg);
                 getUserList(app.search, app, false);
+            } else {
+                showAlertError(res.msg);
+            }
+        },
+    });
+}
+
+//解绑微信
+function deleteWX(userId) {
+    $.ajax({
+        url: baseUrl + "/users/wechat/" + userId,
+        method: "DELETE",
+        success: function (res) {
+            if (res.success) {
+                showOK(res.msg);
             } else {
                 showAlertError(res.msg);
             }

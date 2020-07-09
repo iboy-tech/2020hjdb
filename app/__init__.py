@@ -9,13 +9,9 @@
 @Software: PyCharm
 """
 import json
-import logging
 import os
-import smtplib
-import sys
-import time
 import uuid
-from logging.handlers import RotatingFileHandler, SMTPHandler, TimedRotatingFileHandler
+from logging.handlers import SMTPHandler, TimedRotatingFileHandler
 
 import click
 from flask import Flask, render_template, request, redirect, url_for
@@ -161,10 +157,14 @@ def create_celery(app):
 def register_logging(app):
     class RequestFormatter(logging.Formatter):
         def format(self, record):
-            record.url = request.url
-            record.remote_addr = get_real_ip()
-            record.username = current_user.username
-            return super(RequestFormatter, self).format(record)
+            try:
+                info = get_login_info(current_user, 1)
+                record.url = request.url
+                record.remote_addr = info.get("ip") + "- (" + info.get("addr")+")"
+                record.username = "Guest" if isinstance(current_user._get_current_object(), Guest) else current_user.username
+                return super(RequestFormatter, self).format(record)
+            except:
+                pass
 
     request_formatter = RequestFormatter(
         '[%(asctime)s] username:%(username)s - ip:%(remote_addr)s - url:%(url)s\n'
@@ -184,15 +184,16 @@ def register_logging(app):
             """
             try:
                 # 将错误信息的Hash值存入Redis设置过期时间，防止重复发送
-                key = LogConfig.LOG_REDIS_PREFIX+str(record.exc_text.__hash__())
+                key = LogConfig.LOG_REDIS_PREFIX + str(record.exc_text.__hash__())
                 obj = redis_client.get(key)
-                if not  obj:
+                if not obj:
                     # 如果记录以及存在，则不发送
                     messages = {
                         "msg": self.format(record)
                     }
-                    send_email.apply_async(args=(AdminConfig.SUPER_ADMIN_QQ, "异常通知", 'taskError', messages), countdown=1)
-                    redis_client.set(key,record.exc_text)
+                    send_email.apply_async(args=(AdminConfig.SUPER_ADMIN_QQ, "异常通知", 'taskError', messages),
+                                           countdown=1)
+                    redis_client.set(key, record.exc_text)
                     redis_client.expire(key, LogConfig.LOG_REDIS_TIME)
             except (KeyboardInterrupt, SystemExit):
                 raise
@@ -265,9 +266,7 @@ def register_commands(app):
                           class_name='部门账号', major='部门账号', qq=qq, kind=1, gender=2, status=2)
             db.session.add(public)
             db.session.commit()
-            logger.info('共有账户的ID', public.id)
             op = OpenID(qq_id=None, wx_id=None, user_id=public.id)
-            logger.info('创建开发平台ID')
             db.session.add(op)
             db.session.commit()
 
@@ -297,7 +296,7 @@ def register_errors(app):
             logger.info("当前用户信息")
             logger.info(current_user.real_name)
             data = get_log()
-            key = uuid.uuid4().hex + LogConfig.REDIS_INFO_LOG_KEY
+            key = LogConfig.REDIS_INFO_LOG_KEY+uuid.uuid4().hex
             redis_client.set(key, json.dumps(data))
             redis_client.expire(key, LogConfig.REDIS_EXPIRE_TIME)
             return render_template('errors/405.html', data=data), 405
@@ -309,7 +308,7 @@ def register_errors(app):
     def internal_server_error(e):
         if not isinstance(current_user._get_current_object(), Guest):
             data = get_log()
-            key = uuid.uuid4().hex + LogConfig.REDIS_ERROR_LOG_KEY
+            key = LogConfig.REDIS_ERROR_LOG_KEY+uuid.uuid4().hex
             redis_client.set(key, json.dumps(data))
             redis_client.expire(key, LogConfig.REDIS_EXPIRE_TIME)
             return render_template('errors/500.html', data=data), 500
@@ -321,7 +320,7 @@ def register_errors(app):
         if not isinstance(current_user._get_current_object(), Guest):
             data = get_log()
             data.update(user=current_user.username)
-            key = uuid.uuid4().hex + LogConfig.REDIS_ERROR_LOG_KEY
+            key = LogConfig.REDIS_ERROR_LOG_KEY+uuid.uuid4().hex
             redis_client.set(key, json.dumps(data))
             redis_client.expire(key, LogConfig.REDIS_EXPIRE_TIME)
             return render_template('errors/429.html', data=data), 429

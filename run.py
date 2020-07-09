@@ -50,11 +50,11 @@ def server(data):
     msg = data.get("msg")
     if msg == 'login':
         client_id = request.sid
-        key = client_id + PostConfig.PUSHER_REDIS_PREFIX
+        key = PostConfig.PUSHER_REDIS_PREFIX+client_id
         redis_client.set(key, 'null')  # 把数据存入redis
         redis_client.expire(key, 180)
     elif msg == 'wx':
-        key = str(current_user.id) + PostConfig.PUSHER_REDIS_PREFIX
+        key = PostConfig.PUSHER_REDIS_PREFIX+str(current_user.id)
         redis_client.set(key, 'null')  # 把数据存入redis
         redis_client.expire(key, 180)
     else:
@@ -83,7 +83,7 @@ def server(data):
                 if op == "exist":
                     res = {
                         'success': 'false',
-                        'data': {'msg': '此微信已经绑定过了',
+                        'data': {'msg': '此微信已被其他用户绑定',
                                  'bg': '0'
                                  }
                     }
@@ -108,11 +108,12 @@ def server(data):
                              'bg': '1'
                              }
                 }
+                print(res)
                 socketio.emit('server', res)
         else:
             res = {
                 'success': 'false',
-                'data': {'msg': '二维码已过期，请刷新页面重新扫描', 'bg': '0'}
+                'data': {'msg': '二维码已失效，请重新获取', 'bg': '0'}
             }
             socketio.emit('server', res)
             break;
@@ -140,7 +141,7 @@ def get_qrcode():
 
 @socketio.on('connect')
 def connect():
-    logger.info("客户连接了")
+    pass
 
 
 if __name__ == '__main__':

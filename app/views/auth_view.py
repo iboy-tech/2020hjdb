@@ -155,29 +155,29 @@ def login():
     socket_id = request.args.get('token')
     if socket_id:
         try:
-            key = socket_id + PostConfig.PUSHER_REDIS_PREFIX
+            key = PostConfig.PUSHER_REDIS_PREFIX + socket_id
             op = redis_client.get(key)
-            if op != 'null':
+            if op is not  None and op != "null":
                 # redies中为byte类型
                 try:
+                    # 这里会出问题
                     op = op.decode()
                     data = eval(op)
                     op = OpenID.query.filter_by(wx_id=data['uid']).first()
                     if op:
                         # 用户免登陆
                         login_user_longtime(op.user)
-                        logger.info("用户:%s,扫码重置密码" % op.user.real_name)
-                        # 删除redis中的数据
-                        redis_client.delete(key)
+                        logger.info("用户:%s %s,扫码重置密码" % (op.user.username, op.user.real_name))
                         return restful.success(msg="密码重置成功，新密码已发送到您的微信", data=op.user.auth_to_dict())
                     else:
                         return restful.error("此微信尚未绑定")
                 except Exception as e:
-                    logger.info("扫码登录异常", str(e))
+                    logger.info(str(e))
+                finally:
+                    # 删除redis中的数据
+                    redis_client.delete(key)
         except Exception as e:
-            logger.info("用户:%s,扫码登录异常" % op.user.real_name)
-            logger.info(str(e))
-            pass
+            login.info(str(e))
     data = request.json
     if request.method == 'POST':
         user = User.query.filter_by(username=data['username']).first()
@@ -185,7 +185,7 @@ def login():
             return restful.error('用户名或密码错误')
         else:
             # 密码错误次数判断
-            key = user.username + LoginConfig.LOGIN_REDIS_PREFIX
+            key = LoginConfig.LOGIN_REDIS_PREFIX + user.username
             cnt = redis_client.get(key)
             if cnt is not None:
                 cntint = int(bytes.decode(cnt))
@@ -220,7 +220,7 @@ def login():
 
             # 用户存在但是密码错误
             else:
-                key = user.username + LoginConfig.LOGIN_REDIS_PREFIX
+                key = LoginConfig.LOGIN_REDIS_PREFIX + user.username
                 cnt = redis_client.get(key)
                 if cnt is not None:
                     redis_client.incr(key)

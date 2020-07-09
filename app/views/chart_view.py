@@ -32,11 +32,10 @@ from app.views.feedback_view import get_new_feedback
 def index_page():
     if request.method == 'GET':
         return render_template('chart.html')
-
-    key = current_user.username + LogConfig.REDIS_ADMIN_LOG_KEY
+    key = current_user.username
     log_info = redis_client.get(key)
     if not log_info:
-        add_log(1, get_log(), 3600 * 24 * 7)  # 7天过期
+        add_log(1, get_log(), LogConfig.LOGIN_EXPIRE_TIME)  # 7天过期
     res = get_data()
     isSuperAdmin = current_user.kind == 3
     data = {
@@ -52,10 +51,6 @@ def index_page():
 
 def get_data():
     today = datetime.date.today()
-    # logger.info(today)
-    # 0=lost 1 found
-    # losts_today = LostFound.query.filter(db.cast(LostFound.create_time, db.DATE) == today,LostFound.kind==1).all()
-    # founds_today = LostFound.query.filter(db.cast(LostFound.create_time, db.DATE) == today, LostFound.kind == 1).all()
     # 今日丢失
     today_lost = LostFound.query.filter(db.cast(LostFound.create_time, db.DATE) == today, LostFound.kind == 0).count()
     # 今日拾取
@@ -73,7 +68,6 @@ def get_data():
     boy_users = User.query.filter(User.gender == 0).count()
     # 女生
     girl_users = User.query.filter(User.gender == 1).count()
-    # list1, list2, list3, list4 = get_week_data()
     mylist = get_week_data()
     data = {
         # //数据总览
@@ -82,39 +76,8 @@ def get_data():
         'found': [today_found, total_found],
         'solve': [today_solve, total_solve],
         # //最近7天
-        # 'barChartData1': {
         'item': [mylist[0], [mylist[0], mylist[1], mylist[2]], mylist[3], [mylist[4], mylist[5]],
                  [boy_users, girl_users]],
-        # //近期数据
-        # 'data1': [[1111, 70, 55, 20, 45, 0, 60], [65, 59, 90, 81, 56, 0, 40], [65, 1, 90, 81, 56, 1, 300]],
-        # 'data1': [mylist[0], mylist[1], mylist[2]],
-        # },
-        # //面积图
-        # 'lineChartData1': {
-        # 'labels2': ["Jan", "Feb", "March", "April", "May", "June", "July"],
-        # 'data2': [[22, 31, 2, 40, 555, 65, 68], [1, 31, 2, 40, 55, 0, 68], [1, 1, 39, 1, 55, 65, 68]],
-        # 'data2': [mylist[0], mylist[1], mylist[2]],
-        # },
-        # //饼状图
-        # 'pieData1': {
-        # //拾取，丢失，找到
-        # 'data3': [total_lost, total_found, total_solve],
-        # },
-        # //用户数量变化图
-        # 'lineChartData2': {
-        # 'labels4':["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-        # 'data4': list4,
-        # 'data4': mylist[3],
-        # },
-        # //用户活跃量
-        # 'lineChartData3': {
-        # 'lables5': ["Jan", "Feb", "March", "April", "May", "June", "July"],
-        # 'data5': [mylist[4], mylist[5]],
-        # },
-        # //性别比例
-        # 'pieData2': {
-        # 'data6': [boy_users, girl_users]
-        # }
     }
     return data
 

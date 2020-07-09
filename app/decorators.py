@@ -76,7 +76,7 @@ def unfreeze_user(func):
         if uid:
             op = OpenID.query.filter_by(wx_id=uid).first()
             if op:
-                key = op.user.username + LoginConfig.LOGIN_REDIS_PREFIX
+                key =  LoginConfig.LOGIN_REDIS_PREFIX+op.user.username
                 redis_client.delete(key)
         return func(*args, **kwargs)
 

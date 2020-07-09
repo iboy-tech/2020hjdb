@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<!-- saved from url=(0115)http://wxpusher.zjiecode.com/admin/user/scan-login?redirect=http%3A%2F%2Fwxpusher.zjiecode.com%2Fadmin%2Fapp%2Flist -->
+<html lang="en">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0">
+	<title>绑定微信</title>
+	<link rel="stylesheet" type="text/css" href="../static/css/wechat/p__User__ScanLogin.chunk.css">
+	<link rel="stylesheet" type="text/css" href="../static/css/wechat/vendors.chunk.css">
+	<link rel="stylesheet" type="text/css" href="../static/css/wechat/layouts__UserLayout.chunk.css">
+<link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+    <script type="text/javascript" src="../static/js/socket.io.min.js"></script>
+</head>
+
+<body style="background: #f0f2f5;">
+	<div id="root">
+		<div class="antd-pro-layouts-user-layout-container">
+			<div class="antd-pro-layouts-user-layout-lang"></div>
+			<div class="antd-pro-layouts-user-layout-content">
+				<div class="antd-pro-layouts-user-layout-top">
+					<div class="antd-pro-layouts-user-layout-header"><img
+								alt="logo" class="antd-pro-layouts-user-layout-logo"
+								src="https://ae01.alicdn.com/kf/H25441b24db014cae86cb642db4c46f262.jpg" style="height: 65px;"><span
+								class="antd-pro-layouts-user-layout-title">小招同学</span></div>
+					<div class="antd-pro-layouts-user-layout-desc" style="margin-top: 30px;margin-bottom: 0px !important;">绑定微信后可接收消息通知、找回密码</div>
+                   <div class="antd-pro-layouts-user-layout-desc">为避免您错过重要通知，请不要取消关注或屏蔽消息</div>
+				</div>
+				<div class="antd-pro-pages-user-scan-login-main" id="parent">
+					<div class="antd-pro-pages-user-scan-login-qrcodeContainer">
+                        <img id="code" alt="二维码"
+							class="antd-pro-pages-user-scan-login-qrcode"
+							src="{{ data.url }}" width="250px">
+                    </div>
+                    <span class="antd-pro-pages-user-scan-login-text" id="notice">微信扫一扫</span>
+				</div>
+			</div>
+			<footer class="antd-pro-components-global-footer-index-globalFooter">
+				<div style="text-align: center;">© 三峡大学失物招领中心</div>
+			</footer>
+		</div>
+	</div>
+
+</body>
+<script>
+        $(document).ready(function () {
+            var show=0;
+            const url = "{{ data.site }}";
+            console.log(url);
+            const socket = io(url);
+            socket.emit('server',{msg:'wx'});//触发通信
+            socket.on('server', function (data) {
+                if (data['success'] == 'true') {
+                    $("#code").css("transform", "scale(0.5,0.5)");
+                    $("#code").attr("src",data['data']['head']);
+                    $("#notice").text("绑定成功，即将返回主页");
+                    $("#notice").css("color", "#41B146");
+                    setTimeout(function () {//5秒之后执行
+                        location.href = "{{ url_for('auth.index', _external=True) }} ";
+                    }, 4000);
+                }
+                else {
+                    if (data['data']['bg'] == '0') {
+                       $("#notice").text(data['data']['msg']);
+                       if(show==0){
+                        $("#parent").append("<span id=\"refresh\" class=\"glyphicon glyphicon-refresh\" style=\"font-weight: bold !important;\margin-top: 5px;\"></span>\n");
+                       }
+                       show++;
+                        $("#code").attr("src","https://ae01.alicdn.com/kf/Hed7ac472756b4c078d7336fcda90c141h.jpg");
+                        $("#refresh").click(function () {
+                                window.location.reload();
+                                $("#parent").remove("#refresh");
+                        })
+                    }
+                }
+            });
+        });
+    </script>
+</html>

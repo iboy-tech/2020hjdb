@@ -243,6 +243,7 @@
                                             <li v-if="item.kind==1 && user.kind==3"><a @click="setAsManager(item.userId,1)">添加为管理员</a></li>
                                             <li v-else-if="item.kind==2 && user.kind==3"><a @click="setAsManager(item.userId, 0)">移除该管理员</a></li>
                                         </li>
+                                        <li v-if="user.kind==3 && item.kind!=3"><a @click="deleteWX(item.userId)">解绑微信</a></li>
                                          <li v-if="user.kind==3 && item.kind!=3"><a @click="deleteUser(item.userId)">删除用户</a></li>
                                     </ul>
                                 </div>

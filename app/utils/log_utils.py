@@ -53,7 +53,7 @@ def add_log(type_id, data, expire_time=LogConfig.REDIS_EXPIRE_TIME):
         "detail": detail,
         "time": datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
     }
-    key = key.get(type_id) + LogConfig.REDIS_ADMIN_LOG_KEY
+    key = LogConfig.REDIS_ADMIN_LOG_KEY+key.get(type_id)
     redis_client.set(key, json.dumps(info))
     redis_client.expire(key, expire_time)
 

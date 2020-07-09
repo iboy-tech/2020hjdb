@@ -9,12 +9,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"/>
     <meta name="keywords" content="三峡大学失物招领中心,三峡大学失物招领中心官网,三峡大学失物招领平台,三峡大学失物招领,三大失招,小招同学,CTGU失物招领,三大失物招领中心">
 <meta name="description" content="三峡大学失物招领中心是隶属于校保卫处的校级学生组织。我们从遍布全校的失物收集箱、各教学楼等地方收集失物，扩散失物信息并负责归还失物。自成立以来，中心全体成员秉承“志愿、公益、物实”的宗旨，齐心协力、努力工作。 虽然失物招领中心这个组织还很年轻，但我们每个人都相信：暖日虽远，但必有光芒！">
-<script type="text/babel" src="https://blog-static.cnblogs.com/files/gxsyj/browser.min.js"></script>
   <script src="https://cdn.bootcss.com/vue/2.4.2/vue.min.js"></script>
  <script src="https://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
   <link rel="stylesheet" href="../static/css/layui.css" media="all">
-  <link id="bootstrap-css" type="text/css" rel="stylesheet" href="../../static/css/bootstrap.min.css">
-  <link id="fontawesome-css" type="text/css" rel="stylesheet" href="../static/css/all.min.css">
+  <link type="text/css" rel="stylesheet" href="../static/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="../static/css/login.css">
 <link rel="stylesheet prefetch" href="https://cdn.bootcss.com/semantic-ui/2.3.1/components/icon.min.css">
   <link id="rebirth-css" rel="stylesheet" type="text/css" href="../static/css/styles.css" />
@@ -180,7 +178,7 @@
                                                 <div class="tab" :class="{tabActive: tabIndex == 1}" @click="changeTab(1)">身份认证</div>
                                             </div>
                                             <div class="tabContainer" v-else>
-                                        <div class="tab" style="padding-bottom: 20px;">
+                                        <div class="tab" style="padding-bottom: 20px;" id="parent">
                                             <sapn style="display: inline-block;line-height: 16px;font-size: 18px;color: #000000a3;margin-bottom: 20px;}">微信扫一扫，重置密码</sapn>
                                             <div id="qrcode"></div>
                                             <span id="notice"></span>
@@ -366,8 +364,7 @@
 
 <script id="ghost-search" type="text/javascript" src="../static/js/ghost-search.min.js"></script>
 
-<!-- <script id="rebirth-js" type="text/javascript" src="../static/js/rebirth.js"></script>
- -->
+
 <script>
 (function(){
     var bp = document.createElement('script');
@@ -452,7 +449,7 @@
                                     if(me.tabIndex==0){
                                         saveLocal("user", res.data.user);
                                         if(res.ext=='wx'){
-                                              window.location=baseUrl+"/oauth/wx.html";
+                                              window.location=baseUrl+"/oauth/wechat.html";
                                         }
                                        else if (res.ext!==null) {
                                             window.location=baseUrl+unescape(res.ext);
@@ -492,6 +489,7 @@
                         if (data['success']) {
                             $("#qrcode").css("background", "url(" + data['url'] + ")").css("background-size", "cover").css("background-repeat", "no-repeat");
                              app.socketServer(socket);
+                             $("#notice").remove("#refresh");
                         }
                         else{
                             console.log("二维码请求失败")
@@ -516,9 +514,16 @@
                         }
                     }
                 });} else {
+
                      if (data['data']['bg'] == '0') {
+                        $("#notice").remove("#refresh");
                         $("#notice").text(data["data"]["msg"]);
-                        $("#qrcode").css("background", "url(https://ae01.alicdn.com/kf/H4deaf078934d40ff9b81e5e262a3b65eE.png)").css("background-size", "cover").css("background-repeat", "no-repeat");
+                        $("#qrcode").css("background", "url(https://ae01.alicdn.com/kf/Hed7ac472756b4c078d7336fcda90c141h.jpg)").css("background-size", "cover").css("background-repeat", "no-repeat");
+                         $("#notice").append("<img src=\"https://ae01.alicdn.com/kf/H228d2cab4d074d19a6cfc5de20189fdfw.jpg\" alt=\"刷新\" id=\"refresh\" width=\"25px\" style=\"margin-left:8px \" >\n");
+                        $("#refresh").click(function () {
+                             app.getQRCode();
+                              $("#notice").text("");
+                        })
                     }
              }
         });

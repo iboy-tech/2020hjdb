@@ -48,7 +48,7 @@ def index(id=-1):
             logger.info(str(e))
             return restful.error('警告,检测到用户 {} 尝试非法字符注入，后台已记录'.format(current_user.real_name))
         if lost is not None:
-            key = str(lost.id) + PostConfig.POST_REDIS_PREFIX
+            key = PostConfig.POST_REDIS_PREFIX+str(lost.id)
             redis_client.incr(key)
             intcnt = int(bytes.decode(redis_client.get(key)))
             # 超过一定程度吧浏览量存入数据库
