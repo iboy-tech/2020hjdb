@@ -260,11 +260,12 @@ var app = new Vue({
             //console.log(this.tab4);
         },
         changeImg:function() {
-            console.log('change div');
+            // console.log('change div');
+            changeInput();
             $("#imgInput").click();//模拟点击
         },
         removeImg:function(index) {
-            console.log('remove img' + index);
+            // console.log('remove img' + index);
             this.tab4.images.splice(index, 1);
         },
         jumpDetail:function(id) {
@@ -355,7 +356,6 @@ var app = new Vue({
                 content: $('#rewardDiv'),  //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
                 yes: function () {
                     let tmp=app.wxReward;
-                    console.log("测试参数："+tmp);
                     app.wxReward = tmp.replace(/\s+/g,"");
                     let reg = /^wxp:\/\/[A-Za-z0-9\-]+/;
                     if (app.wxReward == '') {
@@ -581,29 +581,107 @@ function getMessages(app) {
 
 }
 
+ /**
+     * 获得base64
+     * @param {Object} obj
+     * @param {Number} [obj.width] 图片需要压缩的宽度，高度会跟随调整
+     * @param {Number} [obj.quality=0.8] 压缩质量，不压缩为1
+     * @param {Function} [obj.before(this, blob, file)] 处理前函数,this指向的是input:file
+     * @param {Function} obj.success(obj) 处理后函数
+     * @example
+     *
+     */
+    $.fn.localResizeIMG = function (obj) {
+        // console.log("压缩函数localResizeIMG内",obj)
+        this.on('change', function () {
+            var file = this.files[0];
+            var URL = window.URL || window.webkitURL;
+            var binaryData = [];
+            binaryData.push(file);
+            var blob=URL.createObjectURL(new Blob(binaryData, {type: "application/zip"}))
+            // var blob = URL.createObjectURL(file);
+
+            // 执行前函数
+            if ($.isFunction(obj.before)) {
+                obj.before(this, blob, file)
+            };
+
+            _create(blob, file);
+            this.value = ''; // 清空临时数据
+        });
+
+        /**
+         * 生成base64
+         * @param blob 通过file获得的二进制
+         */
+        function _create(blob) {
+            var img = new Image();
+            img.src = blob;
+
+            img.onload = function () {
+                var that = this;
+
+                //生成比例
+                var w = that.width,
+                    h = that.height,
+                    scale = w / h;
+                w = obj.width || w;
+                h = w / scale;
+
+                //生成canvas
+                var canvas = document.createElement('canvas');
+                var ctx = canvas.getContext('2d');
+                $(canvas).attr({
+                    width: w,
+                    height: h
+                });
+                ctx.drawImage(that, 0, 0, w, h);
+
+                /**
+                 * 生成base64
+                 * 兼容修复移动设备需要引入mobileBUGFix.js
+                 */
+                var base64 = canvas.toDataURL('image/jpeg', obj.quality || 0.8);
+
+                // 修复IOS
+                if (navigator.userAgent.match(/iphone/i)) {
+                    var mpImg = new MegaPixImage(img);
+                    mpImg.render(canvas, {
+                        maxWidth: w,
+                        maxHeight: h,
+                        quality: obj.quality || 0.8
+                    });
+                    base64 = canvas.toDataURL('image/jpeg', obj.quality || 0.8);
+                }
+
+                // 修复android
+                if (navigator.userAgent.match(/Android/i)) {
+                    var encoder = new JPEGEncoder();
+                    base64 = encoder.encode(ctx.getImageData(0, 0, w, h), obj.quality * 100 || 80);
+                }
+
+                // 生成结果
+                var result = {
+                    base64: base64,
+                    clearBase64: base64.substr(base64.indexOf(',') + 1)
+                };
+                // 执行后函数
+                obj.success(result);
+            };
+        }
+    };
+
 
 //选择上传图片
-function changeInput(obj) {
-    console.log('change img')
-    console.log(obj);
-    let file = obj.files[0];
-
-    //console.log(file);
-    console.log("file.size = " + file.size);  //file.size 单位为byte
-    var size = file.size / 1024;
-
-    if (size > 400) {
-        showAlertError('图片大小超过400KB，请将拍摄的图片进行屏幕截图并裁剪多余部分之后重新上传');
-        return;
-    }
-
-    let reader = new FileReader();
-
-    reader.onload = function (e) {
-        app.tab4.images.push(e.target.result);
-    }
-
-    reader.readAsDataURL(file)
+function changeInput() {
+    $("#imgInput").localResizeIMG({
+        width: 1000,
+        quality: 0.8,
+        //before: function (that, blob) {},
+        success: function (result) {
+            app.tab4.images.push(result.base64);
+        }}
+    );
 }
 
 //发布启事
