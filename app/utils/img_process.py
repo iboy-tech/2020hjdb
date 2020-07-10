@@ -139,12 +139,10 @@ def change_bs4_to_png(imglist):
                 os.remove(myfile)
                 os.remove(os.getenv("MINI_IMG_PATH") + filename)
                 # 一张图片超过上限返回空值
-                return ''
+                return True, ''
             except Exception as e:
                 logger.info(str(e))
-                logger.info("图片太大,移除列表中的元素")
     if files:
-        logger.info('对上传图片进行异步压缩')
         tinypng.delay(files)
     # logger.info(files, '我是文件名')
-    return files
+    return False,files

@@ -636,7 +636,6 @@ function getMessages(app) {
                     height: h
                 });
                 ctx.drawImage(that, 0, 0, w, h);
-
                 /**
                  * 生成base64
                  * 兼容修复移动设备需要引入mobileBUGFix.js
@@ -659,7 +658,6 @@ function getMessages(app) {
                     var encoder = new JPEGEncoder();
                     base64 = encoder.encode(ctx.getImageData(0, 0, w, h), obj.quality * 100 || 80);
                 }
-
                 // 生成结果
                 var result = {
                     base64: base64,
@@ -677,8 +675,11 @@ function changeInput() {
     $("#imgInput").localResizeIMG({
         width: 1000,
         quality: 0.8,
-        //before: function (that, blob) {},
+        before: function () {
+           showLoading("压缩中...");
+        },
         success: function (result) {
+            layer.closeAll('loading');
             app.tab4.images.push(result.base64);
         }}
     );
@@ -692,7 +693,6 @@ function pubLostFound(data) {
         data: JSON.stringify(data),
         method: "POST",
         success: function (res) {
-            console.log(res);
             if (res.success) {
                 showOK(res.msg);
                 app.tab4 = {
@@ -703,9 +703,8 @@ function pubLostFound(data) {
                     location: null,
                     images: [],//srcList
                 };
-                console.log("删除缓存");
             } else {
-                showAlertError(res.msg)
+                showAlert(res.msg)
             }
         }
     });

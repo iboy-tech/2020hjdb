@@ -169,7 +169,8 @@ function showLoading(title) {
     //加载层-风格4
     layer.msg(title || '加载中', {
         icon: 16,
-        shade: 0.4
+        shade: 0.4,
+        time:500
     });
 }
 
