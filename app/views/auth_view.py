@@ -149,7 +149,7 @@ def login_user_longtime(user):
 
 
 @auth.route('/login', methods=['GET', 'POST', 'OPTIONS'])
-@limiter.limit(limit_value="20/hour")
+@limiter.limit(limit_value="10/hour")
 @cross_origin()
 def login():
     socket_id = request.args.get('token')

@@ -222,7 +222,7 @@ def pub():
         "detail": lost.about,
         "url": os.getenv('SITE_URL') + 'detail/' + str(lost.id) + ".html"
     }
-    qq_group_notice.apply_async(args=[qq_msg, ],countdown=1)
+    qq_group_notice.apply_async(args=[qq_msg, ],countdown=5)
     cache.delete("category")
     return restful.success(msg="发布成功")
 
