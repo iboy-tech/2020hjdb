@@ -33,7 +33,7 @@
 
     let myimg=$("#share-images img").attr("src");
 if(myimg==undefined){
-    myimg="https://ae01.alicdn.com/kf/H25441b24db014cae86cb642db4c46f262.jpg";
+    myimg="//cdn.ctguswzl.cn/static/images/dept-logo.png";
 }
 
 

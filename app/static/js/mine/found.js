@@ -180,21 +180,14 @@ $(function () {
 //冻结用户
 function freezeUser(userId, flag) {
     $.ajax({
-        url: baseUrl + "/users.html/freeze?userId=" + userId,
-        method: "POST",
-        //data: JSON.stringify(data),
-        success: function (res, status) {
-            console.log(res);
-            if (status == "success") {
+        url: baseUrl + "/users/freeze/" + userId,
+        method: "GET",
+        success: function (res) {
                 if (res.success) {
                     showOK("操作成功！")
                 } else {
                     showAlertError(res.msg)
                 }
-            } else {
-                console.log(res);
-                showAlertError(res)
-            }
         }
     });
 }
@@ -202,9 +195,8 @@ function freezeUser(userId, flag) {
 //查询用户信息
 function getUserInfo(userId, app) {
     $.ajax({
-        url: baseUrl + "/users.html/userInfo?userId=" + userId,
-        method: "POST",
-        //data: JSON.stringify(data),
+        url: baseUrl + "/users/info/" + userId,
+        method: "GET",
         success: function (res) {
             console.log(res);
                 if (res.success) {

@@ -5,7 +5,7 @@
 @Time    : 2020/1/19 22:06
 @Author  : iBoy
 @Email   : iboy@iboy.tech
-@Description : 
+@Description :
 @Software: PyCharm
 """
 import os
@@ -61,7 +61,7 @@ def get_message():
 @cross_origin()
 @check_qq
 def set_QQ():
-    logger.info("用户：%s准备更改QQ"%current_user.username)
+    logger.info("用户：%s 准备更改QQ"%current_user.username)
     new_qq = request.json['qq']
     if new_qq == current_user.qq:
         return restful.error("您的QQ和之前一样，修改失败")
@@ -99,7 +99,7 @@ def set_reward():
 @cross_origin()
 @login_required
 def set_password():
-    logger.info('用户%s准备通过表单更改密码'%current_user.username)
+    logger.info('用户：%s准备通过表单更改密码'%current_user.username)
     req = request.json
     u = User.query.get(current_user.id)
     new_pwd = req['newPassword']
@@ -114,17 +114,16 @@ def set_password():
     return restful.error("您的原密码有误")
 
 
-@user.route('/claim', methods=['PUT'])
+@user.route('/claim/<int:id>', methods=['PUT'])
 @limiter.limit(limit_value="5/minute")
 @login_required
 @cross_origin()
-def claim():
-    req = request.args.get('id')
-    if not req:
+def claim(id=-1):
+    if id ==-1:
         return restful.error()
     else:
         try:
-            l = LostFound.query.get(int(req))
+            l = LostFound.query.get(id)
             # 寻物
             if l:  # 查到了
                 if l.kind == 0:

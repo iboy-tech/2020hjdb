@@ -317,8 +317,13 @@ def search(pagination, page, pagesize):
 def get_userinfo(id=-1):
     if id == -1:
         return restful.error()
-    u = User.query.get_or_404(id)
-    data = {
-        "user": u.to_dict()
-    }
-    return restful.success(data=data)
+    u = User.query.get(id)
+    if u:
+        data = {
+            "user": u.to_dict()
+        }
+        return restful.success(data=data)
+    else:
+        return restful.error("认领（或拾取）者已被删除")
+
+

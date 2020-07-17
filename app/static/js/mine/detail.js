@@ -6,10 +6,10 @@ var app = new Vue({
     },
     data: {
         wxReward: "",
-        mailApi: "https://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=",
-        qqApi: "https://wpa.qq.com/msgrd?v=3&site=qq&menu=yes&uin=",
+        mailApi: "//mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=",
+        qqApi: "//wpa.qq.com/msgrd?v=3&site=qq&menu=yes&uin=",
         imgPrefix: staticUrl,
-        userIcon: "https://ae01.alicdn.com/kf/U89b7be7d8d234a38b9a4b0d4258de362X.jpg",
+        userIcon: "//cdn.ctguswzl.cn/static/images/icon-school.png",
         comment: "",//发布评论
         //从相关页面进入
         isRelate: getSession("toIndex") ? JSON.parse(getSession("toIndex")) : true,
@@ -32,7 +32,7 @@ var app = new Vue({
         },
         item: {
             id: null,
-            icon: "https://ae01.alicdn.com/kf/U89b7be7d8d234a38b9a4b0d4258de362X.jpg",
+            icon: "//cdn.ctguswzl.cn/static/images/icon-school.png",
             kind: 1,
             username: "",
             userId: "",
@@ -393,7 +393,7 @@ function viewImages(index) {
 //认领物品
 function claimID(id) {
     $.ajax({
-        url: baseUrl + "/user/claim" + id,
+        url: baseUrl + "/user/claim/" + id,
         method: "PUT",
         success: function (res, status) {
             console.log(res);

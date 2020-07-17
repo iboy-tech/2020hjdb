@@ -775,7 +775,6 @@ function getCategory() {
         url: baseUrl + "/categories",
         method: "GET",
         success: function (res) {
-            console.log(res);
                 if (res.success) {
                     app.category = res.data.list
                 } else {

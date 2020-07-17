@@ -9,11 +9,11 @@
 @Software: PyCharm
 """
 
-import os, re, requests
-
-from bs4 import BeautifulSoup
+import os
+import requests
 
 from PIL import Image
+from bs4 import BeautifulSoup
 
 from app import logger
 
@@ -1390,13 +1390,13 @@ name = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', \
         'U', 'W', 'X', 'Y', 'Z']
 
 
-def collation(imgry, error):
+def collation(imgry):
     imgtable = []
     imglist = []
     for py in range(10):
         imgtable.append([])
         for px in range(12):
-            if imgry.getpixel((px, py)) < 120:
+            if imgry.getpixel((px, py)) < 120: # 图片二值化，背景图的颜色值为120
                 imgtable[py].append(1)
             else:
                 imgtable[py].append(0)
@@ -1411,12 +1411,12 @@ def collation(imgry, error):
         for index in range(len(mylist[i])):
             if mylist[i][index] == imglist:
                 try:
-                    os.remove('tmperror.jpg')
+                    os.remove('error.jpg')
                 except:
                     pass
                 return 0, name[i]
             elif i == 32 and index == len(mylist[i]) - 1:
-                # os.rename('tmperror.jpg','error'+str(error+i)+'.jpg')
+                # os.rename('error.jpg','error'+str(error+i)+'.jpg')
                 return 1, '?'
 
 
@@ -1446,11 +1446,10 @@ def user_verify(xuehao, mima):
     tmpimage = Image.open('code.jpg')
     tmpimg = tmpimage.convert('L')
     code = ''
-    error = 0
     for start in [5, 17, 29, 41]:
-        tmpimg.crop((start, 6, start + 12, 16)).save('tmperror.jpg')
-        pimg = Image.open('tmperror.jpg')
-        code += collation(pimg, error)[1]
+        tmpimg.crop((start, 6, start + 12, 16)).save('error.jpg')    # 图片切割，左上右下
+        pimg = Image.open('error.jpg')
+        code += collation(pimg)[1]
     if '?' in code:
         return user_verify(xuehao, mima)
     data = {
@@ -1487,13 +1486,13 @@ def user_verify(xuehao, mima):
         }
         try:
             os.remove('code.jpg')
-            os.remove('tmperror.jpg')
+            os.remove('error.jpg')
         except:
             pass
         return user
     try:
         os.remove('code.jpg')
-        os.remove('tmperror.jpg')
+        os.remove('error.jpg')
     except:
         pass
     return user
