@@ -104,7 +104,6 @@ getKeys:function (app, append) {
 
 //设置QQ号
 function addKey(key) {
-    //console.log(data);
     $.ajax({
         url: baseUrl + "/tools/" + key,
         method: "POST",

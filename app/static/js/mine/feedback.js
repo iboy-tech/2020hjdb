@@ -2,7 +2,6 @@ var app = new Vue({
     el: "#app",
     data: {
         imgPrefix: staticUrl,
-        schoolIcon: './go/icon-school.png',
         user: getLocal("user") ? JSON.parse(getLocal("user")) : {},
         list: [],
         reply: {
@@ -20,7 +19,6 @@ var app = new Vue({
                 title: "回复", //不显示标题
                 content: $('#replyDiv') //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
                 , yes: function () {
-                    console.log(id);
                     app.reply.id = id;
                     replyFeedback(app.reply, app);
                 }, cancel: function () {

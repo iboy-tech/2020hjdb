@@ -14,32 +14,20 @@ import os
 
 from dotenv import load_dotenv, find_dotenv
 from flask import request
-from flask_cors import CORS
+
 from flask_login import current_user
 from flask_socketio import emit, SocketIO
 
 from app import create_app, create_celery, redis_client, PostConfig, logger
 from app.utils.wxpusher import WxPusher
 
-# os.environ.setdefault('FORKED_BY_MULTIPROCESSING', '1')
-
 async_mode = 'eventlet'
 load_dotenv(find_dotenv('.env'), override=True)
 load_dotenv(find_dotenv('.flaskenv'), override=True)
 
-# logger.info('当前环境' + os.getenv('FlASK_ENV'))
-# logger.info('MAIL_USERNAME', os.getenv('MAIL_USERNAME'))
-# logger.info('MAIL_PASSWORD', os.getenv('MAIL_PASSWORD'))
-# logger.info('SECRET_KEY', os.getenv('SECRET_KEY'))
-# logger.info('PATH_OF_IMAGES_DIR', os.getenv('PATH_OF_IMAGES_DIR'))
-# logger.info('MAIL_SENDGRID_API_KEY', os.getenv('MAIL_SENDGRID_API_KEY'))
-logger.info('站点地址：%s' % os.getenv('SITE_URL'))
-# print('站点地址：'+os.getenv('SITE_URL'))
-
 app = create_app(os.getenv('FlASK_ENV') or 'production')
-CORS(app, supports_credentials=True, resources=r'/*')  # 允许所有域名跨域
 
-socketio = SocketIO(app=app, async_mode=async_mode, cors_allowed_origins="*", manage_session=False)
+socketio = SocketIO(app=app, async_mode=async_mode, manage_session=False)
 celery = create_celery(app)
 
 res = None
@@ -50,11 +38,11 @@ def server(data):
     msg = data.get("msg")
     if msg == 'login':
         client_id = request.sid
-        key = PostConfig.PUSHER_REDIS_PREFIX+client_id
+        key = PostConfig.PUSHER_REDIS_PREFIX + client_id
         redis_client.set(key, 'null')  # 把数据存入redis
         redis_client.expire(key, 180)
     elif msg == 'wx':
-        key = PostConfig.PUSHER_REDIS_PREFIX+str(current_user.id)
+        key = PostConfig.PUSHER_REDIS_PREFIX + str(current_user.id)
         redis_client.set(key, 'null')  # 把数据存入redis
         redis_client.expire(key, 180)
     else:

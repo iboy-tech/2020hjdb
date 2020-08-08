@@ -104,7 +104,6 @@ var app = new Vue({
             });
         },
         changeTab:function(index) {
-            console.log(index);
             if (index != 1) {
                 app.isSearched = false;
             }
@@ -150,7 +149,6 @@ var app = new Vue({
             this.tab[0].search.kind = index;
             deleteSession("data");
             app.nextPage(0, false);
-            console.log(this.tab[0].search, this.tab[0]);
         },
         changeTab0Category:function(index) {
             this.tab[0].search.pageNum = 0;
@@ -162,10 +160,8 @@ var app = new Vue({
                 this.tab[0].search.category = this.category[index].name;
             }
             app.nextPage(0, false);
-            console.log(this.tab[0].search, this.tab[0]);
         },
         nextPage:function(tabIndex, append) {
-            console.log("当前tabIndex", tabIndex)
             if (tabIndex == 0 || tabIndex == 2) {//只有主页，和我的需要无限滚动
                 pageLostFound(app.tab[tabIndex].search, app.tab[tabIndex], append);
                 app.tab[tabIndex].search.pageNum++;
@@ -173,7 +169,6 @@ var app = new Vue({
         },
 
         deletePub:function(id) {
-            console.log(id);
             layer.confirm('确定要删除吗？', {
                 btn: ['确定', '取消'] //按钮
             }, function () {
@@ -185,7 +180,6 @@ var app = new Vue({
             logout();
         },
         removeComment:function(id) {
-            console.log(id);
             layer.confirm('确定要删除吗？', {
                 btn: ['确定', '取消'] //按钮
             }, function () {
@@ -195,7 +189,6 @@ var app = new Vue({
             });
         },
         changeTab4EventKind:function(index) {
-            console.log(index);
             this.tab4.applyKind = index;
         },
         changeTab4CategoryIndex:function(index) {
@@ -256,16 +249,12 @@ var app = new Vue({
                 deleteSession("data");
                 $("button[type='submit']").attr('disabled', 'disabled');
             }
-            console.log(data);
-            //console.log(this.tab4);
         },
         changeImg:function() {
-            // console.log('change div');
             changeInput();
             $("#imgInput").click();//模拟点击
         },
         removeImg:function(index) {
-            // console.log('remove img' + index);
             this.tab4.images.splice(index, 1);
         },
         jumpDetail:function(id) {
@@ -295,7 +284,6 @@ var app = new Vue({
                 title: "反馈", //不显示标题
                 content: $('#editorDiv') //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
                 , yes: function () {
-                    console.log(app.feedback);
                     if (app.feedback.subject == "" || app.feedback.content == "") {
                         showAlertError('请填写全部内容!');
                         return;
@@ -315,9 +303,8 @@ var app = new Vue({
                 title: "修改密码", //不显示标题
                 content: $('#pwdDiv'),  //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
                 yes: function () {
-                    console.log(app.password);
                     let pwd = app.password;
-                    var reg = /^[a-zA-Z0-9]{6,15}$/;
+                    let reg = /^[a-zA-Z0-9]{6,15}$/;
                     if (pwd.newPassword == '' || pwd.newPassword.length < 6) {
                         showAlertError('密码至少是6位');
                         return false;
@@ -387,12 +374,10 @@ var app = new Vue({
             });
         },
         titleAlert:function(title) {
-            console.log(title);
             alert(title)
         },
     },
     mounted:function() {
-        // console.log("我是监控的mounted", app.tabIndex);
         let io = new IntersectionObserver((entries) => {
             if (app.tabIndex == 1) {
                 let mysearch = getSession("isSearched");
@@ -416,7 +401,6 @@ function setReward(data) {
         data: JSON.stringify({'reward': data}),
         method: "PUT",
         success: function (res) {
-            console.log(res);
                 if (res.success) {
                     layer.closeAll();
                     showOK(res.msg);
@@ -429,13 +413,11 @@ function setReward(data) {
 }
 //设置QQ号
 function setQQ(qq) {
-    //console.log(data);
     $.ajax({
         url: baseUrl + "/user/qq",
         data: JSON.stringify({'qq': qq}),
         method: "PUT",
         success: function (res) {
-            console.log(res);
                 if (res.success) {
                     layer.closeAll();
                     showOK(res.msg);
@@ -455,7 +437,6 @@ function pubFeedback(data) {
         data: JSON.stringify(data),
         method: "POST",
         success: function (res) {
-            console.log(res);
             if (res.success) {
                 layer.closeAll();
                 showOK(res.msg);
@@ -472,7 +453,6 @@ function pubFeedback(data) {
 
 //修改密码
 function setPassword(data) {
-    console.log(data);
     $.ajax({
         url: baseUrl + "/user/password",
         data: JSON.stringify(data),
@@ -492,7 +472,6 @@ function setPassword(data) {
                     method: "POST",
                     success: function (res) {
                         if (res.success) {
-                            console.log(res);
                             deleteLocal("user");
                             window.location = baseUrl + '/login';
                         }
@@ -511,7 +490,6 @@ function deletePub(id) {
         url: baseUrl + "/lostfounds/delete/" + id,
         method: "DELETE",
         success: function (res) {
-            console.log(res);
             if (res.success) {
                 showOK(res.msg);
                 saveSession("tabIndex", 2);
@@ -542,12 +520,10 @@ function getNoticeList(app) {
 
 //删除消息（评论）
 function removeComment(id) {
-    console.log("我是要删除的ID:" + id);
     $.ajax({
         url: baseUrl + "/comments/" + id,
         method: "DELETE",
         success: function (res) {
-            console.log(res);
             if (res.success) {
                 showOK(res.msg);
                 getMessages(app);
@@ -564,18 +540,12 @@ function getMessages(app) {
     $.ajax({
         url: baseUrl + "/user/messages",
         method: "GET",
-        success: function (res, status) {
-            console.log(res);
-            if (status == "success") {
+        success: function (res) {
                 if (res.success) {
                     app.tab3 = res.data.list;
                 } else {
                     showAlertError(res.msg)
                 }
-            } else {
-                console.log(res);
-                showAlertError(res)
-            }
         }
     });
 
@@ -592,7 +562,6 @@ function getMessages(app) {
      *
      */
     $.fn.localResizeIMG = function (obj) {
-        // console.log("压缩函数localResizeIMG内",obj)
         this.on('change', function () {
             var file = this.files[0];
             var URL = window.URL || window.webkitURL;
@@ -687,7 +656,6 @@ function changeInput() {
 
 //发布启事
 function pubLostFound(data) {
-    console.log(data);
     $.ajax({
         url: baseUrl + "/lostfounds",
         data: JSON.stringify(data),
@@ -712,13 +680,11 @@ function pubLostFound(data) {
 
 //发布启事
 function pubLostFound(data) {
-    console.log(data);
     $.ajax({
         url: baseUrl + "/lostfounds",
         data: JSON.stringify(data),
         method: "POST",
         success: function (res) {
-            console.log(res);
             if (res.success) {
                 showOK(res.msg);
                 app.tab[0].list = [];
@@ -793,7 +759,6 @@ $(function () {
     //从详情页返回,还要考虑中途退出的情况
     if (getLocal("isBack") == "true" && JSON.parse(getSession("tabIndex"))!=null) {
         app.tabIndex = JSON.parse(getSession("tabIndex"));
-        console.log("我是现在的tab", app.tabIndex);
         if (app.tabIndex == 1) {
             //搜索的关键字
             app.tab[app.tabIndex].search["keyword"] = getSession("keyword")?getSession("keyword"):"";
@@ -825,7 +790,6 @@ $(function () {
     if (sessionIndex != null) {
         app.tabIndex = JSON.parse(sessionIndex);
     } else {
-        console.log("saveSession丢失了$(function () ");
         saveSession("tabIndex", 0);
         app.tabIndex = 0;
     }

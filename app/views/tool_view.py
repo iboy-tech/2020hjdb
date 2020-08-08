@@ -30,7 +30,6 @@ from app.utils.tinypng_util import tinypng
 @tool.route('/<key>', methods=['POST'])
 @login_required
 @admin_required
-@cross_origin()
 def add(key):
     if not re.match(r"^[a-z0-9A-Z]+$", key):
         return restful.error("秘钥格式错误")
@@ -46,7 +45,6 @@ def add(key):
 @tool.route('/<key>', methods=['DELETE'])
 @login_required
 @super_admin_required
-@cross_origin()
 def delete(key):
     key_pre = PostConfig.TINYPNG_REDIS_KEY
     res = redis_client.zrem(key_pre, key)
@@ -59,7 +57,6 @@ def delete(key):
 @tool.route('/import', methods=['GET'])
 @login_required
 @admin_required
-@cross_origin()
 def import_keys():
     cnt = 0
     try:
@@ -81,7 +78,6 @@ def import_keys():
 @tool.route('/compress', methods=['GET'])
 @login_required
 @super_admin_required
-@cross_origin()
 def compress():
     big_img = find_big_img()
     if big_img:
@@ -94,7 +90,6 @@ def compress():
 @tool.route('/clear', methods=['GET'])
 @login_required
 @super_admin_required
-@cross_origin()
 def clear():
     dir_path1 = os.getenv("PATH_OF_UPLOAD")
     dir_path2 = os.getenv("MINI_IMG_PATH")
@@ -125,7 +120,6 @@ def clear():
 @tool.route('/', methods=['GET'],strict_slashes=False)
 @login_required
 @admin_required
-@cross_origin()
 def getall():
     key = PostConfig.TINYPNG_REDIS_KEY
     keys = redis_client.zrange(key, 0, -1, desc=True, withscores=True)
@@ -149,7 +143,6 @@ def getall():
 @tool.route('/resize', methods=['GET'])
 @login_required
 @super_admin_required
-@cross_origin()
 def resize():
     # 转化所有png图片为jpg
     # change_all_img_to_jpg()

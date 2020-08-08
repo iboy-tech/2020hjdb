@@ -52,10 +52,8 @@ $(function () {
 function getLogs(app,type ,append) {
     $.ajax({
         url: baseUrl + "/log.html/getall?type="+type,
-        // data: JSON.stringify(data),
         method: "POST",
         success: function (res) {
-            console.log(res);
             if (res.success) {
                 if (append) {
                     for (let v in res.data.list) {

@@ -12,11 +12,11 @@ $.ajaxSetup({
         // showLoading();
     },
     error: function (req, status, e) {
-        hideLoading();
+        // hideLoading();
         console.log("ajax error --------------------------- start");
-        console.log(this);
-        console.log(req);
-        console.log(status);
+        // console.log(this);
+        // console.log(req);
+        // console.log(status);
         console.log(e);
         console.log("ajax error ----------------------------- end");
         // alert("请求发生错误：\n" + this.url);
@@ -104,7 +104,6 @@ function logout() {
             method: "POST",
             success: function (res) {
                 if (res.success) {
-                    console.log(res);
                     deleteLocal("user");
                     window.location = baseUrl + '/login';
                 }

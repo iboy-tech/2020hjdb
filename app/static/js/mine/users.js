@@ -24,7 +24,6 @@ var app = new Vue({
     },
     methods: {
         toPage: function (pageNum) {
-            console.log(pageNum);
             if (pageNum < 0 || pageNum >= this.result.totalPage) {
                 return;
             }
@@ -189,7 +188,6 @@ function getUserList(data, app, append) {
                 app.result.total = res.data.page.total;
                 if (append) {
                     for (let v in res.data.page.list) {
-                        //console.log(v);
                         app.result.list.push(res.data.page.list[v]);
                     }
                 } else {
@@ -208,18 +206,12 @@ function resetPassword(userId) {
         beforeSend: function () {
             showLoading();
         },
-        success: function (res, status) {
-            console.log('我是res' + res);
-            if (status == "success") {
+        success: function (res) {
                 if (res.success) {
                     showOK();
                 } else {
                     showAlertError(res.msg)
                 }
-            } else {
-                console.log(res);
-                showAlertError(res)
-            }
         }
     });
 }
@@ -230,19 +222,13 @@ function setAsAdmin(userId) {
         url: baseUrl + "/users/admin/" + userId,
         method: "GET",
         //data: JSON.stringify(data),
-        success: function (res, status) {
-            console.log(res);
-            if (status == "success") {
+        success: function (res) {
                 if (res.success) {
                     showOK();
                     getUserList(app.search, app, false);
                 } else {
                     showAlertError(res.msg)
                 }
-            } else {
-                console.log(res);
-                showAlertError(res)
-            }
         }
     });
 }

@@ -59,7 +59,7 @@ def validate_token(token):  # 验证邮箱
             return restful.success(msg='恭喜,QQ更改成功')
         except:
             db.session.rollback()
-            return restful.success(msg='要更改的QQ已被使用')
+            return restful.success(msg='次QQ已被他人占用')
     else:
         return restful.error('更改失败,请重新尝试')
 

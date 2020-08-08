@@ -110,16 +110,13 @@ var app = new Vue({
             }
         },
         pubComment: function (id) {
-            console.log(this.comment);
             let data = {
                 "targetId": id,
                 "content": this.comment
             };
-            console.log(data);
             pubComment(data, this);
         },
         deletePub: function (id) {
-            console.log(id);
             layer.confirm('确定要删除吗？', {
                 btn: ['确定', '取消'] //按钮
             }, function () {
@@ -137,7 +134,6 @@ var app = new Vue({
                 title: "违规信息举报", //不显示标题
                 content: $('#editorDiv') //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
                 , yes: function () {
-                    console.log(app.feedback);
                     if (app.feedback.content == "") {
                         showAlertError('请填写举报理由!');
                         return;
@@ -154,20 +150,15 @@ var app = new Vue({
         },
         //获得启事详情
         getDetail: function (id) {
-            console.log('这是帖子的ID:' + id);
             $.ajax({
                 url: baseUrl + "/detail/" + id + ".html",
                 // data:id,
                 method: "POST",
                 // async : false,
                 success: function (res) {
-                    console.log(res);
                     if (res.success) {
-                        //console.log(result.item);
                         app.item = res.data.item;
-                        //console.log(result.item);
                         app.page.search.category = $("#search-category").text();
-                        console.log(app.page.search);
                         if (getLocal("user")) {
                             getComments(id, app);
                             pageLostFound(app.page.search, app.page);
@@ -179,7 +170,6 @@ var app = new Vue({
             });
         },
         jumpDetail: function (id) {
-            console.log("执行相关函数");
             //从相关启示进去，出来直接返回主页面
             app.isRelate = true;
             saveSession("toIndex", true);
@@ -211,7 +201,6 @@ var app = new Vue({
 
     },
     mounted() {
-        // console.log("挂载完成",this.isRelate);
         this.loadJS();//页面渲染完成后加载分享组件
         deleteLocal("isRelate");
     }
@@ -219,7 +208,6 @@ var app = new Vue({
 
 //新增反馈
 function pubReport(data) {
-    console.log(data);
     $.ajax({
         url: baseUrl + "/feedbacks",
         data: JSON.stringify(data),
@@ -245,7 +233,6 @@ function deletePub(id) {
         url: baseUrl + "/lostfounds/delete/" + id,
         method: "DELETE",
         success: function (res) {
-            console.log(res);
             if (res.success) {
                 showOK(res.msg);
                 saveSession("category", "");
@@ -288,18 +275,11 @@ function pubComment(data, app) {
         data: JSON.stringify(data),
         method: "POST",
         success: function (res) {
-            console.log(res);
-            console.log(res);
-            console.log(typeof (res.ext), res.ext, res.ext == null);
             if (res.success) {
                 showOK(res.msg);
                 app.comment = "";
                 // location.reload();
-                console.log('把评论框清空')
-                console.log('我是传给详情的ID:' + app.item.id)
-                console.log("" + data.targetId)
                 app.getDetail(getPostId());
-                console.log('评论完成之后刷新')
             } else {
                 showAlertError(res.msg)
             }
@@ -309,13 +289,11 @@ function pubComment(data, app) {
 
 //获得启事评论列表
 function getComments(data, app) {
-    console.log("评论有BUG：", data);
     $.ajax({
         url: baseUrl + "/comments/" + getPostId(),
         method: "POST",
         success: function (res) {
             if (res.success) {
-                //console.log(result.item);
                 app.comments = res.data.comments;
                 app.wxReward = res.data.wxReward;
             } else {
@@ -333,7 +311,6 @@ function pubFeedback(data) {
         data: JSON.stringify(data),
         method: "POST",
         success: function (res) {
-            console.log(res);
             if (res.success) {
                 layer.closeAll();
                 showOK(res.msg);
@@ -348,31 +325,6 @@ function pubFeedback(data) {
     });
 }
 
-function viewImages1(index) {
-    console.log('我是相册下标' + index)
-    //相册层
-    // this.images.data = [];
-    var images = [];
-    var start = index;
-    // let i = 0;
-    // let t = $("#share-images img").length;
-    // for (; i < t; i++) {
-    //     let src = app.imgPrefix+this.item.images[i];
-    //     let d = {"src":src};
-    //     this.images.data.push(d);
-    // }
-    $("#share-images img").each(function () {
-        var url = $(this).attr("src");
-        images.push(url);
-    });
-    app.images.data = images;
-    console.log(images);
-    layer.photos({
-        photos: images,//格式见API文档手册页
-        anim: 5 //0-6的选择，指定弹出图片动画类型，默认随机
-    });
-}
-
 function viewImages(index) {
     //相册层
     app.images.data = [];
@@ -382,7 +334,6 @@ function viewImages(index) {
         let d = {"src": url}
         app.images.data.push(d);
     });
-    console.log(app.images);
     layer.photos({
         photos: app.images,//格式见API文档手册页
         anim: 5 //0-6的选择，指定弹出图片动画类型，默认随机
@@ -395,9 +346,7 @@ function claimID(id) {
     $.ajax({
         url: baseUrl + "/user/claim/" + id,
         method: "PUT",
-        success: function (res, status) {
-            console.log(res);
-            if (status == "success") {
+        success: function (res) {
                 if (res.success) {
                     showOK(res.msg);
                     if (res.msg.indexOf("认领") != -1) {
@@ -411,10 +360,6 @@ function claimID(id) {
                     }
 
                 }
-            } else {
-                console.log(res);
-                showAlertError(res)
-            }
         }
     });
 }

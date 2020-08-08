@@ -283,7 +283,6 @@ def get_search_data(pagination, pageNum, pagesize):
 @found.route('/', methods=['DELETE'], strict_slashes=False)
 @login_required
 @admin_required
-@cross_origin()
 def delete_posts():
     req = request.json
     logger.info(req)
@@ -320,7 +319,6 @@ def delete_posts():
 
 @found.route('/delete/<int:id>', methods=['DELETE'])
 @login_required
-@cross_origin()
 def delete_post(id=-1):
     if id == -1:
         return restful.error()

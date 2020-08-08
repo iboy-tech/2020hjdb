@@ -56,9 +56,7 @@ var app = new Vue({
                 });
             }
         },
-        seeInfo:function(userId) {
-            console.log(userId);
-            getUserInfo(userId, this);
+        seeInfo:function(userId) {getUserInfo(userId, this);
         },
         checkAll:function() {
             if (this.checked == false) {
@@ -119,7 +117,6 @@ var app = new Vue({
             pageLostFound(app.result.search, app.result, false);
         },
         deletePub:function(id) {
-            console.log(id);
             layer.confirm('确定要删除吗？', {
                 btn: ['确定', '取消'] //按钮
             }, function () {
@@ -129,7 +126,6 @@ var app = new Vue({
 
         },
         changePage:function(e) {
-            console.log(e);
         },
         toPage:function(pageNum) {
             toPage(pageNum);
@@ -146,7 +142,6 @@ var app = new Vue({
     }
 });
 function toPage(pageNum){
-    console.log(pageNum);
             if (pageNum < 0 || pageNum >= app.result.totalPage) {
                 return;
             }
@@ -198,7 +193,6 @@ function getUserInfo(userId, app) {
         url: baseUrl + "/users/info/" + userId,
         method: "GET",
         success: function (res) {
-            console.log(res);
                 if (res.success) {
                     app.userInfo = res.data.user;
                     //$("#infoDiv").show(1000);

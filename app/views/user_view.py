@@ -77,7 +77,6 @@ def set_QQ():
 @user.route('/reward', methods=['PUT'])
 @limiter.limit(limit_value="3/minute")
 @login_required
-@cross_origin()
 def set_reward():
     try:
         reward = request.json['reward']
@@ -117,7 +116,6 @@ def set_password():
 @user.route('/claim/<int:id>', methods=['PUT'])
 @limiter.limit(limit_value="5/minute")
 @login_required
-@cross_origin()
 def claim(id=-1):
     if id ==-1:
         return restful.error()

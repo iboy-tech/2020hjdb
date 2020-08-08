@@ -16,7 +16,6 @@ from logging.handlers import SMTPHandler, TimedRotatingFileHandler
 import click
 from flask import Flask, render_template, request, redirect, url_for
 from flask_login import current_user
-from flask_wtf.csrf import CSRFError
 
 from app.config import BaseConfig, basedir, PostConfig, LogConfig, AdminConfig
 # .表示当前路径
@@ -69,7 +68,6 @@ def create_app(config_name=None):
     register_shell_context(app)  # 注册shell上下文处理函数
     register_commands(app)  # 注册自定义shell命令
     register_template_context(app)
-    # register_interceptor(app)  # 拦截器
     return app
 
 
@@ -97,20 +95,16 @@ def register_blueprints(app):
 
 def register_extensions(app):  # 实例化扩展
     migrate.init_app(app, db)
-    # bootstrap.init_app(app)
     mail.init_app(app)  # 发送邮件
-    # moment.init_app(app)
     db.init_app(app)
     login_manager.init_app(app)
     login_manager.login_message = '你必须登陆后才能访问该页面'
     login_manager.login_view = 'auth.login'
     login_manager.anonymous_user = Guest
-    # toolbar.init_app(app)
     redis_client.init_app(app)
     cache.init_app(app)
     limiter.__init__(key_func=get_real_ip, default_limits=["1000 per day", "200 per minute"])
     limiter.init_app(app)
-    # mongo_client.init_app(app)
 
 
 def register_shell_context(app):
@@ -326,20 +320,3 @@ def register_errors(app):
             return render_template('errors/429.html', data=data), 429
         else:
             return "403 Forbidden", 403
-
-    @app.errorhandler(CSRFError)
-    def handle_csrf_error(e):
-        if not isinstance(current_user._get_current_object(), Guest):
-            return render_template(
-                'errors/400.html', description=e.description), 400
-        else:
-            return redirect(url_for('auth.login')), 301
-
-
-def register_interceptor(app):
-    @app.before_request
-    def before_request():
-        if request.url.startswith('http://'):
-            url = request.url.replace('http://', 'https://', 1)
-            code = 301
-            return redirect(url, code=code)

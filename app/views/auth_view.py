@@ -108,7 +108,6 @@ def robot():
 @cache.cached(timeout=3600 * 24 * 7, key_prefix="tool-html")  # 缓存5分钟 默认为300s
 @login_required
 @admin_required
-@cross_origin()
 def tool():
     return render_template('tool.html')
 
@@ -150,7 +149,6 @@ def login_user_longtime(user):
 
 @auth.route('/login', methods=['GET', 'POST', 'OPTIONS'])
 @limiter.limit(limit_value="10/hour")
-@cross_origin()
 def login():
     socket_id = request.args.get('token')
     if socket_id:
@@ -267,7 +265,6 @@ def logout():
 @limiter.limit(limit_value="5/hour")
 @check_qq
 @check_username
-@cross_origin()
 def recognize():
     data = request.json
     qq = data['qq']
@@ -348,7 +345,6 @@ def recognize():
 # token验证入口
 @auth.route('/confirm.html', methods=['GET'])
 @limiter.limit(limit_value="5/day")
-@cross_origin()
 def confirm():
     token = request.args.get('token')
     if token is not None:

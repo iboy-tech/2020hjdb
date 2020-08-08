@@ -25,7 +25,7 @@ var app = new Vue({
         list: []
     },
     methods: {
-        execute:function() {
+        execute: function () {
             this.condition.start = this.startTime;
             this.condition.end = this.endTime;
             this.condition.type = this.flag;
@@ -36,33 +36,30 @@ var app = new Vue({
                 addFile(app, app.condition);
             }
         },
-        logout:function() {
+        logout: function () {
             logout();
         },
         deleteFile: function (id) {
             layer.confirm('确定要删除吗？', {
                 btn: ['确定', '取消'] //按钮
             }, function () {
-                            $.ajax({
-                url: "/reports/"+id,
-                method: "DELETE",
-                success: function (res) {
-                    if (res.success) {
-                        showOK(res.msg);
-                        getFile(app,false);
-                    }
-                    else {
-                        showError(res.msg)
-                    }
+                $.ajax({
+                    url: "/reports/" + id,
+                    method: "DELETE",
+                    success: function (res) {
+                        if (res.success) {
+                            showOK(res.msg);
+                            getFile(app, false);
+                        } else {
+                            showError(res.msg)
+                        }
 
-                }
-            });
+                    }
+                });
             }, function () {
             });
         },
         confrim: function (startTime, endTime) {
-            console.log(startTime);
-            console.log(endTime);
         }
     }
 });
@@ -71,8 +68,7 @@ $(function () {
     var menuLeft = document.getElementById('cbp-spmenu-s1'),
         showLeftPush = document.getElementById('showLeftPush'),
         body = document.body;
-
-    showLeftPush.onclick = function () {
+        showLeftPush.onclick = function () {
         classie.toggle(this, 'active');
         classie.toggle(body, 'cbp-spmenu-push-toright');
         classie.toggle(menuLeft, 'cbp-spmenu-open');

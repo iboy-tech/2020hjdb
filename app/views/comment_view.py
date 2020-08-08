@@ -95,7 +95,6 @@ def index(id):
 
 @comment.route('/<int:id>', methods=['DELETE'])
 @login_required
-@cross_origin()
 def delete_comment(id=-1):
     if id == -1:
         return restful.error()

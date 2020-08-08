@@ -86,7 +86,6 @@ var app = new Vue({
                 method:'POST',
                 async:false,
                 success:function(res) {
-                    console.log("从后台获取的图表数据"+res);
                     if(res.success){
                         self.newCount=res.data.newCount;
                         self.lost=res.data.lost;
@@ -105,7 +104,6 @@ var app = new Vue({
         },
     },
     mounted(){
-        console.log("数据初始化完毕：");
         drawChart(this);
     }
 });
@@ -116,12 +114,6 @@ function disableOther(button) {
     }
 }
 function drawChart(app){
-    console.log("函数体：")
-// $(function () {
-    //console.log('index');
-    //console.log(app.user);
-
-// });
 
 //近期数据
 //失物、招领、寻回三种占比

@@ -19,14 +19,6 @@ from app.config import PostConfig
 from app.utils.tinypng_util import tinypng
 from tasks import celery
 
-"""
-@File    : img_3c.py
-@Time    : 2020/3/9 23:04
-@Author  : iBoy
-@Email   : iboy@iboy.tech
-@Description : 图片处理
-@Software: PyCharm
-"""
 import os
 
 from PIL import Image

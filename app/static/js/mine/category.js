@@ -2,7 +2,6 @@ var app = new Vue({
     el: "#app",
     data: {
         imgPrefix: staticUrl,
-        schoolIcon: './go/icon-school.png',
         user: getLocal("user") ? JSON.parse(getLocal("user")) : {},
         categoryList: [],
         category: {
@@ -12,7 +11,6 @@ var app = new Vue({
     },
     methods: {
         deleteCategory:function(name) {
-            console.log(name);
             //询问框
             layer.confirm('确定要删除吗？', {
                 btn: ['确定', '取消'] //按钮
@@ -27,7 +25,6 @@ var app = new Vue({
             showInfo(this.categoryList[index].about || this.categoryList[index].name);
         },
         submit:function() {
-            console.log(this.category);
             addCategory(this.category, this);
         },
         logout:function() {
@@ -77,18 +74,12 @@ function getCategory() {
     $.ajax({
         url: baseUrl + "/categories",
         method: "GET",
-        success: function (res, status) {
-            console.log(res);
-            if (status == "success") {
+        success: function (res) {
                 if (res.success) {
                     app.categoryList = res.data.list
                 } else {
                     showAlertError(res.msg)
                 }
-            } else {
-                console.log(res);
-                showAlertError(res)
-            }
         }
     });
 }
