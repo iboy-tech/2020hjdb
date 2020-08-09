@@ -299,7 +299,7 @@ if(myimg==undefined){
      */
  function getMetaContentByName(name) {
      name=""
-     console.log('参数名称',name);
+     // console.log('参数名称',name);
         return (document.getElementsByName(name)[0] || 0).content;
     }
 
