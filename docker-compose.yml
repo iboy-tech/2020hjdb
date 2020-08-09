@@ -1,0 +1,85 @@
+version: '2'
+services:
+  # PythonWeb服务
+  flask:
+    # build: .
+    image: registry.cn-hangzhou.aliyuncs.com/iboy/ctguswzl:1.0
+    container_name: flask
+    ports:
+      - 8888:8888
+    # working_dir: /www/wwwroot/ctguswzl.cn
+    volumes: # 文件夹映射
+      - /www/wwwroot/ctguswzl.cn:/www/wwwroot/ctguswzl.cn # 挂载源码
+      - /etc/timezone:/etc/timezone #同步时区
+      - /etc/localtime:/etc/localtime #同步时区
+    command: /bin/sh -c "/www/wwwroot/ctguswzl.cn/boot.sh && /www/wwwroot/ctguswzl.cn/celery.sh"
+    privileged: true
+    networks:
+      - net
+    depends_on:
+      - redis
+      - mysql
+    env_file:
+      - /www/wwwroot/ctguswzl.cn/.env
+      - /www/wwwroot/ctguswzl.cn/.flaskenv
+    restart: always
+
+  mysql:
+    image: mysql:5.7
+    container_name: mysql
+    ports:
+      - 3306:3306
+    volumes:
+      - /www/server/mysql/data:/var/lib/mysql # 挂载数据目录
+      - /www/server/mysql/conf:/etc/mysql/conf.d # 挂载配置文件目录
+      - /www/server/mysql/logs:/var/log/mysql # 挂载配置文件目录
+      - /www/server/mysql/init:/docker-entrypoint-initdb.d
+    privileged: true
+    env_file:
+      - /www/server/mysql/mysql.env
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    networks:
+      - net
+    restart: always
+
+  redis:
+    image: redis:5.0.7-alpine
+    container_name: redis
+    ports:
+      - 6379:6379
+    volumes:
+      - /www/server/redis/data:/data
+      - /www/server/redis/conf/redis.conf:/usr/local/etc/redis/redis.conf
+      - /etc/timezone:/etc/timezone #同步时区
+      - /etc/localtime:/etc/localtime #同步时区
+    command: redis-server /usr/local/etc/redis/redis.conf
+    networks:
+      - net
+    restart: always
+
+  nginx:
+    image: nginx:1.18.0-alpine
+    container_name: nginx
+    ports:
+      - 80:80
+      - 443:443
+    volumes: # 文件夹映射
+      - /www/server/nginx/proxy:/etc/nginx/proxy #反向代理配置文件
+      - /www/server/nginx/ssl:/etc/nginx/ssl #证书文件
+      - /www/server/nginx/conf.d:/etc/nginx/conf.d # nginx站点配置文件
+      - /www/wwwroot:/etc/nginx/sites-available # 宿主:docker:只读  ,www目录
+      - /www/server/nginx/conf/nginx.conf:/etc/nginx/nginx.conf # nginx配置文件
+      - /www/server/nginx/logs:/var/log/nginx # 网站日志文件
+      - /www/server/nginx/cache:/etc/nginx/cache #缓存配置
+      - /www/wwwroot:/www/wwwroot
+      - /etc/letsencrypt:/etc/letsencrypt #网站证书
+      - /etc/timezone:/etc/timezone #同步时区
+      - /etc/localtime:/etc/localtime #同步时区
+    depends_on:
+      - flask
+    networks:
+      - net
+    restart: always
+networks:
+  net:
+    driver: bridge
