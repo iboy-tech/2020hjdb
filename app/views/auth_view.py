@@ -14,7 +14,7 @@ from datetime import datetime, timedelta
 from random import randint
 
 from flask import render_template, request, url_for, session, send_from_directory, current_app
-from flask_cors import cross_origin
+
 from flask_login import logout_user, login_user, login_required, current_user
 
 from app import db, OpenID, redis_client, cache, limiter, logger
@@ -125,7 +125,6 @@ def favicon():
 
 @auth.route('/', methods=['POST', 'OPTIONS', 'GET'])
 # @limiter.limit(limit_value="10/minute")
-@cross_origin()
 @unfreeze_user  # 微信自助解封
 # @cache.cached(timeout=3600 * 24 * 7, key_prefix="user-html")  # 缓存10分钟 默认为300s
 @login_required
@@ -152,30 +151,27 @@ def login_user_longtime(user):
 def login():
     socket_id = request.args.get('token')
     if socket_id:
-        try:
-            key = PostConfig.PUSHER_REDIS_PREFIX + socket_id
-            op = redis_client.get(key)
-            if op is not  None and op != "null":
-                # redies中为byte类型
-                try:
-                    # 这里会出问题
-                    op = op.decode()
-                    data = eval(op)
-                    op = OpenID.query.filter_by(wx_id=data['uid']).first()
-                    if op:
-                        # 用户免登陆
-                        login_user_longtime(op.user)
-                        logger.info("用户:%s %s,扫码重置密码" % (op.user.username, op.user.real_name))
-                        return restful.success(msg="密码重置成功，新密码已发送到您的微信", data=op.user.auth_to_dict())
-                    else:
-                        return restful.error("此微信尚未绑定")
-                except Exception as e:
-                    logger.info(str(e))
-                finally:
-                    # 删除redis中的数据
-                    redis_client.delete(key)
-        except Exception as e:
-            login.info(str(e))
+        key = PostConfig.PUSHER_REDIS_PREFIX + socket_id
+        op = redis_client.get(key)
+        if op is not  None and op != "null":
+            # redies中为byte类型
+            try:
+                # 这里会出问题
+                # decode_op = op.decode()
+                data = eval(op)
+                op = OpenID.query.filter_by(wx_id=data['uid']).first()
+                if op:
+                    # 用户免登陆
+                    login_user_longtime(op.user)
+                    logger.info("用户:%s %s,扫码重置密码" % (op.user.username, op.user.real_name))
+                    return restful.success(msg="密码重置成功，新密码已发送到您的微信", data=op.user.auth_to_dict())
+                else:
+                    return restful.error("此微信尚未绑定")
+            except Exception as e:
+                logger.info(str(e))
+            finally:
+                # 删除redis中的数据
+                redis_client.delete(key)
     data = request.json
     if request.method == 'POST':
         user = User.query.filter_by(username=data['username']).first()

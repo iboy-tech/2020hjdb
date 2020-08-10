@@ -12,7 +12,7 @@ import datetime
 import os
 
 from flask import request
-from flask_cors import cross_origin
+
 from flask_login import current_user, login_required
 from sqlalchemy import desc
 

@@ -12,7 +12,7 @@ import os
 import re
 
 from flask import render_template, request
-from flask_cors import cross_origin
+
 from flask_login import login_required
 
 from app import redis_client, cache, logger

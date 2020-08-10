@@ -154,8 +154,9 @@ def register_logging(app):
             try:
                 info = get_login_info(current_user, 1)
                 record.url = request.url
-                record.remote_addr = info.get("ip") + "- (" + info.get("addr")+")"
-                record.username = "Guest" if isinstance(current_user._get_current_object(), Guest) else current_user.username
+                record.remote_addr = info.get("ip") + "- (" + info.get("addr") + ")"
+                record.username = "Guest" if isinstance(current_user._get_current_object(),
+                                                        Guest) else current_user.username
                 return super(RequestFormatter, self).format(record)
             except:
                 pass
@@ -206,13 +207,13 @@ def register_logging(app):
     mail_handler.setFormatter(request_formatter)
 
     # loggers = [app.logger, logging.getLogger('sqlalchemy'), logging.getLogger('werkzeug')]
-    loggers = [app.logger, logging.getLogger('sqlalchemy')]
+    loggers = [app.logger, logging.getLogger('sqlalchemy'), logging.getLogger('gunicorn.error')]
     for logger in loggers:
         logger.addHandler(file_handler)
         logger.addHandler(mail_handler)
-    # gunicorn_logger = logging.getLogger('gunicorn.error')
-    # app.logger.handlers = gunicorn_logger.handlers
-    # app.logger.setLevel(gunicorn_logger.level)
+    gunicorn_logger = logging.getLogger('gunicorn.error')
+    app.logger.handlers = gunicorn_logger.handlers
+    app.logger.setLevel(gunicorn_logger.level)
 
 
 # 模板上下文
@@ -290,7 +291,7 @@ def register_errors(app):
             logger.info("当前用户信息")
             logger.info(current_user.real_name)
             data = get_log()
-            key = LogConfig.REDIS_INFO_LOG_KEY+uuid.uuid4().hex
+            key = LogConfig.REDIS_INFO_LOG_KEY + uuid.uuid4().hex
             redis_client.set(key, json.dumps(data))
             redis_client.expire(key, LogConfig.REDIS_EXPIRE_TIME)
             return render_template('errors/405.html', data=data), 405
@@ -302,7 +303,7 @@ def register_errors(app):
     def internal_server_error(e):
         if not isinstance(current_user._get_current_object(), Guest):
             data = get_log()
-            key = LogConfig.REDIS_ERROR_LOG_KEY+uuid.uuid4().hex
+            key = LogConfig.REDIS_ERROR_LOG_KEY + uuid.uuid4().hex
             redis_client.set(key, json.dumps(data))
             redis_client.expire(key, LogConfig.REDIS_EXPIRE_TIME)
             return render_template('errors/500.html', data=data), 500
@@ -314,7 +315,7 @@ def register_errors(app):
         if not isinstance(current_user._get_current_object(), Guest):
             data = get_log()
             data.update(user=current_user.username)
-            key = LogConfig.REDIS_ERROR_LOG_KEY+uuid.uuid4().hex
+            key = LogConfig.REDIS_ERROR_LOG_KEY + uuid.uuid4().hex
             redis_client.set(key, json.dumps(data))
             redis_client.expire(key, LogConfig.REDIS_EXPIRE_TIME)
             return render_template('errors/429.html', data=data), 429

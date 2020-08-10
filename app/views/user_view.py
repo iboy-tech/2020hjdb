@@ -14,7 +14,7 @@ from datetime import datetime
 from random import randint
 
 from flask import request, url_for
-from flask_cors import cross_origin
+
 from flask_login import current_user, login_required
 
 from app import db, OpenID, cache, PostConfig, limiter, logger
@@ -58,7 +58,6 @@ def get_message():
 @user.route('/qq', methods=['PUT'])
 @limiter.limit(limit_value="3/minute")
 @login_required
-@cross_origin()
 @check_qq
 def set_QQ():
     logger.info("用户：%s 准备更改QQ"%current_user.username)
@@ -95,7 +94,6 @@ def set_reward():
 
 
 @user.route('/password', methods=['PUT'])
-@cross_origin()
 @login_required
 def set_password():
     logger.info('用户：%s准备通过表单更改密码'%current_user.username)
