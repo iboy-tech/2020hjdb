@@ -168,7 +168,8 @@ def login():
                 else:
                     return restful.error("此微信尚未绑定")
             except Exception as e:
-                logger.info(str(e))
+                logger.error(str(e))
+                return restful.error("服务繁忙，请重试")
             finally:
                 # 删除redis中的数据
                 redis_client.delete(key)
