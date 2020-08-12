@@ -14,7 +14,7 @@ from datetime import timedelta
 from celery.schedules import crontab
 from kombu import Queue, Exchange
 
-broker_url = 'redis://localhost:6379/2'
+broker_url = 'redis://127.0.0.1:6379/2'
 # result_backend = 'redis://localhost:6379/3'
 task_serializer = 'json'
 result_serializer = 'json'

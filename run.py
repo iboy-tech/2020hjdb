@@ -12,8 +12,9 @@ from __future__ import absolute_import
 
 import os
 
-from dotenv import load_dotenv, find_dotenv
+
 from flask import request
+
 
 from flask_login import current_user
 from flask_socketio import emit, SocketIO
@@ -21,9 +22,14 @@ from flask_socketio import emit, SocketIO
 from app import create_app, create_celery, redis_client, PostConfig, logger
 from app.utils.wxpusher import WxPusher
 
-async_mode = 'eventlet'
+from dotenv import load_dotenv, find_dotenv
+# 一、自动搜索 .env 文件
+load_dotenv(verbose=True)
 load_dotenv(find_dotenv('.env'), override=True)
 load_dotenv(find_dotenv('.flaskenv'), override=True)
+
+async_mode = 'eventlet'
+
 
 app = create_app(os.getenv('FlASK_ENV') or 'production')
 
@@ -140,21 +146,22 @@ if __name__ == '__main__':
     启动 Celery worker:
     sudo apt-get --purge remove gunicorn
     source venv/bin/activate && nohup gunicorn -c config.py run:app   &> log.log
-   celery multi start  celery worker -A run.celery -l  DEBUG -E -P eventlet
-   celery  -A run.celery  beat
-      gunicorn -c config.py run:app  --daemon
+    celery multi start  celery worker -A run.celery -l  DEBUG -E -P eventlet
+    celery  -A run.celery  beat
+    gunicorn -c config.py run:app  --daemon
+    Windows下运行Celery
     celery worker -A run.celery -l  DEBUG -E -P eventlet -Q default 
     celery worker -A run.celery -l  DEBUG -E -P solo -Q default
-   ps auxww | grep 'celery worker'
-   pkill -f "celery"
-   celery worker
-   pkill -f " celery worker"
-   celery multi start celery worker -B -A run.celery 
-   celery worker -A run.celery --loglevel=debug  --logfile=worker.log --pool=eventlet  -E
-   ln -s /usr/local/python3/bin/celery /usr/bin/celery
-  https://blog.wpjam.com/m/weixin-emotions/ 
-  http://www.oicqzone.com/tool/emoji/ #表情地址
-  http://www.oicqzone.com/qqjiqiao/2014123020663.html
+    ps auxww | grep 'celery worker'
+    pkill -f "celery"
+    celery worker
+    pkill -f " celery worker"
+    celery multi start celery worker -B -A run.celery 
+    celery worker -A run.celery --loglevel=debug  --logfile=worker.log --pool=eventlet  -E
+    ln -s /usr/local/python3/bin/celery /usr/bin/celery
+      https://blog.wpjam.com/m/weixin-emotions/ 
+      http://www.oicqzone.com/tool/emoji/ #表情地址
+      http://www.oicqzone.com/qqjiqiao/2014123020663.html
    ln -s  /usr/local/bin/celery /usr/bin/celery
    export C_FORCE_ROOT="True"
    pkill -9 -f 'celery worker'
@@ -165,11 +172,11 @@ if __name__ == '__main__':
     celery worker -E -l INFO -A run.celery -n img_compress -Q img_compress -P eventlet
    celery beat -A run.celery -l INFO -f logs/schedule_tasks.log --detach
 
- celery worker -E -l INFO -n worker_compute -Q for_task_compute
-celery -A 项目名 worker -loglevel=info ： 前台启动命令
-celery multi start w1 -A 项目名 -l info ： 后台启动命令
-celery multi restart img_compress -A run.celery -l info ： 后台重启命令
-celery multi stop w1 -A 项目名 -l info ： 后台停止命令
+     celery worker -E -l INFO -n worker_compute -Q for_task_compute
+    celery -A 项目名 worker -loglevel=info ： 前台启动命令
+    celery multi start w1 -A 项目名 -l info ： 后台启动命令
+    celery multi restart img_compress -A run.celery -l info ： 后台重启命令
+    celery multi stop w1 -A 项目名 -l info ： 后台停止命令
    重启celery multi restart 1 --pidfile=%n.pid
 
 

@@ -9,6 +9,8 @@
 """
 import os
 
+from app import logger
+
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 

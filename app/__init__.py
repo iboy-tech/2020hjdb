@@ -166,11 +166,11 @@ def register_logging(app):
         '%(levelname)s thread -%(thread)d  - %(module)s - %(funcName)s line:%(lineno)d : %(message)s'
     )
 
-    # file_handler = TimedRotatingFileHandler(
-    #     "logs/log", when="MIDNIGHT", interval=1, backupCount=30,
-    #     encoding="UTF-8", delay=False, utc=False)
-    # file_handler.setFormatter(request_formatter)
-    # file_handler.setLevel(logging.INFO)
+    file_handler = TimedRotatingFileHandler(
+        "logs/log", when="MIDNIGHT", interval=1, backupCount=30,
+        encoding="UTF-8", delay=False, utc=False)
+    file_handler.setFormatter(request_formatter)
+    file_handler.setLevel(logging.INFO)
 
     class SSLSMTPHandler(SMTPHandler):
         def emit(self, record):
@@ -206,15 +206,17 @@ def register_logging(app):
     mail_handler.setLevel(logging.ERROR)
     mail_handler.setFormatter(request_formatter)
 
-    # loggers = [app.logger, logging.getLogger('sqlalchemy'), logging.getLogger('werkzeug')]
-    loggers = [app.logger, logging.getLogger('sqlalchemy'), logging.getLogger('gunicorn.error'),logging.getLogger('gunicorn.error')]
-    for logger in loggers:
-        # logger.addHandler(file_handler)
-        logger.addHandler(mail_handler)
-    gunicorn_logger = logging.getLogger('gunicorn.error')
-    gunicorn_logger.setLevel(logging.ERROR)
+    gunicorn_logger = logging.getLogger('gunicorn.access')
+    gunicorn_logger.setLevel(logging.INFO)
     app.logger.handlers = gunicorn_logger.handlers
     app.logger.setLevel(gunicorn_logger.level)
+
+    loggers = [app.logger, logging.getLogger('sqlalchemy')]
+    for log in loggers:
+        log.addHandler(file_handler)
+        log.addHandler(mail_handler)
+
+
 
 
 # 模板上下文

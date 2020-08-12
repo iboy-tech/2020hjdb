@@ -26,4 +26,5 @@ login_manager = LoginManager()
 redis_client = FlaskRedis()
 cache = Cache()
 limiter = Limiter()
-logger = logging.getLogger('gunicorn.error')
+logger = logging.getLogger(__name__)
+

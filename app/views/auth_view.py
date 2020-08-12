@@ -174,8 +174,8 @@ def login():
                 # 删除redis中的数据
                 redis_client.delete(key)
     data = request.json
-    if request.method == 'POST':
-        user = User.query.filter_by(username=data['username']).first()
+    if request.method == 'POST' and data is not None:
+        user = User.query.filter_by(username=data.get("username")).first()
         if user is None:
             return restful.error('用户名或密码错误')
         else:

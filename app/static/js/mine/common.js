@@ -1,8 +1,8 @@
 //请求前缀
 // const baseUrl = "http://127.0.0.1:8888";
 // const staticUrl = "http://127.0.0.1:8888/static/thumb/";
-const baseUrl = "http://iboy.f3322.net:8888";
-const staticUrl = "http://iboy.f3322.net:8888/static/thumb/";
+const baseUrl = "http://192.168.2.2:8888";
+const staticUrl = "http://192.168.2.2:8888/static/thumb/";
 //全局设置ajax
 $.ajaxSetup({
     dataType: "json",
