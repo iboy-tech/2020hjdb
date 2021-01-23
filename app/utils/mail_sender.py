@@ -34,6 +34,6 @@ def send_email(to, subject, template, messages):
     # logger.info('邮箱用户名MAIL_USERNAME', os.getenv('MAIL_USERNAME'))
     # logger.info('密码MAIL_PASSWORD', os.getenv('MAIL_PASSWORD'))
     # logger.info('默认发件人MAIL_DEFAULT_SENDER', app.config['MAIL_DEFAULT_SENDER'])
-    msg = Message(app.config['MAIL_SUBJECT_PREFIX'] + subject, recipients=[to+'@qq.com'])
+    msg = Message(subject, recipients=[to+'@qq.com'])
     msg.html = render_template('mails/' + template + '.html', messages=messages)
     mail.send(msg)
