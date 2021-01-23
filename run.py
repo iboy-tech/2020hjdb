@@ -15,25 +15,21 @@ import os
 
 from flask import request
 
-
 from flask_login import current_user
 from flask_socketio import emit, SocketIO
 
 from app import create_app, create_celery, redis_client, PostConfig, logger
 from app.utils.wxpusher import WxPusher
 
-from dotenv import load_dotenv, find_dotenv
-# 一、自动搜索 .env 文件
-load_dotenv(verbose=True)
-load_dotenv(find_dotenv('.env'), override=True)
-load_dotenv(find_dotenv('.flaskenv'), override=True)
 
 async_mode = 'eventlet'
 
-
 app = create_app(os.getenv('FlASK_ENV') or 'production')
 
-socketio = SocketIO(app=app, async_mode=async_mode, manage_session=False)
+#这里必须要有cors_allowed_origins允许跨域
+socketio = SocketIO(app=app, async_mode=async_mode, cors_allowed_origins="*", manage_session=False)
+
+
 celery = create_celery(app)
 
 res = None
@@ -44,11 +40,11 @@ def server(data):
     msg = data.get("msg")
     if msg == 'login':
         client_id = request.sid
-        key = PostConfig.PUSHER_REDIS_PREFIX + client_id
+        key = PostConfig.PUSHER_REDIS_PREFIX+client_id
         redis_client.set(key, 'null')  # 把数据存入redis
         redis_client.expire(key, 180)
     elif msg == 'wx':
-        key = PostConfig.PUSHER_REDIS_PREFIX + str(current_user.id)
+        key = PostConfig.PUSHER_REDIS_PREFIX+str(current_user.id)
         redis_client.set(key, 'null')  # 把数据存入redis
         redis_client.expire(key, 180)
     else:
@@ -146,22 +142,21 @@ if __name__ == '__main__':
     启动 Celery worker:
     sudo apt-get --purge remove gunicorn
     source venv/bin/activate && nohup gunicorn -c config.py run:app   &> log.log
-    celery multi start  celery worker -A run.celery -l  DEBUG -E -P eventlet
-    celery  -A run.celery  beat
-    gunicorn -c config.py run:app  --daemon
-    Windows下运行Celery
+   celery multi start  celery worker -A run.celery -l  DEBUG -E -P eventlet
+   celery  -A run.celery  beat
+      gunicorn -c config.py run:app  --daemon
     celery worker -A run.celery -l  DEBUG -E -P eventlet -Q default 
     celery worker -A run.celery -l  DEBUG -E -P solo -Q default
-    ps auxww | grep 'celery worker'
-    pkill -f "celery"
-    celery worker
-    pkill -f " celery worker"
-    celery multi start celery worker -B -A run.celery 
-    celery worker -A run.celery --loglevel=debug  --logfile=worker.log --pool=eventlet  -E
-    ln -s /usr/local/python3/bin/celery /usr/bin/celery
-      https://blog.wpjam.com/m/weixin-emotions/ 
-      http://www.oicqzone.com/tool/emoji/ #表情地址
-      http://www.oicqzone.com/qqjiqiao/2014123020663.html
+   ps auxww | grep 'celery worker'
+   pkill -f "celery"
+   celery worker
+   pkill -f " celery worker"
+   celery multi start celery worker -B -A run.celery 
+   celery worker -A run.celery --loglevel=debug  --logfile=worker.log --pool=eventlet  -E
+   ln -s /usr/local/python3/bin/celery /usr/bin/celery
+  https://blog.wpjam.com/m/weixin-emotions/ 
+  http://www.oicqzone.com/tool/emoji/ #表情地址
+  http://www.oicqzone.com/qqjiqiao/2014123020663.html
    ln -s  /usr/local/bin/celery /usr/bin/celery
    export C_FORCE_ROOT="True"
    pkill -9 -f 'celery worker'
@@ -172,13 +167,13 @@ if __name__ == '__main__':
     celery worker -E -l INFO -A run.celery -n img_compress -Q img_compress -P eventlet
    celery beat -A run.celery -l INFO -f logs/schedule_tasks.log --detach
 
-     celery worker -E -l INFO -n worker_compute -Q for_task_compute
-    celery -A 项目名 worker -loglevel=info ： 前台启动命令
-    celery multi start w1 -A 项目名 -l info ： 后台启动命令
-    celery multi restart img_compress -A run.celery -l info ： 后台重启命令
-    celery multi stop w1 -A 项目名 -l info ： 后台停止命令
+ celery worker -E -l INFO -n worker_compute -Q for_task_compute
+celery -A 项目名 worker -loglevel=info ： 前台启动命令
+celery multi start w1 -A 项目名 -l info ： 后台启动命令
+celery multi restart img_compress -A run.celery -l info ： 后台重启命令
+celery multi stop w1 -A 项目名 -l info ： 后台停止命令
    重启celery multi restart 1 --pidfile=%n.pid
 
 
     """
-    socketio.run(app=app, host='0.0.0.0', port='8888')
+    socketio.run(app=app)
